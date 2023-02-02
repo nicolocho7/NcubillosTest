@@ -1,0 +1,37 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FinancialAccounting.Global;
+//Creado por Danna Padilla 08/mayo/2019
+[DeploymentUnit(Financials)]businessobject EquityConfiguration raises msj {
+
+	message msj text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+	[Label("Estructura ID")]			element ID							: ID;
+	[Label("Company")]					element CompanyID					: OrganisationalCentreID;
+										association ToCompany to Company;
+	[Label("RUC")]						element CompanyRuc: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Set Of Books")]				element SetOfBooksID				: SetOfBooksID;
+										association ToSetofBooks to SetOfBooks  using ID;
+	[Label("Chart of Accounts")]		element ChartOfAccountsCode: ChartOfAccountsCode;
+	
+
+	[Transient]							element IsConsistent				: Indicator;
+
+	 node Details [0,n] raises msjDetails {
+		message msjDetails text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+		[Label("Nro.")]						element Numero: ID ;  
+		[Label("Account from")]				element AccountFrom: ChartOfAccountsItemCode;
+		[Label("Account to")]				element AccountTo: ChartOfAccountsItemCode;
+		[Label("Debit/credit")]				element DebitCredit: CLDebitCreditCode;
+		[Label("Code EF")]					element CodeEF: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Account from Numeric")]		element AccountFromNumeric: DecimalValue;
+		[Label("Account to Numeric")]		element AccountToNumeric: DecimalValue;
+		[Label("Concept")]					element EquityConcept: CLEquityConceptCode;
+		[Label("Saldo Inicial")]			element SaldoInicial: Indicator;
+	}
+	
+	[DependentObject(AttachmentFolder)] node ReportsAttachments;
+
+}
+

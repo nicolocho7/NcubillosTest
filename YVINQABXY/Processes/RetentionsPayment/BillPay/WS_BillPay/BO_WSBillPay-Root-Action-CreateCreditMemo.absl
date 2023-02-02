@@ -1,0 +1,223 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BO_WSBillPay
+		Node: Root
+		Action: CreateCreditMemo 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+
+import ABSL;
+import AP.SupplierInvoicing.Global;
+
+var NewSupplierInvoice  : elementsof SupplierInvoice;
+var NewSellerParty : elementsof SupplierInvoice.Party;
+var NewBuyerParty : elementsof SupplierInvoice.Party;
+
+
+var NewSupplierInvoice_item : elementsof SupplierInvoice.Item;
+var NewSupplierInvoice_item_Product : elementsof SupplierInvoice.Item.ItemProduct;
+var NewSupplierInvoice_item_Distribution : elementsof SupplierInvoice.Item.ItemAccountingCodingBlockDistribution;
+var NewSupplierInvoice_item_Assignment : elementsof SupplierInvoice.Item.ItemAccountingCodingBlockDistribution.AccountingCodingBlockAssignment;
+var Bild = BOBillPayment.Retrieve(this.BPUUID);
+var insInvoices =  Bild.Results.Where(n=>n.Select == true); 
+var insInvoice;
+var vTotalImporteBruto = 0;
+var vTotalImportePago = 0;
+var vTotalImporteNeto = 0;
+raise msj.Create("E", this.BPUUID.content.ToString());
+while(true){
+	//if(insInvoices.Count() == 0){ raise msj.Create("E", msgMissingSelections); break;}
+	//if(!Bild.IsSet()){break;}
+	var vCount = insInvoices.Count();
+	var qryRetentionConfig = BORetentionConfiguration.QueryByElements;
+	var prmRetentionConfig = qryRetentionConfig.CreateSelectionParams();
+		prmRetentionConfig.Add(qryRetentionConfig.CompanyID.content, "I", "EQ",  Bild.CompanyID.content);
+		prmRetentionConfig.Add(qryRetentionConfig.RetentionType, "I", "EQ", Bild.RetentionType);
+	var insRetentionConfig = qryRetentionConfig.Execute(prmRetentionConfig).GetFirst();
+	
+	if(!insRetentionConfig.IsSet()){break;}
+	raise msj.Create("E", insRetentionConfig.ProductID.content.RemoveLeadingZeros());
+	var vProductID = insRetentionConfig.ProductID.content.RemoveLeadingZeros();
+	var vBase = insRetentionConfig.Base;
+	var vPercent = insRetentionConfig.Percent;
+
+	var Record;
+	foreach(Record in insInvoices){
+		//Sumatoria total
+		raise msj.Create("E", "foreach record");
+		vTotalImporteBruto = vTotalImporteBruto + Record.GrossAmount.content;
+		vTotalImportePago = vTotalImportePago + Record.PaymentAmount.content;
+		vTotalImporteNeto = vTotalImporteBruto + Record.NetAmount.content;
+	}
+	
+	if(vTotalImporteBruto > vBase || vTotalImportePago > vBase){
+		var itemsws : elementsof  this.InvoiceCreditMemo;
+		foreach(insInvoice in insInvoices){
+			itemsws.Clear();
+			raise msj.Create("E", "foreach insInvoice");
+			insInvoice.BillID2.content = insInvoice.BillID.RemoveLeadingZeros();
+			itemsws.IDinvoice = insInvoice.BillID.RemoveLeadingZeros();
+			
+			//Calculo retencion
+			insInvoice.RetentionAmount.content = (insInvoice.PaymentAmount.content * (vPercent/100)).RoundToString(2,true);
+			insInvoice.RetentionAmount.currencyCode = insInvoice.PaymentAmount.currencyCode;
+			itemsws.RetentionValue = insInvoice.RetentionAmount;
+			//var qry = SupplierInvoice.QueryByElements;
+			//var prm = qry.CreateSelectionParams();
+				//prm.Add(qry.ID.content,  "I", "EQ", insInvoice.BillID.RemoveLeadingZeros());
+			//var ins = qry.Execute(prm).GetFirst();
+			
+			//var SI = SupplierInvoice.CreateCreditMemoFromReference(ins);
+			var vResultado = insInvoice.GrossAmount.content - insInvoice.NetAmount.content;
+			if(vResultado > 0){
+				var SI_Root : elementsof SupplierInvoice;
+					SI_Root.TypeCode = "005";
+					SI_Root.DataOriginTypeCode = "1";
+					SI_Root.ReceiptDate = Context.GetCurrentSystemDate();
+					SI_Root.Date = Context.GetCurrentSystemDate();
+					SI_Root.TransactionDate = Context.GetCurrentSystemDate();
+					SI_Root.DocumentItemsGrossAmountIndicator = false;
+					SI_Root.GrossAmount.currencyCode = insInvoice.RetentionAmount.currencyCode;
+				var SI = SupplierInvoice.Create(SI_Root);
+				if(SI.IsSet()){
+					insInvoice.CMUUID.content = SI.UUID.content;
+					SI.TypeCode = "005";
+					SI.DataOriginTypeCode = "1";
+					SI.ReceiptDate = Context.GetCurrentSystemDate();
+					SI.Date = Context.GetCurrentSystemDate();
+					SI.TransactionDate = Context.GetCurrentSystemDate();
+					SI.DocumentItemsGrossAmountIndicator = false;
+					SI.GrossAmount.content = insInvoice.RetentionAmount.content;
+					SI.GrossAmount.currencyCode = insInvoice.RetentionAmount.currencyCode;
+
+					var BTDRef : elementsof SupplierInvoice.BusinessTransactionDocumentReference;
+					if(insInvoice.RetentionType == "1"){
+						BTDRef.BusinessTransactionDocumentReference.ID.content = "RET-4TA-" + insInvoice.BillID.RemoveLeadingZeros();
+					}
+					else{	
+						BTDRef.BusinessTransactionDocumentReference.ID.content = "RET-IGV-" + insInvoice.BillID.RemoveLeadingZeros(); 
+					}
+					BTDRef.BusinessTransactionDocumentReference.TypeCode = "28";
+					SI.BusinessTransactionDocumentReference.Create(BTDRef);
+				
+					var BTDRProcessor : elementsof SupplierInvoice.BusinessTransactionDocumentReference;
+					BTDRProcessor.BusinessTransactionDocumentReference.ID.content = insInvoice.BillID2.content;
+					BTDRProcessor.BusinessTransactionDocumentReference.TypeCode = "004";
+					BTDRProcessor.BusinessTransactionDocumentReference.UUID.content = insInvoice.BillUUID.content;
+					BTDRProcessor.BusinessTransactionDocumentRelationshipRoleCode = "1";
+					SI.BusinessTransactionDocumentReference.Create(BTDRProcessor);
+				
+					var BTDRsucessor : elementsof SupplierInvoice.BusinessTransactionDocumentReference;
+					BTDRsucessor.BusinessTransactionDocumentReference.ID.content = insInvoice.BillID2.content;
+					BTDRsucessor.BusinessTransactionDocumentReference.TypeCode = "004";
+					BTDRsucessor.BusinessTransactionDocumentReference.UUID.content = insInvoice.BillUUID.content;
+					BTDRsucessor.BusinessTransactionDocumentRelationshipRoleCode = "17";
+					SI.BusinessTransactionDocumentReference.Create(BTDRsucessor);
+
+					var SI_SParty : elementsof SupplierInvoice.Party;
+					var SI_BParty : elementsof SupplierInvoice.Party;
+						SI_SParty.PartyKey.PartyID.content = Bild.SupplierID.content.RemoveLeadingZeros();
+						SI_BParty.PartyKey.PartyID.content = Bild.CompanyID.content.RemoveLeadingZeros(); 
+						SI.BuyerParty.Create(SI_BParty);
+						SI.SellerParty.Create(SI_SParty);
+
+					//Item
+					NewSupplierInvoice_item.Quantity.content = 1;
+					NewSupplierInvoice_item.Quantity.unitCode = "EA";
+					NewSupplierInvoice_item.QuantityTypeCode.content = "EA";
+					NewSupplierInvoice_item.NetAmount.content = insInvoice.RetentionAmount.content;
+
+					NewSupplierInvoice_item.TypeCode = "003";
+					NewSupplierInvoice_item.DirectMaterialIndicator = false;
+					var insItem = SI.Item.Create(NewSupplierInvoice_item);
+					if(insItem.IsSet()){
+						insItem.ItemProduct.ProductKey.ProductID.content = vProductID;
+
+						insItem.Quantity.content = 1;
+						insItem.Quantity.unitCode = "EA";
+						insItem.QuantityTypeCode.content = "EA";
+						insItem.NetAmount.content = insInvoice.RetentionAmount.content;
+						insItem.TaxCalculationItem.TaxationCharacteristicsCode.content = "001";
+
+						insItem.NetUnitPrice.BaseQuantity.content = 1;
+						insItem.NetUnitPrice.Amount.content = insInvoice.RetentionAmount.content;
+						insItem.NetUnitPrice.BaseQuantityTypeCode.content = "EA";
+
+						foreach (var ins2 in insItem.ItemAccountingCodingBlockDistribution.AccountingCodingBlockAssignment){
+							ins2.AccountingCodingBlockTypeCode.content = "ACC";
+							ins2.GeneralLedgerAccountAliasCode.content = insRetentionConfig.DeterAccounts.content;
+							ins2.Amount.content = insInvoice.RetentionAmount.content;
+							ins2.Amount.currencyCode = insInvoice.RetentionAmount.currencyCode;
+							ins2.Percent = 100;
+						}
+					}
+					//Fin Item
+					//this.Texto = BTDRef.BusinessTransactionDocumentReference.ID.content.RemoveLeadingZeros();//vCount.ToString();
+					SI.CalculateGrossAmount();
+					SI.CalculateTaxAmount();
+					SI.Approve();
+					itemsws.IDCreditMemo = BTDRef.BusinessTransactionDocumentReference.ID.content.RemoveLeadingZeros();//vCount.ToString();
+					this.InvoiceCreditMemo.Create(itemsws);
+					insInvoice.ID = BTDRef.BusinessTransactionDocumentReference.ID.content.RemoveLeadingZeros();//vCount.ToString();
+					raise msj.Create("E", BTDRef.BusinessTransactionDocumentReference.ID.content.RemoveLeadingZeros());
+					//clean Variable
+					BTDRef.Clear();
+					BTDRProcessor.Clear();
+					BTDRsucessor.Clear();
+					SI_BParty.Clear();
+					SI_SParty.Clear();
+					SI_Root.Clear();
+
+					
+				
+					var qryBillsRetentions = BOBillsRetentions.QueryByElements;
+					var prmBillsRetentions = qryBillsRetentions.CreateSelectionParams();
+						prmBillsRetentions.Add(qryBillsRetentions.BillID, "I", "EQ", insInvoice.BillID.RemoveLeadingZeros());
+					var insBillsRetentions = qryBillsRetentions.Execute(prmBillsRetentions).GetFirst();
+
+					if(insBillsRetentions.IsSet()){
+						insBillsRetentions.BillStatus = CLStatusRetentionBillsCode.CO_2;
+						insInvoice.BillStatus = CLStatusRetentionBillsCode.CO_2;
+						insBillsRetentions.RetentionAmount = insInvoice.RetentionAmount;
+						insBillsRetentions.ExternalReferenceIDCM = insInvoice.ID.RemoveLeadingZeros();
+						insBillsRetentions.PaymentAmount = insInvoice.PaymentAmount;
+						//Bild.BillStatusF = CLStatusRetentionBillsCode.CO_2;
+					}
+				}
+			}else{
+				var qryBillsRetentions = BOBillsRetentions.QueryByElements;
+				var prmBillsRetentions = qryBillsRetentions.CreateSelectionParams();
+					prmBillsRetentions.Add(qryBillsRetentions.BillID, "I", "EQ", insInvoice.BillID.RemoveLeadingZeros());
+				var insBillsRetentions = qryBillsRetentions.Execute(prmBillsRetentions).GetFirst();
+
+				if(insBillsRetentions.IsSet()){
+					insBillsRetentions.BillStatus = CLStatusRetentionBillsCode.CO_2;
+					insInvoice.BillStatus = CLStatusRetentionBillsCode.CO_2;
+					insBillsRetentions.RetentionAmount = insInvoice.RetentionAmount;
+					insBillsRetentions.ExternalReferenceIDCM = insInvoice.ID.RemoveLeadingZeros();
+					insBillsRetentions.PaymentAmount = insInvoice.PaymentAmount;
+					//Bild.BillStatusF = CLStatusRetentionBillsCode.CO_2;
+				}
+			}
+		}
+	}else{
+		foreach(insInvoice in insInvoices){
+			var qryBillsRetentions = BOBillsRetentions.QueryByElements;
+			var prmBillsRetentions = qryBillsRetentions.CreateSelectionParams();
+				prmBillsRetentions.Add(qryBillsRetentions.BillID, "I", "EQ", insInvoice.BillID.RemoveLeadingZeros());
+			var insBillsRetentions = qryBillsRetentions.Execute(prmBillsRetentions).GetFirst();
+
+			if(insBillsRetentions.IsSet()){
+				insBillsRetentions.BillStatus = CLStatusRetentionBillsCode.CO_2;
+				insInvoice.BillStatus = CLStatusRetentionBillsCode.CO_2;
+				//Bild.BillStatusF = CLStatusRetentionBillsCode.CO_2;
+			}
+		}
+	}
+	break;
+}

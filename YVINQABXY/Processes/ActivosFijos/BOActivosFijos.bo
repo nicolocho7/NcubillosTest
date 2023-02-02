@@ -1,0 +1,29 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FinancialAccounting.Global;
+
+businessobject BOActivosFijos raises msj{
+
+		message msj text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+        
+		[Label("ID")][AlternativeKey]	element ID	: ID;
+		element UUID :UUID;
+		[Label("Company")]		element CompanyID	: OrganisationalCentreID;
+		association ToCompany	to Company;
+		[Label("Set Of Books")]		element SetOfBooksID	: SetOfBooksID;
+		
+		[Label("Date Execution")]	element EDateInitial		: Date;
+		[Label("Type Report")]	element TypeReport		: CLRegistroActivosFijosCode;
+		[Label("Fixed Valuation")]	element FixedValuation : FixedAssetValuationViewCode;
+		[Label("Company")]			element Company		: ID;
+		[Label("Ejecutar años anteriores ")]			element RunPreviousYears		: Indicator;
+		association  Companyto to BOTableCompany;
+		[Label("Tipo de Cambio")]			element Coin	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[DependentObject(AttachmentFolder)] node ReportsAttachments;
+
+		action REVALUADOS;
+		action DIFERENCIA;
+		action ARRENDAMIENTO;
+		action Execution;
+
+}

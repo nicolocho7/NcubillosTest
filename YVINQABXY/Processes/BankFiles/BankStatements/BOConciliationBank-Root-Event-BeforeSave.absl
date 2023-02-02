@@ -1,0 +1,81 @@
+﻿import ABSL;
+
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+
+var msgDate = "Falto ingresar fecha.";
+var msgDescription = "Falto ingresar descripción.";
+var msgTypeFormat = "Falto ingresar formato de banco.";
+
+if (LanguageCode != "ES")
+{
+	msgDate = "I miss enter date.";
+	msgDescription = "I miss enter description.";
+	msgTypeFormat = "I miss enter bank format.";
+}
+if(this.ID.IsInitial()){
+	var Code = "BOCONCILCO";
+	var InsBOBuildIDV2 = BOBuildIDV2.Retrieve(Code);
+	if(InsBOBuildIDV2.IsSet())
+	{
+		InsBOBuildIDV2.Increase();		
+	}else
+	{
+		var StructureBOBuildIDV2 : elementsof BOBuildIDV2;
+		StructureBOBuildIDV2.ID = Code;
+		StructureBOBuildIDV2.description = "Conciliation Colombia Localization";
+		StructureBOBuildIDV2.UUID.content = UUID.Generate();
+		InsBOBuildIDV2 = BOBuildIDV2.Create(StructureBOBuildIDV2);
+		InsBOBuildIDV2.Increase();
+	}
+
+	this.ID = InsBOBuildIDV2.consecutive;
+}
+//if (this.ID.IsInitial())
+//{
+	//var queryBuildID = BOBuildID.QueryByElements;
+	//var paramBuildID = queryBuildID.CreateSelectionParams();
+	//paramBuildID.Add(queryBuildID.ID, "I", "EQ", "BOCONCILCO");
+	//var resultBuildID = queryBuildID.Execute(paramBuildID).GetFirst();
+	//if (resultBuildID.IsSet())
+	//{
+		//resultBuildID.consecutive = resultBuildID.consecutive + 1;
+		//this.ID = resultBuildID.consecutive.ToString();
+		//this.UUID.content = UUID.Generate();
+	//}
+	//else
+	//{
+		//this.ID = "1";
+		//this.UUID.content = UUID.Generate();
+		////-- create new register
+		//var insBuildID = BOBuildID.Create();
+		//if (insBuildID.IsSet())
+		//{
+			//insBuildID.consecutive = 1;
+			//insBuildID.description = "Conciliation Colombia Localization";
+			//insBuildID.ID = "BOCONCILCO";
+			//insBuildID.UUID.content = UUID.Generate();
+		//}
+	//}
+//}
+
+this.IsConsistent = true;
+
+
+if (this.Date.IsInitial())
+{
+	this.IsConsistent = false;
+	raise msj.Create("E", msgDate);
+}
+
+if (this.Description.IsInitial())
+{
+	this.IsConsistent = false;
+	raise msj.Create("E", msgDescription);
+}
+
+if (this.TypeFormatConciliation.IsInitial())
+{
+	this.IsConsistent = false;
+	raise msj.Create("E", msgTypeFormat);
+}
+

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sadl:definition xmlns:ass="http://sap.com/sap.nw.f.sadl/association" date="20190509" time="143240" uuid="0877001767674DAAB6B67E6B824EBD21" xmlns:sadl="http://sap.com/sap.nw.f.sadl">
+  <sadl:conversions>
+    <sadl:conversion type="ALPHA" />
+  </sadl:conversions>
+  <sadl:modes>
+    <sadl:mode type="QUERY" />
+  </sadl:modes>
+  <sadl:dataSource name="DS" binding="YVINQABXY_EQON8897F73BFC4FE8FC/ass:ROOT4F903855210031B0" type="BusinessObjectNode" d2p1:mdrsBinding="EquityConfiguration.Root" xmlns:d2p1="http://sap.com/xi/AP/PDI" />
+  <sadl:resultSet>
+    <sadl:structure name="YVINQABXY_EQON8897F73BFC4FE8FC" dataSource="DS" d3p1:mdrsName="EquityConfiguration.Root" xmlns:d3p1="http://sap.com/xi/AP/PDI">
+      <sadl:attribute name="YVINQABXY_IDOT469924C86F9445F3" binding="ID5B6AA03D69E6EFEB" d3p1:mdrsName="ID" />
+      <sadl:attribute name="YVINQABXY_COOT393E96E7737D2A29" binding="COMPANYIDD8CC9CD94DA9AB61" d3p1:mdrsName="CompanyID" />
+      <sadl:attribute name="YVINQABXY_COOTB094E1B0AB9B24B7" binding="COMPANYRUC11FB77BD53EBBA22" d3p1:mdrsName="CompanyRuc" />
+      <sadl:attribute name="YVINQABXY_SEOT590B0752D86AC2AC" binding="SETOFBOKSID4FA04D7D7008DF50-CONTENT" d3p1:mdrsName="SetOfBooksID/content" />
+      <sadl:attribute name="YVINQABXY_CHOT676CB209D515474A" binding="CHARTOSCODE03A3EC7BF8ED0244" d3p1:mdrsName="ChartOfAccountsCode" />
+      <sadl:structure name="YVINQABXY_DEOT88D2A51659AD364E" binding="ass:DETAILSCD12A4CC4B51330C" d3p1:mdrsName="Details">
+        <sadl:attribute name="YVINQABXY_NUOTB67ECFB4E57FEDB2" binding="NUMEROFD3A2C38EE573968" d3p1:mdrsName="Numero" />
+        <sadl:attribute name="YVINQABXY_ACOTD972881D76CD79B5" binding="ACCOUNTFROM973CE9CDFD85E5DD-LIST_ID" d3p1:mdrsName="AccountFrom/listID" />
+        <sadl:attribute name="YVINQABXY_ACOT0958240F5419B279" binding="ACCOUNTFROM973CE9CDFD85E5DD-CONTENT" d3p1:mdrsName="AccountFrom/content" />
+        <sadl:attribute name="YVINQABXY_ACOT6389AE64E836C85E" binding="ACCOUNTTO683F3D45833065BE-LIST_ID" d3p1:mdrsName="AccountTo/listID" />
+        <sadl:attribute name="YVINQABXY_ACOTA06A3C4B27087B62" binding="ACCOUNTTO683F3D45833065BE-CONTENT" d3p1:mdrsName="AccountTo/content" />
+        <sadl:attribute name="YVINQABXY_DEOTDBA0322E42E937C7" binding="DEBITCREDIT1B960127525D2F47" d3p1:mdrsName="DebitCredit" />
+        <sadl:attribute name="YVINQABXY_COOTE5E2624E526EE950" binding="CODEEF01AF6779DDFA6004" d3p1:mdrsName="CodeEF" />
+        <sadl:attribute name="YVINQABXY_ACOTFDE0B7072D027930" binding="ACCOUNMERIC7E866CE848B2C83F" d3p1:mdrsName="AccountFromNumeric" />
+        <sadl:attribute name="YVINQABXY_ACOT9184DEC158A88248" binding="ACCOUNMERIC5E88727114FC336D" d3p1:mdrsName="AccountToNumeric" />
+        <sadl:attribute name="YVINQABXY_EQOT77B9AFE05638DD99" binding="EQUITYNCEPTCFF077B2A6015838" d3p1:mdrsName="EquityConcept" />
+      </sadl:structure>
+    </sadl:structure>
+  </sadl:resultSet>
+  <sadl:query bo="YVINQABXY_EQON8897F73BFC4FE8FC" name="QUERY_BY_ELEMENTS" node="OVERVIEW01FD6765E04180CBFE" type="ESI_QUERY">
+    <sadl:inputStructure>
+      <sadl:inputParameter name="IDROOT5B57ADF3C76011D1">
+        <sadl:attribute binding="YVINQABXY_IDOT469924C86F9445F3" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="COMPANROOT1DF618FBC9BFD399">
+        <sadl:attribute binding="YVINQABXY_COOT393E96E7737D2A29" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="COMPANROOT0F6B10D8572E12DD">
+        <sadl:attribute binding="YVINQABXY_COOTB094E1B0AB9B24B7" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="SETOFBROOT232DB56188BCE917-CONTENT">
+        <sadl:attribute binding="YVINQABXY_SEOT590B0752D86AC2AC" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="CHARTOROOT08808E5DB6F870BA">
+        <sadl:attribute binding="YVINQABXY_CHOT676CB209D515474A" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="NUMEROROOT91CFA330FB8563C4">
+        <sadl:attribute binding="YVINQABXY_NUOTB67ECFB4E57FEDB2" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="ACCOUNROOT9A468F6126119661-LIST_ID">
+        <sadl:attribute binding="YVINQABXY_ACOTD972881D76CD79B5" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="ACCOUNROOT9A468F6126119661-CONTENT">
+        <sadl:attribute binding="YVINQABXY_ACOT0958240F5419B279" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="ACCOUNROOT8186D2FE3A9EA73B-LIST_ID">
+        <sadl:attribute binding="YVINQABXY_ACOT6389AE64E836C85E" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="ACCOUNROOT8186D2FE3A9EA73B-CONTENT">
+        <sadl:attribute binding="YVINQABXY_ACOTA06A3C4B27087B62" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="DEBITCROOTBC187E4381D758EA">
+        <sadl:attribute binding="YVINQABXY_DEOTDBA0322E42E937C7" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="CODEEFROOTCB53539724A5F4DD">
+        <sadl:attribute binding="YVINQABXY_COOTE5E2624E526EE950" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="ACCOUNROOTC587BA3F02DF11C2">
+        <sadl:attribute binding="YVINQABXY_ACOTFDE0B7072D027930" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="ACCOUNROOTFAFC10425DC71A81">
+        <sadl:attribute binding="YVINQABXY_ACOT9184DEC158A88248" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="EQUITYROOT9C6D406D0B287D09">
+        <sadl:attribute binding="YVINQABXY_EQOT77B9AFE05638DD99" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="SEARCH_TEXT" type="SEARCH_TEXT">
+        <sadl:inputParameter name="IDROOT5B57ADF3C76011D1" />
+        <sadl:inputParameter name="COMPANROOT1DF618FBC9BFD399" />
+        <sadl:inputParameter name="SETOFBROOT232DB56188BCE917-CONTENT" />
+        <sadl:inputParameter name="CHARTOROOT08808E5DB6F870BA" />
+        <sadl:inputParameter name="NUMEROROOT91CFA330FB8563C4" />
+        <sadl:inputParameter name="CODEEFROOTCB53539724A5F4DD" />
+        <sadl:inputParameter name="EQUITYROOT9C6D406D0B287D09" />
+      </sadl:inputParameter>
+    </sadl:inputStructure>
+    <sadl:outputStructure>
+      <sadl:attribute name="IDROOT5B57ADF3C76011D1" binding="YVINQABXY_IDOT469924C86F9445F3" />
+      <sadl:attribute name="COMPANROOT1DF618FBC9BFD399" binding="YVINQABXY_COOT393E96E7737D2A29" />
+      <sadl:attribute name="COMPANROOT0F6B10D8572E12DD" binding="YVINQABXY_COOTB094E1B0AB9B24B7" />
+      <sadl:attribute name="SETOFBROOT232DB56188BCE917-CONTENT" binding="YVINQABXY_SEOT590B0752D86AC2AC" />
+      <sadl:attribute name="CHARTOROOT08808E5DB6F870BA" binding="YVINQABXY_CHOT676CB209D515474A" />
+    </sadl:outputStructure>
+  </sadl:query>
+</sadl:definition>

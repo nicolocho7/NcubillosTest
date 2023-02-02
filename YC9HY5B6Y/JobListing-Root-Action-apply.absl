@@ -1,0 +1,71 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: JobListing
+		Node: Root
+		Action: apply 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - This script file is mass-enabled, i.e. the keyword "this" 
+	    refers to a collection of node instances.
+	   
+*/
+
+import ABSL;
+
+
+foreach(var jobList in this)
+{
+	//Asigna el indicador de aplicado en verdadero
+	jobList.applied = "X";
+
+	//Crea una instancia correspondiente en el objeto JobApplication BO
+	var jobApply = JobApplications.Create();
+	jobApply.id = jobList.id;
+	jobApply.JobID = jobList.id;
+	jobApply.title = jobList.title;
+	jobApply.jobLocation = jobList.jobLocation;
+	jobApply.domain = jobList.domain;
+	jobApply.empType = jobList.empType;
+	jobApply.hireMgrName = jobList.hireMgrName;
+	jobApply.appDate = Context.GetCurrentUserDate();
+	jobApply.candidateID = jobList.empID;
+	jobApply.candidateName = jobList.name;
+	jobApply.emailID = jobList.emailID;
+
+	//Crear una instacia en el nodo hijo para JobProfile BO
+	var qryJobProfile = JobProfile.QueryByElements;
+	var selParam = qryJobProfile.CreateSelectionParams();
+	selParam.Add(qryJobProfile.id, "I", "EQ", jobList.id);
+	var result = qryJobProfile.Execute(selParam);
+	var resultFinal = result.GetFirst();
+	var canApplied = resultFinal.candidatesApplied.Create();
+	canApplied.empID = jobList.empID;
+
+	var IdentityUUID = Context.GetCurrentIdentityUUID();
+	var Iden : Identity;
+	var qryIden1 = Iden.QueryByElements;
+	var selParam1 = qryIden1.CreateSelectionParams();
+	selParam1.Add(qryIden1.UUID.content,"I","EQ",IdentityUUID.content);
+	var result1 = qryIden1.Execute(selParam1);
+	var resultFinal1 = result1.GetFirst();
+	if(resultFinal1.IsSet())
+	{
+		var busPartUUID = resultFinal1.BusinessPartnerUUID;
+		var employee = Employee.Retrieve(busPartUUID);
+		if(employee.IsSet())
+		{
+			var emp = Employee.Identification.Retrieve(employee.IdentificationEmployeeID.EmployeeID);
+			if(emp.IsSet())
+			{
+				jobList.ToEmployee = emp.ToRoot; 
+			}
+
+		}
+
+	}
+
+}
+

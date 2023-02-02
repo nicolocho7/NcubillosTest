@@ -1,0 +1,123 @@
+﻿//import ABSL;
+//import AP.PC.IdentityManagement.Global as apGlobal;
+//
+//if(this.StructureID.IsInitial()){
+	//var Code = "BOSTRUCTURE";
+	//var InsBOBuildIDV2 = BOBuildIDV2.Retrieve(Code);
+	//if(InsBOBuildIDV2.IsSet())
+	//{
+		//InsBOBuildIDV2.Increase();		
+	//}else
+	//{
+		//var StructureBOBuildIDV2 : elementsof BOBuildIDV2;
+		//StructureBOBuildIDV2.ID = Code;
+		//StructureBOBuildIDV2.description = "BO Structure";
+		//StructureBOBuildIDV2.UUID.content = UUID.Generate();
+		//InsBOBuildIDV2 = BOBuildIDV2.Create(StructureBOBuildIDV2);
+		//InsBOBuildIDV2.Increase();
+	//}
+//
+	//this.StructureID = InsBOBuildIDV2.consecutive;
+	////var queryBuildID = BOBuildID.QueryByElements;
+	////var paramBuildID = queryBuildID.CreateSelectionParams();
+		////paramBuildID.Add(queryBuildID.ID, "I", "EQ", "");
+	////var resultBuildID = queryBuildID.Execute(paramBuildID).GetFirst();
+	////if (resultBuildID.IsSet()){
+		////resultBuildID.consecutive = resultBuildID.consecutive + 1;
+		////this. = resultBuildID.consecutive.ToString();
+	////}
+	////else{
+		////this.StructureID = "1";
+		////var insBuildID = BOBuildID.Create();
+		////if (insBuildID.IsSet()){
+			////insBuildID.consecutive = 1;
+			////insBuildID.description = "";
+			////insBuildID.ID = "BOSTRUCTURE";
+			////insBuildID.UUID.content = UUID.Generate();
+		////}
+	////}
+//}
+//
+//this.WasModify = false;
+//
+//// - - - - - - - - - Validations  - - - - - - - - - - //
+//var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+//var MsgCompany = "Falto ingresar empresa.";
+//var MsgAccountingSystem = "Falto ingresar sistema contable.";
+//var MsgStructure = "Falto ingresar nombre de la estructura.";
+//var MsgElements = "Falto ingresar al menos un elemento.";
+//if (LanguageCode != "ES"){
+	//MsgCompany = "You must enter company.";
+	//MsgAccountingSystem = "You must enter set of book.";
+	//MsgStructure = "You must enter structure";
+	//MsgElements = "You must enter at least one item.";
+//}
+//
+//this.IsConsistent = true; 
+//
+//if(this.CompanyID.IsInitial()){
+	//this.IsConsistent = false; 
+	//raise msg.Create("E",MsgCompany);
+//}
+//
+//if(this.SetOfBooksID.IsInitial()){
+	//this.IsConsistent = false; 
+	//raise msg.Create("E",MsgAccountingSystem);
+//}
+//
+//if(this.StructureDesc.IsInitial()){
+	//this.IsConsistent = false; 
+	//raise msg.Create("E",MsgStructure);
+//}
+//
+//if(this.Elements.Count() > 0){
+	//var vAdd = 1;
+	//foreach(var itemElement in this.Elements.OrderBy(n=>n.ID)){
+		//itemElement.ID = vAdd.ToString();
+		//
+		//if(itemElement.includeByD){
+			//if(itemElement.Accounting1Code.content.IsInitial()){
+				//raise msg.Create("E", " Posición " + vAdd.ToString() + ": falto ingresar cuenta contable");
+				//this.IsConsistent = false;
+			//}
+		//}
+		//else{
+			//if(itemElement.Accounting2Code.IsInitial()){
+				//raise msg.Create("E", " Posición " + vAdd.ToString() + ": falto ingresar Codigo");
+				//this.IsConsistent = false;
+			//}
+//
+			////Sub elements
+			//if(itemElement.SubElements.Count() > 0){
+				//var vContSub = 1;
+				//foreach(var itemSubElement in itemElement.SubElements.OrderBy(n=>n.ID)){
+					//itemSubElement.ID = vAdd.ToString();
+				//
+					//if(itemSubElement.Account.content.IsInitial()){
+						//raise msg.Create("E", "Posición " + vAdd.ToString() + " - Sub Cuenta" + vContSub.ToString() + ": falto ingresar cuenta contable.");
+						//this.IsConsistent = false;
+					//}
+//
+					//if(itemSubElement.Operation.IsInitial()){
+						//raise msg.Create("E", "Posición " + vAdd.ToString() + " - Sub Cuenta" + vContSub.ToString() + ": falto ingresar operación.");
+						//this.IsConsistent = false;
+					//}
+//
+					//vAdd = vAdd + 1;
+				//}
+			//}
+		//}
+	//
+//
+		//if(itemElement.Orden.IsInitial()){
+			//raise msg.Create("E", " Posición " + vAdd.ToString() + ": falto ingresar orden");
+			//this.IsConsistent = false;
+		//}
+//
+		//vAdd = vAdd + 1;
+//
+	//}
+//}else{
+	//this.IsConsistent = false; 
+	//raise msg.Create("E",MsgElements);
+//}

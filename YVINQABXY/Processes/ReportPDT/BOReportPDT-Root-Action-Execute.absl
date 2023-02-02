@@ -1,0 +1,43 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BOReportPDT
+		Node: Root
+		Action: Execute 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+
+import ABSL;
+
+var Cont = 0;
+
+if(this.CompanyID.IsInitial()){
+	Cont = Cont +1;
+}
+if(this.EDateInitial.IsInitial()){
+	Cont = Cont +1;
+}
+if(this.TypeReport.IsInitial()){
+	Cont = Cont +1;
+}
+if(Cont == 0){
+	switch (this.TypeReport)
+	{
+		case CLReportPDTCode.CO_1{ this.PDT626();}
+		case CLReportPDTCode.CO_2{ this.PDT601();}
+		case CLReportPDTCode.CO_3{ this.PDT617();}
+		case CLReportPDTCode.CO_4{ this.PDT621();}
+		case CLReportPDTCode.CO_5{ this.PDT621C();}
+		case CLReportPDTCode.CO_6{ this.PDT626MCS();}
+		case CLReportPDTCode.CO_7{ this.PDT626I();}
+		case CLReportPDTCode.CO_8{ this.PDT3550COMP();}
+		case CLReportPDTCode.CO_9{ this.PDT350VENTASDAOT();}
+		case CLReportPDTCode.CO_10{ this.PDT3550VENT();}
+
+	}
+}
+

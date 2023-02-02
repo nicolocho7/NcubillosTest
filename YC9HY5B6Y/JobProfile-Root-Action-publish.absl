@@ -1,0 +1,37 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: JobProfile
+		Node: Root
+		Action: publish 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - This script file is mass-enabled, i.e. the keyword "this" 
+	    refers to a collection of node instances.
+	   
+*/
+
+import ABSL;
+
+
+foreach(var jobProfile in this)
+{
+	
+	if(jobProfile.status == JobStatusCode.CO_01)
+	{
+		//Cambio de status de published a open
+		jobProfile.status = JobStatusCode.CO_02;
+
+		//crea una instancia en JobListing.bo
+		var jobListing = JobListing.Create();
+		jobListing.id = jobProfile.id;
+		jobListing.title = jobProfile.title;
+		jobListing.jobLocation = jobProfile.jobLocation;
+		jobListing.domain = jobProfile.domain;
+		jobListing.empType = jobProfile.empType;
+		jobListing.jobEndDate = jobProfile.jobEndDate;
+		jobListing.hireMgrName = jobProfile.hireMgrName;
+	}
+}

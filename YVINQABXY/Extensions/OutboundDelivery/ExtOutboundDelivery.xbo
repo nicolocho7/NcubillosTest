@@ -1,0 +1,33 @@
+﻿import AP.Common.GDT;
+import AP.LogisticsExecution.Global;
+
+[Extension] businessobject AP.LogisticsExecution.Global:OutboundDelivery raises msj{
+ 
+        // You must activate this business object before you can access the extension fields
+        // or messages in script files, forms, and screens.
+
+		message msj text "&":LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Scenario(PES_OutboundDelivery,PESOutboundDeliveryV1)][Label("(OLD) Perú Delivery Guide")]element ZIDFolio:LANGUAGEINDEPENDENT_EXTENDED_Text ;
+		[Label("(OLD) Reason of Transportation")]	element zReasonOfTransportation		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("(OLD) Reason of Transportation")]	element zReasonOfTransportationODV2 : CLReasonOfTransportationCode;
+		[Label("(OLD) Number Process")]				element zNumberOfProcess			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("(OLD) Sales O. External Ref.")]		element zSalesOrderExtReference		: BusinessTransactionDocumentID;
+		//[Label("Adress Ship-to")]			element zAddressShipTo				: LongText;
+		//[Label("Establishment Name")]		element zEstablishmentName			: LongText;
+   		node Item {
+   			[Label("(OLD) Product details")]		element zProductDetails				: LANGUAGEINDEPENDENT_EXTENDED_Text;
+      		node ItemProduct {
+      	   
+         		node ItemProductSerialNumber {
+					
+         	    } 
+
+           } 
+    
+   		node Material {
+   	    } 
+
+        } 
+     
+  
+}

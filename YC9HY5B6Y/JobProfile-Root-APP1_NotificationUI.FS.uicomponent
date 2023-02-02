@@ -1,0 +1,686 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UXComponent xmlns:base="http://www.sap.com/a1s/cd/oberon/base-1.0" xmlns:uxv="http://www.sap.com/a1s/cd/oberon/uxview-1.0" xmlns:uxc="http://www.sap.com/a1s/cd/oberon/uxcontroller-1.0" id="A8RrfWOI24ASjLO34bV7gW" enableBackendOperationsClubbing="true" name="YC9HY5B6Y_APP1_NTF_APPR_NotificationUI" AuthorizationClassificationCode="Application" useUIController="true" helpId="81282f60-9042-4e55-95b8-bd80dff463d7" designtimeVersion="25.0.352.1202" modelVersion="1.0" xmlns="http://www.sap.com/a1s/cd/oberon/uxcomponent-1.0">
+ <uxc:Interface id="2GWNj95q7UeZk7chyXR_7A">
+  <uxc:InPorts id="OkCoBdCVtUGP3uJfZGZ_0g">
+   <uxc:InPort id="XSEHMRap2E_5lTAYlUYnUA" name="InportYC9HY5B6Y_APP1_NTF_APPR" portTypeReference="TaskPortType" portTypePackage="/SAP_BYD_APPLICATION_UI/btm/Task_PTP.PTP.uicomponent" defaultSet="none" onFire="ApprovalNotifEventHandler" navBO="Task" navBONS="http://sap.com/xi/AP/FO/Task/Global" navBONode="Root" navOperation="Execute" navContextAttribute="YC9HY5B6Y_APP1_NTF_APPR">
+    <base:PropertyBag id="c0JLhaot9EGfSP6qOPReTQ">
+     <base:Property id="zrcvdXvkT0Ks82KgFQvF1Q" name="ESIBindingPath" value="Root"/>
+    </base:PropertyBag>
+    <uxc:Parameter id="aX1mrjoNGke_8kBKcMrBww" name="TaskInstanceID"/>
+    <uxc:Parameter id="4RBnxT0tkE_K7QnpxboAVg" name="TaskTypeName"/>
+    <uxc:Parameter id="jTgT4Pn4vEmy6rjCTs3NtA" name="TaskTypeUUID"/>
+    <uxc:Parameter id="uQCGAigcX0W1yHjq3PnzYw" name="RefBONamespace"/>
+    <uxc:Parameter id="fIfSPnIJ0E6asIAxlVmjbg" name="RefBOName"/>
+    <uxc:Parameter id="ULXqa9teXUelRGJYBcaCbw" name="RefBONodeName"/>
+    <uxc:Parameter id="x8vyLZ3eMUile4BhrIqO1A" name="RefBONodeId" bind="/Root/InPortData/RefBONodeId"/>
+   </uxc:InPort>
+   <uxc:InPort id="xDxYaf4a7kiCUzp2BsuN2Q" name="InportYC9HY5B6Y_APP1_NTF_RJTD" portTypeReference="TaskPortType" portTypePackage="/SAP_BYD_APPLICATION_UI/btm/Task_PTP.PTP.uicomponent" defaultSet="none" onFire="RejectionNotifEventHandler" navBO="Task" navBONS="http://sap.com/xi/AP/FO/Task/Global" navBONode="Root" navOperation="Execute" navContextAttribute="YC9HY5B6Y_APP1_NTF_RJTD">
+    <uxc:Parameter id="CwhCHQ2r8kiViiiAA8sRvQ" name="TaskInstanceID"/>
+    <uxc:Parameter id="L22Di6AxhkG7geFnmzgXXw" name="TaskTypeName"/>
+    <uxc:Parameter id="3i2ErVCySEqCu9TB4zbTVw" name="TaskTypeUUID"/>
+    <uxc:Parameter id="2exHAUAcU0O6kI_lxs6ivQ" name="RefBONamespace"/>
+    <uxc:Parameter id="SGGFQoi2IEKKcYSFlvBfMQ" name="RefBOName"/>
+    <uxc:Parameter id="wKpD965RcE2Tt9P_trqJFQ" name="RefBONodeName"/>
+    <uxc:Parameter id="bE924UVcpUCtLuRPE0Sy2Q" name="RefBONodeId" bind="/Root/InPortData/RefBONodeId"/>
+   </uxc:InPort>
+  </uxc:InPorts>
+  <uxc:Configuration id="dNcLLNyWBkyqFL_AwEpJKQ"/>
+ </uxc:Interface>
+ <uxc:Implementation id="TLeADTGn1q_c$DfHQU_O3G">
+  <uxc:DataModel id="j_w3bq4Pva2U7z$G9Jn6Y0" name="Root" designtimeMainBOProxyName="JobProfile" designtimeMainBOEsrNamespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_">
+   <base:PropertyBag id="6Wii8265B4scBBgK_m$2RW">
+    <base:Property id="mC89OzDie4YhE5c1mI54Qm" name="USERCHANGEDNAME" value="True"/>
+    <base:Property id="EwTuYXAkIa_I$qqOMk2F20" name="BINDINGSTATUS" value="OK"/>
+   </base:PropertyBag>
+   <uxc:Bind id="BBjd$wcRgK_TR5xroejLam" proxyName="JobProfile" field="Root" esrNamespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_"/>
+   <uxc:DataField id="XljblsPxia6OujG3maUamG" name="@ErrorOccured" type="boolean">
+    <base:PropertyBag id="QfjE82DJNKczsNR4AGOyT0">
+     <base:Property id="rQe3gLCMO4soJBL3JjQbJm" name="BINDINGSTATUS" value="Internal"/>
+    </base:PropertyBag>
+   </uxc:DataField>
+   <uxc:Structure id="aSX2wbyFA4_WBQsrFtqaVm" name="$System">
+    <base:PropertyBag id="rrvQs_inDqQXgrbOG2oOG0">
+     <base:Property id="tQ8QZw8094Uvh6ATDS5jNm" name="BINDINGSTATUS" value="Internal"/>
+    </base:PropertyBag>
+    <uxc:DataField id="Z_q_ch$Rt4A6Nq811_pI$0" name="SessionUrl" type="string">
+     <base:PropertyBag id="TJ94$4zXY4o8me41lEH54W">
+      <base:Property id="w5$_YNmtOKgQ8oDQtxM2rm" name="BINDINGSTATUS" value="Internal"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+   </uxc:Structure>
+   <uxc:Structure id="lTHP1Q6bhaU$$49iEOZLa0" name="JobProfile">
+    <base:PropertyBag id="L8VVW8xVQqYij71L25e37G">
+     <base:Property id="4RQDgq6974ITk$0TY98zem" name="BINDINGSTATUS" value="OK"/>
+     <base:Property id="7PHAcTCCqqMkE$d08kdL6W" name="USERCHANGEDNAME" value="False"/>
+    </base:PropertyBag>
+    <uxc:Bind id="4G81Zg8VaaAfnw28zG5B0G" proxyName="JobProfile" field="Root" esrNamespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_"/>
+    <uxc:DataField id="eaF6dQqb5ES_iqz04NW7SQ" name="StatusSchemaName" type="string" cctsType="identifier">
+     <base:PropertyBag id="AwthqYW1uk2OG2zoK044Ow">
+      <base:Property id="dwDqil0sEEKettzkAyzXyg" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="CuYIuNmJt0CLN5FUGU0I0w" name="UITEXTID" value=""/>
+      <base:Property id="7amlWBXlpUW8e2DXyHWvyQ" name="XFLD" value=""/>
+      <base:Property id="KQlvJKwYCkWgW5I4s0AL0g" name="XCOL" value=""/>
+      <base:Property id="cBFHDUxT002KrhYHb0Tmrw" name="XTOL" value=""/>
+     </base:PropertyBag>
+     <uxc:Bind id="HMmtPN5urEqgHbwYqj7wbA" proxyName="JobProfile" field="-~StatusSchemaName" esrNamespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_"/>
+    </uxc:DataField>
+    <uxc:DataField id="CMzBnnYVQ068H_V6F5Omig" name="id" type="string" cctsType="identifier">
+     <base:PropertyBag id="_4QP2hMV3EyP650bnoHDKg">
+      <base:Property id="M2dAYmERd02PMF8u1EC9Dg" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="AvkqAJqhcEKMvfgEn_Rq6A" name="UITEXTID" value="YC9HY5B6Y_2C536213F3DB3583"/>
+      <base:Property id="HxVfx_7re0av9KPbfJV7oQ" name="XFLD" value="Job ID"/>
+      <base:Property id="qjOflznKzEaXhqR6gQUOSw" name="XCOL" value="Job ID"/>
+      <base:Property id="5EGvGkmSxkyRdNglIWO99Q" name="XTOL" value="Job ID"/>
+     </base:PropertyBag>
+     <uxc:Bind id="lRbtAhi5skKQVRVT7LLAIQ" proxyName="JobProfile" field="-~id" esrNamespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_"/>
+    </uxc:DataField>
+    <uxc:Structure id="anpAv26hZkWY10kSuMnd2g" name="title" cctsType="none">
+     <base:PropertyBag id="e0hoVCnLXkGAlPuifMFK1Q">
+      <base:Property id="lz29Yp1dWk2iUIr0wI_iqQ" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="xxH9YXabLUyagJjSeq3nRw" name="UITEXTID" value="YC9HY5B6Y_E632F5EAAE059E3B"/>
+      <base:Property id="tevbfXVns0SNuCs9UNWpZA" name="XFLD" value="Title"/>
+      <base:Property id="DTqH_Abs2Ueofeip5IYEbg" name="XCOL" value="Title"/>
+      <base:Property id="BhQ3356r00_gSjGnI3_lIA" name="XTOL" value="Title"/>
+     </base:PropertyBag>
+     <uxc:Bind id="L29fAA2PD0_RHdVJwSkj2w" proxyName="JobProfile" field="-~title" esrNamespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_"/>
+     <uxc:DataField id="7Hzoz5tEl0msarhxy0m38A" name="content" type="string" cctsType="description">
+      <base:PropertyBag id="Q33U265Teki3VY_YRAYa5Q">
+       <base:Property id="3VZq6QLRsU_vwLBmfNIE7Q" name="BINDINGSTATUS" value="OK"/>
+       <base:Property id="m3RVudZhUkW2bO466MeqIQ" name="UITEXTID" value="YC9HY5B6Y_E632F5EAAE059E3B"/>
+       <base:Property id="SRp7SdfBc0eh6_IZAxhhJA" name="XFLD" value="Title"/>
+       <base:Property id="rdMS3EBbZkyfsumJAK34vQ" name="XCOL" value="Title"/>
+       <base:Property id="d1SaU5TjmkKJJ1LNZBhwTA" name="XTOL" value="Title"/>
+      </base:PropertyBag>
+      <uxc:Bind id="rf2YAtSOeEKhh37jPEg39Q" proxyName="JobProfile" field="-~content" esrNamespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_"/>
+     </uxc:DataField>
+     <uxc:DataField id="HQQa0ZN8AEi2a6Pf9XbWiA" name="languageCode" type="string" cctsType="code">
+      <base:PropertyBag id="AQnIV_d8nUSUkz4yMNvIXQ">
+       <base:Property id="Rk_X0yTMTkmQpeeffamzdw" name="BINDINGSTATUS" value="OK"/>
+       <base:Property id="94IFpik4sUWGPf_dzDdovw" name="UITEXTID" value=""/>
+       <base:Property id="zCANUZ8sr0aJEf4zHdYSeg" name="XFLD" value=""/>
+       <base:Property id="JtuyRNL5vkO6rMzw4A2UqA" name="XCOL" value=""/>
+       <base:Property id="9110LWBY5UmiT3C9sgtbHw" name="XTOL" value=""/>
+      </base:PropertyBag>
+      <uxc:Bind id="BalruWNak0e13g3zk7u51g" proxyName="JobProfile" field="-~languageCode" esrNamespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_"/>
+      <uxc:Codelist id="WA5qfh38FUi9SICIuvyu_Q" type="static" typeName="LanguageCode" esrNamespace="http://sap.com/xi/BASIS/Global"/>
+     </uxc:DataField>
+    </uxc:Structure>
+    <uxc:DataField id="rnK69CKK0UKzTArlWOlBHQ" name="postingDate" type="date" cctsType="date">
+     <base:PropertyBag id="BSqd7TZFlEqFVrDdbaShsg">
+      <base:Property id="VcAdX4ASnke1m0tSVogrkw" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="IX3BzKKTXEmtRnxM1IkBKg" name="UITEXTID" value="YC9HY5B6Y_6A40D2C03A058A7D"/>
+      <base:Property id="Eg7wrQJaP0eBOq8SHPQ3GQ" name="XFLD" value="Posting Date"/>
+      <base:Property id="1b6eECKAWkGAkH_4uFQDdQ" name="XCOL" value="Posting Date"/>
+      <base:Property id="YdLm9laXUU_uIUYHXPUXxA" name="XTOL" value="Posting Date"/>
+     </base:PropertyBag>
+     <uxc:Bind id="h6Ps9s8p_E6dyzbrXrCMAQ" proxyName="JobProfile" field="-~postingDate" esrNamespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_"/>
+    </uxc:DataField>
+    <uxc:DataField id="NAx5o5_Af0GebGzi3no1fA" name="domain" type="string" cctsType="code">
+     <base:PropertyBag id="t8RuDpetEkyLfkiz5eCccA">
+      <base:Property id="XbWnPKVrZ0e2AK4dqUTYeg" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="DFoF2AYiP06c8cwDVDrPkw" name="UITEXTID" value="YC9HY5B6Y_36FC2965EA7C1405"/>
+      <base:Property id="7CK8A7Yewk_XoML1cQjx5g" name="XFLD" value="Work Area"/>
+      <base:Property id="RZ7hFbUvFka8nOAQAcr6gQ" name="XCOL" value="Work Area"/>
+      <base:Property id="5A545UmfqEmurAxUkXzTeQ" name="XTOL" value="Work Area"/>
+     </base:PropertyBag>
+     <uxc:Bind id="_w4HnfSMh0ahc6U77cagew" proxyName="JobProfile" field="-~domain" esrNamespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_"/>
+     <uxc:Codelist id="8TowzA3jKUWEXjxESmN43Q" type="static" typeName="DomainCode" esrNamespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_"/>
+    </uxc:DataField>
+    <uxc:DataField id="ffIIuzFWP0CHc5XGwZKxMQ" name="empType" type="string" cctsType="code">
+     <base:PropertyBag id="TipFIK5D1U_ONRsvzrOUXA">
+      <base:Property id="ladKsaBXPkiVgZ3UP3cDQg" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="_Q8h3BkXfUi0_JIJJKmItQ" name="UITEXTID" value="YC9HY5B6Y_43597F5A8A2789C4"/>
+      <base:Property id="ByOp7e0lB0KUh8SllsmhxQ" name="XFLD" value="Employment Type"/>
+      <base:Property id="PQhAkz_l0Eu8l_zWZkpA9Q" name="XCOL" value="Employment Type"/>
+      <base:Property id="1vzuDlg5Pka_He0fmoi4Kw" name="XTOL" value="Employment Type"/>
+     </base:PropertyBag>
+     <uxc:Bind id="kHA9OcWtOESBwCA7472fjA" proxyName="JobProfile" field="-~empType" esrNamespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_"/>
+     <uxc:Codelist id="IMpcAsJYVEGqG1G82DZckA" type="static" typeName="EmploymentTypeCode" esrNamespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_"/>
+    </uxc:DataField>
+    <uxc:DataField id="XygkaMLRl0epfB_ScN3dtA" name="hireMgrId" type="string" cctsType="identifier">
+     <base:PropertyBag id="tyqnetn4WUqskQVPJOQIlA">
+      <base:Property id="hTIkcmqRBUqHbKZ0hzWsmA" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="2AW9rkdJ5E27HwpAYnubXQ" name="UITEXTID" value="YC9HY5B6Y_0C8224776F294329"/>
+      <base:Property id="WpFu6MSS9UWFj_w4BYQ4Kw" name="XFLD" value="Hiring Manager Id"/>
+      <base:Property id="pby5p75r5kOdF3oDovGTtw" name="XCOL" value="Hiring Manager Id"/>
+      <base:Property id="DyDcsHINrkmFUsFIfjMfmQ" name="XTOL" value="Hiring Manager Id"/>
+     </base:PropertyBag>
+     <uxc:Bind id="oJXLdGBfv0W6elGbqVe8fw" proxyName="JobProfile" field="-~hireMgrId-~content" esrNamespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_"/>
+    </uxc:DataField>
+    <uxc:DataField id="OU_CO1LFBkqjuQBRqCEsHQ" name="ApprovalStatus" type="string" cctsType="code">
+     <base:PropertyBag id="rZ4eR8RrAkGv6AAOBaVczw">
+      <base:Property id="mGymfZClLUCstYCkeQIp4A" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="XcwGz5tOU06Bm4q2xNYcRA" name="UITEXTID" value=""/>
+      <base:Property id="AfPeo9WMN0CtvwlySD60MQ" name="XFLD" value=""/>
+      <base:Property id="Lmm_AHCGNEmoyU0dnDw4bg" name="XCOL" value=""/>
+      <base:Property id="18siUU4OpUuAlEDcTZm3zQ" name="XTOL" value=""/>
+     </base:PropertyBag>
+     <uxc:Bind id="u1iYeJFpXkGLJPlLkqxswA" proxyName="JobProfile" field="-~ApprovalStatus" esrNamespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_"/>
+     <uxc:Codelist id="eR2KGsM2w0KSzzSQ9CRdKQ" type="static" typeName="ApprovalStatusCode" esrNamespace="http://sap.com/xi/AP/Common/GDT"/>
+    </uxc:DataField>
+    <uxc:DataField id="YY9CteEGekWATcVrzOHcsg" name="hireMgrName" type="string" cctsType="name">
+     <base:PropertyBag id="XYX_bwegTEOiutgjzE7nzg">
+      <base:Property id="RDS8uKNo1kyr6aun64aNNQ" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="effFU9ulHk2MOJJrXJNbJg" name="UITEXTID" value="YC9HY5B6Y_797BEEBA5EBAC047"/>
+      <base:Property id="6FbGANGckU6T3qXNoheA5Q" name="XFLD" value="Hiring Manager"/>
+      <base:Property id="wgqJGiQYpUqETxBcj2yD2w" name="XCOL" value="Hiring Manager"/>
+      <base:Property id="uAF2MYJA5UuFZmVO8dOMKA" name="XTOL" value="Hiring Manager"/>
+     </base:PropertyBag>
+     <uxc:Bind id="CsfXECmsnE2vLazxAolSsg" proxyName="JobProfile" field="-~hireMgrName" esrNamespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_"/>
+    </uxc:DataField>
+    <uxc:DataField id="CGJmT93Fm0amhZAAR7Pitg" name="jobLocation" type="string" cctsType="code">
+     <base:PropertyBag id="q7nToKoH30eHvUiqvxUE6Q">
+      <base:Property id="XPXg6pdyRkufrHw8fsJNHQ" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="OZ8MkxlSq0aeLbpUgdIhCw" name="UITEXTID" value="YC9HY5B6Y_4BC4D2B07FE285D3"/>
+      <base:Property id="bXifzU7c4ECSn8fAy1QhzA" name="XFLD" value="Country"/>
+      <base:Property id="VsP1rIkp9ESloTbaZHEfSg" name="XCOL" value="Country"/>
+      <base:Property id="bAN_zAmV8ku2ntJHn0_mKw" name="XTOL" value="Country"/>
+     </base:PropertyBag>
+     <uxc:Bind id="UpAOZAoCo0eSpnyUPdcvOQ" proxyName="JobProfile" field="-~jobLocation" esrNamespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_"/>
+     <uxc:Codelist id="ohiE1vEdzkCmscotyRKT9Q" type="static" typeName="CountryCode" esrNamespace="http://sap.com/xi/AP/Common/GDT"/>
+    </uxc:DataField>
+    <uxc:DataField id="QERTqR1k4UKDh34DtX5ASg" name="jobEndDate" type="date" cctsType="date">
+     <base:PropertyBag id="sR0VuC6hO0_t2e4fUb3h1g">
+      <base:Property id="wpydwEmXf0GLindoSVy3zA" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="pbIDHPQkmkKE2ymMldiIqw" name="UITEXTID" value="YC9HY5B6Y_0D3FA2CD873B07E9"/>
+      <base:Property id="XlWRT6HziE2BBuSFiFCFCA" name="XFLD" value="End Date"/>
+      <base:Property id="37lHIdfQHk6YESemtgKT_w" name="XCOL" value="End Date"/>
+      <base:Property id="8WC_VdU9I0u0V2GjU6vZ1g" name="XTOL" value="End Date"/>
+     </base:PropertyBag>
+     <uxc:Bind id="tUqvyA1LpUaykqvIf4ljkQ" proxyName="JobProfile" field="-~jobEndDate" esrNamespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_"/>
+    </uxc:DataField>
+    <uxc:DataField id="bx5JttNMuUCn0206IS6AIQ" name="status" type="string" cctsType="code">
+     <base:PropertyBag id="cjMIBxoJikOq5dVHpn8HFQ">
+      <base:Property id="DSKY77Y0PUyyB0WDTZ8NdQ" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="ipZK7AaP6k2gMs5ztLM2AA" name="UITEXTID" value="YC9HY5B6Y_228D47C628773D2A"/>
+      <base:Property id="hZUdJIVsE0moIYwNEZpSzw" name="XFLD" value="Status"/>
+      <base:Property id="eiIT3tq18EmAAaDsNCAisA" name="XCOL" value="Status"/>
+      <base:Property id="l4JA4cP1ykGI5An1y2tLPA" name="XTOL" value="Status"/>
+     </base:PropertyBag>
+     <uxc:Bind id="NhQvaFMnyUKaNkFIZyI9NA" proxyName="JobProfile" field="-~status" esrNamespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_"/>
+     <uxc:Codelist id="NgISQo8yXkKPdflxF0i7xQ" type="static" typeName="JobStatusCode" esrNamespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_"/>
+    </uxc:DataField>
+    <uxc:DataField id="mO8Z3en7AUS4huXMcBZFkg" name="creationDate" type="date" cctsType="date">
+     <base:PropertyBag id="2h57RBRfiEq2fR58XOlZzw">
+      <base:Property id="YuWLf2GqYUmn8bl7stdn5w" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="EaQymw2HPEOXJSd3zIsJZQ" name="UITEXTID" value="YC9HY5B6Y_70C78446912AA4FC"/>
+      <base:Property id="BUsQdSLjrkaAC2yL63a0TA" name="XFLD" value="Create On"/>
+      <base:Property id="MPRifW7wNUmxgOA_DWHRVQ" name="XCOL" value="Create On"/>
+      <base:Property id="qZ6HrJguG0C__JZeOGV5YA" name="XTOL" value="Create On"/>
+     </base:PropertyBag>
+     <uxc:Bind id="z3blAHaMLkegl_A8A6Orlw" proxyName="JobProfile" field="-~creationDate" esrNamespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_"/>
+    </uxc:DataField>
+    <uxc:DataField id="h3zkO6vuEki0anfV15WQbw" name="createBy" type="string" cctsType="name">
+     <base:PropertyBag id="OA0IabLbm0aEB7RkP7vhPQ">
+      <base:Property id="HdAqknmQiEGZbbu8i_4t_Q" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="hVz2mSlcXEGnibxaj_AiTQ" name="UITEXTID" value="YC9HY5B6Y_8ACF0DE4221A2B63"/>
+      <base:Property id="AocSKK9r00mGUg_AALiICw" name="XFLD" value="Create By"/>
+      <base:Property id="5csjwDjcc0ybTImKeQvBhg" name="XCOL" value="Create By"/>
+      <base:Property id="GtHu6bYhaUeaWew5eP4mAw" name="XTOL" value="Create By"/>
+     </base:PropertyBag>
+     <uxc:Bind id="4uXR9xxlAU6x8BcDHUN9fg" proxyName="JobProfile" field="-~createBy" esrNamespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_"/>
+    </uxc:DataField>
+    <uxc:DataField id="4KerThlo80aCUI_u0lsi3g" name="chgdBy" type="string" cctsType="name">
+     <base:PropertyBag id="KxAoQuKDmkqNm6MTxyNrpA">
+      <base:Property id="8KLORKKTckCvS7gEhPwkmw" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="QpO5Q8P3jEqEAiLvV42wZQ" name="UITEXTID" value="YC9HY5B6Y_7BFCE5DD7D9BF5DE"/>
+      <base:Property id="Tjvyj4yk3EWGRDA2NHGj3w" name="XFLD" value="Changed by"/>
+      <base:Property id="gxfh9b_gM0yUBOw7BPAfXA" name="XCOL" value="Changed by"/>
+      <base:Property id="1_Addi9qA0mb_tOXo_FDNA" name="XTOL" value="Changed by"/>
+     </base:PropertyBag>
+     <uxc:Bind id="fzIWeVlkPkuJo2wgI1MkMg" proxyName="JobProfile" field="-~chgdBy" esrNamespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_"/>
+    </uxc:DataField>
+    <uxc:DataField id="VxySVTtUE0a3XenHygE6VQ" name="chgdOn" type="date" cctsType="date">
+     <base:PropertyBag id="3srdxSAXT0CkKthTqTy2FA">
+      <base:Property id="vueYfZ_AaUKIVBNSXB1DIQ" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="YqGpBVIKVkWV2axLw2P6AQ" name="UITEXTID" value="YC9HY5B6Y_CC70B7C5183231D0"/>
+      <base:Property id="8G7hEOikjEKbGmD0u5O58Q" name="XFLD" value="Changed On"/>
+      <base:Property id="iGduV3giYEyNIVYHOdjjBA" name="XCOL" value="Changed On"/>
+      <base:Property id="QuhUR37zvEiE5jY9cYoZtw" name="XTOL" value="Changed On"/>
+     </base:PropertyBag>
+     <uxc:Bind id="EZA_CH4nHUet4gSCU3k6Jg" proxyName="JobProfile" field="-~chgdOn" esrNamespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_"/>
+    </uxc:DataField>
+    <uxc:DataField id="l5A4JGM4KqwWkJ4Sl8TjPG" name="NodeID" type="string">
+     <base:PropertyBag id="zhW$_DBAXaYhtXH$KqCm_0">
+      <base:Property id="_kMU_Y_4BK2PQK1CXeaV8W" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="3AZIyDUmgK6oeePkrMhwOm" name="BACKEND_CCTS_TYPE" value="none"/>
+      <base:Property id="PgMUBqM77K6PR1WOemWKN0" name="USERCHANGEDNAME" value="True"/>
+     </base:PropertyBag>
+     <uxc:Bind id="hGpopuc75Kkf4Oium6$Zbm" proxyName="JobProfile" field="-~NodeID" esrNamespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_"/>
+    </uxc:DataField>
+   </uxc:Structure>
+   <uxc:Structure id="tv1ue7n864ACQsmjFgSXLW" name="InPortData">
+    <base:PropertyBag id="fXm6KWzrb4_6Asgrwteb70">
+     <base:Property id="l6y1oIwZpq2xiWMp2YMtdm" name="BINDINGSTATUS" value="ToBind"/>
+     <base:Property id="yw0ENds8NawC1AyX5gDuV0" name="BACKEND_CCTS_TYPE" value="none"/>
+     <base:Property id="Prttv5E_U4oJZE8P_hz0GW" name="USERCHANGEDNAME" value="True"/>
+    </base:PropertyBag>
+    <uxc:DataField id="0ik3Y_kKiKIXmgZYe3bcpW" name="RefBONodeId" type="string">
+     <base:PropertyBag id="$WN42hGug4wQTLYNmhA0cW">
+      <base:Property id="t0MbRAIl_KQR0z$EzhQuMW" name="BINDINGSTATUS" value="ToBind"/>
+      <base:Property id="E4Sxt2NnraY9fdft3drwEW" name="USERCHANGEDNAME" value="True"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+   </uxc:Structure>
+   <uxc:BOVersion id="cAJfjNnGLq6_XxlXcBAYtm" boName="JobProfile" boNS="http://0004019099-one-off.sap.com/YC9HY5B6Y_" invalidationHash="04697856F0B8F0ED130BAEA9CDDE7D2A06801E87"/>
+  </uxc:DataModel>
+  <uxc:EventHandlers id="GcdcutOLWKMhvNY5vucgNm">
+   <uxc:EventHandler id="DTTq1E43Wq_oG$rE9r3VVG" name="ApprovalNotifEventHandler">
+    <uxc:BoOperation id="ga64lYhqgaYpp3VAYRrIAG" name="Operation" proxyName="JobProfile" esrNamespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_" operation="Read">
+     <uxc:BoOperationParameter id="mhHX3HJDrKUXqLLCl9kWr0" name="Parameter" bind="/Root/InPortData/RefBONodeId" type="nodeId" path="/Root/JobProfile/NodeID"/>
+    </uxc:BoOperation>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="3grhRwzDo4URvSIpZ92XTG" name="CloseHandler">
+    <uxc:WindowAction id="VSSrQ8qpDqE8AuGwtxrWcW" name="Close" action="Close"/>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="0kXrVnyQ0qIxhNOkFSUkB0" name="RejectionNotifEventHandler">
+    <uxc:BoOperation id="6x4U1_shlaE6xuhkEULniG" name="Operation" proxyName="JobProfile" esrNamespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_" operation="Read">
+     <uxc:BoOperationParameter id="niJX3HJDrKUXqLLCl9kWr0" name="Parameter" bind="/Root/InPortData/RefBONodeId" type="nodeId" path="/Root/JobProfile/NodeID"/>
+    </uxc:BoOperation>
+   </uxc:EventHandler>
+  </uxc:EventHandlers>
+  <uxc:ModelChanges/>
+ </uxc:Implementation>
+ <uxc:Navigation id="kpS5GP7iFq67fGb5RA3vGm"/>
+ <uxc:RBAMData id="xdyEB$c5_4oFkmXoOnUsd0" accessCheckMode="PrivilegedExceptAccessControlledBusinessObjects">
+  <uxc:AccessControlledBusinessObject id="siCjSFTbQ4M_RAl2nXLQGm" BO="JobProfile" BONS="http://0004019099-one-off.sap.com/YC9HY5B6Y_" unrestrictedAccess="true"/>
+ </uxc:RBAMData>
+ <uxc:EmbeddedComponents id="chqny$tzWaEpPOiVlXoT9G"/>
+ <!-- View starts-->
+ <UXView id="srIrCddYa4sgw4g7E_aHoG" patternType="factsheet">
+  -
+  <uxv:IdentificationRegion id="olkvpdOcLKEcaivGUhE5xG">
+   <uxv:Title id="0cXXD6$wsakrraHFEDkpEW" textPoolId="6d78ba4a44ee4825b05ae0b8f3c8692b"/>
+   -
+   <uxv:ExtendedIdentificationRegion id="X48Z0vxvKaoCO8ivrCPijG">
+    <uxv:Visible id="UVLjPovmG4c2VG0_vOWxvm" fallbackValue="true" fallbackValueType="boolean"/>
+    -
+    <uxv:Item id="3HkfcC4doa_B5iGYX5e5UG">
+     <uxv:Label id="oxTK2d1eDKYsTgbkg1voDm" textPoolId="RIJ71VyRE4cdUmRi5CzIBG"/>
+     -
+     <uxv:StaticText id="HOYA7Lj4tK6CulRPc_NwGG" name="ExIdr">
+      <uxv:Text id="rG8o5WcaJa_sNy$iycy$y0" bindingExpression="/Root/DataField" fallbackValue="StaticText"/>
+     </uxv:StaticText>
+    </uxv:Item>
+    -
+    <uxv:Item id="oOOukdkc$KcyIunzZ7fXEW">
+     <uxv:Label id="5_SF_NWRnaYzJkyXiwVTLG" textPoolId="vEgp7JG82qwNsE$DwbNFvG"/>
+     -
+     <uxv:StaticText id="wrd5IHddsqcSlda2Iuf8rm" name="ExIdr1">
+      <uxv:Text id="iuiX4mnA5qAwpSsv4t$Eo0" bindingExpression="/Root/DataField1" fallbackValue="StaticText"/>
+     </uxv:StaticText>
+    </uxv:Item>
+    -
+    <uxv:Item id="eq_3Vl$VyKw0_buWbeNBdG">
+     <uxv:Label id="74bniuNJeq_468ITdpUtbW" textPoolId="DzhqYSkLX46dJFMcjMxGNm"/>
+     -
+     <uxv:StaticText id="MkUGNlhvQakdZ2nfQT37i0" name="ExIdr2">
+      <uxv:Text id="EAY02ChoUasrEklu4gd2_G" bindingExpression="/Root/DataField2" fallbackValue="StaticText"/>
+     </uxv:StaticText>
+    </uxv:Item>
+   </uxv:ExtendedIdentificationRegion>
+  </uxv:IdentificationRegion>
+  -
+  <uxv:ContextualNavigationRegion id="4Wa9oNA8y4IftZpQMEOOim">
+   -
+   <uxv:FunctionBar id="qPBFReSxjaEhZlmk8PBVFW">
+    -
+    <uxv:ButtonGroup id="bzhjX_L_w4MYVFVyyIEwYm" name="ActionButtons">
+     -
+     <uxv:Button id="US8MM4jxya61xt5J2BXE3m" name="Close" onClick="CloseHandler" style="Cancel">
+      <uxv:Text id="thsbH71ZB4_GvNmrkCNfxW" textPoolId="919e4e3f12f14f069a74f34988fb1659"/>
+     </uxv:Button>
+    </uxv:ButtonGroup>
+   </uxv:FunctionBar>
+   -
+   <uxv:ViewAll id="vEpsovHyQ4Q_vTtY8pEF$0" name="ViewAll" style="Standard">
+    <uxv:Text id="5$rBb6VGyaY6s2SFBm5n7m" textPoolId="ce0df2a204704609a26d6859b1987bfc"/>
+   </uxv:ViewAll>
+  </uxv:ContextualNavigationRegion>
+  -
+  <uxv:ViewContainerRegion id="Z$JR5QYcQKg3RbrFjxnz10">
+   -
+   <uxv:View id="JAUXJ2bNrKwv5db0Ihe_4m" columns="2" rows="2">
+    -
+    <uxv:PaneContainer id="baK3opFU2KQjiOMKs59DKW" column="0" row="0" rowSpan="2">
+     -
+     <uxv:FormPane id="wjle5Gpt64U5guB2vrXZfm">
+      -
+      <uxv:SectionGroup id="ZRFTW$73m4UkrJBNhhxRwG" column="0" row="0" showGroupName="true">
+       -
+       <base:PropertyBag id="JujjpptdRKEkbayZT0Rua0">
+        <base:Property id="z_GsRcGbuqcKLvOfO7TIlG" name="Navigation" value=""/>
+       </base:PropertyBag>
+       <uxv:SectionGroupName id="ojxGXbIp44w$6H9zOadOIm" textPoolId="OK0Z$bBEq4_AJE6arh5PC0"/>
+       <uxv:SectionGroupItem id="isMicJRbrE6pq6AOn4FrXw">
+        <base:PropertyBag id="G2frVcjzY0_mSN52xtl6KA">
+         <base:Property id="dpb9wAb1dEeEaEYoavE7vw" name="Name" value="StatusSchemaName"/>
+        </base:PropertyBag>
+        <uxv:Label id="XDLK1hP3Y02nSn7Q90HUzQ" textPoolId="PGwaH4Z9T0ejID2zYQOVRQ">
+         <base:PropertyBag id="m5CEtIgOvESrTr4ZoSADMg">
+          <base:Property id="XBuVg4os40KtFU1lXmYtnw" name="Name" value="StatusSchemaName"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:StaticText id="MCg_J6S8h0CfqAkvWyOlEw" name="StatusSchemaName" cctsType="identifier">
+         <uxv:IdentifierCCTSConfig id="rqrM49aOskGAXSvteLX53A" interpretAsInteger="false"/>
+         <uxv:Text id="NhJk5U0430CBCRKeVge5fg" bindingExpression="/Root/JobProfile/StatusSchemaName">
+          <!-- <base:PropertyBag id="FOjrlSiFJki8vy5BrAE_0Q">
+											<base:Property id="3kDaRGKG7UOgOqo0C_GcwA" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Text>
+        </uxv:StaticText>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="bW33UEyQV0Og3_X7e2LWjA">
+        <base:PropertyBag id="cqGq0xa640WWrfQuRTGWkg">
+         <base:Property id="Vet6dxi7lkyE5o_lD_B8hA" name="Name" value="id"/>
+        </base:PropertyBag>
+        <uxv:Label id="rF4fMsXZMk2ZPhfNPi47bg" textPoolId="5OMwg4_atUGNPJQrAdrcGg">
+         <base:PropertyBag id="mrUd82JpxEuedHiFXyK7Xw">
+          <base:Property id="DAEobhMADkqD_k4jJRjFkw" name="Name" value="id"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:StaticText id="ErpHIai6ok_UVhMYW3YkHw" name="id" cctsType="identifier">
+         <uxv:IdentifierCCTSConfig id="jh_AZ3B1lUCYVT6hPAliBA" interpretAsInteger="false"/>
+         <uxv:Text id="f7Ebi8VitkSj5t0AhEMa5A" bindingExpression="/Root/JobProfile/id">
+          <!-- <base:PropertyBag id="VlKt0SVimkGOLP6smZ_IQA">
+											<base:Property id="Abk0N0oy7EmvUEC1RcAGsw" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Text>
+        </uxv:StaticText>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="UhBCDpbG6k61NumMWCTvIQ">
+        <base:PropertyBag id="BBh2anoAM02WVu7pO0QGDw">
+         <base:Property id="kaGGOdpGwUWAvHIoRbcdQQ" name="Name" value="title"/>
+        </base:PropertyBag>
+        <uxv:Label id="2mSVXJ1LMEq8ntyfi_5wCA" textPoolId="keBoAbyFGEWtRB5XmkzHTw">
+         <base:PropertyBag id="pMLddIwuIEyBzbEewlJJNA">
+          <base:Property id="doLzbUDrVUyXUE4M8ZaVNQ" name="Name" value="title"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:CompoundField id="3omASnhcTU6XbZ3TCeKAcQ" name="title" cctsType="description" structureBinding="/Root/JobProfile/title">
+         <uxv:StaticText id="q5ebF97UYEGW88os3xYcjg" name="content" cctsType="description">
+          <uxv:Text id="8wgVRv58uUmUDtW0BfVeNw" bindingExpression="/Root/JobProfile/title/content">
+           <!-- <base:PropertyBag id="F0uEpKMS2k_gDjvuACafFA">
+												<base:Property id="PRh4QESI7kiacbE_uJJ_Dg" name="Name" value="" />
+											</base:PropertyBag> -->
+          </uxv:Text>
+         </uxv:StaticText>
+         <uxv:StaticText id="EUz5LWLMAkGuEB_jdABDxg" name="languageCode" cctsType="code">
+          <uxv:CodeCCTSConfig id="68COO867ek_bzT8WYnRVcA"/>
+          <uxv:Text id="VcwdonIAh0OfyYQ6yTbKkw" bindingExpression="/Root/JobProfile/title/languageCode">
+           <!-- <base:PropertyBag id="GWV8e2ptH0e7V85O13OqlQ">
+												<base:Property id="m1sJ3HzBbUaAoZp9AT7aNA" name="Name" value="" />
+											</base:PropertyBag> -->
+          </uxv:Text>
+         </uxv:StaticText>
+        </uxv:CompoundField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="gWBSzpqWkU2mlLc0P4qWkA">
+        <base:PropertyBag id="XiJzTNJi20aEgN0L4FCeAw">
+         <base:Property id="fPRGo7nNNkq_8CcRcqedtw" name="Name" value="postingDate"/>
+        </base:PropertyBag>
+        <uxv:Label id="O_2A10nyXUqWrCMDq65GNg" textPoolId="1q3MmcI89EOQTEka_m2Ojg">
+         <base:PropertyBag id="U9JqD807AEi5GiQ3ewox0w">
+          <base:Property id="mRPLdw7mVki_kKoznUD4Ow" name="Name" value="postingDate"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:StaticText id="Cm6vMd6NpUmAY_G1QZPg5g" name="postingDate" cctsType="date">
+         <uxv:DateCCTSConfig id="rb1C3Q6HpU6f8G1N62405w"/>
+         <uxv:Text id="SzWwKuwpgku7Apl3oBNL1w" bindingExpression="/Root/JobProfile/postingDate">
+          <!-- <base:PropertyBag id="Dx92dWbT9Uqb3Qc2zAAv4Q">
+											<base:Property id="iBhBwzx280iSLOdShAC2Ug" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Text>
+        </uxv:StaticText>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="rAuvkBBP_EuE1hGM9f4Axg">
+        <base:PropertyBag id="MIrGZl5X0ECtNOg_rmpGmQ">
+         <base:Property id="mwMobeNAR06nOAIH8jVXGg" name="Name" value="domain"/>
+        </base:PropertyBag>
+        <uxv:Label id="WeIJiKucR0Wp0Erojw5lFg" textPoolId="LMCTm52JmUWz76jA5H3xZA">
+         <base:PropertyBag id="pHQAXKiukUi1O0Kj4HzYFw">
+          <base:Property id="wWPS1MF710q7Wi6Zo8bg_Q" name="Name" value="domain"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:StaticText id="v7zUKK_9hUeCKQE5gHPx3w" name="domain" cctsType="code">
+         <uxv:CodeCCTSConfig id="39e4zolNsUaAmdju5sS2yg"/>
+         <uxv:Text id="R1E6grvBP0SFDnYRAHnl5Q" bindingExpression="/Root/JobProfile/domain">
+          <!-- <base:PropertyBag id="lYcwtAelfk6nHnzeDFXVjw">
+											<base:Property id="kHoY5a5jpkOnX6t_QJRjlQ" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Text>
+        </uxv:StaticText>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="csmWvOMSp0KXjZC3gD_Bhg">
+        <base:PropertyBag id="aAWPrDrVokWUWRGv9gLlIg">
+         <base:Property id="02bINbxodESqur4y3FJM7w" name="Name" value="empType"/>
+        </base:PropertyBag>
+        <uxv:Label id="hmSOvKwNnkylVFayTYrM_A" textPoolId="g7dPuo8pf0yODaRLGiXKwQ">
+         <base:PropertyBag id="dOSvpZpex0KzKa56Op8NCw">
+          <base:Property id="WEceOJF9VE6Y6niXpykVAw" name="Name" value="empType"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:StaticText id="saBiZHLYqE2d8PqTAjswbw" name="empType" cctsType="code">
+         <uxv:CodeCCTSConfig id="Sp8ZTC9E1UqhlsAA__wyAA"/>
+         <uxv:Text id="66UmNBP6P0CXk4K8EZI5HA" bindingExpression="/Root/JobProfile/empType">
+          <!-- <base:PropertyBag id="yEEs7aTtIU_9Tl25Mjd5uA">
+											<base:Property id="l9aBH9ZyY0ax22ZuSOMe1w" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Text>
+        </uxv:StaticText>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="CVTNzDbEtEeGJV0SVPDcGA">
+        <base:PropertyBag id="6hYirN7qdkS_iLCIfrX2hQ">
+         <base:Property id="nBtLinhI4kaA9RYmmxmWCw" name="Name" value="hireMgrId"/>
+        </base:PropertyBag>
+        <uxv:Label id="zHfpf37Onk2UfsXFTNFA4A" textPoolId="nA58FKKDcUac781owzWNng">
+         <base:PropertyBag id="eIA7aT1kK0aYjOl2Q7PbZw">
+          <base:Property id="uM7cHEqwykaJStLLa75l_A" name="Name" value="hireMgrId"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:StaticText id="9zEAQ5VkY02Cy6sD0MgmRQ" name="hireMgrId" cctsType="identifier">
+         <uxv:IdentifierCCTSConfig id="erkj1bxy5UWpKfr1gTEDeA" interpretAsInteger="false"/>
+         <uxv:Text id="mqLtwVUNb0qNri82OPPuHw" bindingExpression="/Root/JobProfile/hireMgrId">
+          <!-- <base:PropertyBag id="UrX0ijX3hUmSdEBvFdyLGg">
+											<base:Property id="i2C6jjKfIECRNYZ_9I1BGA" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Text>
+        </uxv:StaticText>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="OuSW6GW2G0yAy7pZUXLPkA">
+        <base:PropertyBag id="A5J5QTV_ZkC4In81lFo68Q">
+         <base:Property id="yxaAsyLXLUOhYYnVqjtjDQ" name="Name" value="ApprovalStatus"/>
+        </base:PropertyBag>
+        <uxv:Label id="faJzraGR_0C3vwZkKc4PEQ" textPoolId="iL9Vcshw20KPKvNAUrlUKA">
+         <base:PropertyBag id="7A5lfhf9sU2NNoT8PwGxsA">
+          <base:Property id="Ft0MTfxuvUSmRbQo6MD32Q" name="Name" value="ApprovalStatus"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:StaticText id="UTZHu1sXzUyTOeicHuZCww" name="ApprovalStatus" cctsType="code">
+         <uxv:CodeCCTSConfig id="FCewGPY970Gq7VCC8r7AOw"/>
+         <uxv:Text id="GY_D8NUDM0iZkqH5JvZPLw" bindingExpression="/Root/JobProfile/ApprovalStatus">
+          <!-- <base:PropertyBag id="4mtiDfzXK0CKAgDWXYzDNw">
+											<base:Property id="PgdM8INkEkK_N5g6VoBtjA" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Text>
+        </uxv:StaticText>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="RHUVYMDMC0GEHMted1m8jw">
+        <base:PropertyBag id="y9D9ZAcVokyW6ZjmFxXchw">
+         <base:Property id="ZHkl0fc67kG_CCJTaAkihA" name="Name" value="hireMgrName"/>
+        </base:PropertyBag>
+        <uxv:Label id="3_nL7ApmfE6G4VDb4zkdgg" textPoolId="fmO8QLQDkk_HggAmQ0PKtQ">
+         <base:PropertyBag id="hbNl81YzeE2mfdCip_14aw">
+          <base:Property id="G639bIHhC0CERD0KiVMaew" name="Name" value="hireMgrName"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:StaticText id="rpNV7TKrs0GfRfmiQ2X2uw" name="hireMgrName" cctsType="name">
+         <uxv:Text id="TmLRQXYj6EK6LeoT4uoNEw" bindingExpression="/Root/JobProfile/hireMgrName">
+          <!-- <base:PropertyBag id="rnU1KA4IxUaiL46kTnNQ9A">
+											<base:Property id="lb65A8PZsUyoeuZw3k_tAg" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Text>
+        </uxv:StaticText>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="HhIevNAJVUyv7AAlrWNDAw">
+        <base:PropertyBag id="kTrYi1NKGUSq4SWtBIytyg">
+         <base:Property id="b3od1K6TZUK4_Sq_qQibHQ" name="Name" value="jobLocation"/>
+        </base:PropertyBag>
+        <uxv:Label id="U4bzb2H7m0WkV8Hzpltj8Q" textPoolId="OJVIqxSbfkOtFlRWMfsIPg">
+         <base:PropertyBag id="QoK_IgC5WUqqYhh4ny50oQ">
+          <base:Property id="uksOVmFCcEKpwkbALsJ6rg" name="Name" value="jobLocation"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:StaticText id="ALaLWMrY1EKBL2ghUSYIxg" name="jobLocation" cctsType="code">
+         <uxv:CodeCCTSConfig id="lhIYeWeAH0K6qOagatQWmQ"/>
+         <uxv:Text id="bkpOMtcSXkSmzGVwvPDNSA" bindingExpression="/Root/JobProfile/jobLocation">
+          <!-- <base:PropertyBag id="6nTiZRUdZ0eu4L98wRjtkg">
+											<base:Property id="Yrq9Pft0VEyDJAqANSzAFQ" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Text>
+        </uxv:StaticText>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="lGifbtYbjkiIcBIy5wJW2g">
+        <base:PropertyBag id="JPAiJWcY8UuhQUzSvCH49g">
+         <base:Property id="ffLNeBkrpkqDoVXxxtmXfg" name="Name" value="jobEndDate"/>
+        </base:PropertyBag>
+        <uxv:Label id="fxVALRvko0msD7AnE10x6A" textPoolId="AHeWA8gGZUupyCSuwFPWtw">
+         <base:PropertyBag id="xNqbVmrkTEOCMv5CldTcsg">
+          <base:Property id="QFjIWaMNukOkYGyDuf2M6A" name="Name" value="jobEndDate"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:StaticText id="tcRFxrpYGkeOg9EK0IbchA" name="jobEndDate" cctsType="date">
+         <uxv:DateCCTSConfig id="fVHowj_Od0OdFG3VapDqGg"/>
+         <uxv:Text id="WOTYftNz70uVG1XR_dKzAA" bindingExpression="/Root/JobProfile/jobEndDate">
+          <!-- <base:PropertyBag id="ZvdXKe07YEOOxuc74UdkqA">
+											<base:Property id="18RjaBdU_EevIMbwRcpPtw" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Text>
+        </uxv:StaticText>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="haFCeamELEmVd2dWaqE31g">
+        <base:PropertyBag id="NB8h4vcE30WRnhFfXkPA5g">
+         <base:Property id="4mksHWpowk6h2f8RFA98dA" name="Name" value="status"/>
+        </base:PropertyBag>
+        <uxv:Label id="ZAdUMYDXHECSA7cmIVdmkA" textPoolId="BEaUNIb4eka2ZHbMVcQJAQ">
+         <base:PropertyBag id="VJ0fW4Elmk_TNCJEVjdPxg">
+          <base:Property id="qROBnE0FG0ia0pdLKUSn4Q" name="Name" value="status"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:StaticText id="i8pCElH7kE6q4J2nVIOZ3A" name="status" cctsType="code">
+         <uxv:CodeCCTSConfig id="kfNpf61HOki9BNCuBuqO8Q"/>
+         <uxv:Text id="5Ej4GE2IgUmKqp3XNpusBg" bindingExpression="/Root/JobProfile/status">
+          <!-- <base:PropertyBag id="YqSQJ6GAYkyd0rSZ2v_Frw">
+											<base:Property id="HFkwKs41aEiAzLNnDe_tMw" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Text>
+        </uxv:StaticText>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="VDAvonb0_US1uW8254wl0Q">
+        <base:PropertyBag id="7vdX3Hb2wkiDzMSNtxcGTA">
+         <base:Property id="UYPVtXQl8ky5IsVwEB7L2A" name="Name" value="creationDate"/>
+        </base:PropertyBag>
+        <uxv:Label id="bp1CCY293UKHnqGbFnV4JA" textPoolId="Jz_Dm4xoKEKrNazPh5Oj3Q">
+         <base:PropertyBag id="Fou1sv7DiUi2AUA3mKoYrA">
+          <base:Property id="9TFaPNP9bU6UqVTCL1WJ2g" name="Name" value="creationDate"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:StaticText id="eDNA8I7n30ivtbAmN9XUwg" name="creationDate" cctsType="date">
+         <uxv:DateCCTSConfig id="8W4k8SfQSUuI8rVFWs4Jjw"/>
+         <uxv:Text id="EFNQ616Abkq5e4Mo5gOSLg" bindingExpression="/Root/JobProfile/creationDate">
+          <!-- <base:PropertyBag id="eiBiVsOGbEq1Rzd0nL9alA">
+											<base:Property id="VX2rwhOvLUqgb680W_Ji8A" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Text>
+        </uxv:StaticText>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="nQRNAgCy6EOg6hmHhiinuw">
+        <base:PropertyBag id="gP3WQC6Ay06GVTyx7D2ZjQ">
+         <base:Property id="VOL9pr6i00Khf82TnlcivA" name="Name" value="createBy"/>
+        </base:PropertyBag>
+        <uxv:Label id="10Z_5Mlpc068sKLoHCiToA" textPoolId="0VVGmVpcKkm0oTyTqaUTtg">
+         <base:PropertyBag id="cUpJUiq_M0G0zFZ9Y9V8ew">
+          <base:Property id="oEvsw0A_ukWmUU7rOxGMbA" name="Name" value="createBy"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:StaticText id="wEkqzAY2wUyizcw8GbtXPw" name="createBy" cctsType="name">
+         <uxv:Text id="gKoyvNYp40erFt4kmGlgRQ" bindingExpression="/Root/JobProfile/createBy">
+          <!-- <base:PropertyBag id="uu58BiicKESViN3Xz_EVxQ">
+											<base:Property id="AW5BALuUEkOnpyZcgWtFng" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Text>
+        </uxv:StaticText>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="B9wvbBQmyUymUx8qOUbigA">
+        <base:PropertyBag id="oson1qStYkCoJiZ6HV4KOw">
+         <base:Property id="PEqXkMz1dUSuTwTiVAtFYQ" name="Name" value="chgdBy"/>
+        </base:PropertyBag>
+        <uxv:Label id="k47QYM7DTkuAL7drpLu84A" textPoolId="YsqYcfePWE_QOekM2jQ0Rg">
+         <base:PropertyBag id="Av__wCnUNESPAtCHDA4rDg">
+          <base:Property id="0FLyfZjGb0qLj95YAuIczw" name="Name" value="chgdBy"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:StaticText id="7w6hkKIKF0CyHooa9I4aAg" name="chgdBy" cctsType="name">
+         <uxv:Text id="TdUM62HhLUqDOYmEu1WjDg" bindingExpression="/Root/JobProfile/chgdBy">
+          <!-- <base:PropertyBag id="ywTOvDOUKkqZ1B1yQKGE_g">
+											<base:Property id="bZgkFvOAAEGIK07MrqUjYg" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Text>
+        </uxv:StaticText>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="AEtAC2KGRUe0ktmw6TixDQ">
+        <base:PropertyBag id="gIONqbo_QU6udNOTc7i3SA">
+         <base:Property id="JrSwBjMeZk_AdtbDoWLh6Q" name="Name" value="chgdOn"/>
+        </base:PropertyBag>
+        <uxv:Label id="Xnf1kxxnWEemFqi4bZdKzQ" textPoolId="ZgZGjabUjUGegMta75BZZA">
+         <base:PropertyBag id="ig1oL3HNQU_s80LO1Fj05A">
+          <base:Property id="Wlh63gltAUSybBkSHxAA1w" name="Name" value="chgdOn"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:StaticText id="ZfRXvJHwqkKdyDEOT2EVuQ" name="chgdOn" cctsType="date">
+         <uxv:DateCCTSConfig id="G0l4G1YVs0y2MMNM2ZxBhA"/>
+         <uxv:Text id="AKWhxoxi40G53C7Uz7U0fA" bindingExpression="/Root/JobProfile/chgdOn">
+          <!-- <base:PropertyBag id="uXZ2VtwoDkeoAyGTZoj8KQ">
+											<base:Property id="aKGDOjP99kSTBAQRRSVgvg" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Text>
+        </uxv:StaticText>
+       </uxv:SectionGroupItem>
+      </uxv:SectionGroup>
+     </uxv:FormPane>
+    </uxv:PaneContainer>
+   </uxv:View>
+  </uxv:ViewContainerRegion>
+  <uxv:ActionForms/>
+  <uxv:ModalDialogs id="CNMSxmJ$yaE5Ua7TD9seZ0"/>
+ </UXView>
+ <TextPool>
+  <base:TextBlock language="EN" masterLanguage="true" currentLanguage="true">
+   <base:TextPoolEntry id="evq7syi0S4UsaFt2N7uuh0" textUuid="6d78ba4a44ee4825b05ae0b8f3c8692b" text="BO Name Overview" textCategory="XTIT"/>
+   <base:TextPoolEntry id="COxBp5NQtKIVlKzRzxVBxG" textUuid="919e4e3f12f14f069a74f34988fb1659" text="Close" textCategory="XBUT"/>
+   <base:TextPoolEntry id="kAT_hs8_MqYL_U_d5Gdpom" textUuid="ce0df2a204704609a26d6859b1987bfc" text="View All" textCategory="XBUT"/>
+   <base:TextPoolEntry id="NeGKRVkFhKkgxup7V$gKXG" textUuid="RIJ71VyRE4cdUmRi5CzIBG" text="ExIdr" textCategory="XFLD"/>
+   <base:TextPoolEntry id="bKcb_uDzfKw$$yWqtCqrn0" textUuid="vEgp7JG82qwNsE$DwbNFvG" text="ExIdr1" textCategory="XFLD"/>
+   <base:TextPoolEntry id="g3k8_gKKoKQzc2_tAwoMp0" textUuid="DzhqYSkLX46dJFMcjMxGNm" text="ExIdr2" textCategory="XFLD"/>
+   <base:TextPoolEntry id="Cqg63PG7jq_eb6Vrc5mDpW" textUuid="OK0Z$bBEq4_AJE6arh5PC0" text="FieldGroup" textCategory="XGRP"/>
+   <base:TextPoolEntry id="qZFvNQgBO0u_AxbWW9bRTg" textUuid="PGwaH4Z9T0ejID2zYQOVRQ" text="StatusSchemaName" textCategory="XFLD"/>
+   <base:TextPoolEntry id="ftflNB4Ei0eraOGDbpN_EA" textUuid="5OMwg4_atUGNPJQrAdrcGg" text="Job ID"/>
+   <base:TextPoolEntry id="UhWteupIN02TmDAp5bfxiA" textUuid="keBoAbyFGEWtRB5XmkzHTw" text="Title"/>
+   <base:TextPoolEntry id="ZjayGwgg106NaruKdXdPGg" textUuid="g3GM9MgGAE6PNR8tXQ6h3A" text="Title"/>
+   <base:TextPoolEntry id="4XzelVi7FESn9nD3kkmBvQ" textUuid="7XMA_hvSBkGJNg_JkM2pfg" text="languageCode" textCategory="XFLD"/>
+   <base:TextPoolEntry id="EmE3Prwja02bmFflsiD7dA" textUuid="1q3MmcI89EOQTEka_m2Ojg" text="Posting Date"/>
+   <base:TextPoolEntry id="oVbP5P5J6EyZaIdtxAQE5Q" textUuid="LMCTm52JmUWz76jA5H3xZA" text="Work Area"/>
+   <base:TextPoolEntry id="fowmUriIEkGAD3xANXWaOg" textUuid="g7dPuo8pf0yODaRLGiXKwQ" text="Employment Type"/>
+   <base:TextPoolEntry id="A1qTwHMBfEiA4E0qXve_pQ" textUuid="nA58FKKDcUac781owzWNng" text="Hiring Manager Id"/>
+   <base:TextPoolEntry id="sdwit9VGdkGP1lGUi2cIdg" textUuid="iL9Vcshw20KPKvNAUrlUKA" text="ApprovalStatus" textCategory="XFLD"/>
+   <base:TextPoolEntry id="vfnfl0o6RkK3CvK_jyyvIA" textUuid="fmO8QLQDkk_HggAmQ0PKtQ" text="Hiring Manager"/>
+   <base:TextPoolEntry id="gWNA5PzYa0qnqLlzwVAfAw" textUuid="OJVIqxSbfkOtFlRWMfsIPg" text="Country"/>
+   <base:TextPoolEntry id="O9pUIRGHeUO3B7KMIGDg9g" textUuid="AHeWA8gGZUupyCSuwFPWtw" text="End Date"/>
+   <base:TextPoolEntry id="rC3Jrmn4gEyj_MJ5hnPKOQ" textUuid="BEaUNIb4eka2ZHbMVcQJAQ" text="Status"/>
+   <base:TextPoolEntry id="KiSETdIYo0mh3iNT2dtqWQ" textUuid="Jz_Dm4xoKEKrNazPh5Oj3Q" text="Create On"/>
+   <base:TextPoolEntry id="4LSrZy0DnkC_DDVWqNuzEg" textUuid="0VVGmVpcKkm0oTyTqaUTtg" text="Create By"/>
+   <base:TextPoolEntry id="NiPrrNEyF060LlsZIkA7bw" textUuid="YsqYcfePWE_QOekM2jQ0Rg" text="Changed by"/>
+   <base:TextPoolEntry id="5QvWv36jtUyl__gc9rvylQ" textUuid="ZgZGjabUjUGegMta75BZZA" text="Changed On"/>
+  </base:TextBlock>
+ </TextPool>
+</UXComponent>

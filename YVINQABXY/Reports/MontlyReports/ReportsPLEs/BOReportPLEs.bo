@@ -1,0 +1,46 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FinancialAccounting.Global;
+
+[WithAdministrativeData] businessobject BOReportPLEs raises msg {
+
+		message msg text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+		
+		[AlternativeKey][Label("ID")]					element ID						: ID;
+		[Label("Company")]								element CompanyID				: OrganisationalCentreID;		
+		[Label("Description")]							element Description				: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Set of Book")]							element SetOfBookID				: SetOfBooksID;
+		[Label("Set of Book Desc")]						element SetOfBookDesc			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Chart Of Accounts")]					element ChartOfAccountsCode		: ChartOfAccountsCode;
+		[Label("ID Configuration Range of Accounts")]	element IDConfigurationAccounts	: ID;
+		[Label("Date Execution Initial")]				element DateInitial				: Date; 
+		[Label("Date Execution End")]					element DateEnd					: Date;
+		[Label("Type Of Report")]						element TypeReport				: CLReportPLEsCode;
+		[Label("Generado")]								element Generado				: Indicator;
+		[Label("Cuenta")]								element Cuenta					: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Excluir")]								element Excluir					: Indicator;
+
+		association ToCompany	to Company;
+		[DependentObject(AttachmentFolder)] node ReportsAttachments;
+
+		action PExecute;
+		action PLE1;//LIBRO CAJA Y BANCOS - DETALLE DE LOS MOVIMIENTOS DEL EFECTIVO
+		action PLE2;//LIBRO CAJA Y BANCOS - DETALLE DE LOS MOVIMIENTOS DE LA CUENTA CORRIENTE
+		action PLE3;//LIBRO DIARIO
+		action PLE4;//LIBRO DIARIO - DETALLE DEL PLAN CONTABLE UTILIZADO
+		action PLE5;//LIBRO MAYOR
+		action PLES6;//CUENTAS 12 y 13
+		action PLES7;//CUENTAS 14
+		action PLES8;//CUENTAS 16 y 17
+		action PLES9;//Cuentas 19
+		action PLES10;//Cuentas 42
+		action PLES11;//Cuentas 46
+		action PLES12;//Cuentas 37 y 49
+		action PLES13;//Cuentas 30
+		action PLES14;//Cuentas 20 y 21
+		action PLES15;//Cuentas 34
+		action PLES16;//Cuentas 50
+		action PLES17;//Cuentas 10
+		action PLES18;//Cuentas 50-2
+		action PlesPrueba;
+}

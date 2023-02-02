@@ -1,0 +1,30 @@
+﻿import AP.Common.GDT;
+import AP.FO.BusinessPartner.Global;
+
+[Extension] businessobject AP.FO.BusinessPartner.Global:Supplier {
+	
+   	node AddressInformation {
+			
+   	} 
+    
+   	node BankDetails {
+		[Label("(OLD) Moneda de Cuenta")]			element zMonedaCuenta			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("(OLD) Account Type")]				element zAccountType			: CLAccountTypeBankCode;
+		[Label("(OLD) Moneda Cuenta")]			element zcMonedaCuenta			: CLCurrencyCodeCode;
+   	} 
+    
+   	node Common {
+		[Scenario(PES_Supplier,PESSupplierV1)][Label("(OLD) Supplier Tax Status Code Pe")]			element zConditionSupplier				: ID;
+		[Scenario(PES_Supplier,PESSupplierV1)][Label("(OLD) Withholding Exoneration")]				element zExonerationSupplier			: Indicator; 
+		[Scenario(PESSupplierV1)][Label("(OLD) Supplier Tax Status Description Pe")]	element zConditionSupplierDesc			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Scenario(PESSupplierV1)][Label("(OLD) Date of birth")]						element zbirthdate						: Date;  		
+			
+		[Scenario(PES_Supplier,PESSupplierV1)][Label("(OLD) Name")]									element zNameSupplier					: LANGUAGEINDEPENDENT_EXTENDED_Text; 
+		[Scenario(PES_Supplier,PESSupplierV1)][Label("(OLD) Mother's Last Name")]					element zMotherLastNameSupplier			: LANGUAGEINDEPENDENT_EXTENDED_Text; 
+		[Scenario(PES_Supplier,PESSupplierV1)][Label("(OLD) Fathet's Last Name")]					element zFatherLastNameSupplier			: LANGUAGEINDEPENDENT_EXTENDED_Text; 
+		[Scenario(PESSupplierV1)][Label("(OLD) Ubigeo")]								element zUbigeoSupl						: LANGUAGEINDEPENDENT_EXTENDED_Text; 
+		[Scenario(PESSupplierV1)][Label("(OLD) Retention type")]						element zRetentionType					: CLRetentionTypeCode; 
+   	} 
+     
+  
+}

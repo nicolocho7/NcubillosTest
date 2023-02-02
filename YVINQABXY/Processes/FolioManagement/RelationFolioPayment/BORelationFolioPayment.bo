@@ -1,0 +1,38 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+
+
+
+businessobject BORelationFolioPayment raises msj{
+
+		message msj text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[AlternativeKey][Label("ID")]element ID:ID;
+		[Label("UUID Payment")]element UUIDPayment: UUID;
+		[Label("ID Payment")]element IDPayment: BusinessTransactionDocumentID;
+		[Label("ID Payment Compensation")] element IDPaymentCompensation: ObjectNodeFormattedID;
+		[Label("ID Folio")]element IDFolio: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Year")]element Year: LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+
+
+		[Label("first additional information")]element FirstAdditional: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Second additional information")]element SecondAdditional: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("third additional information")]element thirdAdditional: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("fourth additional information")]element fourthAdditional: LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+		[Label("observations")]element observations: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Processed")]element processed: Indicator;
+		element State : Indicator;
+
+
+		node Actions[0,n]raises msgActions{
+			message msgActions text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("ID_Fact")]			element ID_Fact			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("ID Refrencia")]		element Oedparner	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		}
+
+		[DependentObject(AttachmentFolder)] node ReportsAttachments;
+		action ConsumoWS;
+		action ConsumoWS_Innova;
+		action Del;
+}

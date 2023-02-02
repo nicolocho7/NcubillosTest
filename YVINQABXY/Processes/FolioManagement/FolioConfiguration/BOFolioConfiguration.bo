@@ -1,0 +1,22 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FO.Product.Global;
+import AP.FO.ProductDataMaintenance.Global;
+
+[WithAdministrativeData] businessobject BOFolioConfiguration raises msj {
+
+    message msj text "&":LANGUAGEINDEPENDENT_EXTENDED_Text;
+	
+	[AlternativeKey][Label("ID")]element ID:ID;
+	[Label("Company")]element CompanyID:ID;
+	association ToCompany to Company;
+	[Label("Description")] element DescriptionConf:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Use Section 1?")] element UseSec1:Indicator;
+	[Label("Use Section 2?")] element UseSec2:Indicator;
+	[Label("Section 1 Size")] element SectionSize1:NumberValue;
+	[Label("Section 2 Size")] element SectionSize2:NumberValue;
+	[Label("Consecutive")] element Consecutive:NumberValue;
+	[Label("Used")] element Used:Indicator;
+	[Label("Registration date")] element RegistrationDate:Date;
+	element IsConsistent : Indicator;
+}

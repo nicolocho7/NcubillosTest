@@ -1,0 +1,49 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: WithholdingPayCust
+		Node: Root
+		Event: AfterModify 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script if:
+		- the value of any field in the node in which this script is contained is modified.
+		- the node itself is modified by another business object within the same solution.
+*/
+
+import ABSL;
+import AP.FO.MOM.Global;
+import AP.FO.BusinessPartner.Global;
+
+if(!this.CompanyID.IsInitial()){
+
+	var qCompany = Company.QueryByIDAndName;
+	var pCompany = qCompany.CreateSelectionParams();
+
+	pCompany.Add(qCompany.ID,"I","EQ",this.CompanyID);
+	var insCompany = qCompany.Execute(pCompany).GetFirst();
+
+	if(insCompany.IsSet()){
+		this.ToCompany = insCompany;
+	}else{
+		this.ToCompany.Reset();
+	}
+}
+
+
+if(!this.CustomerID.IsInitial()){
+	var querySupplier = Customer.QueryByIdentification;
+	var selectionParams = querySupplier.CreateSelectionParams();
+	selectionParams.Add(querySupplier.InternalID, "I", "EQ", this.CustomerID);
+	// Result
+	var resultData = querySupplier.Execute(selectionParams).GetFirst();
+	if(resultData.IsSet()){
+		if(resultData.AddressSnapshot.IsSet()){
+			if(resultData.AddressSnapshot.Name.Count() > 0){
+				this.CustomerDesc = resultData.AddressSnapshot.Name.GetFirst().Name.FirstLineName;
+			}
+		}
+	}
+}

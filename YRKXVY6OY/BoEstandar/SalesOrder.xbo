@@ -1,0 +1,18 @@
+﻿import AP.Common.GDT;
+import AP.CRM.Global;
+
+[Extension] businessobject AP.CRM.Global:SalesOrder {
+ 
+        // You must activate this business object before you can access the extension fields
+        // or messages in script files, forms, and screens.
+
+		element ExpressDelivery: Indicator;
+    
+   		node Item {
+   	    } 
+    
+   		node Party {
+   	    } 
+     
+  
+}

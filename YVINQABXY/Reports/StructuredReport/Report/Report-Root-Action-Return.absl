@@ -1,0 +1,9 @@
+﻿//import ABSL;
+//this.Report.Delete();
+//this.ReportResponse.Delete();
+//
+//if(this.Attachment.DocumentList.Count() > 0){
+	//this.Attachment.DocumentList.Delete();
+//}
+//
+//this.Status = CLStatusReportCode.CO_1;

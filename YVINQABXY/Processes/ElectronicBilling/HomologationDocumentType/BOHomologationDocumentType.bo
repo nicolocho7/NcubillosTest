@@ -1,0 +1,28 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FO.Product.Global;
+import AP.FO.ProductDataMaintenance.Global;
+
+businessobject BOHomologationDocumentType raises msg  {
+
+
+message msg text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+      [AlternativeKey] element ID:ID;
+		element UUID:UUID;
+		[Label("Company ID")]				element CompanyID				: ID;
+		association ToCompany to Company;
+		[Label("Document Type SAP")]		element DocumentTypeSAP					: ID;		
+		[Label("Description Document")]	element DescriptionTypeSupplier : LANGUAGEINDEPENDENT_EXTENDED_Text;		
+		[Label("Document Type Technological Supplier")]			element DocumentTypeSup			: ID;
+		[Label("Document Type Sunat")]		element DocumentTypeSunat		: ID;
+	    [Label("Technological Supplier")]		element DescriptionSupplier		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("no usar")]					element supplier				: ID;// no usar
+		[Label("no usar")]			element TypeSupplierID			: ID;
+		[Label("no usar")]		element companyDesc				: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("No usar")]					element TypeSap					: CLDocumentTypeSAPCode ;
+		
+        element inconsistent : Indicator;
+
+
+}

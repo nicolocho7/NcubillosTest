@@ -1,0 +1,32 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FinancialAccounting.Global;
+
+[DeploymentUnit(Financials)][WithAdministrativeData] businessobject BOExecutionFlujoEfectivo raises msj {
+
+	message msj text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+    [Label("ID")]									element Correlativo	: ID;
+	[Label("Estructura ID")]						element ID			: ID;
+	[Label("From")]									element DateFrom:Date;
+	[Label("To")]									element DateTo:Date;
+	[Label("Company")]								element CompanyID	:OrganisationalCentreID;
+			association ToCompany			to Company;
+	[Label("RUC")]									element CompanyRuc	:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Set Of Books")]							element SetOfBooksID:SetOfBooksID;
+			association ToSetofBooks to SetOfBooks  using ID;
+	[Label("Report Name")]			element ReportName: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Type Of Report")]		element TypeReport	: CLFlujoEfectivoReportCode;
+
+	action aExecute;
+
+	action MeptodoDirecto;
+	action MeptodoIndirecto;
+	
+	node Details [0,n] raises msjDetails {
+		message msjDetails text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("EF Code")]			element EFCode: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Amount")]			element Value: Amount;
+	}
+	[DependentObject(AttachmentFolder)] node ReportsAttachments;
+
+}

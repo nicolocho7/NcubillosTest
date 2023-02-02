@@ -1,0 +1,44 @@
+import AP.Common.GDT;
+import AP.FO.BusinessPartner.Global;
+
+[Extension] businessobject AP.FO.BusinessPartner.Global:Customer {
+ 
+        // You must activate this business object before you can access the extension fields
+        // or messages in script files, forms, and screens.
+
+    
+   		node AddressInformation {
+   	    } 
+    
+   		node BankDetails {
+   	    } 
+    
+   		node Common {
+			[Scenario(PES_Customer)][Label("(OLD) PE Customer Tax Status Code ")]		element zConditionCustomer:ID;
+			[Scenario(PES_Customer)][Label("(OLD) PE Customer Tax Status Description")]	element zConditionCustomerDesc:LANGUAGEINDEPENDENT_EXTENDED_Text;
+   			[Scenario(PES_Customer)][Label("(OLD) PE Withholding Exoneration")]			element zExonerationCustomer:Indicator;
+
+
+			//Nuevos Campos
+			[Label("(OLD) Provincia")]				element		zProvincia					: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("(OLD) Distrito")]				element		zDistrito					: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("(OLD) Urbanizacion")]			element		zUrbanizacion				: LANGUAGEINDEPENDENT_EXTENDED_Text;
+   			
+			
+			//Para Ubigeo
+			[Scenario(PES_Customer)][Label("(OLD) Departamento")]		element		zDepartamentoSDK	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Scenario(PES_Customer)][Label("(OLD) Provincia")]			element		zProvinciaSDK		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Scenario(PES_Customer)][Label("(OLD) Distrito")]			element		zDistritoSDK		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Scenario(PES_Customer)][Label("(OLD) Ubigeo")]				element		zUbigeoSDK			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Scenario(PES_Customer)][Label("(OLD) C�digo de impuesto")] element		ZCodigoImpuestoCustomer	:	CLCodigoImpuestoCode;
+
+			//extra Names
+			[Scenario(PES_Customer)][Label("(OLD) Customer Name PE")]		 element zCustomerName		:LongText;
+			
+		} 
+    
+   		node CurrentEmployeeResponsible {
+   	    } 
+     
+  
+}

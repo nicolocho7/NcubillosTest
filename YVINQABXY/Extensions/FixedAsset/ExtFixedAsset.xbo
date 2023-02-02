@@ -1,0 +1,25 @@
+﻿import AP.Common.GDT;
+import AP.FinancialAccounting.Global;
+
+[Extension] businessobject AP.FinancialAccounting.Global:FixedAsset {
+ 
+       [Scenario(PES_FixedAsset)] [Label("Marca del Activo Fijo")]						element zMarcaActivo	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	   [Scenario(PES_FixedAsset)] [Label("Modelo del Activo Fijo")]						element zModeloActivo	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	   [Scenario(PES_FixedAsset)] [Label("Numero de serie y/o placa del Activo Fijo")]	element zNumeroActivo	: LANGUAGEINDEPENDENT_EXTENDED_Text;	
+
+	   [Scenario(PES_FixedAsset)] [Label("Número del contrato de arrendamiento financiero del Activo Fijo")]						element zNumeroContrato	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	   [Scenario(PES_FixedAsset)] [Label("Fecha del contrato de arrendamiento financiero del Activo Fijo")]						element ZFechaContrato	: Date;
+	   [Scenario(PES_FixedAsset)] [Label("Fecha de inicio del arrendamiento financiero del Activo Fijo")]	element zFechaInicio	: Date;	
+	   [Scenario(PES_FixedAsset)] [Label("Número de cuotas pactadas")]						element zNumeroCuotas : NumberID;
+	   [Scenario(PES_FixedAsset)] [Label("Monto total del contrato de arrendamiento financiero del Activo Fijo")]	element zMontoContrato	: Amount;
+	   [Scenario(PES_FixedAsset)] [Label("Monto total del contrato de arrendamiento financiero del Activo Fijo")]	element zMontoContratoText	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	   [Scenario(PES_FixedAsset)] [Label("Codigo OSCE")]	element zCodigoOSCE	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	   
+
+	   
+
+   		node AssociatedIndividualMaterial {
+   	    } 
+     
+  
+}

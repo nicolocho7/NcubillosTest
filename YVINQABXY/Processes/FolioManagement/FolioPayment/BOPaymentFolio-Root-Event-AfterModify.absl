@@ -1,0 +1,40 @@
+﻿import AP.FO.MOM.Global;
+import AP.FO.Product.Global;
+import AP.FO.ProductDataMaintenance.Global;
+import AP.FO.BusinessPartner.Global;
+
+if (!this.CompanyID.IsInitial())
+{
+	var queryCompany = Company.QueryByIDAndName;
+	var paramcompany = queryCompany.CreateSelectionParams();
+	paramcompany.Add(queryCompany.ID, "I", "EQ", this.CompanyID.RemoveLeadingZeros());
+	var resultCompany = queryCompany.Execute(paramcompany).GetFirst();
+	if (resultCompany.IsSet())
+	{
+		this.ToCompany = resultCompany;
+	}
+	else
+	{
+		this.ToCompany.Reset();
+	}
+}
+
+
+//if(!this.SupplierID.IsInitial()){
+	//var QerySupplier = Supplier.QueryByIdentification;
+	//var ParamsSupplier = QerySupplier.CreateSelectionParams();
+	//ParamsSupplier.Add(QerySupplier.InternalID, "I","EQ",this.SupplierID);
+	//var ResultSupplier = QerySupplier.Execute(ParamsSupplier).GetFirst();
+	//if(ResultSupplier.IsSet()){
+		//var DataName = ResultSupplier.AddressInformation;
+		//if(DataName.Count() > 0){
+			//var Name = DataName.GetFirst().AddressSnapshot.Name;
+			//if(Name.Count() > 0){
+				//var NameSuppier = Name.GetFirst().Name;
+				//if(!NameSuppier.IsInitial()){
+					//this.NameSupplier = NameSuppier.FirstLineName;
+				//}
+			//}
+		//}
+	//}
+//}

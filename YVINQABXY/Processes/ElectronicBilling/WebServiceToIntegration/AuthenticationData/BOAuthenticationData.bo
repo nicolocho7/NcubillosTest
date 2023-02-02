@@ -1,0 +1,19 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+[WithAdministrativeData] businessobject BOAuthenticationData raises msg {
+
+	message msg text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("ID")]					element ID						: ID;       
+	[Label("User")]				element User					: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Date")]				element Date					: Date;
+	[Label("Company")]				element CompanyID				: OrganisationalCentreID;
+	[Label("Company Des")]			element CompanyDesc				: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Provider Integration")]element ProviderIntegration		: CL_TypeIntegrationCode;
+		
+	node Authenticated [0,n] raises msgAuthenticated{
+		message msgAuthenticated text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("ID")]					element ID						: ID;
+		[Label("Description")]			element Description				: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	} 	 
+	 
+}

@@ -1,0 +1,23 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FinancialAccounting.Global;
+
+	businessobject BOLibroRetencion raises msj{
+
+		message msj text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+        
+		[Label("ID")][AlternativeKey]	element ID	: ID;
+		element UUID :UUID;
+		[Label("Company")]				element CompanyID	: OrganisationalCentreID;
+		association ToCompany	to Company;
+		[Label("Date Execution Initial")]		element EDateInitial		: Date;
+		[Label("Date Execution End")]		element EDateEnd		: Date;
+		[Label("Company")]			element Company		: ID;
+		association  Companyto to BOTableCompany;
+
+		[DependentObject(AttachmentFolder)] node ReportsAttachments;
+
+		action Execute;
+
+
+}

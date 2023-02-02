@@ -1,0 +1,24 @@
+﻿import AP.Common.GDT;
+import AP.CustomerInvoicing.Global;
+
+[Extension] businessobject AP.CustomerInvoicing.Global:CustomerInvoiceRequest  {
+ 
+        // You must activate this business object before you can access the extension fields
+        // or messages in script files, forms, and screens.
+
+		
+ 
+		node CustomerInvoiceRequest raises msg {
+		
+			message msg text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("LinkendPark")] element LinkendToPark : ID;
+			[Label("ParkDescription")] element ParkDescription : ShortText;
+			 
+   			node Item {
+				[Label("SpaceId")] element SpaceId : Indicator;			
+   			} 
+
+     } 
+     
+  
+}

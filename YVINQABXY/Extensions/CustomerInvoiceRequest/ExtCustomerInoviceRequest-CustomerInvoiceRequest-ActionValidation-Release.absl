@@ -1,0 +1,34 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: CustomerInvoiceRequest
+		Node: CustomerInvoiceRequest
+		Validation: Action 
+
+		Script file signature
+		----------------------------
+		Returns: Boolean
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - This validation script can have a return value of either true or false, which determines whether the action implemented by SAP is executed or not.
+		All fields in this business object are read-only and cannot be changed.
+*/
+
+import ABSL;
+var QueryConfiguration = BOConfigurationSolution.QueryByElements;
+var ExecuteQueryConfiguration = QueryConfiguration.Execute();
+var Validation = false;
+if(ExecuteQueryConfiguration.Count()>0){
+	if(ExecuteQueryConfiguration.GetFirst().IsSet()){
+		if(ExecuteQueryConfiguration.GetFirst().Status== CLStatusSolutionCode.CO_01){
+			Validation = true;
+		}
+	}
+}
+if(ExecuteQueryConfiguration.Count()<=0 || Validation == true){
+	raise mstext.Create("E","ActionRelease :  CIR");
+}
+	
+return true;

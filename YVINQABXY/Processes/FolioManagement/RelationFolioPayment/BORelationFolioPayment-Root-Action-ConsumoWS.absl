@@ -1,0 +1,500 @@
+﻿import ABSL;
+import AP.Payment.Global;
+import AP.FO.TaxArrangement.Global;
+import AP.FO.BusinessPartner.Global;
+import AP.FO.MOM.Global;
+
+this.State = true;
+//Variables para el emisor
+var IDEmisor;
+var NumeroDocumentoEmisor;//ya
+var tipoDocumentoEmisor = "6";//ya 
+var RazonSocialEmisor;//ya
+var UbigeoEmisor;//ya
+var DireccionEmisor;//ya
+var UrbanizacionEmisor;//ya
+var ProvinciaEmisor;//ya
+var DepartamentoEmisor;//ya
+var DistritoEmisor;//ya
+var CodigoPaisEm;//ya
+
+//Fin Variables Emisor;
+//variables Proveedor
+var IDProveedor;
+var NumeroDocumentoProveedor;
+var TipoDocumentoProveedor;
+var RazonSocialProveedor;
+var UbigeoProveedor;
+var DireccionProveedor;
+var UrbanizacionProveedor = "-";
+var ProvinciaProveedor;
+var DepartamentoProveedor;
+var DistritoProveedor;
+var CodigoPaisProveedor;
+//Fin Variables Proveedor
+//inicio de variables para retenciones
+var DataRetencion;
+var NumeroDocumentoRetencion;
+var FechaEmisionRetencion;
+var RegimenRetencion;
+var TasaRetencion;
+var ObservacionesRetenciones;
+var ImporteTotalRetencion;
+var MonedaImporteRetencion;
+var ImportPagoRetencion;
+var MonedaImportePagadoRetencion;
+var MontoLetrasRetencion;
+//Fin Variables Retenciones
+//inicio de variables para la parte de cada comprobante o fact individual
+
+//fin declaracion de las variables para Comprobantes
+
+
+//Variables principales para los consumos
+ if(!this.UUIDPayment.content.IsInitial()){
+	var ResultQryPayment = PaymentOrder.Retrieve(this.UUIDPayment);
+	if(ResultQryPayment.IsSet()){
+		this.IDPayment.content = ResultQryPayment.ID.content;
+		this.IDPaymentCompensation =ResultQryPayment.ID.content;
+		IDEmisor = ResultQryPayment.CompanyID;
+		IDProveedor = ResultQryPayment.BusinessPartnerID;
+		DataRetencion = ResultQryPayment;
+
+	}
+}
+//Fin asignacion variables consumos
+//-----------------------------------------------------------------
+//Asignacion de Variables Emisor
+if(!IDEmisor.IsInitial()){
+	var queryCompany = CompanyTaxArrangement.QueryByElements;
+	var selectionParamsCompany = queryCompany.CreateSelectionParams();
+		selectionParamsCompany.Add(queryCompany.CompanyID,"I","EQ", IDEmisor);
+	var resultDataCompany = queryCompany.Execute(selectionParamsCompany).GetFirst();
+	if(resultDataCompany.IsSet()){
+		if(resultDataCompany.TaxIdentificationNumber.Count() > 0){
+			var RucData = 	resultDataCompany.TaxIdentificationNumber.GetFirst();
+			if(RucData.IsSet()){
+				if(!RucData.PartyTaxID.IsInitial()){
+					NumeroDocumentoEmisor = RucData.PartyTaxID.content;
+				}
+			}
+		}
+		if(resultDataCompany.Company.IsSet()){
+			var DataRazon = resultDataCompany.Company;
+			if(DataRazon.CurrentName.Count()>0){
+				var DataRazonName = DataRazon.CurrentName.GetFirst();
+				if(!DataRazonName.Name.IsInitial()){
+					RazonSocialEmisor = DataRazonName.Name.content;
+				}
+			}
+			if(DataRazon.AddressSnapshot.IsSet()){
+				var DataAdress = DataRazon.AddressSnapshot;
+				if(DataAdress.FormattedAddress.Count() > 0){
+					var DataPostal = DataAdress.FormattedAddress.GetFirst();
+					if(!DataPostal.FormattedPostalAddress.IsInitial()){
+						var DataDirec = DataPostal.FormattedPostalAddress;
+						
+						if(!DataDirec.FirstLineDescription.IsInitial()){
+							DireccionEmisor = DataDirec.FirstLineDescription;
+							
+						}
+					}
+				}
+				if(DataAdress.PostalAddress.Count() > 0){
+					var CountCountry = DataAdress.PostalAddress.GetFirst();
+					if(!CountCountry.CountryCode.IsInitial()){
+						CodigoPaisEm = CountCountry.CountryCode;
+					}
+				}
+			}
+		}
+	}
+	var QryCompanyGeo = BOCompanyGeoLoca.QueryByElements;
+	var ParamsCompanyGeo = QryCompanyGeo.CreateSelectionParams();
+		ParamsCompanyGeo.Add(QryCompanyGeo.CompanyID,"I","EQ",IDEmisor);
+	var ResultCompanyGeo = QryCompanyGeo.Execute(ParamsCompanyGeo).GetFirst();
+	if(ResultCompanyGeo.IsSet()){
+		UbigeoEmisor = ResultCompanyGeo.zUbigeo;
+		if(ResultCompanyGeo.ToDepartament.IsSet()){
+			var DataDepartament = ResultCompanyGeo.ToDepartament;
+			DepartamentoEmisor = DataDepartament.DepartamentDescription; 
+		}
+		if(ResultCompanyGeo.toProvince.IsSet()){
+			var DataProvince = ResultCompanyGeo.toProvince;
+			ProvinciaEmisor = DataProvince.zProvinciaDescrip;
+		}
+		UrbanizacionEmisor = ResultCompanyGeo.zUrbanizacion;
+		if(ResultCompanyGeo.toDistrict.IsSet()){
+			var DataDistrito = ResultCompanyGeo.toDistrict;
+			DistritoEmisor = DataDistrito.zDistritoDescrip;
+		}
+	}
+ }
+ //Fin de Asignacion variables de Emisor
+//-------------------------------------------------------------------------------------
+ //Inicio de Asignacion de variables  Proveedor
+if(!IDProveedor.IsInitial()){
+	var QuerySupplier = Supplier.QueryByIdentification;
+	var SelectionParamsSupplier = QuerySupplier.CreateSelectionParams();
+		SelectionParamsSupplier.Add(QuerySupplier.InternalID, "I", "EQ", IDProveedor);
+	var ResultDataSupplier = QuerySupplier.Execute(SelectionParamsSupplier).GetFirst();
+	if(ResultDataSupplier.IsSet()){
+		if(ResultDataSupplier.TaxNumber.Count() > 0){
+			var DataNumber = ResultDataSupplier.TaxNumber.GetFirst();
+			if(!DataNumber.PartyTaxID.IsInitial()){
+				NumeroDocumentoProveedor = DataNumber.PartyTaxID.content;
+			}
+			if(!DataNumber.TaxIdentificationNumberTypeCode.IsInitial()){
+				TipoDocumentoProveedor = DataNumber.TaxIdentificationNumberTypeCode.content;
+				if(TipoDocumentoProveedor == "2"){
+					TipoDocumentoProveedor = "1";
+				}else{
+					if(TipoDocumentoProveedor == "5"){
+						TipoDocumentoProveedor = "4";
+					}else{
+						if(TipoDocumentoProveedor == "1"){
+							TipoDocumentoProveedor = "6";
+						}else{
+							if(TipoDocumentoProveedor == "6"){
+								TipoDocumentoProveedor = "0";
+							}else{
+								TipoDocumentoProveedor = "7";
+							}				
+						}
+					}
+				}	
+			}
+		}
+		if(ResultDataSupplier.CurrentCommon.IsSet()){
+			var RazonSocial = ResultDataSupplier.CurrentCommon;
+			if(!RazonSocial.BusinessPartnerFormattedName.IsInitial()){
+				RazonSocialProveedor = RazonSocial.BusinessPartnerFormattedName;
+			}
+			UbigeoProveedor = RazonSocial.zUbigeoDirecM;
+			ProvinciaProveedor = RazonSocial.zProvinceDesDirecM;
+			DepartamentoProveedor = RazonSocial.zDepartamentDesDirecM;
+			DistritoProveedor = RazonSocial.zDistrictDesDirecM;
+		}
+		if(ResultDataSupplier.AddressSnapshot.IsSet()){
+			var Direccion = ResultDataSupplier.AddressSnapshot;
+			if(Direccion.FormattedAddress.Count()> 0 ){
+				var DireccionFirst = Direccion.FormattedAddress.GetFirst();
+				if(!DireccionFirst.FormattedPostalAddressDescription.IsInitial()){
+					DireccionProveedor = DireccionFirst.FormattedPostalAddressDescription;						
+
+				}
+			}
+			if(Direccion.PostalAddress.Count()>0){
+				var DireccionPostal = Direccion.PostalAddress.GetFirst();
+				if(!DireccionPostal.RegionCode.IsInitial()){
+					ProvinciaEmisor = DireccionPostal.RegionCode.content;
+					CodigoPaisProveedor = DireccionPostal.CountryCode;
+				}
+			}
+		}
+	}
+}
+//fin Asignacion Variables Proveedor
+//--------------------------------------------------------------------------------------
+//inicio de variables para retenciones
+if(DataRetencion.IsSet()){
+	NumeroDocumentoRetencion = this.IDFolio;
+	var Fecha = DataRetencion.AccountingTransactionDate;
+	FechaEmisionRetencion = Fecha.GetYear() + "-" + Fecha.GetMonth() + "-" + Fecha.GetDay();
+	RegimenRetencion = "01";
+	TasaRetencion = "3.00";
+	ObservacionesRetenciones = "";
+	if(DataRetencion.PaymentExplanation.IsSet()){
+		var ItemsPayment = DataRetencion.PaymentExplanation;
+		if(ItemsPayment.Item.Count() > 0){
+			var Itmes = ItemsPayment.Item;
+			var DataItems;
+			var SumRete = 0;
+			var TypeAmount;
+			foreach(DataItems in Itmes){
+				if(!DataItems.WithholdingTaxAmount.IsInitial()){
+					SumRete = SumRete + DataItems.WithholdingTaxAmount.content;
+					TypeAmount = DataItems.WithholdingTaxAmount.currencyCode;
+				}
+			}
+			ImporteTotalRetencion = SumRete;
+			MonedaImporteRetencion = TypeAmount;
+			if(!DataRetencion.PaymentAmount.IsInitial()){
+				ImportPagoRetencion = DataRetencion.PaymentAmount.content;
+				MonedaImportePagadoRetencion = DataRetencion.PaymentAmount.currencyCode;
+				MontoLetrasRetencion = DataRetencion.PaymentAmount.SpellAmount(Context.GetCurrentUserLanguage());
+			}
+		}
+	}
+}
+//Fin de variables para retenciones
+//-----------------------------------------------------------------------------------------
+//inicio variables de Consumo WS
+var requestGeneral : Library::EWSIRetencionPago.envioCompRetencion.Request; //request structure
+var requestGeneralComprobante : Library::EWSIRetencionPago.envioCompRetencion.Request.comprobante;
+var requestGeneralAdicional : Library::EWSIRetencionPago.envioCompRetencion.Request.infoAdicional;
+var responseGeneral : Library::EWSIRetencionPago.envioCompRetencion.Response; //response structure
+var scenarioGeneral = "CSRetencionPago"; //scenario
+//Fin Variables de Consumo
+//-----------------------------------------------------------------------------------------
+//inicio asignacion del RUC y FLAG
+
+if(!NumeroDocumentoEmisor.IsInitial()){
+	requestGeneral.rucEmisor = NumeroDocumentoEmisor;
+}
+requestGeneral.flag = "";
+//Fin Variables de RUC y FLAG
+//-----------------------------------------------------------------------------------------
+//para el consumo Parte de Emisor
+if(!IDEmisor.IsInitial()){
+	requestGeneral.emisor.numeroDocumento = NumeroDocumentoEmisor;
+	requestGeneral.emisor.tipoDocumento = tipoDocumentoEmisor;
+	requestGeneral.emisor.RazonSocial = RazonSocialEmisor;
+	requestGeneral.emisor.ubigeo = UbigeoEmisor;
+	requestGeneral.emisor.direccion = DireccionEmisor;
+	requestGeneral.emisor.urbanizacion = UrbanizacionEmisor;
+	requestGeneral.emisor.provincia = ProvinciaEmisor;
+	requestGeneral.emisor.departamento = DepartamentoEmisor;
+	requestGeneral.emisor.distrito = DistritoEmisor;
+	requestGeneral.emisor.codigoPais = CodigoPaisEm;
+}
+//Fin consumo Emisor
+//-----------------------------------------------------------------------------------------
+//Para el consumo de la parte de Proveedor 
+if(!IDProveedor.IsInitial()){
+	requestGeneral.proveedor.numeroDocumento = NumeroDocumentoProveedor;
+	requestGeneral.proveedor.tipoDocumento = TipoDocumentoProveedor;
+	requestGeneral.proveedor.RazonSocial = RazonSocialProveedor;
+	requestGeneral.proveedor.ubigeo = UbigeoProveedor;
+	requestGeneral.proveedor.direccion = DireccionProveedor;
+	requestGeneral.proveedor.urbanizacion = UrbanizacionProveedor;
+	requestGeneral.proveedor.provincia = ProvinciaProveedor;
+	requestGeneral.proveedor.departamento = DepartamentoProveedor;
+	requestGeneral.proveedor.distrito = DistritoProveedor;
+	requestGeneral.proveedor.codigoPais = CodigoPaisProveedor;
+}
+//Fin Asignacion Variables Proveedor
+//-----------------------------------------------------------------------------------------
+//Inicio Asignacion de Variables Retencion
+if(DataRetencion.IsSet()){	
+	requestGeneral.retencion.numeroDocumento = NumeroDocumentoRetencion;
+	requestGeneral.retencion.fechaEmision = FechaEmisionRetencion;
+	requestGeneral.retencion.regimen = RegimenRetencion;
+	requestGeneral.retencion.tasaRetencion = TasaRetencion;
+	requestGeneral.retencion.observaciones = ObservacionesRetenciones;
+	if(ImporteTotalRetencion < 0){
+		ImporteTotalRetencion = ImporteTotalRetencion * -1;
+	}
+	requestGeneral.retencion.importeTotalRet = ImporteTotalRetencion.RoundToString(2,true);
+	requestGeneral.retencion.monedaImpTotRet =MonedaImporteRetencion;
+	if(ImportPagoRetencion < 0){
+		ImportPagoRetencion = ImportPagoRetencion * -1;
+	}
+	requestGeneral.retencion.importeTotalPagado =ImportPagoRetencion.RoundToString(2,true);
+	requestGeneral.retencion.monedaImpTotPag = MonedaImportePagadoRetencion;
+	requestGeneral.retencion.montoletras =MontoLetrasRetencion.IntegerValue + MontoLetrasRetencion.DecimalPart;
+}
+//Fin Asignacion Variables Retencion
+//-----------------------------------------------------------------------------------------
+//Asignacion de variables para los comprobantes
+if(DataRetencion.IsSet()){
+	if(DataRetencion.PaymentExplanation.IsSet()){
+		var ItemsPayment = DataRetencion.PaymentExplanation;
+		if(ItemsPayment.Item.Count() > 0){
+			var Itmes = ItemsPayment.Item;
+			var DataItems;
+			foreach(DataItems in Itmes){
+				requestGeneralComprobante.Clear();
+				var TipoDocumentoComprobante; // 2 primeros del id externo
+				var NumeroDocumentoComprobante; // resto de ID Externo
+				var FechaEmisionComprobante; // Fecha de Emision de Factura
+				var ImporteTotalDocumentoComprobante; // Valor Total De la Factura
+				var MonedaDocumentoComprobante; // Moneda de la Factura
+				var FechaPagoComprobante; //Fecha Cabecera Pago
+				var NumeroPagoComprobante; // Segun Jose Id de Pago
+				var ImportePagoSinRetComprobante; // Importe neto pagado
+				var MonedaPagoComprobante; // Moneda Neto Pagado
+				var ImporteRetenidoComprobante; //Retencion Pagando
+				var MonedaImportComprobante; // MonedaRetencion Pagando
+				var FechaRetencionComprobante; //Fecha Pago
+				var ImporteNetoPagComprobante; // Total del Pago
+				var MobedaImportePagComprobante;//Moneda Fact
+				var MonedaReferenciaTCComprobante; //Moneda Pago
+				var MobedaObjetivoTCComprobante;//Moneda Factura
+				var TipoCambioComprobante;//MañanaPreguntar
+				var FechaTCComprobante;//Fecha Factura
+				if(!DataItems.ExternalInvoiceReference.IsInitial()){
+					var DataTypeExternal = DataItems.ExternalInvoiceReference;
+					if(!DataTypeExternal.ID.IsInitial()){
+						var ExternalDataGeneral = DataTypeExternal.ID.content;
+						var Length = ExternalDataGeneral.Length();
+						if(Length>2){
+							TipoDocumentoComprobante = ExternalDataGeneral.Substring(0,2);
+							NumeroDocumentoComprobante = ExternalDataGeneral.Substring(3, Length-3);
+						}
+					}
+				}
+				var DateOrigin;
+				if(!DataItems.OriginalDocumentDate.IsInitial()){
+					DateOrigin = DataItems.OriginalDocumentDate;
+					FechaEmisionComprobante = DateOrigin.GetYear() + "-" + DateOrigin.GetMonth() + "-" + DateOrigin.GetDay();
+				}
+				if(!DataItems.GrossAmount.IsInitial()){
+					if(DataItems.GrossAmount.content < 0 ){
+						ImporteTotalDocumentoComprobante = (DataItems.GrossAmount.content * -1).RoundToString(2,true);
+					}else{
+						ImporteTotalDocumentoComprobante = DataItems.GrossAmount.content.RoundToString(2,true);
+					}
+					MonedaDocumentoComprobante = DataItems.GrossAmount.currencyCode;
+				}
+				FechaPagoComprobante =  FechaEmisionRetencion;
+				NumeroPagoComprobante = this.IDPayment.content.RemoveLeadingZeros();
+				if(!DataItems.NetAmount.IsInitial()){
+					if(DataItems.NetAmount.content < 0){
+						ImportePagoSinRetComprobante = (DataItems.NetAmount.content * -1).RoundToString(2,true);
+					}else{
+						ImportePagoSinRetComprobante = DataItems.NetAmount.content.RoundToString(2,true);
+					}
+					MonedaPagoComprobante = DataItems.NetAmount.currencyCode;
+				}
+				if(!DataItems.WithholdingTaxAmount.IsInitial()){
+					if(DataItems.WithholdingTaxAmount.content <0){
+						ImporteRetenidoComprobante = (DataItems.WithholdingTaxAmount.content * -1).RoundToString(2,true);
+					}else{
+						ImporteRetenidoComprobante = DataItems.WithholdingTaxAmount.content.RoundToString(2,true);
+					}
+					MonedaImportComprobante = DataItems.WithholdingTaxAmount.currencyCode;
+				}else{
+					ImporteRetenidoComprobante = "0";
+					MonedaImportComprobante ="PEN";
+				}
+				FechaRetencionComprobante = FechaEmisionRetencion;
+				if(ImportPagoRetencion < 0 ){
+					ImportPagoRetencion = ImportPagoRetencion * -1;
+				}
+				ImporteNetoPagComprobante = ImportPagoRetencion.RoundToString(2,true);
+				MobedaImportePagComprobante = MonedaImportePagadoRetencion;
+				MobedaObjetivoTCComprobante = MonedaPagoComprobante;
+				MonedaReferenciaTCComprobante = MonedaImportePagadoRetencion;
+				if(MobedaObjetivoTCComprobante != MonedaReferenciaTCComprobante){
+					var MontoConvert = DataItems.GrossAmount.ConvertCurrencywithDate(MonedaReferenciaTCComprobante, DateOrigin);
+					if(MontoConvert.content != 0){
+						TipoCambioComprobante = (DataItems.GrossAmount.content /MontoConvert.content).RoundToString(2,true);
+					}else{
+						TipoCambioComprobante = "1.00";
+					}
+				}else{
+					TipoCambioComprobante = "1.00";
+				}
+				FechaTCComprobante = FechaEmisionComprobante;
+				//Asignacion de todo en la WS
+				if(ImporteRetenidoComprobante != "0" && ImporteRetenidoComprobante !="0.00"){
+					requestGeneralComprobante.tipoDocumento = TipoDocumentoComprobante; // 2 primeros del id externo
+					requestGeneralComprobante.numeroDocumento = NumeroDocumentoComprobante; // resto de ID Externo
+					requestGeneralComprobante.fechaEmisionDoc = FechaEmisionComprobante; // Fecha de Emision de Factura
+					requestGeneralComprobante.importeTotalDoc= ImporteTotalDocumentoComprobante; // Valor Total De la Factura
+					requestGeneralComprobante.monedaDocumento = MonedaDocumentoComprobante; // Moneda de la Factura
+					requestGeneralComprobante.fechaPago = FechaPagoComprobante; //Fecha Cabecera Pago
+					requestGeneralComprobante.numeroPago= NumeroPagoComprobante; // Segun Jose Id de Pago
+					requestGeneralComprobante.impPagoSinRet= ImportePagoSinRetComprobante; // Importe neto pagado
+					requestGeneralComprobante.monedaPago= MonedaPagoComprobante; // Moneda Neto Pagado
+					requestGeneralComprobante.importeRetenido= ImporteRetenidoComprobante; //Retencion Pagando
+					requestGeneralComprobante.monedaImpRet= MonedaImportComprobante; // MonedaRetencion Pagando
+					requestGeneralComprobante.fechaRetencion= FechaRetencionComprobante; //Fecha Pago
+					requestGeneralComprobante.importeNetoPag= ImporteNetoPagComprobante; // Total del Pago
+					requestGeneralComprobante.monedaImpNetPag= MobedaImportePagComprobante;//Moneda Fact
+					requestGeneralComprobante.monedaReferenciaTC= MonedaReferenciaTCComprobante; //Moneda Pago
+					requestGeneralComprobante.monedaObjetivoTC= MobedaObjetivoTCComprobante;//Moneda Factura
+					requestGeneralComprobante.tipoCambio= TipoCambioComprobante;//MañanaPreguntar
+					requestGeneralComprobante.fechaTC= FechaTCComprobante;//Fecha Factura
+
+					requestGeneral.comprobante.Add(requestGeneralComprobante);		
+						
+				}
+			}
+		}
+	}
+}
+//asignacion demas variables
+
+
+//ejecucion Ws
+
+//var requestGeneral : Library::EWSIRetencionPago.envioCompRetencion.Request; //request structure
+//var requestGeneralComprobante : Library::EWSIRetencionPago.envioCompRetencion.Request.comprobante;
+//var responseGeneral : Library::EWSIRetencionPago.envioCompRetencion.Response; //response structure
+//var scenarioGeneral = "CRSretencionPago"; //scenario
+
+
+requestGeneralAdicional.codigo="0001";
+if(this.FirstAdditional.IsInitial()){
+	requestGeneralAdicional.descripcion="";
+}else{
+	requestGeneralAdicional.descripcion=this.FirstAdditional;
+}
+requestGeneral.infoAdicional.Add(requestGeneralAdicional);
+requestGeneralAdicional.Clear();
+requestGeneralAdicional.codigo="0002";
+if(this.SecondAdditional.IsInitial()){
+	requestGeneralAdicional.descripcion="ROIB@hempel.com";
+}else{
+	requestGeneralAdicional.descripcion=this.SecondAdditional;
+}
+requestGeneral.infoAdicional.Add(requestGeneralAdicional);
+requestGeneralAdicional.Clear();
+requestGeneralAdicional.codigo="0003";
+if(this.thirdAdditional.IsInitial()){
+	requestGeneralAdicional.descripcion="3100001081/2017";
+}else{
+	requestGeneralAdicional.descripcion=this.thirdAdditional;
+}
+requestGeneral.infoAdicional.Add(requestGeneralAdicional);
+requestGeneralAdicional.Clear();
+requestGeneralAdicional.codigo="0004";
+if(this.fourthAdditional.IsInitial()){
+	requestGeneralAdicional.descripcion="USD";
+}else{
+	requestGeneralAdicional.descripcion=this.fourthAdditional;
+}
+requestGeneralAdicional.descripcion="";
+requestGeneral.infoAdicional.Add(requestGeneralAdicional);
+
+responseGeneral = Library::EWSIRetencionPago.envioCompRetencion(requestGeneral,"",scenarioGeneral);
+
+if(responseGeneral.IsInitial()){
+	raise msj.Create("E", "Consumo no");
+	this.State = false;
+}else{
+	if(!responseGeneral.envioCompRetencionReturn.IsInitial()){
+		var Codigo = responseGeneral.envioCompRetencionReturn.Find("¬");
+		var Resp = responseGeneral.envioCompRetencionReturn.Substring(0,Codigo);
+		if(Resp == "0"){
+			raise msj.Create("S", responseGeneral.envioCompRetencionReturn);
+			this.processed = true;
+
+		}else{
+			raise msj.Create("E", responseGeneral.envioCompRetencionReturn);
+			
+		}
+		this.observations = responseGeneral.envioCompRetencionReturn;
+	}else{
+		if(!responseGeneral.CommunicationFault.IsInitial()){
+		
+			raise msj.Create("E", "Error" + responseGeneral.CommunicationFault.BusinessDocumentProcessingResultCode);
+			raise msj.Create("E", "Error" + responseGeneral.CommunicationFault.MaximumLogItemSeverityCode);
+			raise msj.Create("E", "Error" + responseGeneral.CommunicationFault.Item.GetFirst().ReferenceMessageElementName);
+			raise msj.Create("E", "Error" + responseGeneral.envioCompRetencionReturn);
+		}
+	}
+}
+
+
+
+
+//inicio de variables para la parte de cada comprobante o fact individual
+
+
+
+
+
+//Fin asignacion de variables comprobante

@@ -1,0 +1,65 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: CustomerInvoice
+		Node: CustomerInvoice
+		Validation: Action 
+
+		Script file signature
+		----------------------------
+		Returns: Boolean
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - This validation script can have a return value of either true or false, which determines whether the action implemented by SAP is executed or not.
+		All fields in this business object are read-only and cannot be changed.
+*/
+
+import ABSL;
+var QueryConfiguration = BOConfigurationSolution.QueryByElements;
+var ExecuteQueryConfiguration = QueryConfiguration.Execute();
+var Validation = false;
+if(ExecuteQueryConfiguration.Count()>0){
+	if(ExecuteQueryConfiguration.GetFirst().IsSet()){
+		if(ExecuteQueryConfiguration.GetFirst().Status== CLStatusSolutionCode.CO_01){
+			Validation = true;
+		}
+	}
+}
+if(ExecuteQueryConfiguration.Count()<=0 || Validation == true){
+	var vCompanyID;
+	var isconsistent;
+	while(true){
+		//Company
+		if(!this.SellerParty.IsSet()){break;}
+		if(this.SellerParty.PartyKey.IsInitial()){break;}
+		if(this.SellerParty.PartyKey.PartyID.IsInitial()){break;}
+		if(this.SellerParty.PartyKey.PartyID.content.IsInitial()){break;}
+		vCompanyID = this.SellerParty.PartyKey.PartyID.content.RemoveLeadingZeros();
+		//search Restrictions
+		var Restriction = BORestrictionsCI.Retrieve(vCompanyID);
+		if(!Restriction.IsSet()){break;}
+		if(Restriction.IsSaved == false){break;}
+		raise msj.Create("E","ActionRelease:  CI . ");
+		//if(Restriction.IsSaved == true && (this.ID.content =="##1" || this.ID.content.IsInitial() || this.ID.content == "")&& this.ZIsRelease == true && this.ZIsSaved == false){
+			//raise msj.Create("E","Debe Guardar antes de liberar"); 
+			//isconsistent = false;
+			//break;
+		//}
+
+		raise msj.Create("E","Estado: "+this.Status.ReleaseStatusCode);
+
+		var insInvoiceDb = this.GetFromDB();
+		if(insInvoiceDb.IsInitial()){
+			isconsistent = false;
+			raise msj.Create("E", "Indicator: "+isconsistent.ToString());
+			raise msj.Create("E","Debe Guardar antes de liberar"); 
+			break;
+		}
+		break;
+	}
+}
+return true;
+
+	

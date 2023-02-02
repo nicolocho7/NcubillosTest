@@ -1,0 +1,19 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+[WithAdministrativeData]businessobject BOHomologation raises msg {
+
+		message msg text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[AlternativeKey][Label("ID")]	element	HomologationID		: ID;   
+		[Label("Description")]			element HomologationDesc	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+		[WithAdministrativeData]node DataHomologation[0,n] raises msgData{
+			message msgData text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Origin Data")]			element OrigData		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Destination Data")]		element DestData		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		}
+		
+		[DependentObject(AttachmentFolder)] node ReportsAttachments;
+
+		action aDelete;
+		
+}

@@ -1,0 +1,30 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: AverageRate
+		Node: Root
+		Action: Calculate 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+
+import ABSL;
+
+if(this.iniDate.IsInitial() || this.endDate.IsInitial()){
+	raise msg.Create("E", "Debe ingresar la fecha inicial y la fecha final");
+} else {
+	var qryExachageRate = TasaCambio.QueryByElements;
+	var selParam = qryExachageRate.CreateSelectionParams();
+	selParam.Add(qryExachageRate.date, "I", "BT", this.iniDate, this.endDate);
+	var result = qryExachageRate.Execute(selParam);		
+	var avgAmount = 0;
+
+	foreach (var exangeRate in result){
+		avgAmount = avgAmount + exangeRate.amount;
+	}
+	
+	this.amount = avgAmount / result.Count();
+}

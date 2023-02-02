@@ -1,0 +1,96 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BORelationCustomerCompany
+		Node: Root
+		Event: AfterModify 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script if:
+		- the value of any field in the node in which this script is contained is modified.
+		- the node itself is modified by another business object within the same solution.
+*/
+
+import ABSL;
+import AP.FO.Product.Global;
+
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+var msgresultTypeWithholding = "ID monto mínimo de percepción no es igual a tipo de percepción.";
+//var msgCity = "Codigo de ciudad no fue encontrado.";
+
+if (LanguageCode != "ES"){
+	msgresultTypeWithholding = "Minimum amount perception ID is not equal to type perception.";
+	//msgCity = "City code not found.";
+}
+
+if(!this.ConditionCompanyID.IsInitial()){
+	var queryCC = BOConditionCompanySales.QueryByElements;
+	var paramCC = queryCC.CreateSelectionParams();
+		paramCC.Add(queryCC.ID, "I", "EQ", this.ConditionCompanyID);
+	var resultCC = queryCC.Execute(paramCC).GetFirst();
+	if(resultCC.IsSet()){
+		this.ToConditionCompany = resultCC;
+	}
+	else{
+		this.ToConditionCompany.Reset();
+	}
+}
+
+if(!this.ConditionCustomerID.IsInitial()){
+	var queryCS = BOConditionCustomer.QueryByElements;
+	var paramCS = queryCS.CreateSelectionParams();
+		paramCS.Add(queryCS.ID, "I", "EQ", this.ConditionCustomerID);
+	var resultCS = queryCS.Execute(paramCS).GetFirst();
+	if (resultCS.IsSet()){
+		this.ToConditionCustomer = resultCS;
+	}
+	else{
+		this.ToConditionCustomer.Reset();
+	}
+}
+
+if(!this.CategoryID.IsInitial()){
+	var queryCate = ProductCategoryHierarchy.ProductCategory.QueryByElements;
+	var paramCate = queryCate.CreateSelectionParams();
+		paramCate.Add(queryCate.InternalID, "I", "EQ", this.CategoryID);
+	var resultCate = queryCate.Execute(paramCate).GetFirst();
+	if(resultCate.IsSet()){
+		this.ToCategoryProduct = resultCate;
+	}
+	else{
+		this.ToCategoryProduct.Reset();
+	}
+}
+
+if(!this.AmountMinimun.IsInitial()){
+	var queryCC = BOMinimumWithholdingAmountSales.QueryByElements;
+	var paramCC = queryCC.CreateSelectionParams();
+		paramCC.Add(queryCC.ID, "I", "EQ", this.AmountMinimun);
+	var resultCC = queryCC.Execute(paramCC).GetFirst();
+	if (resultCC.IsSet()){
+		this.ToMinimumWithholdingAmountSales = resultCC;
+		//this.CityID = resultCC.CityID;
+	}
+	else{
+		//this.CityID.Clear();
+		this.ToMinimumWithholdingAmountSales.Reset();
+	}
+}
+
+if(!this.AmountMinimun.IsInitial() && !this.TypeWithholding.IsInitial()){
+	var result = "";
+	var queryCC = BOMinimumWithholdingAmountSales.QueryByElements;
+	var paramCC = queryCC.CreateSelectionParams();
+		paramCC.Add(queryCC.ID, "I", "EQ", this.AmountMinimun);
+	var resultCC = queryCC.Execute(paramCC).GetFirst();
+	if (resultCC.IsSet()){
+		result = resultCC.TypeWithholding;
+
+		if (result != this.TypeWithholding){
+			raise msj.Create("E", msgresultTypeWithholding);
+			this.IsConsistent = false;
+		} 
+	}
+}

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sadl:definition xmlns:ass="http://sap.com/sap.nw.f.sadl/association" date="20181009" time="085718" uuid="4FF07972440C4F2F9837A719A011E4CE" xmlns:sadl="http://sap.com/sap.nw.f.sadl">
+  <sadl:conversions>
+    <sadl:conversion type="ALPHA" />
+  </sadl:conversions>
+  <sadl:modes>
+    <sadl:mode type="QUERY" />
+  </sadl:modes>
+  <sadl:dataSource name="DS" binding="YVINQABXY_BOCIEA3F87A5DE2ABE3A/ass:ROOT4F903855210031B0" type="BusinessObjectNode" d2p1:mdrsBinding="BOPostedCI.Root" xmlns:d2p1="http://sap.com/xi/AP/PDI" />
+  <sadl:resultSet>
+    <sadl:structure name="YVINQABXY_BOCIEA3F87A5DE2ABE3A" dataSource="DS" d3p1:mdrsName="BOPostedCI.Root" xmlns:d3p1="http://sap.com/xi/AP/PDI">
+      <sadl:attribute name="YVINQABXY_WIOT18983F3DF5F61B1E" binding="WITHHOTATUS9071B89C50E62646" d3p1:mdrsName="WithholdingStatus" />
+      <sadl:attribute name="YVINQABXY_ADOT1CF6622041C2DAF4" binding="ADVICEIDDAC248311FB0584F" d3p1:mdrsName="AdviceID" />
+      <sadl:attribute name="YVINQABXY_PAOT5321F202F8A4F243" binding="PAYMENTTYPE73AF06E6A208F2C6" d3p1:mdrsName="PaymentType" />
+      <sadl:attribute name="YVINQABXY_CUOT24350D7856AE72AD" binding="CUSTOMERIDAABBFA1D1639E593" d3p1:mdrsName="CustomerID" />
+      <sadl:attribute name="YVINQABXY_CUOT4701CA7767B88593" binding="CUSTOMRDESC7933ACD8B75A2612" d3p1:mdrsName="CustomerDesc" />
+      <sadl:attribute name="YVINQABXY_PAOT04B79410B9E093D0" binding="PAYMENRENCE2EA1D0DB2005057F" d3p1:mdrsName="PaymentOriginReference" />
+      <sadl:attribute name="YVINQABXY_PAOTE092D471B60562A5" binding="PAYMENRENCEAB05666040425BB3" d3p1:mdrsName="PaymentReference" />
+      <sadl:attribute name="YVINQABXY_PAOTDA37AD7E947C3B3C" binding="PAYMENECODE842830FBCA95838D" d3p1:mdrsName="PaymentTypeCode" />
+      <sadl:attribute name="YVINQABXY_BAOTC2A5AD4F8953F932" binding="BANKE64228640F5A0543" d3p1:mdrsName="Bank" />
+      <sadl:attribute name="YVINQABXY_PAOTC2FAA4CBA7C1FDA9" binding="PAYMENMOUNTC3C65F4A05B44DAE-CURRENCY_CODE" d3p1:mdrsName="PaymentAmount/currencyCode" />
+      <sadl:attribute name="YVINQABXY_PAOT1F6651833A42583D" binding="PAYMENMOUNTC3C65F4A05B44DAE-CONTENT" d3p1:mdrsName="PaymentAmount/content" />
+      <sadl:attribute name="YVINQABXY_COOT393E96E7737D2A29" binding="COMPANYIDD8CC9CD94DA9AB61" d3p1:mdrsName="CompanyID" />
+      <sadl:attribute name="YVINQABXY_DEOTA4C19AA2EDB9C077" binding="DEBITICATORA1D3C8275A9A67EC" d3p1:mdrsName="DebitIndicator" />
+      <sadl:attribute name="YVINQABXY_POOT95EF3888DAFCC5D7" binding="POSTINGDATE2D52EA542B5E0E74" d3p1:mdrsName="PostingDate" />
+    </sadl:structure>
+  </sadl:resultSet>
+  <sadl:query bo="YVINQABXY_BOCIEA3F87A5DE2ABE3A" name="QUERY_BY_ELEMENTS" node="QYSALESD1FCC6117D88CD0F" type="ESI_QUERY">
+    <sadl:inputStructure>
+      <sadl:inputParameter name="WITHHOROOT3BF3AB854AF10141">
+        <sadl:attribute binding="YVINQABXY_WIOT18983F3DF5F61B1E" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="ADVICEROOT76D502CB237877DD">
+        <sadl:attribute binding="YVINQABXY_ADOT1CF6622041C2DAF4" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="PAYMENROOTDB2F69757217FDD7">
+        <sadl:attribute binding="YVINQABXY_PAOT5321F202F8A4F243" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="CUSTOMROOTA041C400605ED038">
+        <sadl:attribute binding="YVINQABXY_CUOT24350D7856AE72AD" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="CUSTOMROOT06E82A4AFE3D5D94">
+        <sadl:attribute binding="YVINQABXY_CUOT4701CA7767B88593" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="PAYMENROOT82077655A000AC1F">
+        <sadl:attribute binding="YVINQABXY_PAOT04B79410B9E093D0" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="PAYMENROOT11D4429EFBAF9FC9">
+        <sadl:attribute binding="YVINQABXY_PAOTE092D471B60562A5" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="PAYMENROOTC25CDFFFFE626E3C">
+        <sadl:attribute binding="YVINQABXY_PAOTDA37AD7E947C3B3C" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="BANKROOTFA9F00941F3E27A8">
+        <sadl:attribute binding="YVINQABXY_BAOTC2A5AD4F8953F932" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="PAYMENROOTD131930C93575DD0-CURRENCY_CODE">
+        <sadl:attribute binding="YVINQABXY_PAOTC2FAA4CBA7C1FDA9" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="PAYMENROOTD131930C93575DD0-CONTENT">
+        <sadl:attribute binding="YVINQABXY_PAOT1F6651833A42583D" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="COMPANROOT1DF618FBC9BFD399">
+        <sadl:attribute binding="YVINQABXY_COOT393E96E7737D2A29" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="DEBITIROOTA957D63C4B8D575F">
+        <sadl:attribute binding="YVINQABXY_DEOTA4C19AA2EDB9C077" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="POSTINROOTF318236489BF092A">
+        <sadl:attribute binding="YVINQABXY_POOT95EF3888DAFCC5D7" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="SEARCH_TEXT" type="SEARCH_TEXT">
+        <sadl:inputParameter name="WITHHOROOT3BF3AB854AF10141" />
+        <sadl:inputParameter name="ADVICEROOT76D502CB237877DD" />
+        <sadl:inputParameter name="CUSTOMROOTA041C400605ED038" />
+        <sadl:inputParameter name="PAYMENROOT82077655A000AC1F" />
+        <sadl:inputParameter name="BANKROOTFA9F00941F3E27A8" />
+        <sadl:inputParameter name="COMPANROOT1DF618FBC9BFD399" />
+      </sadl:inputParameter>
+    </sadl:inputStructure>
+    <sadl:outputStructure>
+      <sadl:attribute name="WITHHOROOT3BF3AB854AF10141" binding="YVINQABXY_WIOT18983F3DF5F61B1E" />
+      <sadl:attribute name="ADVICEROOT76D502CB237877DD" binding="YVINQABXY_ADOT1CF6622041C2DAF4" />
+      <sadl:attribute name="PAYMENROOTDB2F69757217FDD7" binding="YVINQABXY_PAOT5321F202F8A4F243" />
+      <sadl:attribute name="CUSTOMROOTA041C400605ED038" binding="YVINQABXY_CUOT24350D7856AE72AD" />
+      <sadl:attribute name="CUSTOMROOT06E82A4AFE3D5D94" binding="YVINQABXY_CUOT4701CA7767B88593" />
+      <sadl:attribute name="PAYMENROOT82077655A000AC1F" binding="YVINQABXY_PAOT04B79410B9E093D0" />
+      <sadl:attribute name="PAYMENROOT11D4429EFBAF9FC9" binding="YVINQABXY_PAOTE092D471B60562A5" />
+      <sadl:attribute name="PAYMENROOTC25CDFFFFE626E3C" binding="YVINQABXY_PAOTDA37AD7E947C3B3C" />
+      <sadl:attribute name="BANKROOTFA9F00941F3E27A8" binding="YVINQABXY_BAOTC2A5AD4F8953F932" />
+      <sadl:attribute name="PAYMENROOTD131930C93575DD0-CURRENCY_CODE" binding="YVINQABXY_PAOTC2FAA4CBA7C1FDA9" />
+      <sadl:attribute name="PAYMENROOTD131930C93575DD0-CONTENT" binding="YVINQABXY_PAOT1F6651833A42583D" />
+      <sadl:attribute name="COMPANROOT1DF618FBC9BFD399" binding="YVINQABXY_COOT393E96E7737D2A29" />
+      <sadl:attribute name="DEBITIROOTA957D63C4B8D575F" binding="YVINQABXY_DEOTA4C19AA2EDB9C077" />
+      <sadl:attribute name="POSTINROOTF318236489BF092A" binding="YVINQABXY_POOT95EF3888DAFCC5D7" />
+    </sadl:outputStructure>
+  </sadl:query>
+</sadl:definition>

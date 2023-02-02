@@ -1,0 +1,54 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.SupplierInvoicing.Global;
+import AP.FO.MOM.Global;
+import AP.FO.Product.Global;
+import AP.FO.ProductDataMaintenance.Global;
+
+
+businessobject BOSendLog raises msg {
+
+message msg text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("ID")] element ID:ID;
+		element UUID:UUID;		
+		[Label("Company")]				element CompanySuIn				: ID;
+		association ToCompany to Company;
+		[Label("Document ID")] element DocID:BusinessTransactionDocumentID;
+		[Label("Document UUID")] element DocUUID:UUID;
+		[Label("Document Type")]	element	DocumentType	:	ID;
+		[Label("Document Type Provider")]	element	DocumentTypePro	:	ID;
+		[Label("Document Type Provider")]	element	DocumentTypePro2	:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Document Type Description")]	element	DocumentTypeDescription	:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("External ID")]	element	ExternalID	:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Document ID Provider")] element DocIDProvider:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Buyer")] element buyer:ID;
+		[Label("Buyer Name")] element buyerName:LANGUAGEINDEPENDENT_LONG_Name;		
+		[Label("Seller")] element seller:ID;
+		[Label("Seller Name")] element sellerName:LANGUAGEINDEPENDENT_LONG_Name;
+		[Label("Company UUID")] element CompanyUUID:UUID;
+		[Label("RUC Company")] element CompanyRUC:LANGUAGEINDEPENDENT_LONG_Name;
+		[Label("Document Date")] element DocDate:BASIS.Global:Date;
+		[Label("Modification Date")] element date:BASIS.Global:Date;
+		[Label("Status")]				element Status				: CLStatusEBillingCode;
+		[Label("External Message")]	element ExternalMessageSuIn		: LANGUAGEINDEPENDENT_EXTENDED_Text;	
+		 
+		 [Label("No usar")]		element DocumentTypeSuIn		: CLDocumentTypeSAPCode;
+		 [Label("No usar")]		element CustomerSuIn			: ID;
+		 [Label("no usar")]				element StatusSuIn				: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		 [Label("No usar")]			element IDSupplierSuIn			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		 [Label("No usar")]	element CreationDateSuIn		: Date;
+		 [Label("No usar")]		element SendDateSuIn			: Date;
+		 [Label("No usar")]		element UserSendSuIn			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		 [Label("Date Of Resend")]		element DateResendSuIn			: Date;
+		 [Label("Hour Of Resend")]		element HourResendSuIn			: Time;
+		 [Label("User Of Resend")]		element UserResendSuIn			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		 [Label("No usar")]		element RequestDetailSuIn		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		 [Label("Interface Response")]	element InterfaceResponseSuIn	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		 [Label("Tracking ID")]			element TrackingIDSuIn			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		 [Label("Url Document")]		element UrlDocumentSuIn			: LANGUAGEINDEPENDENT_EXTENDED_Text;		 
+	     [DependentObject(AttachmentFolder)] node Attachment;
+		 element inconsistent			: Indicator;
+		 action Invoice; 
+		 action GetDocument;
+		 action EnviarEBill;
+
+}

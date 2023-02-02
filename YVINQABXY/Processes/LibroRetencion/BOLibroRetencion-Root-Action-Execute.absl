@@ -1,0 +1,194 @@
+﻿import ABSL;
+import AP.Common.GDT as apCommonGDT;
+import BASIS.Global as basis;
+import AP.FO.BusinessPartner.Global;
+
+var insCompanyConfig;
+var strLine = "";
+
+//Messages definition
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+var msgCompany = "Por favor ingresar Empresa.";
+var msgSetBook = "Por favor ingresar Set of Book";
+var msgLimitDate = "Por favor ingresar la Fecha Inicial";
+var msgDateInitial = "Por favor ingresar fecha inicial";
+var msgNotConfig = "No hay datos de configuraci?n de esta empresa para el informe.";
+var msgNotData = "La consulta no arroj? datos v?ldos para este informe.";
+
+if (LanguageCode != "ES") {
+msgCompany = "Please enter the Company.";
+msgSetBook = "Please enter the Set of Book";
+msgLimitDate = "Please enter Limit Date.";
+msgDateInitial = "Please enter Date Initial";
+msgNotConfig = "No configuration data for the company fro the report.";
+msgNotData = "The query not returns valid data for this report.";
+}
+
+//Company Validation
+
+var xmlResult;
+
+
+while (true)
+{
+	var txtstring = "";
+	if (this.CompanyID.IsInitial()) { break; }
+	if (this.EDateInitial.IsInitial()) { break; }
+	if (this.EDateEnd.IsInitial()) { break; }
+	
+	var serviceID = "";  
+	var parameter : NameAndValue;
+	var parameters : collectionof NameAndValue;
+	//Caluclar los primeros dias 
+
+
+
+	//FILTRO DINAMICO 
+
+	
+	//and CINVOICE_DATE le datetime'"+
+	//this.EDateEnd.GetYear()+"-"+this.EDateEnd.GetMonth()+"-"+this.EDateEnd.GetDay()+"T00:00:00'";
+	//Campos Consumo MashupCACC_DOC_ITEM_ID
+	var StringValue = "CWTYPECODE eq 'Y98YV7M9Y_RP' and CCOMP_UUID eq '" + this.CompanyID + "' and CPAYMENT_DATE gt datetime'" + 
+	this.EDateInitial.GetYear()+ "-" + this.EDateInitial.GetMonth() + "-" + this.EDateInitial.GetDay() + "T00:00:00'  and CTAXMONTH eq '--" + this.EDateInitial.GetMonth()+"' and CWINCOMETC eq 'RP01' " +
+	"and CACC_TRANS_DATE le datetime'" + //CPAYMENT_DATE gt datetime'" + 
+	this.EDateEnd.GetYear()+ "-" + this.EDateEnd.GetMonth() + "-" + this.EDateEnd.GetDay() + "T00:00:00'";
+	//and CINVOICE_DATE le datetime'"+
+	//this.EDateEnd.GetYear()+"-"+this.EDateEnd.GetMonth()+"-"+this.EDateEnd.GetDay()+"T00:00:00' and CTAXMONTH eq '" + this.EDateInitial.GetMonth()+"'";
+	//Campos Consumo MashupCACC_DOC_ITEM_ID
+	serviceID = "PW00030";  
+	parameter.Name = "$select";  
+	parameter.Value = "CTAXRPWSPID,CTAX_ID_NR,CTAX_TYPE,KCWINVAMOUNT,CINVOICE_DATE,CPAYMENT_DATE,CINVOICE_ID,TBUPA_UUID,KCWAMOUNT";
+	parameters.Add(parameter);   
+	parameter.Name = "$filter";
+	parameter.Value = StringValue;
+	parameters.Add(parameter);  
+	
+	
+	
+	
+	var ws_result = WebServiceUtilities.ExecuteWebService(serviceID, parameters);
+	var Content = ws_result.ResponseContent;  
+	var returnCode = ws_result.ReturnCode;  
+	var strData = "";
+	var sCurrency = "";
+	var sLocalCurrency = "";
+	var decAmount : DataType::DecimalValue;
+	var otherAmount : DataType::apCommonGDT:Amount;
+	
+	var xname : LANGUAGEINDEPENDENT_LONG_Name;
+	var xtype : DocumentTypeCode;
+	var xdesc : Description;
+	var xbinary : basis:BinaryObject;
+	
+	xname = "Resultado.txt";
+	xtype.content = "10001";
+	xtype.listID = "10296";
+	xbinary.mimeCode = "text/plain";
+	xbinary.content = Binary.ParseFromString(Content);
+	this.ReportsAttachments.CreateFile(xtype, xname, xname, xdesc, xbinary);
+	
+	////
+	////
+	//var xmlResult;
+	////var FechaAno = this.EDateInitial.GetYear();
+	////var FechaMes = this.EDateInitial.GetMonth();
+	////
+	xmlResult = Library::RLStrings.XMLToArray(Content);
+	
+	if (xmlResult.Count() == 0) { break; }
+	
+	var NumeroCuent = "";
+	var Consecutivo = 0 ;
+	foreach (var RegistroCompras in xmlResult){
+		var Campo1=""; //Fiscal año mes 00
+		var Campo2="";//InvoiceUUDI
+		var Campo3=""; // M1
+		var Campo4="";// PaymentDate - Invoicedate
+		var Campo5="";// TaxeType
+		var Campo6="";//TaxIDNumber
+		var Campo7="";//Seller- Supplier
+		var Campo8="";//GroosAmount
+		var Campo9="";//WTHAMOUN
+		var Campo10="";// OEDPARNERT
+
+	
+		var ContMes = this.EDateInitial.GetMonth().Length();
+		var Mes1;
+		if (ContMes < 2){
+			Mes1 = "0" + this.EDateInitial.GetMonth();
+		}else{
+			Mes1 = this.EDateInitial.GetMonth();
+		}
+
+		var Posting = Library::RLStrings.GetElementByName(RegistroCompras.String, "CPAYMENT_DATE").Trim();
+		var Ano = Posting.Substring(0,4);
+		var MONTH = Posting.Substring(5,2);
+
+		Campo1 = Ano + MONTH + "00";
+		Campo2 = Library::RLStrings.GetElementByName(RegistroCompras.String, "CINVOICE_ID").Trim();
+		var Conc = Library::RLStrings.GetElementByName(RegistroCompras.String, "CTAXRPWSPID").Trim();
+		Consecutivo = Consecutivo +1;
+		Campo2 = Campo2 + Consecutivo.RoundToString(0,true);
+		Campo3="M1";
+
+		Campo4=Library::RLStrings.GetElementByName(RegistroCompras.String, "CPAYMENT_DATE").Trim();
+		
+		Campo4 = Campo4.Substring(8,2) +"/"+ Campo4.Substring(5,2) +"/"+Campo4.Substring(0,4);
+	
+
+		Campo5=Library::RLStrings.GetElementByName(RegistroCompras.String, "CTAX_TYPE").Trim();
+		if(Campo5 == "2"){
+			Campo5 = "1";
+		}else{
+			if(Campo5 == "5"){
+				Campo5 = "4";
+			}else{
+				if(Campo5 == "1"){
+					Campo5 = "6";
+				}
+			}
+		}
+		Campo6=Library::RLStrings.GetElementByName(RegistroCompras.String, "CTAX_ID_NR").Trim();
+		Campo7=Library::RLStrings.GetElementByName(RegistroCompras.String, "TBUPA_UUID").Trim();
+		Campo7=Campo7.Replace("&amp;","");
+		Campo8=Library::RLStrings.GetElementByName(RegistroCompras.String, "KCWINVAMOUNT").Trim();
+		var Numeric8 = ABSL:Numeric.ParseFromString(Campo8);
+		if(Numeric8 <0){
+			Numeric8 = Numeric8 * -1;
+		}
+		Campo8 = Numeric8.RoundToString(2,true);
+		Campo8 = Campo8.Replace(",",".");
+
+		
+		Campo9=Library::RLStrings.GetElementByName(RegistroCompras.String, "KCWAMOUNT").Trim();
+		var Numeric9 = ABSL:Numeric.ParseFromString(Campo9);
+		if(Numeric9 > 0){
+			Numeric9 = Numeric9 * -1;
+		}
+		Campo9 = Numeric9.RoundToString(2,true);
+		Campo9 = Campo9.Replace(",",".");
+		Campo10 = "1";
+
+
+		txtstring =  txtstring + Campo1+ "|" +Campo2+"|" +Campo3+"|" +Campo4+"|" +Campo5+"|" +Campo6+"|" +Campo7+"|" +Campo8+"|" +Campo9+"|" +Campo10+"|" +"\r\n";
+
+		}
+		var ContMont = this.EDateInitial.GetMonth().Length();
+		var Mes;
+		if(ContMont<2){
+			Mes = "0" + this.EDateInitial.GetMonth();
+		}else{
+			Mes = this.EDateInitial.GetMonth();
+		}
+		var NameReport = "LE"+  this.Companyto.RUC+ this.EDateInitial.GetYear()+ Mes+"00"+"040100"+"001111" ;
+
+	
+		xname = NameReport + ".txt";
+		xtype.content = "10001";
+		xtype.listID = "10296";
+		xbinary.mimeCode = "text/plain";
+		xbinary.content = Binary.ParseFromString(txtstring);
+		this.ReportsAttachments.CreateFile(xtype, xname, xname, xdesc, xbinary);
+		break;
+}

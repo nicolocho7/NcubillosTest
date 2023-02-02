@@ -1,0 +1,74 @@
+﻿import ABSL;
+this.IsConsistent = true;
+
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+var msgCompanyCondition = "Falto ingresar descripción.";
+var msgCountry = "Falto ingresar país.";
+
+if (LanguageCode != "ES")
+{
+	msgCompanyCondition = "I miss enter description.";
+	msgCountry = "I miss enter country.";
+}
+
+if (this.CompanyCondition.IsInitial())
+{
+	raise msj.Create("E", msgCompanyCondition);
+
+	this.IsConsistent = false;
+}
+
+if (this.Country.IsInitial())
+{
+	raise msj.Create("E", msgCountry);
+	this.IsConsistent = false;
+}
+
+if(this.ID.IsInitial()){
+	var Code = "BOCONDITIONCOMPANY";
+	var InsBOBuildIDV2 = BOBuildIDV2.Retrieve(Code);
+	if(InsBOBuildIDV2.IsSet())
+	{
+		InsBOBuildIDV2.Increase();		
+	}else
+	{
+		var StructureBOBuildIDV2 : elementsof BOBuildIDV2;
+		StructureBOBuildIDV2.ID = Code;
+		StructureBOBuildIDV2.description = "Condition Company Purchase";
+		StructureBOBuildIDV2.UUID.content = UUID.Generate();
+		InsBOBuildIDV2 = BOBuildIDV2.Create(StructureBOBuildIDV2);
+		InsBOBuildIDV2.Increase();
+	}
+
+	this.ID = InsBOBuildIDV2.consecutive;
+}
+//if (this.ID.IsInitial())
+//{
+	//
+	//var queryBuildID = BOBuildID.QueryByElements;
+	//var paramBuildID = queryBuildID.CreateSelectionParams();
+	//paramBuildID.Add(queryBuildID.ID, "I", "EQ", "BOCONDITIONCOMPANY");
+	//var resultBuildID = queryBuildID.Execute(paramBuildID).GetFirst();
+	//if (resultBuildID.IsSet())
+	//{
+		//resultBuildID.consecutive = resultBuildID.consecutive + 1;
+		//this.ID = resultBuildID.consecutive.ToString();
+		//this.UUID.content = UUID.Generate();
+	//}
+	//else
+	//{
+		//this.ID = "1";
+		//this.UUID.content = UUID.Generate();
+		////-- create new register
+		//var insBuildID = BOBuildID.Create();
+		//if (insBuildID.IsSet())
+		//{
+			//insBuildID.consecutive = 1;
+			//insBuildID.description = "Condition Company Purchase";
+			//insBuildID.ID = "BOCONDITIONCOMPANY";
+			//insBuildID.UUID.content = UUID.Generate();
+		//}
+	//}
+//}
+
+

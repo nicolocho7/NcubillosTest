@@ -1,0 +1,83 @@
+﻿import ABSL;
+import AP.FO.MOM.Global;
+import AP.FO.Product.Global;
+import AP.FO.ProductDataMaintenance.Global;
+
+
+if (!this.ConditionCompayID.IsInitial() ){
+	
+	var qConditionCompany = BOConditionCompanyPurchase.QueryByElements;
+	var pConditionCompany = qConditionCompany.CreateSelectionParams();
+
+	pConditionCompany.Add(qConditionCompany.ID,"I","EQ",this.ConditionCompayID);
+	var insConditionCompany = qConditionCompany.Execute(pConditionCompany).GetFirst();
+
+	if (insConditionCompany.IsSet()){
+	
+	this.ToConditionCompany = insConditionCompany;
+	}
+	else{
+	this.ToConditionCompany.Reset();
+	}
+
+}
+
+if(!this.CompanyID.IsInitial()){
+
+	var qCompany = Company.QueryByIDAndName;
+	var pCompany = qCompany.CreateSelectionParams();
+
+	pCompany.Add(qCompany.ID,"I","EQ",this.CompanyID);
+	var insCompany = qCompany.Execute(pCompany).GetFirst();
+
+	if(insCompany.IsSet()){
+
+		this.ToCompany = insCompany;
+	}else{
+		this.ToCompany.Reset();
+	}
+}
+
+if (!this.CategoryID.IsInitial())
+{
+	var queryCate = ProductCategoryHierarchy.ProductCategory.QueryByElements;
+	var paramCate = queryCate.CreateSelectionParams();
+	paramCate.Add(queryCate.InternalID, "I", "EQ", this.CategoryID);
+	var resultCate = queryCate.Execute(paramCate).GetFirst();
+	if (resultCate.IsSet())
+	{
+		this.ToCategoryProduct = resultCate;
+	}
+	else
+	{
+		this.ToCategoryProduct.Reset();
+	}
+}
+
+if (!this.ProductD.IsInitial())
+{
+	var queryMaterial = Material.QueryByDescription;
+	var paramMaterial = queryMaterial.CreateSelectionParams();
+	paramMaterial.Add(queryMaterial.ProductID.content, "I", "EQ", this.ProductD);
+	var resultMaterial = queryMaterial.Execute(paramMaterial).GetFirst();
+	if (resultMaterial.IsSet())
+	{
+		this.ProductDesc = resultMaterial.Description.GetFirst().Description.content;
+	}
+	else
+	{
+		var queryService = ServiceProduct.QueryByDescription;
+		var paramService = queryService.CreateSelectionParams();
+		paramService.Add(queryService.ProductID.content, "I", "EQ", this.ProductD);
+		var resultService = queryService.Execute(paramService).GetFirst();
+	   
+		if (resultService.IsSet())
+		{
+			this.ProductDesc = resultService.Description.GetFirst().Description.content;
+		}
+		else
+		{
+		  this.ProductDesc.Clear();
+		}
+	}
+}

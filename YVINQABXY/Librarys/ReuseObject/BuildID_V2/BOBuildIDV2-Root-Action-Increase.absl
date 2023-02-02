@@ -1,0 +1,33 @@
+﻿import ABSL;
+while(true)
+{
+	if(!this.consecutive.IsInitial() || this.consecutive != 0){break;}
+	if(this.ID.IsInitial()){break;}
+	var Counter = 0;														// Initializing variable
+	while(true)																// Validation of IDS OLD BUILDID
+	{
+		var QueryBoBuildIDV1 = BOBuildID.QueryByElements;
+		var ParamsQuery = QueryBoBuildIDV1.CreateSelectionParams();
+		ParamsQuery.Add(QueryBoBuildIDV1.ID,"I","EQ",this.ID.RemoveLeadingZeros());
+		var ExecuteQuery = QueryBoBuildIDV1.Execute(ParamsQuery);
+		if(ExecuteQuery.Count()<=0){break;}
+		var insBOBuildID = ExecuteQuery.GetFirst();
+		Counter = insBOBuildID.consecutive;
+		break;
+	}
+	while(true)
+	{
+		var QueryBOAccount = BOAccount.QueryByElements;
+		var ParamsQuery = QueryBOAccount.CreateSelectionParams();
+		ParamsQuery.Add(QueryBOAccount.ID,"I","EQ",this.ID.RemoveLeadingZeros());
+		var ExecuteQuery = QueryBOAccount.Execute(ParamsQuery);
+		if(ExecuteQuery.Count()<=0){break;}
+		var insBOBuildID = ExecuteQuery.GetFirst();
+		if(Counter<insBOBuildID.consecutive)
+		Counter = insBOBuildID.consecutive;
+		break;
+	}
+	this.consecutive = Counter;
+	break;
+}
+this.consecutive = this.consecutive + 1;

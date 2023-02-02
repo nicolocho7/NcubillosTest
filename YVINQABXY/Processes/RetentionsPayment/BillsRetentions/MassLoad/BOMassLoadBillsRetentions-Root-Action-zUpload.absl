@@ -1,0 +1,72 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BOMassLoadAccountSupplier
+		Node: Root
+		Action: zUpload 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+
+import ABSL;
+
+var string = "";
+var subString = "";
+var indiceFind = 0;
+var indiceLast;
+var i = 0;
+var subIndiceLast = 0;
+var subIndiceFind = 0;
+var subStringAux = "";
+var j = 0;
+
+var Positions;
+foreach (Positions in this.Values){
+	Positions.Delete();
+}
+if (this.Attachment.IsSet() && this.Attachment.DocumentList.Count() == 1)
+{
+	var MyAtt = this.Attachment.DocumentList;
+	if (MyAtt.GetFirst().MIMECode == "text/plain")
+	{
+		var FileCont = MyAtt.GetFirst().FileContent;
+		//Cadena binarios
+		string = FileCont.BinaryObject.content.ToString();
+		while (indiceFind != -1)
+		{
+			subIndiceLast = 0;
+			subIndiceFind = 0;
+			subStringAux = "";
+			j = 0;
+			i = i + 1;
+			indiceLast = string.Length() - 1;
+			indiceFind = string.Find("\n");
+			
+			var Fila = this.Values.Create();
+
+			if (indiceFind != -1)
+			{
+				subString = string.Substring(0, indiceFind);
+				//Quita la que valida y cuenta el resto 
+				string = string.Substring(indiceFind + 1, indiceLast - indiceFind); 
+				//Detalle
+				while (subIndiceFind != -1){
+					j = j + 1;
+					subIndiceLast = subString.Length() - 1;
+					subIndiceFind = subString.Find(";");
+					subStringAux = subString.Substring(0, subIndiceFind);
+					subString = subString.Substring(subIndiceFind + 1, subIndiceLast - subIndiceFind);
+					if(j == 1){
+						Fila.BillID = subStringAux.Trim();
+						//Fila.zAccountType = subString.Substring(0, subString.Length() - 1);
+						subIndiceFind= -1;
+					}
+				}//fin while(subIndiceFind != -1){      
+			}//fin if(indiceFind != -1){
+		}//fin while(indiceFind != -1){
+	}	
+}
+

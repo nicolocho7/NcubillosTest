@@ -1,0 +1,227 @@
+﻿/*-----------------------------------------------------------------------------------------------------------------
+										Historial de Modificaciones                                               
+-------------------------------------------------------------------------------------------------------------------
+ Funcional Responsable.....: Jose Romero                                        
+ Creado por................: Joe Gonzales                           
+ Marca.....................: --
+ Fecha.....................: 24.03.2018                                    
+ Descripción...............: Versión Inicial. Contiene el reporte de Balance de comprobación 
+		Reporte............: Z1E40E9A5D20DA228AB5ABB
+		Fuente de datos....: FINGLAU11 
+		URL Ejemplo........:my342351.sapbydesign.com/sap/byd/odata/fin_generalledger_analytics.svc/RPZ1E40E9A5D20DA228AB5ABBQueryResults?
+							$select=CFISCALYEARPERIO,CGLACCT,KCOPENING_BALANCE_CURRCOMP,KCDEBIT_CURRCOMP,KCCREDIT_CURRCOMP,KCBALANCE_CURRCOMP
+							&$filter=PARA_COMPANY eq 'GTH' and PARA_SETOFBKS eq 'IFSO' and PARA_FISCYEARPER eq 022018&$top=60                      
+-------------------------------------------------------------------------------------------------------------------
+ Funcional Responsable.....:                                        
+ Modificado por............:                            
+ Marca.....................: 
+ Fecha.....................:                                     
+ Descripción...............: 
+-------------------------------------------------------------------------------------------------------------------*/
+
+import ABSL;
+import AP.FO.BusinessPartner.Global;
+import AP.Common.GDT as apCommonGDT;
+import BASIS.Global as basis;
+
+
+while(true){
+	
+	var vPeriodo = "";
+	var vPalote = "|";
+
+	vPeriodo = this.DateInitial.GetYear() + this.DateInitial.GetMonth() + this.DateInitial.GetDay();
+	
+	var serviceID = "";  
+	var parameter : NameAndValue;  
+	var parameters : collectionof NameAndValue;
+	serviceID = "PW00052";
+
+	parameter.Name = "$select";  
+	parameter.Value = "CGLACCT,KCOPENING_BALANCE_CURRCOMP,KCDEBIT_CURRCOMP,KCCREDIT_CURRCOMP,KCBALANCE_CURRCOMP,KCEND_BAL_LC_AM";
+	parameters.Add(parameter);
+		 
+	parameter.Name = "$filter";  
+	parameter.Value = "PARA_COMPANY eq '" + this.CompanyID.RemoveLeadingZeros() 
+					+ "' and PARA_SETOFBKS eq '" + this.SetOfBooksID.content.Trim() 
+					+ "' and CFISCALYEARPERIO le " + this.DateInitial.GetMonth() + this.DateInitial.GetYear(); // 112016"
+	parameter.Value = parameter.Value + " and CFISCYEAR eq " + this.DateInitial.GetYear() +" and CGLACCT ne '9*'";
+	
+	parameters.Add(parameter);  
+		
+	parameter.Name = "$top";  
+	parameter.Value = "999999";
+	parameters.Add(parameter); 
+
+	var ws_result = WebServiceUtilities.ExecuteWebService(serviceID, parameters);  
+		
+	var Content = ws_result.ResponseContent;  
+	var returnCode = ws_result.ReturnCode;
+	
+	var vStringExport = "";
+	var xmlResult;
+	xmlResult = Library::RLStrings.XMLToArray(Content);
+	
+	var IsItems = false;
+	var sSumaCuenta01 = 0;
+	var sSumaCuenta02 = 0;
+	var sSumaCuenta03 = 0;
+	foreach(var vItems in xmlResult){
+		
+		var vCuentaText = Library::RLStrings.GetElementByName(vItems.String, "CGLACCT");
+		var vTipoCuenta = vCuentaText.Substring(0,1);
+		
+	
+			
+			var vSaldoInicialText = Library::RLStrings.GetElementByName(vItems.String, "KCOPENING_BALANCE_CURRCOMP");
+			var vSaldoInicialValue = 0;
+			if(ABSL:Numeric.IsNumeric(vSaldoInicialText)){
+				vSaldoInicialValue = ABSL:Numeric.ParseFromString(vSaldoInicialText);
+			}
+			var vCampo03 = "0.00";
+			var vCampo04 = "0.00";
+			if(vSaldoInicialValue > 0){
+				vCampo03 = vSaldoInicialValue.RoundToString(2,true);
+				//vCampo03.Replace(",","");
+			}
+			else if(vSaldoInicialValue<  0 ){
+				vSaldoInicialValue = vSaldoInicialValue * (-1);
+				vCampo04 = vSaldoInicialValue.RoundToString(2,true);
+				//vCampo04.Replace(",","").Replace("-","");
+			}
+
+
+			var vImporteDebeText = Library::RLStrings.GetElementByName(vItems.String, "KCDEBIT_CURRCOMP");
+			var vImporteDebeValue = 0;
+			if(ABSL:Numeric.IsNumeric(vImporteDebeText)){
+				vImporteDebeValue = ABSL:Numeric.ParseFromString(vImporteDebeText);
+			}
+			var vCampo05 = "0.00";
+			vCampo05 = vImporteDebeValue.RoundToString(2,true);
+			//vCampo05.Replace(",","");
+		
+
+
+			var vImporteHaberText = Library::RLStrings.GetElementByName(vItems.String, "KCCREDIT_CURRCOMP");
+			var vImporteHaberValue = 0;
+			if(ABSL:Numeric.IsNumeric(vImporteHaberText)){
+				vImporteHaberValue = ABSL:Numeric.ParseFromString(vImporteHaberText);
+			}
+			var vCampo06 = "0.00";
+			vCampo06 = vImporteHaberValue.RoundToString(2,true);
+			//vCampo06.Replace(",","").Replace("-","");
+			var vCampo07 = "0.00";
+			var NumericCampo3 = ABSL:Numeric.ParseFromString(vCampo03);
+			var NumericCampo5 = ABSL:Numeric.ParseFromString(vCampo05);
+			vCampo07 = (NumericCampo3 + NumericCampo5).RoundToString(2,true).Replace(",",".").Replace("-","");
+			
+			var vCampo08 = "0.00";
+			var NumericCampo4 = ABSL:Numeric.ParseFromString(vCampo04);
+			var NumericCampo6 = ABSL:Numeric.ParseFromString(vCampo06);
+			vCampo08 = (NumericCampo4 + NumericCampo6).RoundToString(2,true).Replace(",",".").Replace("-","");
+
+			var vCampo09="0.00";
+			var vCampo10="0.00";
+			
+			
+			var vSaldoFinalText = Library::RLStrings.GetElementByName(vItems.String, "KCEND_BAL_LC_AM");
+			var vSaldoFinallValue = 0;
+			if(ABSL:Numeric.IsNumeric(vSaldoFinalText)){
+				vSaldoFinallValue = ABSL:Numeric.ParseFromString(vSaldoFinalText);
+			}
+			if(vSaldoFinallValue > 0){
+				vCampo09 = vSaldoFinallValue.RoundToString(2,true);
+				//vCampo03.Replace(",","");
+			}
+			else if(vSaldoFinallValue<  0 ){
+				vSaldoFinallValue = vSaldoFinallValue * (-1);
+				vCampo10 = vSaldoFinallValue.RoundToString(2,true);
+				//vCampo04.Replace(",","").Replace("-","");
+			}
+			
+			var vCampo13 = "0.00";
+			var vCampo14 = "0.00";
+			if(vTipoCuenta == "1" || vTipoCuenta == "2" || vTipoCuenta == "3" || vTipoCuenta == "4" || vTipoCuenta == "5"){
+				vCampo13 = vCampo09;
+				vCampo14 = vCampo10;
+			}
+			var vCampo15 = "0.00";
+			var vCampo16 = "0.00";
+			if(vTipoCuenta == "6" || vTipoCuenta == "7" || vTipoCuenta == "8"){
+				vCampo15 = vCampo09;
+				vCampo16 = vCampo10;
+			}
+			
+			
+			
+		
+
+			IsItems = true;
+
+			vCampo03 = vCampo03.Replace(",",".").Replace("-","");
+			vCampo04 = vCampo04.Replace(",",".").Replace("-","");
+			vCampo05 = vCampo05.Replace(",",".").Replace("-","");
+			vCampo06 = vCampo06.Replace(",",".").Replace("-","");
+			vCampo09 = vCampo09.Replace(",",".").Replace("-","");
+			vCampo10 = vCampo10.Replace(",",".").Replace("-","");
+			vCampo15 = vCampo15.Replace(",",".").Replace("-","");
+			vCampo16 = vCampo16.Replace(",",".").Replace("-","");
+
+
+			if(vTipoCuenta != "9"){
+				vStringExport = vStringExport+ vPeriodo  
+							+ vPalote + vCuentaText
+							+ vPalote + vCampo03
+							+ vPalote + vCampo04
+							+ vPalote + vCampo05
+							+ vPalote + vCampo06
+							+ vPalote + vCampo07
+							+ vPalote + vCampo08
+							+ vPalote + vCampo09
+							+ vPalote + vCampo10
+							+ vPalote + "0.00"
+							+ vPalote + "0.00"
+							+ vPalote + vCampo13
+							+ vPalote + vCampo14
+							+ vPalote + vCampo15
+							+ vPalote + vCampo16
+							+ vPalote + "0.00"
+							+ vPalote + "0.00"
+							+ vPalote + "1" 
+							+ vPalote + ""+ "\r\n";
+		}
+	}
+	
+	//- - - - - - - - - - -  Export txt - - - - - - - - - -//
+	var xname : LANGUAGEINDEPENDENT_LONG_Name;
+	var xtype : DocumentTypeCode;
+	var xdesc : Description;
+	var xbinary : basis:BinaryObject;
+
+
+	if(!IsItems){
+		raise msj.Create("E", "No se encontraron datos con los parametros ingresados");
+	}
+	else{
+		this.vExecute = true;
+
+		// - Archivo Generado
+		xname =  "LE" + this.CompanyRuc + this.DateInitial.GetYear() + this.DateInitial.GetMonth() + this.DateInitial.GetDay() + "031700" + "07" + "1111" + ".TXT";
+		xtype.content = "10001";
+		xtype.listID = "10296";
+		xbinary.mimeCode = "text/plain";
+		xbinary.content = Binary.ParseFromString(vStringExport);
+		this.ReportsAttachments.CreateFile(xtype, xname, xname, xdesc, xbinary);
+	}
+	
+	// - Archivo de lectura
+	xname =  "Reporte leído";
+	xtype.content = "10001";
+	xtype.listID = "10296";
+	xbinary.mimeCode = "text/plain";
+	xbinary.content = Binary.ParseFromString(Content);
+	this.ReportsAttachments.CreateFile(xtype, xname, xname, xdesc, xbinary);
+	
+	break;
+}
+

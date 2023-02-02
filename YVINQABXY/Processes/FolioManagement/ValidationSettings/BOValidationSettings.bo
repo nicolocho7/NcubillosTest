@@ -1,0 +1,21 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+
+//Ticket 11275: Validacion para documentos de clientes.
+businessobject BOValidationSettings raises msj{
+	message msj text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+    
+	//Fields
+	[Label("Company")]										element CompanyID						: ID;
+	[Label("Document Type ID")]								element DocumentTypeID					: ID;
+	[Label("Document Type Description")]					element DocumentTypeDescription			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Maximun Amount and currency")]					element MaxAmountnCurrency				: Amount;
+	[Label("Alert Type")]									element AlertType						: CLAlertTypeCode;
+	[Label("Payment Form")]									element PaymentForm						: PaymentFormCode;
+
+	//Actions
+	action DeleteRecord;
+
+	//Associations
+	association ToCompany to Company;
+}

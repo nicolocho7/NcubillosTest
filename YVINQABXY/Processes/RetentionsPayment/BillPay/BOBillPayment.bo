@@ -1,0 +1,53 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+[DeploymentUnit(SupplierInvoicing)]businessobject BOBillPayment raises msj{
+	message msj text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+	//Filters
+	[Label("Company ID")]							element CompanyID						: PartyID;  //Compañia
+	[Label("Supplier ID")]							element SupplierID						: PartyID;  //Proveedor
+	[Label("Start Date")]							element StartDate						: Date;		//Fecha Inicial
+	[Label("End Date")]								element EndDate							: Date;		//Fecha Final
+	[Label("Bill Status")]							element BillStatusF						: CLStatusRetentionBillsCode;
+	[Label("Retention type")]						element RetentionType					: CLRetentionTypeCode;
+	[Label("Folio")]								element Folio							: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Select")]								element IndicatorSave					: Indicator = false;
+	[AlternativeKey][Label("Bp UUID")]								element BPUUID							: UUID;		//UUID
+	[Label("Execution Date")]							element ExecuteDate						: Date;		//Fecha Ejecuion
+
+	node Results [0,n] raises msjresults{ 
+		message msjresults text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+		[Label("Select")]								element Select							: Indicator;  //Para seleccionar el registro
+		[Label("Company ID")]							element CompanyIDResult					: PartyID;  //Compañia
+		[Label("Supplier ID")]							element SupplierIDResult				: PartyID;  //Proveedor
+		[Label("Document Date")]						element DocumentDate					: Date;		//Fecha documento
+		[Label("Accounting Date")]						element AccountingDate					: Date;		//Fecha Contabilizacion
+		[Label("External Reference ID")]				element ExternalReferenceID				: ID;		//ID Documento externo
+		[Label("Bill ID")]								element BillID							: ID;		//ID Factura
+		[Label("Bill ID")]								element BillID2							: BusinessTransactionDocumentID;	//ID Factura
+		[Label("Bill UUID")]							element BillUUID						: UUID;		//UUID Factura
+		[Label("Folio")]								element FolioBill						: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Net Amount")]							element NetAmount						: Amount;	//Importe Neto
+		[Label("Gross Amount")]							element GrossAmount						: Amount;	//Importe Bruto
+		[Label("Retention Amount")]						element RetentionAmount					: Amount;	//Importe Retencion
+		[Label("payment amount")]						element PaymentAmount					: Amount;	//Importe Bruto
+
+		[Label("Net Amount Company Currency")]			element NetAmountCompanyCurrency		: Amount;	//Importe Neto con la moneda de la empresa
+		[Label("Gross Amount Company Currency")]		element GrossAmountCompanyCurrency		: Amount;	//Importe Bruto con la moneda de la empresa
+	
+		[Label("Currency")]								element Currency						: CurrencyCode;
+		[Label("Retention type")]						element RetentionType					: CLRetentionTypeCode;	//Importe Bruto
+		[Label("Bill Status")]							element BillStatus						: CLStatusRetentionBillsCode; //Estado de la factura
+		[Label("Credit Memo ID")]						element ID								: ID;
+		[Label("Credit Memo UUID")]						element CMUUID							: UUID;		//UUID Factura
+	}
+
+	[DependentObject(AttachmentFolder)] node ReportsAttachments;
+	action Search;
+	action CreateCreditMemo;
+	action Compensate;
+	action WSCertRete;
+	action Refresh;
+
+}

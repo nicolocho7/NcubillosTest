@@ -1,0 +1,40 @@
+﻿import ABSL;
+
+var vIsConsistent = true;
+//
+//if(this.Description.IsInitial()){
+	//raise msg.Create("E", "Falto ingresar descripción");
+	//vIsConsistent = false;
+//}
+//
+//if(this.CompanyID.IsInitial()){
+	//raise msg.Create("E", "Falto ingresar empresa");
+	//vIsConsistent = false;
+//}
+//
+//if(this.SetOfBookID.content.IsInitial()){
+	//raise msg.Create("E", "Falto ingresar sistema contable");
+	//vIsConsistent = false;
+//}
+//
+//if(this.TypeReport.IsInitial()){
+	//raise msg.Create("E", "Falto ingresar tipo de reporte");
+	//vIsConsistent = false;
+//}
+//
+//if(this.DateInitial.IsInitial()){
+	//raise msg.Create("E", "Falto ingresar fecha de inicio");
+	//vIsConsistent = false;
+//}
+//
+//if(this.DateEnd.IsInitial()){
+	//raise msg.Create("E", "Falto ingresar fecha de fin");
+	//vIsConsistent = false;
+//}
+//
+////if(this.DateInitial.GreaterEquals(this.DateEnd)){
+	////raise msg.Create("E", "Fecha de inicio no debe ser mayor a fecha de fin");
+	////vIsConsistent = false;
+////}
+
+return vIsConsistent;

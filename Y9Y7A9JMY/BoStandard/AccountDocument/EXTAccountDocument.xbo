@@ -1,0 +1,16 @@
+﻿import AP.Common.GDT;
+import AP.FinancialAccounting.Global;
+
+[Extension] businessobject AP.FinancialAccounting.Global:AccountingDocument {
+ 
+        // You must activate this business object before you can access the extension fields
+        // or messages in script files, forms, and screens.
+
+    
+   		node Item {
+			[Scenario (PES_AccountDocument_item)][Label("Base amount")]		element zBaseAmount		: Amount;
+			[Scenario (PES_AccountDocument_item)][Label("City")]			element zCity			: ID;
+			[Scenario (PES_AccountDocument_item)][Label("Tercero CO")]		element zTercero		: ID;
+            [Scenario (PES_AccountDocument_item)][Label("Des Tercero CO")]	element zDesTerceroCO	: LongText;
+   	    }      
+}

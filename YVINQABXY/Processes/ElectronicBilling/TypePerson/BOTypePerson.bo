@@ -1,0 +1,10 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+[WithAdministrativeData]businessobject BOTypePerson raises msj{
+
+	message msj text "&":LANGUAGEINDEPENDENT_EXTENDED_Text;
+    [Label("Type person ID")]	element TypePersonID		:ID;
+	[Label("Type person Desc")]	element TypePersonDesc		:LANGUAGEINDEPENDENT_LONG_Description;
+	[Label("Country")]			element Country				:CountryCode;
+
+}

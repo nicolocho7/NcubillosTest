@@ -1,0 +1,69 @@
+import AP.Common.GDT;
+import AP.CustomerInvoicing.Global;
+
+[Extension] businessobject AP.CustomerInvoicing.Global:CustomerInvoice {
+	
+	node CustomerInvoice raises msj{
+		
+		message msj text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Scenario(PES_CustomerInvoiceHeader,PES_CustomerInvoiceHeaderV2)][Label("(OLD) Departamento")]	element	ZClienteDepartamento	:	ID;
+		[Scenario(PES_CustomerInvoiceHeader,PES_CustomerInvoiceHeaderV2)][Label("(OLD)")]					element	ZClienteDepartamentoDesc:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Scenario(PES_CustomerInvoiceHeader,PES_CustomerInvoiceHeaderV2)][Label("(OLD) Distrito")]		element	ZClienteDistrito			:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Scenario(PES_CustomerInvoiceHeader,PES_CustomerInvoiceHeaderV2)][Label("(OLD)")]					element	ZClienteDistritoDesc		:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Scenario(PES_CustomerInvoiceHeader,PES_CustomerInvoiceHeaderV2)][Label("(OLD) Provincia")]		element	ZClienteProvincia			:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Scenario(PES_CustomerInvoiceHeader,PES_CustomerInvoiceHeaderV2)][Label("(OLD) Departamento Pe")]	element	ZClienteDepartamento2	:	BusinessPartnerID;
+		[Scenario(PES_CustomerInvoiceHeader,PES_CustomerInvoiceHeaderV2)][Label("(OLD) Distrito Pe")]		element	ZClienteDistrito2			:	BusinessPartnerID;
+		[Scenario(PES_CustomerInvoiceHeader,PES_CustomerInvoiceHeaderV2)][Label("(OLD) Provincia Pe")]		element	ZClienteProvincia2			:	BusinessPartnerID;
+		[Scenario(PES_CustomerInvoiceHeader,PES_CustomerInvoiceHeaderV2)][Label("(OLD)")]						element	ZClienteProvincia2Desc		:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+		//Folio
+		[Scenario(PES_CustomerInvoiceHeader,PES_CustomerInvoiceHeaderV2)][Label("(OLD) Document Type")]				element	ZDocumentType	:	ID;
+		[Scenario(PES_CustomerInvoiceHeader,PES_CustomerInvoiceHeaderV2)][Label("(OLD) Document Type Description")]	element	ZDocumentTypeDescription	:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Scenario(PES_CustomerInvoiceHeader,PES_CustomerInvoiceHeaderV2)][Label("(OLD) External ID")]				element	ZExternalID	:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Scenario(PES_CustomerInvoiceHeader,PES_CustomerInvoiceHeaderV2)][Label("(OLD) No use")]					element	ZReason	:	LANGUAGEINDEPENDENT_EXTENDED_Text;//No use
+		[Scenario(PES_CustomerInvoiceHeader,PES_CustomerInvoiceHeaderV2)][Label("(OLD) Boleta")]					element	ZBoleta	:	Indicator;
+		[Scenario(PES_CustomerInvoiceHeader,PES_CustomerInvoiceHeaderV2)][Label("(OLD) Mixta")]						element	ZMixta	:	Indicator;
+		[Scenario(PES_CustomerInvoiceHeader,PES_CustomerInvoiceHeaderV2)][Label("(OLD) Folio Manual")]				element	ZFolioManual	:	Indicator;
+		[Scenario(PES_CustomerInvoiceHeader,PES_CustomerInvoiceHeaderV2)][Label("(OLD) Folio Manual visible")]		element	ZFolioManualVisible	:	Indicator;
+		[Scenario(PES_CustomerInvoiceHeader,PES_CustomerInvoiceHeaderV2)][Label("(OLD) Customer Invoice Associated")]element	ZCustomerInvoiceAssociated:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Scenario(PES_CustomerInvoiceHeader,PES_CustomerInvoiceHeaderV2)][Label("(OLD) Reason")]					element	ZReason2	:	CLTypeOfCreditNoteCode;
+		//FinFolio
+		[Scenario(PES_CustomerInvoiceHeader)][Label("(OLD) Ubigeo")]	element	ZUbigeo	:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Scenario(PES_CustomerInvoiceHeader)][Label("(OLD) Document With Unique Position")]	element	ZDocumentUniquePosition	:	Indicator;
+		[Scenario(PES_CustomerInvoiceHeader)][Label("(OLD) Description Unique Position")]	element	ZDescriptionUniquePosition	:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Scenario(PES_CustomerInvoiceHeader)][Label("(OLD) ID Product Unique Position")]	element	ZProductUniquePosition	:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Scenario(PES_CustomerInvoiceHeader)]										element ZIsRelease : Indicator;
+		[Scenario(PES_CustomerInvoiceHeader)]										element ZIsSaved   : Indicator;
+		//
+		
+		[Scenario(PES_CustomerInvoiceHeader,PES_CustomerInvoiceHeaderV2)][Label("(OLD) Payment Method (Customer)")]	element	zMethodPayment	: PaymentFormCode;
+		element zEBillingSent:Indicator;
+		element zIsConsistent:Indicator;
+		element ValidaVentaDirecta:Indicator;
+		[Scenario(PES_CustomerInvoiceHeader,PES_CustomerInvoiceHeaderV2)] element TipoImpuestoPropuesto :Indicator;
+
+		//Percepci�n
+		element zCancelNoteCI:Indicator;
+			[Scenario(PES_CustomerInvoiceHeader,PES_CustomerInvoiceHeaderV2)][Label("(OLD) Total Percepcion")]element zTPercepcionCI:Amount;
+			[Scenario(PES_CustomerInvoiceHeader,PES_CustomerInvoiceHeaderV2)][Label("(OLD) Código del bien o servicio")]element zBienOServicioCode : ID;
+			[Scenario(PES_CustomerInvoiceHeader,PES_CustomerInvoiceHeaderV2)][Label("(OLD) Código del bien o servicio")]element zBienOServicioCodes : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Scenario(PES_CustomerInvoiceHeader,PES_CustomerInvoiceHeaderV2)][Label("(OLD) Desc del bien o servicio")]  element zBienOServicioDesc : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			//Para FE
+			[Scenario(PES_CustomerInvoiceHeader,PES_CustomerInvoiceHeaderV2)][Label("(OLD) Código de impuesto")]	element	ZCodigoImpuesto	:	CLCodigoImpuestoCode;
+			[Scenario(PES_CustomerInvoiceHeader,PES_CustomerInvoiceHeaderV2)][Label("(OLD) Gratuita")]  element zGratuita : Indicator;
+			[Scenario(PES_CustomerInvoiceHeader,PES_CustomerInvoiceHeaderV2)][Label("(OLD) Monto Total Gratuita")]  element zMontoTotal : Amount;
+		node Item raises msjItem{
+			message msjItem text "&":LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Scenario(PES_CustomerInvoiceItem)][Label("(OLD) ID PER1")]	element zPer1IDCI:ID;
+			[Scenario(PES_CustomerInvoiceItem)][Label("(OLD) % PER1")]	element zPer1PercentCI:DecimalValue;
+			[Scenario(PES_CustomerInvoiceItem)][Label("(OLD) VR RPER1")]element zPer1AmountCI:Amount;
+			[Scenario(PES_CustomerInvoiceItem)][Label("(OLD) WMA ID RPER1")]element zPer1AmountMinimunCI:ID;
+			[Scenario(PES_CustomerInvoiceItem)][Label("(OLD) Bank Account ID PER1")]element zPer1BankCI:ID;
+			//Factura Gratuita
+			[Scenario(PES_CustomerInvoiceItem)][Label("(OLD) Indicator Gratuita")]element zItemGratuita:Indicator;
+			[Scenario(PES_CustomerInvoiceItem)]								element zProposedValueInd:Indicator;//Para controlar la asignación del "Costo Transferencia Gratuita"
+			[Scenario(PES_CustomerInvoiceItem)][Label("(OLD) Costo Transferencia Gratuita")]element zCostoTrnsferGratuita:Amount;
+			[Scenario(PES_CustomerInvoiceItem)][Label("(OLD) Costo Total Transferencia Gratuita")]element zCostoTotalTrnsferGratuita:Amount;
+
+		}
+	}		
+}

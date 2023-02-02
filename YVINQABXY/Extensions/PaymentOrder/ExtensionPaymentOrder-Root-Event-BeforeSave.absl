@@ -1,0 +1,147 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: PaymentOrder
+		Node: Root
+		Event: BeforeSave 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script when:
+		- the instance of the business object is being saved.
+		- the instance of the business object is created from other sources like web services, preview screen, and so on.
+*/
+
+import ABSL;
+import AP.SupplierInvoicing.Global;
+import AP.FO.TaxArrangement.Global;
+var QueryConfiguration = BOConfigurationSolution.QueryByElements;
+var ExecuteQueryConfiguration = QueryConfiguration.Execute();
+var Validation = false;
+if(ExecuteQueryConfiguration.Count()>0){
+	if(ExecuteQueryConfiguration.GetFirst().IsSet()){
+		if(ExecuteQueryConfiguration.GetFirst().Status== CLStatusSolutionCode.CO_01){
+			Validation = true;
+		}
+	}
+}
+if(ExecuteQueryConfiguration.Count()<=0 || Validation == true){
+	//Creacion del Folio
+	if(this.Status.PaymentExecutionStatusCode == "4"){
+		if(this.PaymentExplanation.IsSet()){
+			var Payments = this.PaymentExplanation.Item;
+			if(Payments.Count()> 0 ){
+				var DataFact;
+				var PruebaCrear = 0;
+				foreach(DataFact in Payments){
+					var IDFact = DataFact.InternalInvoiceReference;
+					if(!IDFact.IsInitial()){
+						var IDFactIntern = IDFact.ID.RemoveLeadingZeros();
+						if(!IDFactIntern.IsInitial()){
+							var querySupplierInvoice = SupplierInvoice.QueryByElements;
+							var selectionParams = querySupplierInvoice.CreateSelectionParams();
+							selectionParams.Add(querySupplierInvoice.ID.content, "I", "EQ", IDFactIntern.content);
+							var resultData = querySupplierInvoice.Execute(selectionParams);
+							if(resultData.Count() > 0){
+								var InfoFact;
+								foreach(InfoFact in resultData){
+									if(InfoFact.TaxCalculation.IsSet()){
+										var TaxtCalculation = InfoFact.TaxCalculation;
+										if(TaxtCalculation.WithholdingTaxDetails.Count() > 0){
+											var Detailstax = TaxtCalculation.WithholdingTaxDetails;
+											var ForDetail;
+											foreach(ForDetail in Detailstax){
+												if(!ForDetail.TaxationCharacteristicsCode.IsInitial()){
+													var DetailCode = ForDetail.TaxationCharacteristicsCode;
+													var DeTailContent = DetailCode.content;
+													var Contenidf = DeTailContent.Find("R4");
+													if(Contenidf <= 0){
+														Contenidf = DeTailContent.Find("RP");
+													}
+													var No = DeTailContent.Find("R1");
+													//var hola = Code.Collection;
+													if(Contenidf > 0){
+														if(this.ZIDFolioPayment.IsInitial()){
+															PruebaCrear = PruebaCrear + 1;
+														
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+				if(PruebaCrear > 0){
+					var QryFolioPayment = BOPaymentFolio.QueryByElements;
+					var ParamsFolioPayment = QryFolioPayment.CreateSelectionParams();
+						ParamsFolioPayment.Add(QryFolioPayment.CompanyID,"I","EQ",this.CompanyID);
+						//ParamsFolioPayment.Add(QryFolioPayment.SupplierID ,"I","EQ",this.BusinessPartnerID);
+						ParamsFolioPayment.Add(QryFolioPayment.Inactive,"I","EQ", false);
+					var ResultFolcioPayment = QryFolioPayment.Execute(ParamsFolioPayment).GetFirst();
+					var QryFolioPaymentRelation = BORelationFolioPayment.QueryByElements;
+					var ParamsRelationPayment = QryFolioPaymentRelation.CreateSelectionParams();
+						ParamsRelationPayment.Add(QryFolioPaymentRelation.UUIDPayment.content,"I","EQ", this.UUID.content);
+						//ParamsRelationPayment.Add(QryFolioPaymentRelation.IDFolio, "I", "EQ", Folio);
+					var ReusltRelation = QryFolioPaymentRelation.Execute(ParamsRelationPayment).GetFirst();
+					//var Hola = BORelationFolioPayment.Retrieve(this.UUID);
+					if(!ReusltRelation.IsSet()){
+						if(ResultFolcioPayment.IsSet()){
+							if(ResultFolcioPayment.CorrelativeCurrent.IsInitial()){
+								ResultFolcioPayment.CorrelativeCurrent = ResultFolcioPayment.CorrelativeInitial;
+							}else{
+								ResultFolcioPayment.CorrelativeCurrent = ResultFolcioPayment.CorrelativeCurrent + 1;
+							}
+							var Consecutivo = ResultFolcioPayment.CorrelativeCurrent.RoundToString(0,true);
+							var ContConsecutivo = Consecutivo.Length();
+							if(ContConsecutivo < ResultFolcioPayment.CorrelativeLength){
+								while (ContConsecutivo<ResultFolcioPayment.CorrelativeLength){
+									Consecutivo = "0" + Consecutivo;
+									ContConsecutivo = ContConsecutivo + 1;
+								}
+							}else{
+								Consecutivo = Consecutivo.Substring(0, ResultFolcioPayment.CorrelativeLength);
+							}
+							var Folio = ResultFolcioPayment.Serie+"-"+Consecutivo;
+							this.ZIDFolioPayment = Folio;
+							var RelationFolio : elementsof BORelationFolioPayment;
+							RelationFolio.UUIDPayment = this.UUID;
+							RelationFolio.IDFolio = Folio;
+							if(!RelationFolio.IDFolio.IsInitial()){
+								var DtaRelation = BORelationFolioPayment.Create(RelationFolio);
+								var Referencias : elementsof BORelationFolioPayment.Actions;
+								if(this.PaymentExplanation.IsSet()){
+									if(this.PaymentExplanation.Item.Count() > 0){
+										var Items = this.PaymentExplanation.Item;
+										var Data;
+										foreach(Data in Items){
+											Referencias.Clear();
+											if(!Data.ExternalInvoiceReference.IsInitial()){
+												if(!Data.ExternalInvoiceReference.ID.IsInitial()){
+													Referencias.Oedparner = Data.ExternalInvoiceReference.ID.content.RemoveLeadingZeros();
+												}
+											}
+											if(!Data.InternalInvoiceReference.IsInitial()){
+												if(!Data.InternalInvoiceReference.ID.IsInitial()){
+													Referencias.ID_Fact = Data.InternalInvoiceReference.ID.content.RemoveLeadingZeros();
+												}
+											}
+											DtaRelation.Actions.Create(Referencias);		
+										}
+									}
+								}
+							}
+						} 
+					}
+				}
+			}
+		}
+	}
+}
+	
+
+	 

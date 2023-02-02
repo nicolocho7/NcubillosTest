@@ -1,0 +1,111 @@
+﻿import ABSL;
+import AP.Common.GDT;
+import AP.FinancialAccounting.Global;
+
+var result : DataType::LANGUAGEINDEPENDENT_Name;
+var NumericResult;
+var sOriginalString = Parameter::String;
+var sCode = Parameter::Code;
+var amount = Numeric.ParseFromString(sOriginalString);
+var Dependent = Parameter::Dependent;
+var ValueDependent = Parameter::ValueDependent;
+var StrinXML = Parameter::vLogicXml;
+var StringLogicBasic : DataType::Date;
+var StringLogicBasicDate = sOriginalString;
+
+StringLogicBasic = sOriginalString;
+var vDate1 = StringLogicBasicDate.Substring(0,10);
+var vYear = StringLogicBasicDate.Substring(0,4);
+var vMount = StringLogicBasicDate.Substring(5,2);
+var vDay = StringLogicBasicDate.Substring(8,2);
+
+if(!sOriginalString.IsInitial() && !sCode.IsInitial())
+{
+	switch(sCode)
+	{
+		case "1" { result = vDate1;}
+		case "2" { result = vDay + "-" + vMount +"-" + vYear;}
+		case "3" { result = vDate1.Replace("-","/");}
+		case "4" { result = vDay + "/" + vMount +"/" + vYear;}
+		case "5" { result = sOriginalString.Substring(0,2).Replace(",",".");}
+		case "6" { result = amount.RoundToString(2);}
+		//case "7" { if()}// Recorta 
+		//case "8" { result = amount.RoundToString(2);}
+		case "9" {	var vContador = 0;
+				    var IndicatorExist = false;
+					while (vContador != -1)
+					{              
+					  var  vFieldValueDependent = ValueDependent.Substring(0, vContador);                                     
+					  var  newrow = vContador + 1;
+					  ValueDependent = ValueDependent.Substring(newrow);
+					  vContador = ValueDependent.Find(",");   
+						  if(vFieldValueDependent == sOriginalString)
+						  {
+							result = Library::RLStrings.GetElementByName(StrinXML, Dependent);
+							var ValidationNumber;
+							ValidationNumber = Numeric.IsNumeric(result);
+							
+							if(ValidationNumber == true)
+							{
+								result = Numeric.ParseFromString(result).RoundToString(2).Replace(",", ".");
+							}
+							break;
+						  }else{
+							result = "0.00";
+						  }        
+					}
+				}
+		case "10" {	 
+					var vFielDependet = Dependent;
+					var vFielTecnicalID = sOriginalString;
+					vFielDependet = Library::RLStrings.GetElementByName(StrinXML, Dependent);
+					var numericDependent;
+					numericDependent = Numeric.ParseFromString(vFielDependet);
+					var numericOriginalData;
+					numericOriginalData = Numeric.ParseFromString(vFielTecnicalID);
+					NumericResult = numericDependent / numericOriginalData;
+					result = NumericResult.RoundToString(2).Replace(",", ".");
+	
+
+				   }//DIVIDIR 
+		
+		case "11" {
+					while(true)
+					{
+						var vFieldDependent = Dependent;
+						var vFieldValueDependet = ValueDependent;
+						var QueryFixed = FixedAsset.QueryByClassAndName;
+							vFieldDependent = Library::RLStrings.GetElementByName(StrinXML, Dependent);
+						var ParameterQuery = QueryFixed.CreateSelectionParams();
+							ParameterQuery.Add(QueryFixed.Key.ID.content, "I", "EQ", vFieldDependent.Trim());//"0000"); //
+						var ResultQuery = QueryFixed.Execute(ParameterQuery).GetFirst();
+						if(!ResultQuery.IsSet()){break;}
+						if(ResultQuery.SetOfBooks.Count()<0){break;}
+						var DatraDateSet = ResultQuery.SetOfBooks.Where(n=>n.SetOfBooksID.content == vFieldValueDependet.Trim()).GetFirst(); ////"8090").GetFirst(); 
+						if(!DatraDateSet.IsSet()){break;}
+						result = DatraDateSet.FirstAcquisitionDate.ToString();
+						break;
+					}
+				
+				  }
+
+		case "12"{
+				 
+				 while(true)
+				 {
+					if(sOriginalString == "101"){result = sOriginalString + "A"; break;}
+					if(sOriginalString == "010" || sOriginalString == "015" || sOriginalString == "020"){result = sOriginalString + "M"; break;}
+					if(sOriginalString == "080" || sOriginalString == "990" || sOriginalString == "991"){result = sOriginalString + "C"; break;}
+					break;
+				 }
+		
+				 } 
+		case "13"{result = vYear + vMount + "00";} 
+		case "14"{result = sOriginalString.Substring(0,2); }
+		case "15"{result = sOriginalString.Substring(3,4); }
+		case "16"{result = sOriginalString.Substring(5,6); }
+	}
+}
+
+
+return result;

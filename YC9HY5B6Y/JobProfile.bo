@@ -1,0 +1,37 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+[ChangeHistory] businessobject JobProfile raises empTypeMand {
+	
+	message empTypeMand text "Employment Type is mandatory";
+
+	[AlternativeKey]	[Label	("Job ID")]				element	id				:	ID;
+						[Label	("Title")]				element	title			:	LONG_Description;
+						[Label	("Posting Date")]		element postingDate		:	Date;
+						[Label	("Work Area")]			element	domain			:	DomainCode;
+						[Label	("Employment Type")]	element empType			:	EmploymentTypeCode;
+						[Label	("Hiring Manager Id")]	element hireMgrId		:	EmployeeID;
+						[Label	("Hiring Manager")]		element hireMgrName		:	LANGUAGEINDEPENDENT_LONG_Name;
+						[Label	("Country")]			element jobLocation		:	CountryCode;
+						[Label	("End Date")]			element jobEndDate		:	Date;
+						[Label	("Status")]				element status			:	JobStatusCode;
+						[Label	("Create On")]			element creationDate	:	Date;
+						[Label	("Create By")]			element	createBy		:	LANGUAGEINDEPENDENT_LONG_Name;
+						[Label	("Changed by")]			element chgdBy			:	LANGUAGEINDEPENDENT_LONG_Name;
+						[Label	("Changed On")]			element chgdOn			:	Date;
+
+						action publish;
+						action obselete;
+						action close;
+						action callWebService;
+
+						[DependentObject(TextCollection)] node  TextCollection;
+
+						node candidatesApplied [0,n]
+						{
+							[Label	("Employee Id")]		element empID		:	EmployeeID;
+							[Label	("Offer Status")]		element offerStatus	:	OfferStatusCode;
+							
+							action sendMail;	
+						}
+
+}	

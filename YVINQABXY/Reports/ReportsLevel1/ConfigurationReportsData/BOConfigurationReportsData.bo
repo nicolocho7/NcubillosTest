@@ -1,0 +1,40 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+[WithAdministrativeData]businessobject BOConfigurationReportsData raises msg {
+	message msg text "&"	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	
+	[AlternativeKey][Label("ID")]	element ConfRepoDataID		:	ID;		
+	[Label("ServiceID")]			element	ServiceID			:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Description")]			element Description			:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("ReportID")]				element ReportID			:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Nombre Libro")]			element NameBook			:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+	
+	//Nombre Libro
+	[Label("RUC de la Empresa")]	   element zRUC					:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Identificador de libro")]  element zIdentifyBook		:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+	[WithAdministrativeData] node Filters [0,n] raises msgFilters{
+		message msgFilters text "&"	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+		[Label("ReportID")]				element FilterReportID		:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Report Description")]	element ReportDescription	:	LANGUAGEINDEPENDENT_EXTENDED_Text;		
+		[Label("VariableID")]			element FiltersVariableID	:	ID;
+		[Label("Description")]			element FiltersDescription	:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Data Type")]			element	DataType			:	CLDataTypeReportsCode;		
+		[Label("VariableID")] element FiltersReportID :	ID; //not use
+	}
+
+	[WithAdministrativeData] node Select [0,n] raises msgSelect{
+		message msgSelect text "&" :	LANGUAGEINDEPENDENT_EXTENDED_Text;		
+		
+		[Label("ReportID")]			element SelectsReportID			:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("VariableID")]		element selectVariableID		:	ID;
+		[Label("Description")]		element	SelectDescription		:   LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("VariableID")]		element SelectReportID : ID; //not use
+	
+
+	} 
+	
+	action aDelete;
+
+}

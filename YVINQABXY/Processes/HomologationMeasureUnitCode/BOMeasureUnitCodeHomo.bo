@@ -1,0 +1,12 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BOMeasureUnitCodeHomo raises msj{
+	message msj text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+	[Label("Company")]							element CompanyID			: OrganisationalCentreID;
+
+	node Homologations[0,n]{
+		[Label("Quantity type code SAP")]		element TypeCodeSAP			: MeasureUnitCode;
+		[Label("Quantity type code Sunat")]		element TypeCodeSunat		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	}
+}

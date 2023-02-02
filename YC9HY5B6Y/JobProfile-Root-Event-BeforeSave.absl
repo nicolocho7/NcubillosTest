@@ -1,0 +1,73 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: JobProfile
+		Node: Root
+		Event: BeforeSave 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script when:
+		- the instance of the business object is being saved.
+		- the instance of the business object is created from other sources like web services, preview screen, and so on.
+*/
+
+import ABSL;
+import AP.PC.IdentityManagement.Global;
+
+var identityUUID = Context.GetCurrentIdentityUUID();
+var qryIdentity = Identity.QueryByElements;
+var selParam = qryIdentity.CreateSelectionParams();
+selParam.Add(qryIdentity.UUID.content,"I","EQ",identityUUID.content);	// parametros del query
+																		// qryIdentity.UUID.content = campo que se toma como filtro (where)
+																		// "I" incluye, "EQ" igual a 
+																		// identityUUID.content valor a filtrar.
+var identResult = qryIdentity.Execute(selParam);
+var idenFinalResult = identResult.GetFirst();
+
+if(idenFinalResult.IsSet())
+{
+	// To default Created By/Changed By
+	if(!this.createBy.IsInitial())
+	{
+		this.chgdBy = idenFinalResult.FormattedName;
+	}
+	if(this.createBy.IsInitial())
+	{
+		this.createBy = idenFinalResult.FormattedName;
+	}
+}
+
+// To default Created On/Changed On
+if(!this.creationDate.IsInitial())
+{
+	this.chgdOn = Context.GetCurrentUserDate();
+}
+if(this.creationDate.IsInitial())
+{
+	this.creationDate = Context.GetCurrentUserDate();
+}
+
+if(this.status.IsInitial())
+{
+	this.status = JobStatusCode.CO_01;
+}
+
+
+//Get next number from number range and convert to string
+var JobIDString: DataType::ID;
+var JobNumber = NumberRange.DrawNumber("RECORD");
+JobIDString = JobNumber.ToString();
+// If job ID is not filled, derive it from the BCO data mainatined for the employment type of Job
+if(this.id.IsInitial())
+{
+var numberbco: NUMBERDERIVATIONJOBID;
+ var qrybco = numberbco.QueryByElements;
+var selparam = qrybco.CreateSelectionParams();
+selparam.Add(qrybco.EMPTYPE,"I", "EQ",this.empType);
+var bcoresult = qrybco.Execute(selparam);
+var jobprefix = bcoresult.GetFirst().PREFIX;
+var jobseperator = bcoresult.GetFirst().SEPARATOR;
+this.id = jobprefix.Concatenate(jobseperator).Concatenate(JobIDString);
+}

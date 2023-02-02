@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UISwitch xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="YC9HY5B6Y_HiringManagerRole" nameTextPoolId="YC9HY5B6Y_HIROLE54797F36418B64B1" descriptionTextPoolId="YC9HY5B6Y_HIRIONE75F96823904014D" xmlns="http://www.sap.com/a1s/cd/oberon/uimodelchange-1.0">
+ <TextPool xmlns="">
+  <TextBlock language="EN" masterLanguage="true" xmlns="http://www.sap.com/a1s/cd/oberon/base-1.0">
+   <TextPoolEntry id="YC9HY5B6Y_HiringManagerRoleNAME" textUuid="YC9HY5B6Y_HIROLE54797F36418B64B1" text="HiringManagerRole" textCategory="XTXT"/>
+   <TextPoolEntry id="YC9HY5B6Y_HiringManagerRoleDESCRIPTION" textUuid="YC9HY5B6Y_HIRIONE75F96823904014D" text="UI Switch for the role Hiring Manager" textCategory="YTXT"/>
+  </TextBlock>
+ </TextPool>
+</UISwitch>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MassDataRunObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://sap.com/ByD/PDI/MassDataRunObjectDefinition">
+  <MdroEsrNameSpace xmlns="">http://0004019099-one-off.sap.com/YVINQABXY_</MdroEsrNameSpace>
+  <MdroEsrName xmlns="">MassDataRun4</MdroEsrName>
+  <MdroPrxName xmlns="">YVINQABXY_MAN41737E30841D6CF19</MdroPrxName>
+  <ParallelProcessing xmlns="" />
+  <ApplicationLogDetailLevelCode xmlns="">5</ApplicationLogDetailLevelCode>
+  <ApplicationLogRetentionTimeCode xmlns="">P1D</ApplicationLogRetentionTimeCode>
+  <AccessControlledBoList xmlns="">
+    <AccessControlledBo>
+      <ActionEntity>
+        <BoEsrNameSpace>http://0004019099-one-off.sap.com/YVINQABXY_</BoEsrNameSpace>
+        <BoEsrName>BORelationFolioPayment</BoEsrName>
+        <BoPrxName>YVINQABXY_BONT327CFBADFF795B0B</BoPrxName>
+        <BoEsrNodeName>Root</BoEsrNodeName>
+        <BoPrxNodeName>ROOT4F903855210031B0</BoPrxNodeName>
+        <BoEsrEntityName>ConsumoWS</BoEsrEntityName>
+        <BoPrxEntityName>CONSUMOWSF1DE6A196B5F9BF9</BoPrxEntityName>
+      </ActionEntity>
+      <ActionPath>\TO_PARENT</ActionPath>
+      <QueryEntity>
+        <BoEsrNameSpace>http://0004019099-one-off.sap.com/YVINQABXY_</BoEsrNameSpace>
+        <BoEsrName>BORelationFolioPayment</BoEsrName>
+        <BoPrxName>YVINQABXY_BONT327CFBADFF795B0B</BoPrxName>
+        <BoEsrNodeName>Overview01</BoEsrNodeName>
+        <BoPrxNodeName>OVERVIEW01FD6765E04180CBFE</BoPrxNodeName>
+        <BoEsrEntityName>QueryByElements</BoEsrEntityName>
+        <BoPrxEntityName>QUERY_BY_ELEMENTS</BoPrxEntityName>
+      </QueryEntity>
+      <QueryParameterList>
+        <QueryParameter>
+          <QueryEsrParameterName>processed</QueryEsrParameterName>
+          <QueryPrxParameterName>PROCESROOT5427BC0100328F09</QueryPrxParameterName>
+          <QueryPrxParameterDataType>APC_V_INDICATOR</QueryPrxParameterDataType>
+          <MdroEsrNodeName>SelectByprocessed</MdroEsrNodeName>
+          <MdroPrxNodeName>SEL_BY_PRED625BE825BE17751F</MdroPrxNodeName>
+          <QueryParameterValueList>
+            <QueryParameterValue>
+              <InclusionExclusionCode>I</InclusionExclusionCode>
+              <IntervalBoundaryTypeCode>EQ</IntervalBoundaryTypeCode>
+              <LowerBoundaryValue />
+            </QueryParameterValue>
+          </QueryParameterValueList>
+        </QueryParameter>
+      </QueryParameterList>
+    </AccessControlledBo>
+  </AccessControlledBoList>
+</MassDataRunObject>

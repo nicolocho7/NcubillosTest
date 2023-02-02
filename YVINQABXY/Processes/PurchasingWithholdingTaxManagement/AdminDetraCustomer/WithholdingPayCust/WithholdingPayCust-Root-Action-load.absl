@@ -1,0 +1,57 @@
+/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: WithholdingPayCust
+		Node: Root
+		Action: load 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+
+import ABSL;
+import AP.Common.GDT as apCommonGDT;
+import BASIS.Global as basis;
+
+var msgCompanyCondition = "Falto ingresar la compa�ia.";
+var MsgDate="La fecha Final no puede ser menor a la fecha inicial";
+
+var QryConfig ;
+var ParameAdmin;
+var ResAdminDetra;
+QryConfig = AdminDetraCust.QueryByElements;
+if (!this.CompanyID.IsInitial()){
+
+	ParameAdmin = QryConfig.CreateSelectionParams();
+	ParameAdmin.Add(QryConfig.CompanyID, "I", "EQ", this.CompanyID);
+	if (!this.InvoiceID.IsInitial()){
+	   ParameAdmin.Add(QryConfig.InvoiceID, "I", "EQ", this.InvoiceID);
+	}
+	if (!this.CustomerID.IsInitial()){
+	   ParameAdmin.Add(QryConfig.CustomerID, "I", "EQ", this.CustomerID);
+	}
+	if(!this.InitialDate.IsInitial() && !this.EndDate.IsInitial()){
+		if(this.EndDate >= this.InitialDate){
+			ParameAdmin.Add(QryConfig.PostingDate, "I", "BT", this.InitialDate, this.EndDate);
+		}
+	}
+	ParameAdmin.Add(QryConfig.StatusDocument, "I", "EQ", "1");
+	ResAdminDetra = QryConfig.Execute(ParameAdmin);
+}else{
+	raise msj.Create("E", msgCompanyCondition);	
+}
+//Set file Structure	
+var SI_nodo : elementsof this.Positions;
+var strLine = "";
+this.Positions.Delete();
+if(ResAdminDetra.Count() > 0){
+	this.Total.Clear();
+	//Head
+	foreach(var Row in ResAdminDetra){   
+		var NodoTB2Data = this.Positions.Create();
+			NodoTB2Data.ToAdminDetraCust = Row;	
+	}
+}
+

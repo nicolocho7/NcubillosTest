@@ -1,0 +1,279 @@
+﻿
+import ABSL;
+import AP.CustomerInvoicing.Global;
+
+var insCustomerInv = CustomerInvoice.Retrieve(this.DocUUID);
+
+if (insCustomerInv .IsSet()){	
+	this.ExternalID = insCustomerInv.ZExternalID;
+	this.DocID = insCustomerInv.ID;
+}
+
+if(this.ID.IsInitial()){
+	var Code = "BOSENLOGEB";
+	var InsBOBuildIDV2 = BOBuildIDV2.Retrieve(Code);
+	if(InsBOBuildIDV2.IsSet())
+	{
+		InsBOBuildIDV2.Increase();		
+	}else
+	{
+		var StructureBOBuildIDV2 : elementsof BOBuildIDV2;
+		StructureBOBuildIDV2.ID = Code;
+		StructureBOBuildIDV2.description = "Send log Electronica Billing";
+		StructureBOBuildIDV2.UUID.content = UUID.Generate();
+		InsBOBuildIDV2 = BOBuildIDV2.Create(StructureBOBuildIDV2);
+		InsBOBuildIDV2.Increase();
+	}
+
+	this.ID = InsBOBuildIDV2.consecutive;
+}
+//if (this.ID.IsInitial())
+//{
+	//
+	//var queryBuildID = BOBuildID.QueryByElements;
+	//var paramBuildID = queryBuildID.CreateSelectionParams();
+	//paramBuildID.Add(queryBuildID.ID, "I", "EQ", "BOSENLOGEB");
+	//var resultBuildID = queryBuildID.Execute(paramBuildID).GetFirst();
+	//if (resultBuildID.IsSet())
+	//{
+		//resultBuildID.consecutive = resultBuildID.consecutive + 1;
+		//this.ID = resultBuildID.consecutive.ToString();
+		//this.UUID.content = UUID.Generate();
+	//}
+	//else
+	//{
+		//this.ID = "1";
+		//this.UUID.content = UUID.Generate();
+		////-- create new register
+		//var insBuildID = BOBuildID.Create();
+		//if (insBuildID.IsSet())
+		//{
+			//insBuildID.consecutive = 1;
+			//insBuildID.description = "Send log Electronica Billing";
+			//insBuildID.ID = "BOSENLOGEB";
+			//insBuildID.UUID.content = UUID.Generate();
+		//}
+	//}
+//}
+
+
+this.inconsistent = true;
+this.Invoice();
+this.GetDocument();
+//-------------------Loging WS-------------------//
+
+
+//-------------------Bulding structure EBilling-------------------//
+
+
+/*var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+var msgType = "Falta ingresar tipo de documento.";
+var msgDescription = "Falta ingresar tipo de descripción.";
+var msgDescription1 = "Falta ingresar Compañia.";
+var msgDescription2 = "Falta ingresar estado.";
+var msgDescription3 = "Falta ingresar proveedor.";
+var msgDescription4 = "Falta ingresar fecha de creación.";
+var msgDescription5 = "Falta ingresar fecha de envío.";
+var msgDescription6 = "Falta ingresar usuario de envio.";
+var msgDescription7 = "Falta ingresar Fecha de reenvio.";
+var msgDescription8 = "Falta ingresar Hora de Reevio.";
+var msgDescription9 = "Falta ingresar usuario de Reenvio.";
+var msgDescription10 = "Falta ingresar Detalles de Solicitud.";
+var msgDescription11 = "Falta ingresar Interface de respuesta.";
+var msgDescription12 = "Falta ingresar tracking.";
+var msgDescription13 = "Falta ingresar mensaje externo.";
+var msgDescription14 = "Falta ingresar Url del documento.";
+
+if (LanguageCode != "ES")
+{
+ msgType = "Missing type of document.";
+ msgDescription = "missing type of description";
+ msgDescription1 = "missing Compañy.";
+ msgDescription2 = "missing status.";
+ msgDescription3 = "missing supplier.";
+ msgDescription4 = "missing date creation.";
+ msgDescription5 = "missing send date.";
+ msgDescription6 = "missing user send.";
+ msgDescription7 = "Missing resend date.";
+ msgDescription8 = "Missing resend hour.";
+ msgDescription9 = "Missing ingresar resend user.";
+ msgDescription10 = "missing request details.";
+ msgDescription11 = "missing iterface response.";
+ msgDescription12 = "Missing tracking.";
+ msgDescription13 = "Missing esternal Message.";
+ msgDescription14 = "Missing URL document.";
+}
+
+
+if (this. CompanySuIn.IsInitial()){
+raise msg.Create("E", msgType);
+this.inconsistent = false;
+}
+
+if(this.StatusSuIn.IsInitial()){
+raise msg.Create("E", msgDescription);
+this.inconsistent = false;
+}
+if(this.IDSupplierSuIn.IsInitial()){
+raise msg.Create("E", msgDescription);
+this.inconsistent = false;
+}
+if(this.CreationDateSuIn.IsInitial()){
+raise msg.Create("E", msgDescription);
+this.inconsistent = false;
+}
+if(this.SendDateSuIn.IsInitial()){
+raise msg.Create("E", msgDescription);
+this.inconsistent = false;
+}
+if(this.UserSendSuIn.IsInitial()){
+raise msg.Create("E", msgDescription);
+this.inconsistent = false;
+}
+if(this.DateResendSuIn.IsInitial()){
+raise msg.Create("E", msgDescription);
+this.inconsistent = false;
+}
+
+if(this.HourResendSuIn.IsInitial()){
+raise msg.Create("E", msgDescription);
+this.inconsistent = false;
+}
+if(this.UserResendSuIn.IsInitial()){
+raise msg.Create("E", msgDescription);
+this.inconsistent = false;
+}
+
+if(this.RequestDetailSuIn.IsInitial()){
+raise msg.Create("E", msgDescription);
+this.inconsistent = false;
+}
+
+if(this.InterfaceResponseSuIn.IsInitial()){
+raise msg.Create("E", msgDescription);
+this.inconsistent = false;
+}
+
+if(this.TrackingIDSuIn.IsInitial()){
+raise msg.Create("E", msgDescription);
+this.inconsistent = false;
+}
+
+if(this.ExternalMessageSuIn	.IsInitial()){
+raise msg.Create("E", msgDescription);
+this.inconsistent = false;
+}
+
+if(this.UrlDocumentSuIn.IsInitial()){
+raise msg.Create("E", msgDescription);
+this.inconsistent = false;
+}
+*/
+
+
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+var msgType = "Falta ingresar tipo de documento.";
+var msgDescription = "Falta ingresar tipo de descripción.";
+var msgDescription1 = "Falta ingresar Compañia.";
+var msgDescription2 = "Falta ingresar estado.";
+var msgDescription3 = "Falta ingresar proveedor.";
+var msgDescription4 = "Falta ingresar fecha de creación.";
+var msgDescription5 = "Falta ingresar fecha de envío.";
+var msgDescription6 = "Falta ingresar usuario de envio.";
+var msgDescription7 = "Falta ingresar Fecha de reenvio.";
+var msgDescription8 = "Falta ingresar Hora de Reevio.";
+var msgDescription9 = "Falta ingresar usuario de Reenvio.";
+var msgDescription10 = "Falta ingresar Detalles de Solicitud.";
+var msgDescription11 = "Falta ingresar Interface de respuesta.";
+var msgDescription12 = "Falta ingresar tracking.";
+var msgDescription13 = "Falta ingresar mensaje externo.";
+var msgDescription14 = "Falta ingresar Url del documento.";
+
+if (LanguageCode != "ES")
+{
+ msgType = "Missing type of document.";
+ msgDescription = "missing type of description";
+ msgDescription1 = "missing Compañy.";
+ msgDescription2 = "missing status.";
+ msgDescription3 = "missing supplier.";
+ msgDescription4 = "missing date creation.";
+ msgDescription5 = "missing send date.";
+ msgDescription6 = "missing user send.";
+ msgDescription7 = "Missing resend date.";
+ msgDescription8 = "Missing resend hour.";
+ msgDescription9 = "Missing ingresar resend user.";
+ msgDescription10 = "missing request details.";
+ msgDescription11 = "missing iterface response.";
+ msgDescription12 = "Missing tracking.";
+ msgDescription13 = "Missing esternal Message.";
+ msgDescription14 = "Missing URL document.";
+}
+
+//
+//if (this.CompanySuIn.IsInitial()){
+//raise msg.Create("E", msgType);
+//this.inconsistent = false;
+//}
+//
+//if(this.StatusSuIn.IsInitial()){
+//raise msg.Create("E", msgDescription);
+//this.inconsistent = false;
+//}
+//if(this.IDSupplierSuIn.IsInitial()){
+//raise msg.Create("E", msgDescription);
+//this.inconsistent = false;
+//}
+//if(this.CreationDateSuIn.IsInitial()){
+//raise msg.Create("E", msgDescription);
+//this.inconsistent = false;
+//}
+//if(this.SendDateSuIn.IsInitial()){
+//raise msg.Create("E", msgDescription);
+//this.inconsistent = false;
+//}
+//if(this.UserSendSuIn.IsInitial()){
+//raise msg.Create("E", msgDescription);
+//this.inconsistent = false;
+//}
+//if(this.DateResendSuIn.IsInitial()){
+//raise msg.Create("E", msgDescription);
+//this.inconsistent = false;
+//}
+//
+//if(this.HourResendSuIn.IsInitial()){
+//raise msg.Create("E", msgDescription);
+//this.inconsistent = false;
+//}
+//if(this.UserResendSuIn.IsInitial()){
+//raise msg.Create("E", msgDescription);
+//this.inconsistent = false;
+//}
+//
+//if(this.RequestDetailSuIn.IsInitial()){
+//raise msg.Create("E", msgDescription);
+//this.inconsistent = false;
+//}
+//
+//if(this.InterfaceResponseSuIn.IsInitial()){
+//raise msg.Create("E", msgDescription);
+//this.inconsistent = false;
+//}
+//
+//if(this.TrackingIDSuIn.IsInitial()){
+//raise msg.Create("E", msgDescription);
+//this.inconsistent = false;
+//}
+//
+//if(this.ExternalMessageSuIn	.IsInitial()){
+//raise msg.Create("E", msgDescription);
+//this.inconsistent = false;
+//}
+//
+//if(this.UrlDocumentSuIn.IsInitial()){
+//raise msg.Create("E", msgDescription);
+//this.inconsistent = false;
+//}
+
+
+
+

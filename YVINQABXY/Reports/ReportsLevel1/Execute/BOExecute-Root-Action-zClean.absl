@@ -1,0 +1,13 @@
+﻿//import ABSL;
+//
+//
+//
+//this.FilterID.Clear();
+//this.CompanyID.Clear();
+//this.SetOfBooksID.Clear();
+//this.EDate.Clear();
+//this.Date2.Clear();
+//this.EPeriod.Clear();
+//this.SelectID.Clear();
+//
+//this.ReportsAttachments.DocumentList.Delete();

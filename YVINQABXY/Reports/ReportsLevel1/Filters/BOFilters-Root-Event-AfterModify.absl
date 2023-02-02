@@ -1,0 +1,35 @@
+﻿//import ABSL;
+//import AP.FO.MOM.Global;
+//import AP.FinancialAccounting.Global;
+//import AP.FO.BusinessPartner.Global;
+//
+//while(true){
+	//
+	//if(this.GLCompany.IsInitial()){break;}
+	//var QueryCompany = Company.QueryByIDAndName;
+	//var ParameterQueryCompany = QueryCompany.CreateSelectionParams();
+		//ParameterQueryCompany.Add(QueryCompany.ID, "I", "EQ", this.GLCompany);
+	//var ResultQueryCompany = QueryCompany.Execute(ParameterQueryCompany).GetFirst();
+	//
+	//if(!ResultQueryCompany.IsSet()){break;}
+	//if(ResultQueryCompany.NameByValidity.Count()<=0){break;}
+	//if(ResultQueryCompany.NameByValidity.GetFirst().Name.IsInitial()){break;}
+	//if( ResultQueryCompany.NameByValidity.GetFirst().Name.content.IsInitial()){break;}
+	//this.GLDescription = ResultQueryCompany.NameByValidity.GetFirst().Name.content;
+	//
+//
+	//var QueryAccount = SetOfBooks.QueryByIDAndDescription;
+	//var ParameterAccount = QueryAccount.CreateSelectionParams();
+		//ParameterAccount.Add(QueryAccount.ID.content, "I", "EQ", this.GLSetOfBooks.content);
+	//var ResultQueryAccount = QueryAccount.Execute().GetFirst();
+//
+	//if(!ResultQueryAccount.IsSet()){break;}
+	//if(ResultQueryAccount.ChartOfAccountsCode.IsInitial()){break;}
+	//if(ResultQueryAccount.ChartOfAccountsCode.GetDescription().IsInitial()){break;}
+	//this.GLDescriptionSetBKS = ResultQueryAccount.ChartOfAccountsCode.GetDescription();
+//
+//
+//break;
+//}
+//
+//

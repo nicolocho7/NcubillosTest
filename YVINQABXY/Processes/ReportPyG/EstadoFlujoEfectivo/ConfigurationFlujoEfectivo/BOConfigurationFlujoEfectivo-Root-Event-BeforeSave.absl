@@ -1,0 +1,43 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BOConfigurationFlujoEfectivo
+		Node: Root
+		Event: BeforeSave 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script when:
+		- the instance of the business object is being saved.
+		- the instance of the business object is created from other sources like web services, preview screen, and so on.
+*/
+
+import ABSL;
+
+foreach(var item in this.Details){
+	if(!item.AccountFromCredit.content.IsInitial()){
+		if(ABSL:Numeric.IsNumeric(item.AccountFromCredit.content)){
+			item.AccountFromCreditNumeric = ABSL:Numeric.ParseFromString(item.AccountFromCredit.content);
+		}
+	}
+
+	if(!item.AccountFromDebit.content.IsInitial()){
+		if(ABSL:Numeric.IsNumeric(item.AccountFromDebit.content)){
+			item.AccountFromCreditNumeric = ABSL:Numeric.ParseFromString(item.AccountFromDebit.content);
+		}
+	}
+
+	if(!item.AccountToCredit.content.IsInitial()){
+		if(ABSL:Numeric.IsNumeric(item.AccountToCredit.content)){
+			item.AccountToCreditNumeric  = ABSL:Numeric.ParseFromString(item.AccountToCredit.content);
+		}
+	}
+
+	if(!item.AccountToDedit.content.IsInitial()){
+		if(ABSL:Numeric.IsNumeric(item.AccountToDedit.content)){
+			item.AccountToDeditNumeric = ABSL:Numeric.ParseFromString(item.AccountToDedit.content);
+		}
+	}
+	
+}

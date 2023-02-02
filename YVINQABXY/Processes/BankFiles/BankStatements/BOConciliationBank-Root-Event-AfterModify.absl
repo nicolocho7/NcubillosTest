@@ -1,0 +1,16 @@
+﻿import ABSL;
+
+if(this.Date.IsInitial()){
+	this.Date = Context.GetCurrentUserDate();
+}
+
+if(!this.TypeFormat.IsInitial()){
+	if(this.TypeFormatConciliation.IsInitial()){
+		switch (this.TypeFormat){
+			//case CLTypeBankPaymentCode.CO_BOGO { this.TypeFormatConciliation = CLTypeBankConciliationCode.CO_BOGO; }
+			//case CLTypeBankPaymentCode.CO_BACO { this.TypeFormatConciliation = CLTypeBankConciliationCode.CO_BACO; }
+			//case CLTypeBankPaymentCode.CO_CITY { this.TypeFormatConciliation = CLTypeBankConciliationCode.CO_CITY; }
+			//case CLTypeBankPaymentCode.CO_BAAL { this.TypeFormatConciliation = CLTypeBankConciliationCode.CO_BAAL; }
+		}
+	}
+}

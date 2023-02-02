@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{b1efdd5c-a8af-4575-9289-6788050e9779}</ProjectGuid>
+    <ProjectType>CopernicusProject</ProjectType>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Name>YFOB14P8Y</Name>
+    <RootNamespace>YFOB14P8Y</RootNamespace>
+    <RepositoryNamespace>http://0004019099-one-off.sap.com/YFOB14P8Y_</RepositoryNamespace>
+    <RuntimeNamespacePrefix>YFOB14P8Y_</RuntimeNamespacePrefix>
+    <RepositoryRootFolder>/YFOB14P8Y_MAIN</RepositoryRootFolder>
+    <DefaultProcessComponent>YFOB14P8Y_YFOB14P8Y</DefaultProcessComponent>
+    <DevelopmentPackage>$YFOB14P8Y_DEV</DevelopmentPackage>
+    <XRepSolution>YFOB14P8Y_MAIN</XRepSolution>
+    <BCSourceFolderInXRep>/YFOB14P8Y_BC/SRC</BCSourceFolderInXRep>
+    <ProjectSourceFolderinXRep>/YFOB14P8Y_MAIN/SRC</ProjectSourceFolderinXRep>
+    <DeploymentUnit>FOUNDATION</DeploymentUnit>
+    <CompilerVersion>1302_FP15</CompilerVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>bin</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="BoCustom" />
+    <Folder Include="BacElement" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BoCustom\AverageRate-Root-Action-Calculate.absl">
+      <DependentUpon>BoCustom\AverageRate-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BoCustom\AverageRate-Root.node">
+      <DependentUpon>BoCustom\AverageRate.bo</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BoCustom\AverageRate.bo">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoCustom\AverageRate_OIF.OIF.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoCustom\AverageRate_OWL.OWL.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoCustom\AverageRate_PTP.PTP.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoCustom\AverageRate_QA.QA.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoCustom\AverageRate_WCF.WCF.uiwoc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoCustom\AverageRate_WCView.WCVIEW.uiwocview">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoCustom\ReportAverageRate-Root-Action-execute.absl">
+      <DependentUpon>BoCustom\ReportAverageRate-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BoCustom\ReportAverageRate-Root-Event-AfterModify.absl">
+      <DependentUpon>BoCustom\ReportAverageRate-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BoCustom\ReportAverageRate-Root-Event-BeforeSave.absl">
+      <DependentUpon>BoCustom\ReportAverageRate-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BoCustom\ReportAverageRate-Root.node">
+      <DependentUpon>BoCustom\ReportAverageRate.bo</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BoCustom\ReportAverageRate.bo">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoCustom\ReportAverageRate_OIF.OIF.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoCustom\ReportAverageRate_OWL.OWL.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoCustom\ReportAverageRate_PTP.PTP.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoCustom\ReportAverageRate_QA.QA.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoCustom\ReportAverageRate_WCF.WCF.uiwoc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoCustom\ReportAverageRate_WCView.WCVIEW.uiwocview">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoCustom\TasaCambio.bo">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoCustom\TasaCambio_OIF.OIF.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoCustom\TasaCambio_OWL.OWL.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoCustom\TasaCambio_PTP.PTP.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoCustom\TasaCambio_QA.QA.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoCustom\TasaCambio_WCF.WCF.uiwoc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoCustom\TasaCambio_WCView.WCVIEW.uiwocview">
+      <SubType>Content</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <BCSet Include="..\YFOB14P8Y_BC\BacElement\BACElement.bac">
+      <SubType>BCSet</SubType>
+    </BCSet>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

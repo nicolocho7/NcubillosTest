@@ -1,0 +1,26 @@
+﻿import ABSL;
+
+
+switch(this.StatusCode){
+	case CLStatusPaymentMassCode.CO_1{}//In preparation
+	case CLStatusPaymentMassCode.CO_2{// Generate
+		//if(this.Payments.Count() > 0){
+		//this.Payments.Delete();
+		//}
+
+		if(this.ExecutionType == CLTypeExecutionPaymentCode.CO_2){//2:ID ejecucion
+			if(this.Payments.Count() > 0){
+				this.Payments.Delete();
+			}
+		}
+		if(this.Details.Count() > 0){
+			this.Details.Delete();
+		}
+		if(this.myAttachments.DocumentList.Count() > 0){
+			this.myAttachments.Delete();
+		}
+		this.StatusCode = CLStatusPaymentMassCode.CO_1;
+	}
+	case CLStatusPaymentMassCode.CO_3{}// Compensate
+	case CLStatusPaymentMassCode.CO_4{}// Compensate + Accounting
+}

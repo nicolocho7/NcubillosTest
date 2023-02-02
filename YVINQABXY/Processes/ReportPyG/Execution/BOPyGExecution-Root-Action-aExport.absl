@@ -1,0 +1,20 @@
+﻿import ABSL;
+import AP.FO.BusinessPartner.Global;
+import AP.Common.GDT as apCommonGDT;
+import BASIS.Global as basis;
+
+// - - - - - - - - - - - - - - - - - - - Funciona como return - - - - - - - - - // 
+
+if(this.Execute){
+	
+	if(this.ReportsAttachments.IsSet()){
+		if(this.ReportsAttachments.DocumentList.Count() > 0){
+			this.ReportsAttachments.DocumentList.Delete();
+		}
+	}
+
+	if(this.Details.Count() > 0){
+		this.Details.Delete();
+	}
+	this.Execute = false;
+}

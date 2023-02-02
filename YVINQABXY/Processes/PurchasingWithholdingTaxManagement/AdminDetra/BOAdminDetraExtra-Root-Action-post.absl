@@ -1,0 +1,189 @@
+﻿import ABSL;
+import AP.CustomerInvoicing.Global;
+import AP.SupplierInvoicing.Global;
+import AP.Payment.Global;
+import AP.FO.BusinessPartner.Global;
+
+
+
+foreach(var Row in this.NodoTB2.Where(n=>n.ISCheck == true)){
+	Row.ToAdminDetra.StatusDocument = "2";
+	var Date = Context.GetCurrentSystemDate();
+	var Year = Date.GetYear();
+	var YearString = Year.Substring(2,2);
+	var Consecutive;
+	if (this.ID.IsInitial()){
+		var Code = "BOADMINDETRAEXTRA";
+		var InsBOBuildIDV2 = BOBuildIDV2.Retrieve(Code);
+		if(InsBOBuildIDV2.IsSet())
+		{
+			InsBOBuildIDV2.Increase();		
+		}else
+		{
+			var StructureBOBuildIDV2 : elementsof BOBuildIDV2;
+			StructureBOBuildIDV2.ID = Code;
+			StructureBOBuildIDV2.description = "Administrator";
+			StructureBOBuildIDV2.UUID.content = UUID.Generate();
+			InsBOBuildIDV2 = BOBuildIDV2.Create(StructureBOBuildIDV2);
+			InsBOBuildIDV2.Increase();
+		}
+
+		this.ID = InsBOBuildIDV2.consecutive;
+
+		Consecutive = InsBOBuildIDV2.consecutive;
+		
+	}else{
+		Consecutive = ABSL:Numeric.ParseFromString(this.ID);
+	}
+	var StringConse = Consecutive.ToString();
+	var x = StringConse.Length();
+	if(x > 4){
+		StringConse = StringConse.Substring(0,4);
+	}else{
+		while(x < 4){
+			StringConse = "0" + StringConse;
+			x = x +1;
+		} 
+	}
+	var NoLote = YearString + StringConse;
+	Row.ToAdminDetra.batch = NoLote;
+		
+}
+		
+			
+
+
+
+//var paymentRequest : PaymentProcessing.ManageBankAdvice.PaymentAdviceRequest;
+//var paExIt : PaymentProcessing.ManageBankAdvice.PaymentAdviceRequest.PaymentExplanationItem; 
+//var PaymentAdviceResult; 
+//paymentRequest.ExternalAdviceID.content = "Detra1"; 
+////-----------------------------------------------------------------------------------------------------------------
+//var Date = this.InitialDate;
+	//
+////paymentRequest.AccountDebitIndicator = false;
+//paymentRequest.BusinessPartnerInternalID = "CLI214";//ojo con los ceros
+//paymentRequest.AdviceDate = Date;// Context.GetCurrentSystemDate();
+////paymentRequest.PaymentReference.ID.content = "FVC-26";
+//paymentRequest.AccountDebitIndicator = false;
+		    //
+//paymentRequest.PaymentFormCode = "09"; 
+//paymentRequest.HouseBankAccountInternalID.content = "AHORROS B. BOGOTA";
+//paymentRequest.EffectivePaymentAmount.currencyCode = "COP";
+//paymentRequest.EffectivePaymentAmount.content = "66000";
+//paymentRequest.PaymentExplanationItemListCompleteTransmissionIndicator = true;
+		//
+////PaymentExplanationItem
+//paExIt.ID = "1";
+//paExIt.BusinessTransactionDocumentDate = Date;// Context.GetCurrentSystemDate();
+//paExIt.PaymentTransactionInitiatorInvoiceReference.TypeCode = "1768";
+//paExIt.PaymentTransactionInitiatorInvoiceReference.ID.content = "Z-1701";
+//paExIt.PaymentTransactionDestinatedInvoiceReference.TypeCode= "1768";
+//paExIt.PaymentTransactionDestinatedInvoiceReference.ID.content = "Z-1701";
+//paExIt.CompanyID = "SLCOL";
+//paExIt.NetAmount.currencyCode = "COP";
+//paExIt.NetAmount.content = "66000";
+//paExIt.Note.content = "AHORROS B. BOGOTA";
+//paymentRequest.PaymentExplanationItem.Add(paExIt);
+//PaymentAdviceResult = PaymentProcessing.ManageBankAdvice(paymentRequest);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+//var sng = 0;
+//var IDCont = this.ID;
+//
+//if( IDCont.IsInitial()){
+	//var queryBuildID = BOBuildID.QueryByElements;
+	//var paramBuildID = queryBuildID.CreateSelectionParams();
+	//paramBuildID.Add(queryBuildID.ID, "I", "EQ", "BOADMINDETRAEXTRA");
+	//var resultBuildID = queryBuildID.Execute(paramBuildID).GetFirst();
+	//if (resultBuildID.IsSet())
+	//{
+		//resultBuildID.consecutive = resultBuildID.consecutive + 1;
+		//IDCont = resultBuildID.consecutive.ToString();
+	//
+	//}
+	//else
+	//{
+		//IDCont = "1";
+	//}
+//}
+//
+//
+//
+//
+//var hola : PaymentAdvice;
+//
+//var paymentRequest : PaymentProcessing.ManageBankAdvice.PaymentAdviceRequest;
+//var paExIt : PaymentProcessing.ManageBankAdvice.PaymentAdviceRequest.PaymentExplanationItem; 
+//var PaymentAdviceResult;
+//paymentRequest.ExternalAdviceID.content = IDCont; 
+////-----------------------------------------------------------------------------------------------------------------
+//var Fecha = Context.GetCurrentSystemDate();	
+//var PaymentReference = "Aviso de crédito bancario";
+////paymentRequest.AccountDebitIndicator = false;
+//paymentRequest.BusinessPartnerInternalID =  this.CompanyID.RemoveLeadingZeros();//ojo con los ceros
+//paymentRequest.AdviceDate = Fecha;// Context.GetCurrentSystemDate();
+//paymentRequest.PaymentReference.ID.content = "1";//PaymentReference;
+//paymentRequest.AccountDebitIndicator = false;//this.DebitIndicator;falta aclarar
+		    //
+//paymentRequest.PaymentFormCode = "06";//this.PaymentType;  Falta Definir
+//paymentRequest.HouseBankAccountInternalID.content = this.BankAccountID.RemoveLeadingZeros();
+//paymentRequest.EffectivePaymentAmount.currencyCode = this.Total.currencyCode;
+//paymentRequest.EffectivePaymentAmount.content = this.Total.content;
+//var ContItem = 1;
+//foreach(var Row in this.NodoTB2.Where(n=>n.ISCheck == true)){
+	//
+	//var queryF = SupplierInvoice.QueryByElements;
+	//var queryP = queryF.CreateSelectionParams();
+	//var Hola1 = Row.ToAdminDetra;
+	//queryP.Add(queryF.ID.content, "I", "EQ", Row.ToAdminDetra.InvoiceID.RemoveLeadingZeros());
+	//var queryE = queryF.Execute(queryP);
+	//// Get Advice temp
+	//var queryRR = BORemittanceAdvice.QueryByElements;
+	//var queryPR = queryRR.CreateSelectionParams();
+	//queryPR.Add(queryRR.PaymentReference, "I", "EQ", Row.ToAdminDetra.InvoiceID);
+	//var queryER = queryRR.Execute(queryPR);
+	//
+	//var QryBODetra = BOAdminDetra.QueryByElements;
+	//var ParamsDetra = QryBODetra.CreateSelectionParams();
+		//ParamsDetra.Add(QryBODetra.InvoiceID, "I", "EQ", Row.ToAdminDetra.InvoiceID);
+		//ParamsDetra.Add(QryBODetra.Type, "I", "EQ", Row.ToAdminDetra.Type);
+	//var ResultDetra = QryBODetra.Execute(ParamsDetra).GetFirst();
+		//
+	////Antes de realizar el posteo se hace una consulta a las facturas, para ver si ese ID aun existe (Por ejemplo puede que hayan cancelado la factura y ya no aparezca)
+	//if(queryE.Count() > 0){
+		////------------------------------------------------------------------------------------------------------------------------
+		////PaymentExplanationItem
+		//paExIt.ID = ContItem.ToString();
+		//paExIt.BusinessTransactionDocumentDate = Fecha;// Context.GetCurrentSystemDate();
+		//paExIt.
+		//paExIt.PaymentTransactionInitiatorInvoiceReference.ID.content = Row.ToAdminDetra.InvoiceID;
+		//paExIt.PaymentTransactionDestinatedInvoiceReference.ID.content = Row.ToAdminDetra.InvoiceID;
+		//paExIt.CompanyID = Row.ToAdminDetra.CompanyID;
+		//paExIt.NetAmount.currencyCode = Row.ToAdminDetra.DetraAmount.currencyCode;
+		//paExIt.NetAmount.content =  Row.ToAdminDetra.DetraAmount.content;
+		//paExIt.Note.content = this.BankAccountID;
+		//paymentRequest.PaymentExplanationItem.Add(paExIt);
+		//ContItem = ContItem + 1;
+		//if(ResultDetra.IsSet()){
+			//ResultDetra.Type = "2";
+		//}
+	//}
+	//if(ContItem > 1){
+		//raise msg.Create("S", "bien");
+	//}
+//
+//}
+//PaymentAdviceResult = PaymentProcessing.ManageBankAdvice(paymentRequest);

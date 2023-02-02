@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ProcessIntegration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://sap.com/ByD/PDI/ProcessIntegrationDefinition">
+  <Header>
+    <Name>JobProfileIntegration</Name>
+    <Namespace>http://0004019099-one-off.sap.com/YC9HY5B6Y_</Namespace>
+    <IntegrationTypeCode>7</IntegrationTypeCode>
+    <IntegrationPatternTypeCode>0</IntegrationPatternTypeCode>
+    <IntegrationTriggerTypeCode>0</IntegrationTriggerTypeCode>
+    <ConsistencyStatus>2</ConsistencyStatus>
+  </Header>
+  <InteractionModel name="JobProfileIntegration">
+    <ExecutionModeCode>1</ExecutionModeCode>
+    <TransmissionModeCode>1</TransmissionModeCode>
+    <PreventDataDeletion>false</PreventDataDeletion>
+    <Reconciliation>false</Reconciliation>
+    <InteractionRole type="1" name="OfferingJobProfileIntegration" />
+    <InteractionRole type="2" name="ConsumingJobProfileIntegration" />
+    <Interaction>
+      <InteractionMessage name="Input">
+        <Request formattedIdField="" formattedIdReadOnly="false" list="true">
+          <LeadingBusinessObject name="JobProfile" namespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_" node="Root" />
+          <Mapping type="sadl" href="JobProfileIntegration-Input-In.sadl" uuid="407500C0C68049749FDCA98973653E0E" timestamp="20220728134432" />
+        </Request>
+      </InteractionMessage>
+    </Interaction>
+  </InteractionModel>
+  <InteractionActor type="1" roleType="1">
+    <Outbound name="Input" code="2" conditionTraversalDir="0">
+      <BusinessObject name="FileInputControl" namespace="http://sap.com/xi/AP/FO/FileInputControl/Global">
+        <Node name="Root" />
+      </BusinessObject>
+    </Outbound>
+  </InteractionActor>
+  <InteractionActor type="2" roleType="2">
+    <Inbound name="Input">
+      <BusinessObject name="JobProfile" namespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_">
+        <Node name="Root" readOnly="false">
+          <AlternativeKey name="id" readOnly="false" />
+        </Node>
+      </BusinessObject>
+      <ErrorHandling />
+    </Inbound>
+  </InteractionActor>
+</ProcessIntegration>

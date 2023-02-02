@@ -1,0 +1,50 @@
+﻿//import ABSL;
+//
+//if(this.BOFiltersID.IsInitial()){
+  	//var Code = "BOFILTERS";
+	//var InsBOBuildIDV2 = BOBuildIDV2.Retrieve(Code);
+	//if(InsBOBuildIDV2.IsSet())
+	//{
+		//InsBOBuildIDV2.Increase();		
+	//}else
+	//{
+		//var StructureBOBuildIDV2 : elementsof BOBuildIDV2;
+		//StructureBOBuildIDV2.ID = Code;
+		//StructureBOBuildIDV2.description = "Filters";
+		//StructureBOBuildIDV2.UUID.content = UUID.Generate();
+		//InsBOBuildIDV2 = BOBuildIDV2.Create(StructureBOBuildIDV2);
+		//InsBOBuildIDV2.Increase();
+	//}
+	//this.BOFiltersID = InsBOBuildIDV2.consecutive;
+////
+	////var queryBuildID = BOBuildID.QueryByElements;
+	////var paramBuildID = queryBuildID.CreateSelectionParams();
+		////paramBuildID.Add(queryBuildID.ID, "I", "EQ", "");
+	////var resultBuildID = queryBuildID.Execute(paramBuildID).GetFirst();
+	////if(resultBuildID.IsSet()){
+		////resultBuildID.consecutive = resultBuildID.consecutive + 1;
+		////this.BOFiltersID = resultBuildID.consecutive.ToString();		
+	////}
+	////else{
+		////this.ID = "1";		
+		//////-- create new register
+		////var insBuildID = BOBuildID.Create();
+		////if(insBuildID.IsSet()){
+			////insBuildID.consecutive = 1;
+			////insBuildID.description = "";
+			////insBuildID.ID = "BOFILTERS";
+			////insBuildID.UUID.content = UUID.Generate();
+		////}
+	////}
+//}
+//
+//while(true){
+//
+//if(this.GLNodeAcc.Count().IsInitial()){break;}
+//
+	//foreach(var nodo in this.GLNodeAcc)
+	//{
+		//this.GLDescription = nodo.GLAccItem;
+	//}
+//break;
+//}

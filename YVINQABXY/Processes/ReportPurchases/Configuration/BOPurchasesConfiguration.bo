@@ -1,0 +1,26 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FinancialAccounting.Global;
+
+[DeploymentUnit(Financials)] businessobject BOPurchasesConfiguration raises msj {
+
+	message msj text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+	 [Label("ID")]								element ID								: ID;	
+	 element EConfigSistemaContable				: LANGUAGEINDEPENDENT_EXTENDED_Name;
+	 element EConfiCompany						: LANGUAGEINDEPENDENT_EXTENDED_Name;
+	 element UUID								:UUID;
+	 [Label("Company")]							element CompanyID						: OrganisationalCentreID;
+	 association ToCompany						to Company;
+	 [Label("Set Of Books")]					element SetOfBooksID					: SetOfBooksID;
+	 association ToSetofBooks					to SetOfBooks							using ID;
+	 element ChartOfAccountsCode				: ChartOfAccountsCode;
+	 [Label("External ID")]						element ExternalID						: LANGUAGEINDEPENDENT_EXTENDED_Name;
+
+	 node Supplier [0,n] raises msjSupplier {
+		message msjSupplier text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Supplier")]						element Supplier						: ID ;  
+		[Label("Supplier Description")]			element SupplierDescription				: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	}
+
+}

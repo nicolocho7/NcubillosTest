@@ -1,0 +1,6 @@
+﻿import ABSL;
+
+if(this.myAttachments.DocumentList.Count() > 0){
+	this.myAttachments.Delete();
+}
+

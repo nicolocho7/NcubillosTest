@@ -1,0 +1,58 @@
+﻿			/*
+				Add your SAP Business ByDesign scripting language implementation for:
+					Business Object: BusinessPartner
+					Node: Common
+					Event: AfterModify 
+		
+				Note: 
+				  - To access the elements of the business object node, 
+					use path expressions, for example, this.<element name>. 
+				  - To use code completion, press CTRL+J. 
+				  - The solution uses this script if:
+					- the value of any field in the node in which this script is contained is modified.
+					- the node itself is modified by another business object within the same solution.
+			*/
+import ABSL;
+var QueryConfiguration = BOConfigurationSolution.QueryByElements;
+var ExecuteQueryConfiguration = QueryConfiguration.Execute();
+var Validation = false;
+if(ExecuteQueryConfiguration.Count()>0){
+	if(ExecuteQueryConfiguration.GetFirst().IsSet()){
+		if(ExecuteQueryConfiguration.GetFirst().Status== CLStatusSolutionCode.CO_01){
+			Validation = true;
+		}
+	}
+}
+if(ExecuteQueryConfiguration.Count()<=0 || Validation == true){
+	var qryDep = BODepartament.QueryByElements;
+	var selDep = qryDep.CreateSelectionParams();
+		selDep.Add(qryDep.CountryCode,"I","EQ",this.zCountryDirecM);
+		selDep.Add(qryDep.DepartamentCode,"I","EQ",this.zDepartamentIDDirecM);
+	var objDep = qryDep.Execute(selDep).GetFirst();
+	if(objDep.IsSet()){
+		this.zDepartamentDesDirecM  = objDep.DepartamentDescription; 
+	}
+
+	var qryProv = BOProvinceV2.QueryByElements;
+	var selProv = qryProv.CreateSelectionParams();
+		selProv.Add(qryProv.zPais,"I","EQ",this.zCountryDirecM);
+		selProv.Add(qryProv.zDepartamentoCode,"I","EQ",this.zDepartamentIDDirecM);
+		selProv.Add(qryProv.zProvinciaCode,"I","EQ",this.zProvinceIDDirecM);
+	var objProv = qryProv.Execute(selProv).GetFirst();
+	if(objProv.IsSet()){
+		this.zProvinceDesDirecM = objProv.zProvinciaDescrip; 
+	}
+
+
+	var qryDis = BODistrictV2.QueryByElements;
+	var selDis = qryDis.CreateSelectionParams();
+		selDis.Add(qryDis.zPais,"I","EQ",this.zCountryDirecM);
+		selDis.Add(qryDis.zDepartamentoCode ,"I","EQ",this.zDepartamentIDDirecM);
+		selDis.Add(qryDis.zProvinciaCode ,"I","EQ",this.zProvinceIDDirecM);
+		selDis.Add(qryDis.zDistritoCode ,"I","EQ",this.zDistrictIDDirecM );
+	var objDis = qryDis.Execute(selDis).GetFirst();
+	if(objDis.IsSet()){
+		this.zDistrictDesDirecM = objDis.zDistritoDescrip; 
+	}
+}
+	

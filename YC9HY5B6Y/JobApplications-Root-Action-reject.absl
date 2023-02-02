@@ -1,0 +1,29 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: JobApplications
+		Node: Root
+		Action: reject 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - This script file is mass-enabled, i.e. the keyword "this" 
+	    refers to a collection of node instances.
+	   
+*/
+
+import ABSL;
+
+foreach(var jobApplication in this)
+{
+	//Una vez rechazado cambia el estado de oferta en el nodo hijo del objeto JobProfile BO a rechazado 
+	var qryJobProfile = JobProfile.QueryByElements;
+	var selParam = qryJobProfile.CreateSelectionParams();
+	selParam.Add(qryJobProfile.id, "I", "EQ", jobApplication.JobID);
+	var result = qryJobProfile.Execute(selParam);
+	var finalResult = result.GetFirst();
+	var candidateApplied = finalResult.candidatesApplied;
+	var canRejected = candidateApplied.Where(n => n.empID.content == jobApplication.candidateID.content);
+	canRejected.GetFirst().offerStatus = OfferStatusCode.CO_02;
+}

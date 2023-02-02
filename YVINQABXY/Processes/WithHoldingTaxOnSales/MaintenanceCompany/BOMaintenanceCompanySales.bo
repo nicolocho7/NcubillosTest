@@ -1,0 +1,16 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+[WithAdministrativeData] businessobject BOMaintenanceCompanySales raises msj {
+
+	message msj text "&":LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[AlternativeKey] element ID:ID;
+	element CompanyUUID:UUID;
+	element UUID:UUID;
+	[Transient] element IsConsistent:Indicator;
+
+	[Label("Company ID")]					 element CompanyID:ID;
+	[Label("Company Description")]			 element CompanyDesc:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Company Status Tax Code")]		 element ConditionCompanyID:ID;
+	[Label("Company Status Tax Description")]element ConditionCompanyDesc:LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+}

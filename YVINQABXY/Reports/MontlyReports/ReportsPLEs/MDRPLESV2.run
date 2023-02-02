@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MassDataRunObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://sap.com/ByD/PDI/MassDataRunObjectDefinition">
+  <MdroEsrNameSpace xmlns="">http://0004019099-one-off.sap.com/YVINQABXY_</MdroEsrNameSpace>
+  <MdroEsrName xmlns="">MDRPLESV2</MdroEsrName>
+  <MdroPrxName xmlns="">YVINQABXY_MDV2BB1728BD8C930CFF</MdroPrxName>
+  <ParallelProcessing xmlns="" />
+  <ApplicationLogDetailLevelCode xmlns="">5</ApplicationLogDetailLevelCode>
+  <ApplicationLogRetentionTimeCode xmlns="">P1D</ApplicationLogRetentionTimeCode>
+  <AccessControlledBoList xmlns="">
+    <AccessControlledBo>
+      <ActionEntity>
+        <BoEsrNameSpace>http://0004019099-one-off.sap.com/YVINQABXY_</BoEsrNameSpace>
+        <BoEsrName>BOReportPLEs</BoEsrName>
+        <BoPrxName>YVINQABXY_BOESDE23F8400AFE3C19</BoPrxName>
+        <BoEsrNodeName>Root</BoEsrNodeName>
+        <BoPrxNodeName>ROOT4F903855210031B0</BoPrxNodeName>
+        <BoEsrEntityName>PExecute</BoEsrEntityName>
+        <BoPrxEntityName>PEXECUTE1B0E7BF96F8A24EA</BoPrxEntityName>
+      </ActionEntity>
+      <ActionPath>\TO_PARENT</ActionPath>
+      <QueryEntity>
+        <BoEsrNameSpace>http://0004019099-one-off.sap.com/YVINQABXY_</BoEsrNameSpace>
+        <BoEsrName>BOReportPLEs</BoEsrName>
+        <BoPrxName>YVINQABXY_BOESDE23F8400AFE3C19</BoPrxName>
+        <BoEsrNodeName>Overview01</BoEsrNodeName>
+        <BoPrxNodeName>OVERVIEW01FD6765E04180CBFE</BoPrxNodeName>
+        <BoEsrEntityName>QueryByElements</BoEsrEntityName>
+        <BoPrxEntityName>QUERY_BY_ELEMENTS</BoPrxEntityName>
+      </QueryEntity>
+      <QueryParameterList>
+        <QueryParameter>
+          <QueryEsrParameterName>ID</QueryEsrParameterName>
+          <QueryPrxParameterName>IDROOT5B57ADF3C76011D1</QueryPrxParameterName>
+          <QueryPrxParameterDataType>PDI_ABSL_IDENTIFIER</QueryPrxParameterDataType>
+          <MdroEsrNodeName>SelectByID</MdroEsrNodeName>
+          <MdroPrxNodeName>SEL_BY_IDC2976C9C4808062E</MdroPrxNodeName>
+        </QueryParameter>
+        <QueryParameter>
+          <QueryEsrParameterName>TypeReport</QueryEsrParameterName>
+          <QueryPrxParameterName>TYPEREROOTA29B1E4A94A3CFCD</QueryPrxParameterName>
+          <QueryPrxParameterDataType>YVINQABXY_9EF743BEFD701BE3</QueryPrxParameterDataType>
+          <MdroEsrNodeName>SelectByTypeReport</MdroEsrNodeName>
+          <MdroPrxNodeName>SEL_BY_TYRTDC71EDDDD4DDC2B7</MdroPrxNodeName>
+        </QueryParameter>
+      </QueryParameterList>
+    </AccessControlledBo>
+  </AccessControlledBoList>
+</MassDataRunObject>

@@ -1,0 +1,8 @@
+﻿import ABSL;
+
+if(this.empType.IsInitial()){
+	raise msg.Create("E", "El tipo de empleado está vacío");
+	return false;
+} else {
+	return true;
+}

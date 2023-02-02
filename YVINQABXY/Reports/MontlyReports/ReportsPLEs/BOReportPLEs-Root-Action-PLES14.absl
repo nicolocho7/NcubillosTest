@@ -1,0 +1,313 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BOReportPLEs
+		Node: Root
+		Action: PLES14 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+
+import ABSL;
+import AP.Common.GDT as apCommonGDT;
+import BASIS.Global as basis;
+import AP.FO.TaxArrangement.Global;
+import AP.FO.ProductDataMaintenance.Global;
+import AP.FinancialAccounting.Global;
+
+var insCompanyConfig;
+var strLine = "";
+//Messages definition
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+var msgCompany = "Por favor ingresar Empresa.";
+var msgSetBook = "Por favor ingresar Set of Book";
+var msgYear = "Por favor ingresar Año";
+var msgMounth = "Por favor ingresar Mes";
+var msgNotConfig = "No hay datos de configuración de esta empresa para el informe.";
+var msgNotData = "La consulta no arrojó datos váldos para este informe.";
+
+if (LanguageCode != "ES"){
+	msgCompany = "Please enter the Company.";
+	msgSetBook = "Please enter the Set of Book";
+	msgYear = "Please enter Year.";
+	msgMounth = "Please enter Mounth";
+	msgNotConfig = "No configuration data for the company fro the report.";
+	msgNotData = "The query not returns valid data for this report.";
+}
+
+while(true){
+	if (this.CompanyID.IsInitial() && this.TypeReport.IsInitial()){raise msg.Create("E", msgNotConfig); break;}
+	var qryAccountConfiguration = BOAccountConfiguration.QueryByElements;
+	var prmAccountConfiguration = qryAccountConfiguration.CreateSelectionParams();
+		prmAccountConfiguration.Add(qryAccountConfiguration.TypeReport, "I", "EQ", this.TypeReport);
+		prmAccountConfiguration.Add(qryAccountConfiguration.SetOfBookID.content, "I", "EQ", this.SetOfBookID.content);
+		prmAccountConfiguration.Add(qryAccountConfiguration.CompanyID, "I", "EQ", this.CompanyID.RemoveLeadingZeros());
+	var insAccountConfiguration = qryAccountConfiguration.Execute(prmAccountConfiguration);
+
+	if (insAccountConfiguration.Count() == 0){raise msg.Create("E", msgNotConfig); break;}
+	insCompanyConfig = insAccountConfiguration.GetFirst();
+
+	if (this.ReportsAttachments.DocumentList.Count() > 0){
+		this.ReportsAttachments.DocumentList.Delete();
+	}
+
+	var serviceID = "";
+	var parameter : NameAndValue;
+	var parameters : collectionof NameAndValue;  
+	var StringValue = "";
+
+	//Adicion de Campos a seleccionar
+	serviceID = "PW00039";  
+	parameter.Name = "$select";  
+	parameter.Value = "TPRODUCT_UUID,CPRODUCT_UUID,FCVAL_QUANTITY,KCVAL_QUANTITY,UCVAL_QUANTITY,CPERM_EST_UUID,TPERM_EST_UUID,CREVDOCUUID,CREVOF_ACDOCUUID";
+	parameters.Add(parameter);    
+	
+	//Filtros
+	var DateInitialString = this.DateInitial.ToString().Replace("/","-"); 
+	var DateFinalString = this.DateEnd.ToString().Replace("/","-");
+
+	StringValue = "CSETOFBKS eq '" + this.SetOfBookID.content + "'"//Set of books - Sistema contable
+			+ " and CCOMPANY_UUID eq '" + this.CompanyID + "'";//Compañia
+			//+ " and CPOSTING_DATE ge datetime'" + this.DateInitial.GetYear()+ "-" + this.DateInitial.GetMonth() + "-" + this.DateInitial.GetDay() + "T00:00:00'"//Fecha inicio
+			//+ " and CPOSTING_DATE le datetime'" + this.DateEnd.GetYear()+"-"+this.DateEnd.GetMonth()+"-"+this.DateEnd.GetDay()+"T00:00:00'";//Fecha fin
+			//+ " and (CPOSTING_DATE ge datetime'"+DateInitialString+"T00:00:00' and CPOSTING_DATE le datetime'"+DateFinalString+"T00:00:00')";
+		//if (!this.DateEnd.IsInitial())
+		//{ 
+			//StringValue = StringValue + " and CFISCALYEARPERIO le " + this.DateEnd.GetMonth() + this.DateEnd.GetYear();
+			//StringValue = StringValue + " and CFISCYEAR le " + this.DateEnd.GetYear();
+		//}
+
+		var DateInitial;
+		var DateEnd;
+		if(!this.DateInitial.IsInitial() && !this.DateEnd.IsInitial()){
+			DateInitial = this.DateInitial.GetYear() + "-" + this.DateInitial.GetMonth() + "-" + this.DateInitial.GetDay();
+			DateEnd =  this.DateEnd.GetYear() + "-" + this.DateEnd.GetMonth() + "-" + this.DateEnd.GetDay();
+		}
+		StringValue = StringValue + " and (CPOSTING_DATE ge " +  "datetime'" + DateInitial +"T00:00:00' and CPOSTING_DATE le " +  "datetime'" + DateEnd +"T00:00:00')";
+
+
+//    Para Validar despues	
+	if(insCompanyConfig.IsSet()){
+		if(insCompanyConfig.AccountRange == true){
+			StringValue = StringValue + " and (CGLACCT ge '" + insCompanyConfig.FromAccount.content + "' and CGLACCT le '" + insCompanyConfig.ToAccount.content+"')";
+		}else{
+			if(insCompanyConfig.GLAccounts.Count() >0){
+				var Cuentas;
+				StringValue = StringValue + " and (";
+				foreach(Cuentas in insCompanyConfig.GLAccounts){
+					StringValue = StringValue + "CGLACCT eq '" + Cuentas.NCuentas.content +"'";
+					if(Cuentas.NCuentas.content != insCompanyConfig.GLAccounts.GetLast().NCuentas.content){
+						StringValue = StringValue + " or ";
+					}
+				}
+				StringValue = StringValue + ")";
+			}
+		}
+	}
+	//Adicion de filtros a parametros
+	//StringValue = StringValue + " and (CGLACCT ge '251001001' and CGLACCT le '253001009')";
+	parameter.Name = "$filter";
+	parameter.Value = StringValue;
+	parameters.Add(parameter);
+
+	var ws_result = WebServiceUtilities.ExecuteWebService(serviceID, parameters);
+	var Content = ws_result.ResponseContent;  
+	var returnCode = ws_result.ReturnCode;  
+	
+	var xname : LANGUAGEINDEPENDENT_LONG_Name;
+	var xtype : DocumentTypeCode;
+	var xdesc : Description;
+	var xbinary : basis:BinaryObject;
+
+	xname = "LEReport.TXT";
+	xtype.content = "10001";
+	xtype.listID = "10296";
+	xbinary.mimeCode = "text/plain";
+	xbinary.content = Binary.ParseFromString(Content);
+
+	this.ReportsAttachments.CreateFile(xtype, xname, xname, xdesc, xbinary);	
+
+
+
+
+
+	var xmlResult;
+	
+	xmlResult = Library::RLStrings.XMLToArray(Content);
+
+	//Campos para asignar
+	var vCampo1;
+	var vCampo2;
+	var vCampo3;
+	var vCampo4;
+	var vCampo5;
+	var vCampo6;
+	var vCampo7;
+	var vCampo8;
+	var vCampo9;
+	var vCampo10;
+	var vCampo11;
+	var vCampo12;
+	var vCampo13;
+
+	foreach (var xmlRow in xmlResult){
+		//var CampoFecha = Library::RLStrings.GetElementByName(xmlRow.String, "CCLR_POSTDAT").Trim();
+		var CampoValidacion = Library::RLStrings.GetElementByName(xmlRow.String, "CREVDOCUUID").Trim();
+		var CampoValidacion2 = Library::RLStrings.GetElementByName(xmlRow.String, "CREVOF_ACDOCUUID").Trim();
+		
+		
+		//Lógica para campo 1
+		//vCampo1 = Library::RLStrings.GetElementByName(xmlRow.String, "CPOSTING_DATE").Trim();
+		//vCampo1 = vCampo1.Substring(0, 4)  + vCampo1.Substring(5, 2)  + vCampo1.Substring(8, 2);
+
+		vCampo2 = "9";
+		vCampo3 = "01";
+		vCampo4 = Library::RLStrings.GetElementByName(xmlRow.String,"CPRODUCT_UUID").Trim();
+		vCampo5 = "0000000000000000";
+		vCampo6 = Library::RLStrings.GetElementByName(xmlRow.String,"TPRODUCT_UUID").Trim();
+
+		//Lógica para campo 7
+		vCampo7 = Library::RLStrings.GetElementByName(xmlRow.String, "UCVAL_QUANTITY").Trim();//Para homologar
+		var qry = BOMeasureUnitCodeHomo.QueryByElements;
+		var prm = qry.CreateSelectionParams();
+			prm.Add(qry.CompanyID, "I", "EQ", this.CompanyID.RemoveLeadingZeros());
+		var ins = qry.Execute(prm).GetFirst();
+		while(true){
+			if(!ins.IsSet()){break;}
+			if(ins.Homologations.Count() == 0){break;}
+			var insHomologations = ins.Homologations;
+			var insUnitCode = insHomologations.Where(n=>n.TypeCodeSAP == vCampo7).GetFirst();
+			if(!insUnitCode.IsSet()){break;}
+			vCampo7 = insUnitCode.TypeCodeSunat;
+			break;
+		}
+
+		vCampo8 = "1";
+
+		//Lógica para campo 9
+		var vAuxCampo9 = Library::RLStrings.GetElementByName(xmlRow.String, "KCVAL_QUANTITY").Trim();
+		vCampo9 = Library :: Numeric.ParseFromString(vAuxCampo9).RoundToString(8,true);
+
+		//Lógica para campo 10
+		var vAuxCampo10;
+		var qryMaterialValuation = MaterialValuationData.ValuationPrice.QueryByDate;
+		var prmMaterialValuation = qryMaterialValuation.CreateSelectionParams();
+			prmMaterialValuation.Add(qryMaterialValuation.MaterialKey.ProductID.content, "I", "EQ", vCampo4);
+			prmMaterialValuation.Add(qryMaterialValuation.SetOfBooksID.content, "I", "EQ", this.SetOfBookID.content);
+			prmMaterialValuation.Add(qryMaterialValuation.ValidAtDate, "I", "EQ", Context.GetCurrentSystemDate());
+		var insMaterialValuation = qryMaterialValuation.Execute(prmMaterialValuation).GetFirst();
+		if(insMaterialValuation.IsSet()){
+			vAuxCampo10 = insMaterialValuation.LocalCurrencyValuationPrice.Amount.content;
+		}
+		vCampo10 = vAuxCampo10.ToString();
+		if(vCampo10 == "0"){
+			vCampo10 = vAuxCampo10.RoundToString(2,true);
+		}
+
+		//Lógica para campo 11
+		var vAuxCampo11 = Library :: Numeric.ParseFromString(vCampo9) * vAuxCampo10;
+		vCampo11 = vAuxCampo11.RoundToString(2, true);
+
+		////Lógica para campo 12
+		//var vAuxCampo12 = Library::RLStrings.GetElementByName(xmlRow.String, "CDOC_DATE").Trim();
+		//var YearPosting = vAuxCampo12.Substring(0, 4); 
+		//var MontPosting = vAuxCampo12.Substring(5, 2);
+		var yearExecute = ABSL:Numeric.ParseFromString(this.DateEnd.GetYear());
+		//var yearPosting = ABSL:Numeric.ParseFromString(YearPosting);
+		var MonthExecute = ABSL:Numeric.ParseFromString(this.DateEnd.GetMonth());
+		//var MonthPosting = ABSL:Numeric.ParseFromString(MontPosting);
+		var DayExecute = ABSL:Numeric.ParseFromString(this.DateEnd.GetDay());
+		//if (yearPosting == yearExecute){
+			//if (MonthPosting == MonthExecute){
+				//vCampo12 = "1";
+			//}else{
+				//if (MonthPosting < MonthExecute){
+					//vCampo12 = "9"; 
+				//}else{
+					//vCampo12 = "8";
+				//}
+			//}
+		//}else{
+			//vCampo12 = "8";
+		//}
+		vCampo12 = "1";
+		if(CampoValidacion.IsInitial() && CampoValidacion2.IsInitial()){
+			//var AnoValidate = 0;
+			//var MesValdiate =0;
+			//var DiaValdiate  =0;
+			//if(!CampoFecha.IsInitial()){
+				//AnoValidate = ABSL:Numeric.ParseFromString(CampoFecha.Substring(0, 4));
+				//MesValdiate = ABSL:Numeric.ParseFromString(CampoFecha.Substring(5, 2));
+				//DiaValdiate = ABSL:Numeric.ParseFromString(CampoFecha.Substring(8, 2));
+			//}else{
+				//AnoValidate = AnoValidate +1;
+			//}
+			//var ValdiationEntrar = 0;
+			//if(CampoFecha.IsInitial()){
+				//ValdiationEntrar = 1;
+			//}else{
+				//if(CampoFecha.Substring(0, 4) == "9999"){
+					//ValdiationEntrar = 1;
+				//}else{
+					//if(AnoValidate > yearExecute){
+						//ValdiationEntrar = 1;
+					//}else{
+						//if(AnoValidate == yearExecute && MesValdiate > MonthExecute){
+							//ValdiationEntrar = 1;
+						//}else{
+							//if(AnoValidate == yearExecute && MesValdiate == MonthExecute && DiaValdiate == DayExecute){
+								//ValdiationEntrar = 1;
+							//}
+						//}
+					//}
+				//}
+			//}
+			//if(ValdiationEntrar == 1){
+				strLine = strLine + this.DateEnd.GetYear() + this.DateEnd.GetMonth() + this.DateEnd.GetDay() + "|" +
+									vCampo2 + "|" + 
+									vCampo3 + "|" +
+									vCampo4 + "|" +
+									vCampo5 + "|" +
+									vCampo6 + "|" +
+									vCampo7 + "|" +
+									vCampo8 + "|" +
+									vCampo9 + "|" +
+									vCampo10 + "|" +
+									vCampo11 + "|" +
+									vCampo12 + "|" + "\r\n";
+			//}
+		}
+	}
+
+	break;
+}
+
+var name : LANGUAGEINDEPENDENT_LONG_Name;
+var type : DocumentTypeCode;
+var desc : Description;
+var binary : basis:BinaryObject;
+var vNit;
+
+var qryCompanyTax = CompanyTaxArrangement.QueryByElements;
+var prmCompanyTax = qryCompanyTax.CreateSelectionParams();
+	prmCompanyTax.Add(qryCompanyTax.CompanyID,"I","EQ",this.CompanyID.RemoveLeadingZeros());
+var insCompanyTax = qryCompanyTax.Execute(prmCompanyTax).GetFirst();
+if(insCompanyTax.IsSet()){
+	if(insCompanyTax.TaxIdentificationNumber.Count() > 0){
+		vNit = insCompanyTax.TaxIdentificationNumber.GetFirst().PartyTaxID.content;
+	}
+}
+
+////TXT1
+name = "LE" + vNit + this.DateEnd.GetYear() + this.DateEnd.GetMonth() + this.DateEnd.GetDay() + "030700" + "07" + "1111" + ".TXT";
+type.content = "10001";
+type.listID = "10296";
+binary.mimeCode = "text/plain";
+binary.content = Binary.ParseFromString(strLine);
+
+this.ReportsAttachments.CreateFile(type, name, name, desc, binary);		
+
+this.Generado = true;

@@ -1,0 +1,35 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BOBillsRetentions raises msj{
+	message msj text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+	
+	[Label("Company ID")]							element CompanyID						: PartyID;  //Compañia
+	[Label("Company UUID")]							element CompanyUUID						: UUID;		//Compañia
+	[Label("Company Description")]					element CompanyDescription				: LANGUAGEINDEPENDENT_EXTENDED_Text;	//Compañia
+
+	[Label("Supplier ID")]							element SupplierID						: PartyID;  //Proveedor
+	[Label("Supplier UUID")]						element SupplierUUID					: UUID;		//Proveedor
+	[Label("Supplier Description")]					element SupplierDescription				: LANGUAGEINDEPENDENT_EXTENDED_Text;	//Proveedor
+
+	[Label("Document Date")]						element DocumentDate					: Date;		//Fecha documento
+	[Label("Accounting Date")]						element AccountingDate					: Date;		//Fecha Contabilizacion
+	[Label("External Reference ID")]				element ExternalReferenceID				: ID;		//ID Documento externo
+	[Label("Bill ID")]								element BillID							: ID;		//ID Factura
+	[Label("Bill UUID")]							element BillUUID						: UUID;		//UUID Factura
+	
+	[Label("Net Amount")]							element NetAmount						: Amount;	//Importe Neto
+	[Label("Gross Amount")]							element GrossAmount						: Amount;	//Importe Bruto
+	[Label("Retention Amount")]						element RetentionAmount					: Amount;	//Importe Retencion
+
+	[Label("payment amount")]						element PaymentAmount					: Amount;	//Importe Bruto
+
+	[Label("Net Amount Company Currency")]			element NetAmountCompanyCurrency		: Amount;	//Importe Neto con la moneda de la empresa
+	[Label("Gross Amount Company Currency")]		element GrossAmountCompanyCurrency		: Amount;	//Importe Bruto con la moneda de la empresa
+	
+	[Label("Currency")]								element Currency						: CurrencyCode;
+	[Label("Retention type")]						element RetentionType					: CLRetentionTypeCode;	//Importe Bruto
+	[Label("Bill Status")]							element BillStatus						: CLStatusRetentionBillsCode; //Estado de la factura
+	[Label("External Reference ID - CM")]			element ExternalReferenceIDCM			: ID;		//ID Documento externo  Nota credito
+	[Label("Folio")]								element Folio							: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Execution Date")]						element ExecutionDate							: Date;
+} 

@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ProcessIntegration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://sap.com/ByD/PDI/ProcessIntegrationDefinition">
+  <Header>
+    <Name>JobProfileMassUpload</Name>
+    <Namespace>http://0004019099-one-off.sap.com/YRKXVY6OY_</Namespace>
+    <IntegrationTypeCode>7</IntegrationTypeCode>
+    <IntegrationPatternTypeCode>0</IntegrationPatternTypeCode>
+    <IntegrationTriggerTypeCode>0</IntegrationTriggerTypeCode>
+    <ConsistencyStatus>2</ConsistencyStatus>
+  </Header>
+  <InteractionModel name="JobProfileMassUpload">
+    <ExecutionModeCode>1</ExecutionModeCode>
+    <TransmissionModeCode>1</TransmissionModeCode>
+    <PreventDataDeletion>false</PreventDataDeletion>
+    <Reconciliation>false</Reconciliation>
+    <InteractionRole type="1" name="OfferingJobProfileMassUpload" />
+    <InteractionRole type="2" name="ConsumingJobProfileMassUpload" />
+    <Interaction>
+      <InteractionMessage name="Input">
+        <Request formattedIdField="jobID" formattedIdReadOnly="false" list="false">
+          <LeadingBusinessObject name="JobProfile" namespace="http://0004019099-one-off.sap.com/YRKXVY6OY_" node="Root" />
+          <Mapping type="sadl" href="JobProfileMassUpload-Input-In.sadl" uuid="68A62901BFFF475582F33927D07C2E30" timestamp="20220629103037" />
+        </Request>
+      </InteractionMessage>
+    </Interaction>
+  </InteractionModel>
+  <InteractionActor type="1" roleType="1">
+    <Outbound name="Input" code="2" conditionTraversalDir="0">
+      <BusinessObject name="FileInputControl" namespace="http://sap.com/xi/AP/FO/FileInputControl/Global">
+        <Node name="Root" />
+      </BusinessObject>
+    </Outbound>
+  </InteractionActor>
+  <InteractionActor type="2" roleType="2">
+    <Inbound name="Input">
+      <BusinessObject name="JobProfile" namespace="http://0004019099-one-off.sap.com/YRKXVY6OY_">
+        <Node name="Root" readOnly="false">
+          <AlternativeKey name="jobID" readOnly="false" />
+        </Node>
+      </BusinessObject>
+      <ErrorHandling />
+    </Inbound>
+  </InteractionActor>
+</ProcessIntegration>

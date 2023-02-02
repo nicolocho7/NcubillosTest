@@ -1,0 +1,16 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BODepartament raises Msj {
+
+    message Msj text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+	[Label("ID País")]								element CountryCode: CountryCode;
+	[Label("ID Departamento")]						element DepartamentID: ID;//CONCATENADO = Pais + ID DEPA
+	[Label("ID Departamento")]						element DepartamentCode: ID;//2 Caracters
+	[Label("Description de Departamento")]			element DepartamentDescription : LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Inactive State")]						element DepartamentActive : Indicator;
+
+	action DeleteRow;  
+
+
+}

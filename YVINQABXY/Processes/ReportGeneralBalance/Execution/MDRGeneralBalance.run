@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MassDataRunObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://sap.com/ByD/PDI/MassDataRunObjectDefinition">
+  <MdroEsrNameSpace xmlns="">http://0004019099-one-off.sap.com/YVINQABXY_</MdroEsrNameSpace>
+  <MdroEsrName xmlns="">MDRGeneralBalance</MdroEsrName>
+  <MdroPrxName xmlns="">YVINQABXY_MDCE4C0FB1FB4266385C</MdroPrxName>
+  <ParallelProcessing xmlns="" />
+  <ApplicationLogDetailLevelCode xmlns="">5</ApplicationLogDetailLevelCode>
+  <ApplicationLogRetentionTimeCode xmlns="">P1D</ApplicationLogRetentionTimeCode>
+  <AccessControlledBoList xmlns="">
+    <AccessControlledBo>
+      <ActionEntity>
+        <BoEsrNameSpace>http://0004019099-one-off.sap.com/YVINQABXY_</BoEsrNameSpace>
+        <BoEsrName>BOGeneralBalanceExecution</BoEsrName>
+        <BoPrxName>YVINQABXY_BOON6F15398E84283F3C</BoPrxName>
+        <BoEsrNodeName>Root</BoEsrNodeName>
+        <BoPrxNodeName>ROOT4F903855210031B0</BoPrxNodeName>
+        <BoEsrEntityName>Execute</BoEsrEntityName>
+        <BoPrxEntityName>EXECUTEE2E36B0EDC583502</BoPrxEntityName>
+      </ActionEntity>
+      <ActionPath>\TO_PARENT</ActionPath>
+      <QueryEntity>
+        <BoEsrNameSpace>http://0004019099-one-off.sap.com/YVINQABXY_</BoEsrNameSpace>
+        <BoEsrName>BOGeneralBalanceExecution</BoEsrName>
+        <BoPrxName>YVINQABXY_BOON6F15398E84283F3C</BoPrxName>
+        <BoEsrNodeName>QryBalanceGeneral</BoEsrNodeName>
+        <BoPrxNodeName>QRYBALNERALD1D0C3D6BDDDC66B</BoPrxNodeName>
+        <BoEsrEntityName>QueryByElements</BoEsrEntityName>
+        <BoPrxEntityName>QUERY_BY_ELEMENTS</BoPrxEntityName>
+      </QueryEntity>
+      <QueryParameterList>
+        <QueryParameter>
+          <QueryEsrParameterName>ID</QueryEsrParameterName>
+          <QueryPrxParameterName>IDROOT5B57ADF3C76011D1</QueryPrxParameterName>
+          <QueryPrxParameterDataType>PDI_ABSL_IDENTIFIER</QueryPrxParameterDataType>
+          <MdroEsrNodeName>SelectByID</MdroEsrNodeName>
+          <MdroPrxNodeName>SEL_BY_IDC2976C9C4808062E</MdroPrxNodeName>
+        </QueryParameter>
+        <QueryParameter>
+          <QueryEsrParameterName>EstructuraID</QueryEsrParameterName>
+          <QueryPrxParameterName>ESTRUCROOT191471BC75EB4DFA</QueryPrxParameterName>
+          <QueryPrxParameterDataType>PDI_ABSL_IDENTIFIER</QueryPrxParameterDataType>
+          <MdroEsrNodeName>SelectByEstructuraID</MdroEsrNodeName>
+          <MdroPrxNodeName>SEL_BY_ESID3FC6420931E59CED</MdroPrxNodeName>
+        </QueryParameter>
+      </QueryParameterList>
+    </AccessControlledBo>
+  </AccessControlledBoList>
+</MassDataRunObject>

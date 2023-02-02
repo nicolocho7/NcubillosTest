@@ -1,0 +1,57 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: UpdateEBData
+		Node: Root
+		Action: zStructureDownload 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+
+import ABSL;
+import AP.Common.GDT as apCommonGDT;
+import BASIS.Global as basis;
+
+
+var QryStructur = BODocumentStructures.QueryByElements;
+var ParamsStructur = QryStructur.CreateSelectionParams();
+	ParamsStructur.Add(QryStructur.FunctionalUnitID, "I", "EQ", this.FunctionalUnitID);
+	ParamsStructur.Add(QryStructur.DocumentType, "I", "EQ", this.DocumentType);
+var DataGeneral = QryStructur.Execute(ParamsStructur).GetFirst();
+
+var Strline= "";
+var Structura;
+foreach(Structura in DataGeneral.Structures){
+	var Items;
+	foreach(Items in Structura.ItemStructure){
+		Strline = Strline + Structura.StructuresDesc + ";";
+		if(Items.IsConstant == true){
+			Strline = Strline + "X,"+Items.FieldID + ",";
+		}else{Strline = Strline + ","+Items.FieldID + ",";}
+		if(Items.IsMandatory == true){
+			Strline = Strline + "X,";
+		}else{
+			Strline = Strline + ",";
+		}
+		if(Items.IsHomologation == true){
+			Strline = Strline + "X," + Items.HomologationID +","+ Items.AdditionalComments + "\r\n";
+		}else{
+			Strline = Strline + ","+ Items.HomologationID +"," + Items.AdditionalComments + "\r\n";
+		}
+	}
+}
+
+
+var name	:LANGUAGEINDEPENDENT_LONG_Name;
+var type	:DocumentTypeCode;
+var desc	:Description;
+var binary	:basis:BinaryObject;
+name = "Estructura"+ ".txt";
+type.content = "10001";
+type.listID = "10296";
+binary.mimeCode = "text/plain";
+binary.content = Binary.ParseFromString(Strline);
+this.Attachment.CreateFile(type, name, name, desc, binary);

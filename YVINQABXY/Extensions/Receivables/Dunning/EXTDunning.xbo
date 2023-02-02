@@ -1,0 +1,16 @@
+﻿import AP.Common.GDT;
+import AP.DueItemManagement.Global;
+
+[Extension] businessobject AP.DueItemManagement.Global:Dunning {
+ 
+        // You must activate this business object before you can access the extension fields
+        // or messages in script files, forms, and screens.
+
+  [Label("(OLD) External ID")]	element	ZExternal	:	LANGUAGEINDEPENDENT_EXTENDED_Text; // no se usa
+   		node Item {
+			[Label("(OLD) ID External")]	element	ZExternID	:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("(OLD) ID External")]	element	ZIDExternal	:	ID;
+   	    } 
+	     
+  
+}

@@ -1,0 +1,17 @@
+﻿import ABSL;
+
+
+foreach(var item in this.Details){
+	if(!item.AccountFrom.content.IsInitial()){
+		if(ABSL:Numeric.IsNumeric(item.AccountFrom.content)){
+			item.AccountFromNumeric = ABSL:Numeric.ParseFromString(item.AccountFrom.content);
+		}
+	}
+
+	if(!item.AccountTo.content.IsInitial()){
+		if(ABSL:Numeric.IsNumeric(item.AccountTo.content)){
+			item.AccountToNumeric = ABSL:Numeric.ParseFromString(item.AccountTo.content);
+		}
+	}
+	
+}

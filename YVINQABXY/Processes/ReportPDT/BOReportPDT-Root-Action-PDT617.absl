@@ -1,0 +1,325 @@
+import ABSL;
+import AP.Common.GDT as apCommonGDT;
+import BASIS.Global as basis;
+import AP.FO.BusinessPartner.Global;
+import AP.LogisticsExecution.Global;
+
+
+
+
+
+
+
+
+
+var insCompanyConfig;
+var strLine = "";
+
+//Messages definition
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+var msgCompany = "Por favor ingresar Empresa.";
+var msgSetBook = "Por favor ingresar Set of Book";
+var msgLimitDate = "Por favor ingresar la Fecha Inicial";
+var msgDateInitial = "Por favor ingresar fecha inicial";
+var msgNotConfig = "No hay datos de configuraci?n de esta empresa para el informe.";
+var msgNotData = "La consulta no arroj? datos v?ldos para este informe.";
+
+if (LanguageCode != "ES") {
+msgCompany = "Please enter the Company.";
+msgSetBook = "Please enter the Set of Book";
+msgLimitDate = "Please enter Limit Date.";
+msgDateInitial = "Please enter Date Initial";
+msgNotConfig = "No configuration data for the company fro the report.";
+msgNotData = "The query not returns valid data for this report.";
+}
+
+//Company Validation
+
+var xmlResult;
+
+
+while (true)
+{
+	var txtstring = "";
+	if (this.CompanyID.IsInitial()) { break; }
+	if (this.EDateInitial.IsInitial()) { break; }
+	if (this.EDateEnd.IsInitial()) { break; }
+	var serviceID = "";  
+	var parameter : NameAndValue;
+	var parameters : collectionof NameAndValue;
+	//Caluclar los primeros dias 
+
+	var TemDateToM = this.EDateInitial.GetMonth();
+	switch (TemDateToM)
+	{
+		case "01" { TemDateToM = "1"; }
+		case "02" { TemDateToM = "2"; }
+		case "03" { TemDateToM = "3"; }
+		case "04" { TemDateToM = "4"; }
+		case "05" { TemDateToM = "5"; }
+		case "06" { TemDateToM = "6"; }
+		case "07" { TemDateToM = "7"; }
+		case "08" { TemDateToM = "8"; }
+		case "09" { TemDateToM = "9"; }
+	}
+	
+	//FILTRO DINAMICO 
+	var MonthDateTo = ABSL:Numeric.ParseFromString(TemDateToM);
+
+	//FILTRO DINAMICO 
+		var qryIdSolution = BOConfigurationIDSolution.QueryByElements;
+	var QryParamsSolution = qryIdSolution.CreateSelectionParams();
+		//QryParamsSolution.Add(qryIdSolution.Inactive,"I", "EQ", "false");
+	var ResultSoluton = qryIdSolution.Execute(QryParamsSolution).GetFirst();
+	var IDSolution;
+	if(ResultSoluton.IsSet()){
+		IDSolution = ResultSoluton.IDSolution.Trim();
+	}
+	var DateInitial = this.EDateInitial.GetYear() + "-" + this.EDateInitial.GetMonth() + "-" + this.EDateInitial.GetDay();
+	var DateEnd =  this.EDateEnd.GetYear() + "-" + this.EDateEnd.GetMonth() + "-" + this.EDateEnd.GetDay();
+	//var YearDateTo = ABSL:Numeric.ParseFromString(TemDateToM);
+	var StringValue = "C"+IDSolution+"_E809A78146 eq true and CBUYER eq '" + this.CompanyID + "'  and (CTRANSACT_DATE ge " +  "datetime'" + DateInitial +"T00:00:00' and CTRANSACT_DATE le " +  "datetime'" + DateEnd +"T00:00:00')";
+	//Campos Consumo MashupCACC_DOC_ITEM_ID
+	serviceID = "PW00032";  
+	parameter.Name = "$select";  
+	parameter.Value = "CTAX_TYPE,TBP_UUID,CBP_UUID,KCRC_GROSS_AMOUNT,KC"+IDSolution+"_1F9B2FE4CB,CCOUNTRY_CODE,CFRMTD_PSTL_ADDR,C"+IDSolution+"_5CFD840206,KCRC_NET_AMOUNT,KC"+IDSolution+"_00E8224503,CTAX_ID_NR,CREF_CIV,C"+IDSolution+"_1F9B2FE4CB_CURR,CTRANSACT_DATE";
+	parameters.Add(parameter);   
+	parameter.Name = "$filter";
+	parameter.Value = StringValue;
+	parameters.Add(parameter);  
+	
+	
+	
+	var ws_result = WebServiceUtilities.ExecuteWebService(serviceID, parameters);
+	var Content = ws_result.ResponseContent;  
+	var returnCode = ws_result.ReturnCode;  
+	var strData = "";
+	var sCurrency = "";
+	var sLocalCurrency = "";
+	var decAmount : DataType::DecimalValue;
+	var otherAmount : DataType::apCommonGDT:Amount;
+	
+	var xname : LANGUAGEINDEPENDENT_LONG_Name;
+	var xtype : DocumentTypeCode;
+	var xdesc : Description;
+	var xbinary : basis:BinaryObject;
+	
+	xname = "Resultado.txt";
+	xtype.content = "10001";
+	xtype.listID = "10296";
+	xbinary.mimeCode = "text/plain";
+	xbinary.content = Binary.ParseFromString(Content);
+	this.ReportsAttachments.CreateFile(xtype, xname, xname, xdesc, xbinary);
+	
+	////
+	////
+	//var xmlResult;
+	////var FechaAno = this.EDateInitial.GetYear();
+	////var FechaMes = this.EDateInitial.GetMonth();
+	////
+	xmlResult = Library::RLStrings.XMLToArray(Content);
+	
+	if (xmlResult.Count() == 0) { break; }
+	
+	var NumeroCuent = "";
+	foreach (var RegistroCompras in xmlResult){
+		var CREF_CIV = Library::RLStrings.GetElementByName(RegistroCompras.String, "CREF_CIV").Trim();//RC_GROSS_AMOUNT"CREF_CIV"
+		var Initial = CREF_CIV.Substring(0,3);
+		if(Initial != "DET" && Initial != "RET"){
+			var Campo1=""; //TAX_TYPE
+			var Campo2="";//TAX_TYPE
+			var Campo3=""; // BP_UUID
+			var Campo4="";// BP_UUID
+			var Campo5="";// BP_UUID
+			var Campo6="";//BP_UUID
+			var Campo7="";//RC_GROSS_AMOUNT
+			var Campo8="";//YVINQABXY_1F9B2FE4CB_01
+			var MonedaCampo8="";
+			var Campo9="";//COUNTRY_CODE
+			var Campo10="";// FRMTD_PSTL_ADDR
+			var Campo11="";// YVINQABXY_5CFD840206_01
+			var Campo12="";//RC_NET_AMOUN
+			var Campo13="";//YVINQABXY_00E8224503_01
+			var Campo14="";//NET_AMOUNT
+			var Campo15="";//TAX_TYPE
+			var Campo16="";//TAX_ID_NR
+			var Campo17="";//
+			var Campo18="";//
+			var Campo19="";//
+			var Campo20="";//
+			var Campo21="";//
+			var Campo22="";//
+			var Campo23="";//
+			var Campo24="";//
+		
+			Campo1=Library::RLStrings.GetElementByName(RegistroCompras.String, "CTAX_TYPE").Trim(); //TAX_TYPE
+			//Campo2=Library::RLStrings.GetElementByName(RegistroCompras.String, "CTAX_TYPE").Trim();//TAX_TYPE
+			var Nombre = Library::RLStrings.GetElementByName(RegistroCompras.String, "TBP_UUID").Trim();// BP_UUID
+			Campo3="";// BP_UUID
+			Campo4="";// BP_UUID
+			Campo5="";// BP_UUID
+			Campo6="";//BP_UUID
+			Campo7 = Library::RLStrings.GetElementByName(RegistroCompras.String, "KCRC_GROSS_AMOUNT").Trim();//RC_GROSS_AMOUNT
+			Campo8=Library::RLStrings.GetElementByName(RegistroCompras.String, "KC"+IDSolution+"_1F9B2FE4CB").Trim();//YVINQABXY_1F9B2FE4CB_01
+			MonedaCampo8 = Library::RLStrings.GetElementByName(RegistroCompras.String, "C"+IDSolution+"_1F9B2FE4CB_CURR").Trim();//YVINQABXY_1F9B2FE4CB_01
+			Campo9=Library::RLStrings.GetElementByName(RegistroCompras.String, "CCOUNTRY_CODE").Trim();;//COUNTRY_CODE
+			Campo10=Library::RLStrings.GetElementByName(RegistroCompras.String, "CFRMTD_PSTL_ADDR").Trim();// FRMTD_PSTL_ADDR
+			Campo11=Library::RLStrings.GetElementByName(RegistroCompras.String, "C"+IDSolution+"_5CFD840206").Trim();// YVINQABXY_5CFD840206_01
+			var Tamano = Campo11.Length();
+			if(Tamano < 2){
+				Campo11 = "0" + Campo11;
+			}
+			var FechaConver = Library::RLStrings.GetElementByName(RegistroCompras.String, "CTRANSACT_DATE").Trim();
+			Campo12=Library::RLStrings.GetElementByName(RegistroCompras.String, "KCRC_GROSS_AMOUNT").Trim();//RC_NET_AMOUN
+			Campo13=Library::RLStrings.GetElementByName(RegistroCompras.String, "KC"+IDSolution+"_00E8224503").Trim();//YVINQABXY_00E8224503_01
+			Campo14=Library::RLStrings.GetElementByName(RegistroCompras.String, "KC"+IDSolution+"_1F9B2FE4CB").Trim();//YVINQABXY_1F9B2FE4CB_01
+			var IDSupplier = Library::RLStrings.GetElementByName(RegistroCompras.String, "CBP_UUID").Trim();
+			var QrySupplier = Supplier.QueryByIdentification;
+			var ParamsSupplier = QrySupplier.CreateSelectionParams();
+				ParamsSupplier.Add(QrySupplier.InternalID, "I", "EQ", IDSupplier);
+			var ResultSupplier = QrySupplier.Execute(ParamsSupplier).GetFirst();
+			Campo16=Library::RLStrings.GetElementByName(RegistroCompras.String, "CTAX_ID_NR").Trim();//TAX_ID_NR
+			if(ResultSupplier.IsSet()){
+				if(ResultSupplier.CurrentCommon.IsSet()){
+					Campo17 = ResultSupplier.CurrentCommon.zbirthdate.ToString();
+				}
+			}
+			//Campo17=Library::RLStrings.GetElementByName(RegistroCompras.String, "").Trim();//
+			Campo18="01";
+			Campo19="0";//
+			Campo20="";//
+			Campo21="";//
+			Campo22="";//
+			Campo23="";//YVINQABXY_5CFD840206_01
+			Campo24="";//
+			var CampoValidationID = Library::RLStrings.GetElementByName(RegistroCompras.String, "C"+IDSolution+"_5CFD840206").Trim();//
+		
+			var QryNoDoiciliate  = BONoDomiciliateConfig.QueryByElements;
+			var ParamasDomiciliate = QryNoDoiciliate.CreateSelectionParams();
+				ParamasDomiciliate.Add(QryNoDoiciliate.WithHoldingCode, "I","EQ", CampoValidationID);
+			var ResultadoNoDomiciliate = QryNoDoiciliate.Execute(ParamasDomiciliate);
+
+		//Valdiacion 
+			if(Campo1 == "2"){
+				Campo1 = "1";
+				Campo2 = "1";
+				Campo15 = "01";
+				var CampoSeller = Nombre;
+				var CampoComa = CampoSeller.Find(" ");
+				if(CampoComa > 0){
+					var Total = CampoSeller.Length();
+					var ConcatenateCampo = CampoSeller.Substring(0,CampoComa);
+					var Nombres = CampoSeller.Substring(CampoComa+1,Total-CampoComa-1);
+					var Space = Nombres.Find(" ");
+					var SpaceTotal = Nombres.Length();
+					Campo3 = ConcatenateCampo;
+					if(Space <= 0){
+						Campo4 = Nombres;
+					}else{
+						Campo4 = Nombres.Substring(0,Space);
+						Campo5 =  Nombres.Substring(Space + 1, SpaceTotal - Space-1);
+					}
+				}
+				Campo6 = "";
+			}else{
+				Campo1 = "2";
+				Campo2 = "2";
+				Campo3 = "";
+				Campo4 = "";
+				Campo5 = "";
+				Campo6 = Nombre;
+				Campo15 = "02";
+			}
+			var Numeric7 = ABSL:Numeric.ParseFromString(Campo7);
+			if(Numeric7<0){
+				Numeric7 = Numeric7 * -1;
+			}
+			Campo7 = Numeric7.RoundToString(2,true);
+
+			var Numeric8 = ABSL:Numeric.ParseFromString(Campo8);
+			if(MonedaCampo8 != "PEN"){
+				this.ValorConvert.currencyCode = MonedaCampo8;
+				this.ValorConvert.content = Numeric8; 
+				var Valor = this.ValorConvert;
+				var Fecha = this.EDateInitial;
+				Fecha = FechaConver.Substring(0,10);
+				//Fecha = Fecha.ConvertToGlobalDateTime("2019","01","05");
+				//Fecha = "2019-01-01";
+				
+				Fecha = Library :: Date.ParseFromString(FechaConver.Substring(0,10));
+				var Data = Valor.ConvertCurrencywithDate("PEN",Fecha);
+				Numeric8 = Data.content;
+			
+			}
+			
+			if(Numeric8<0){
+				Numeric8 = Numeric8 * -1;
+			}
+			Campo8 = Numeric8.RoundToString(2,true);
+
+			var Numeric14 = Numeric8;//ABSL:Numeric.ParseFromString(Campo14);
+			if(Numeric14<0){
+				Numeric14 = Numeric14 * -1;
+			}
+			Campo14 = Numeric14.RoundToString(2,true);
+	
+			var NumCampo12 = ABSL:Numeric.ParseFromString(Campo12);
+			if(NumCampo12<0){
+				NumCampo12 = NumCampo12 * -1;
+			}
+			Campo12 = NumCampo12.RoundToString(2,true);
+		
+			Campo18 = "01";
+			if(ResultadoNoDomiciliate.Count()> 0){
+				var Notas = ResultadoNoDomiciliate.GetFirst();
+				Campo21="";//Notas.PercentageBase;//
+				Campo22="";//Notas.TaxeRate;//
+				Campo23="";//Notas.WithHoldingDesc;//
+				Campo13 = Notas.TaxeRate3;
+			}
+			Campo24 ="4";
+			var CountryHomo = BOCountryConfiguration.QueryByElements;
+			var ParamsCountry = CountryHomo.CreateSelectionParams();
+				ParamsCountry.Add(CountryHomo.CountrySAP,"I","EQ",Campo9);
+			var ReusltCountry = CountryHomo.Execute(ParamsCountry).GetFirst();
+			Campo24 = Campo9;
+			if(ReusltCountry.IsSet()){
+				Campo9 = ReusltCountry.CountryPDT617Nacionaldiad;
+				Campo24 = ReusltCountry.CountryPDT617;
+			}
+			
+
+			//var NumCampo13 = ABSL:Numeric.ParseFromString(Campo13);
+			//if(NumCampo13<0){
+				//NumCampo13 = NumCampo13 * -1;
+			//}
+			//Campo13 = NumCampo13.RoundToString(2,true);
+
+		
+
+				txtstring =  txtstring + Campo1+ "|" +Campo2+"|" +Campo3+"|" +Campo4+"|" +Campo5+"|" +Campo6+"|" +Campo7+"|" +Campo8+"|" 
+				+Campo9+"|" +Campo10+"|" +Campo11+"|"+Campo12+"|"+Campo13+"|"+Campo14+"|"+Campo15+"|"+Campo16+"|"+Campo17+"|"+Campo18+"|"
+				+Campo19+"|" +Campo20+"|"+Campo21+"|"+Campo22+"|"+Campo23+"|"+Campo24+"|"+"\r\n";
+		}	
+
+		
+	}
+	var ContMont = this.EDateInitial.GetMonth().Length();
+	var Mes;
+	if(ContMont<2){
+		Mes = "0" + this.EDateInitial.GetMonth();
+	}else{
+		Mes = this.EDateInitial.GetMonth();
+	}
+
+	var NameReport = "0617"+ this.EDateInitial.GetYear()+ Mes  + this.Companyto.RUC;
+
+	
+	xname = NameReport + ".ndo";
+	xtype.content = "10001";
+	xtype.listID = "10296";
+	xbinary.mimeCode = "text/plain";
+	xbinary.content = Binary.ParseFromString(txtstring);
+	this.ReportsAttachments.CreateFile(xtype, xname, xname, xdesc, xbinary);
+	break;
+}

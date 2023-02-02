@@ -1,0 +1,31 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BO_AccessManagement
+		Node: Root
+		Event: AfterModify 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script if:
+		- the value of any field in the node in which this script is contained is modified.
+		- the node itself is modified by another business object within the same solution.
+*/
+
+
+import ABSL;
+import AP.FO.MOM.Global;
+import AP.FO.BusinessPartner.Global;
+
+
+if(!this.Company.IsInitial()){
+var qry = Company.QueryByIDAndName;
+var ParamsQuery = qry.CreateSelectionParams();
+	ParamsQuery.Add(qry.ID, "I","EQ", this.Company);
+var Result = qry.Execute(ParamsQuery);
+// Result
+ if(Result.Count() > 0){
+	this.companyDesc = Result.CurrentName.GetFirst().Name.content;
+ }
+}

@@ -1,0 +1,34 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BOLocality raises Msj {
+
+   //   
+	message Msj text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+	[Label("Código de Pais")]				element		zPais				:	CountryCode;//OBSOLETO
+	[Label("Código de departamento")]		element		zDepartamento		:	RegionCode;
+	[Label("Código de departamento")]		element		zDepartamentoCodeV2	:	ID; //OBSOLETO
+
+	//Provincia
+	[Label("Código de provincia")]			element		zProvinciaCode		:	ID; 
+	[Label("Código de provincia")]			element		zProvinciaCodeV2	:	ID; //OBSOLETO
+	
+	//Distrito
+	[Label("Código de distrito")]			element		zDistritoCode		:	ID;	
+	[Label("Código de distrito")]			element		zDistritoCodeV2		:	ID;	//OBSOLETO
+
+
+	//Localidad
+	[Label("Código de Localidad")]			element		zLocalidadCode		:	ID;	
+	[Label("Código de Localidad")]			element		zLocalidadCodeV2	:	ID;	//OBSOLETO.
+	[Label("ID de Localidad")]				element		zLocalidadID		:	ID;	//ID Contatenado = zPais + zDepartamento + zProvinciaID + zDistritoCode + zLocalidadCode.
+	[Label("Descripción de Localidad")]		element		zDistritoDescrip	:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+	
+	association toDepartament to BODepartament;
+	association toProvince to BOProvinceV2;
+	association toDistrit to BODistrictV2;
+
+	action DeleteRow;
+
+}

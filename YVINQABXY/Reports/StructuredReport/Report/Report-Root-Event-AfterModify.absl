@@ -1,0 +1,19 @@
+﻿//
+//import ABSL;
+//
+//if(!this.StructureID.IsInitial()){
+	//var insStructure = BOStructure.Retrieve(this.StructureID);
+	//if(insStructure.IsSet()){
+		//this.toEstructura = insStructure;
+	//}
+	//else{
+		//this.toEstructura.Reset();
+	//}
+//}
+//else{
+	//this.toEstructura.Reset();
+//}
+//
+//if(this.Status.IsInitial()){
+	//this.Status = CLStatusReportCode.CO_1;
+//}

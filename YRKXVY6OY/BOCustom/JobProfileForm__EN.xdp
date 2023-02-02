@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xfa generator="AdobeLiveCycleDesigner_V8.0_SAP" APIVersion="2.5.8266.0"?>
+<xdp:xdp xmlns:xdp="http://ns.adobe.com/xdp/">
+<template xmlns="http://www.xfa.org/schema/xfa-template/2.5/">
+   <subform name="JobProfileForm" layout="tb" locale="de_DE">
+      <pageSet>
+         <pageArea name="Page1" id="Page1">
+            <contentArea x="0.25in" y="0.25in" w="576pt" h="756pt"/>
+            <medium stock="default" short="612pt" long="792pt"/>
+            <?templateDesigner expand 1?>
+         </pageArea>
+         <?templateDesigner expand 1?>
+      </pageSet>
+      <subform w="576pt" h="756pt">
+         <?templateDesigner expand 1?>
+      </subform>
+      <proto/>
+      <desc>
+         <text name="version">8.01.3266.1.494682.458675</text>
+      </desc>
+      <?templateDesigner expand 1?>
+      <?renderCache.subset "Arial" 0 0 ISO-8859-1 4 16 4 0031004400480050Naem?>
+   </subform>
+   <?templateDesigner DefaultLanguage FormCalc?>
+   <?templateDesigner DefaultRunAt client?>
+   <?templateDesigner Grid show:1, snap:1, units:0, color:ff8080, origin:(0,0), interval:(125000,125000)?>
+   <?templateDesigner DefaultPreviewType print?>
+   <?templateDesigner Zoom 84?>
+   <?templateDesigner Rulers horizontal:1, vertical:1, guidelines:1, crosshairs:0?>
+</template>
+<connectionSet xmlns="http://www.xfa.org/schema/xfa-connection-set/2.4/">
+   <xsdConnection name="DataConnection" dataDescription="JobProfileForm">
+      <uri>.\JobProfileForm.xsd</uri>
+      <rootElement>JobProfileForm</rootElement>
+   </xsdConnection>
+</connectionSet>
+</xdp:xdp>
+

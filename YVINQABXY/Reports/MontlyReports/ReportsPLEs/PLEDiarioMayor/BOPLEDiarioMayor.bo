@@ -1,0 +1,33 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BOPLEDiarioMayor  raises msg {
+
+		message msg text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+
+		[Label("ID")]					element ID						: ID;
+		[Label("Tipo de Reporte")]		element ReportType				: CLDiaroMayorCode;
+
+
+
+
+		[DependentObject(AttachmentFolder)] node ReportsAttachments;
+		node Details [0,n] raises msjDetails {
+				message msjDetails text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("ID de Registros")]	element IDReg	: ID;
+
+		}
+		action Unificar;
+
+        // Root node must not be specified, it is created implicitly
+        //
+        // Add elements here. 
+        // 
+        // To declare an element as alternative key, use the [AlternativeKey] annotation.
+        // Please note:
+        // - An alternative key of type UUID exists implicitly for each node, enabling the node
+        //   to be used as an association target.
+        // - The QueryByElements query is created automatically for each node.
+        // - Code completion is available with CTRL + SPACE.
+
+}

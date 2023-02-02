@@ -1,0 +1,13 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+[WithAdministrativeData] businessobject BOBuildID raises msj {
+
+        message msj text "&":LANGUAGEINDEPENDENT_EXTENDED_Text;
+		element ID:ID;
+		[AlternativeKey]element UUID:UUID;
+		element description:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		element consecutive:NumberValue;
+		element anho:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		element companyUUID:UUID;
+		element datePayments: Date;
+}

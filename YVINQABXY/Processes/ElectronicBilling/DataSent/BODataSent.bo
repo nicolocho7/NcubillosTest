@@ -1,0 +1,93 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BODataSent {
+//qmessage msg text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+		
+[Label("ID")] element ID:ID;
+element UUID:UUID;		
+
+////Cabecera
+[Label("ExternalID")]	element	ExternalID :	LANGUAGEINDEPENDENT_EXTENDED_Text;
+[Label("Status")]				element Status				: CLStatusEBillingCode;
+[Label("RucEmisor")]	element	RucEmisor :	LANGUAGEINDEPENDENT_EXTENDED_Text;
+	
+[Label("ruc")]	element	ruc :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+[Label("rucCliente")]	element	rucCliente :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+[Label("direccionCliente")]	element	direccionCliente :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+[Label("tipoDocumentoIdentificacion")]	element	tipoDocumentoIdentificacion :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+[Label("tipoDocumentoIdentificacionCliente")]	element	tipoDocumentoIdentificacionCliente :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+[Label("razonSocialCliente")]	element	razonSocialCliente :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+[Label("nombreComercial")]	element	nombreComercial :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+[Label("tipoDocumento")]	element	tipoDocumento :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+[Label("numeroDocumento")]	element	numeroDocumento :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+[Label("tipoMonedaOrigen")]	element	tipoMonedaOrigen :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+[Label("razonSocial")]	element	razonSocial :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+[Label("departamento")]	element	departamento :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+[Label("provincia")]	element	provincia :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+[Label("distrito")]	element	distrito :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+[Label("codigoPais")]	element	codigoPais :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+[Label("importeTotal")]	element	importeTotal :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+[Label("flagPercepcion")]	element	flagPercepcion :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+[Label("descuentoGlobal")]	element	descuentoGlobal :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+[Label("fechaEmision")]	element	fechaEmision :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+[Label("flagSpot")]	element	flagSpot :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+[Label("ubigeo")]	element	ubigeo :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+[Label("direccion")]	element	direccion :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+[Label("urbanizacion")]	element	urbanizacion :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+
+node Item[0,n]{	
+//Item
+	[Label("correlativo")]	element	correlativo :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("unidadMedida")]	element	unidadMedida :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("cantidad")]	element	cantidad :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("montoTotalItem")]	element	montoTotalItem :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("precioUnitario")]	element	precioUnitario :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("codigoValorUnitario ")]	element	codigoValorUnitario  :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("importeTotalImpuesto")]	element	importeTotalImpuesto :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("importeTotalImpuesto_sub")]	element	importeTotalImpuesto_sub :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("porcentajeImpuesto")]	element	porcentajeImpuesto :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("codigoAfectacionIGV")]	element	codigoAfectacionIGV  :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("identificacionTributo")]	element	identificacionTributo :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("nombreTributo")]	element	nombreTributo :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("codigoTributo")]	element	codigoTributo :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("flagConISC")]	element	flagConISC :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("descripcionMaterial")]	element	descripcionMaterial :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("codigoMaterial")]	element	codigoMaterial :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("valorVentaUnitario")]	element	valorVentaUnitario :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("descuentoItem")]	element	descuentoItem :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	
+}
+//
+//
+////--------------------------------------------------------------//
+////			impuesto
+////--------------------------------------------------------------//
+//
+node Impuesto[0,n]{	
+	[Label("codigoTributo")]	element	codigoTributoI  :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("importeTotal")]	element	importeTotalI :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("importeExplicito")]	element	importeExplicitoI :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("identificacionTributo")]	element	identificacionTributoI :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("nombreTributo")]	element	nombreTributoI  :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+}
+
+////--------------------------------------------------------------//
+////			Percepción
+////--------------------------------------------------------------//
+node Percepcion[0,n]{	
+	[Label("idConcepto")]	element	idConcepto  :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("montoPrecepcion")]	element	montoPrecepcion  :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("baseImponiblePercepcion")]	element	baseImponiblePercepcion  :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("montoIncluidoPercepcion")]	element	montoIncluidoPercepcion  :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("porcentaje")]	element	porcentaje  :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+}
+
+////--------------------------------------------------------------//
+////			Conceptos Tributarios
+////--------------------------------------------------------------//
+node Tributario[0,n]{	
+	[Label("idConcepto")]	element	idConceptoT  :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("totalValorOperacion")]	element	totalValorOperacion  :	LANGUAGEINDEPENDENT_EXTENDED_Text;	
+}
+
+}

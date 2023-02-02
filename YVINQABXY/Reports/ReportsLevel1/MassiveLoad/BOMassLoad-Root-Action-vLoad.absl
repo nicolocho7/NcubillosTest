@@ -1,0 +1,478 @@
+﻿//import ABSL;
+//import AP.Common.GDT as apCommonGDT;
+//
+////Data in Memorie
+//var rowsTemp : collectionof elementsof BusinessObject::BOMassLoad.Talke;
+//var rowTemp : elementsof BusinessObject::BOMassLoad.Talke;
+//
+//var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+//var string = "";
+//var enter;
+//var row;
+//var newrow;
+//var spliter;
+//var elementUp;
+//var substring;
+//var pos = 1;
+//
+//var msgMissingAtta = "Falta adjuntar un archivo";
+	//if(LanguageCode != "ES")
+	//{
+		//msgMissingAtta = "Missing attachment";
+	//}
+//
+//
+////Fields Talke
+//var FileAttachments;
+//var FileCont;
+ //
+//while(true)
+//{
+	//if(this.ReportsAttachments.DocumentList.Count() != 1){raise msg.Create("E", msgMissingAtta); break;}
+	//if(!this.ReportsAttachments.IsSet() && this.ReportsAttachments.DocumentList.Count() != 1){break;}
+//
+	//FileAttachments = this.ReportsAttachments.DocumentList;
+	//FileCont = FileAttachments.GetFirst().FileContent;
+//
+ //var TypeSeleccion = this.vTypeLoad;
+ //switch(TypeSeleccion)
+ //{
+	//case "01" 
+	//{
+		////Head
+		//var vDataReporLogictHead : collectionof elementsof BusinessObject::BOMassLoad.DataHomologation;
+		//var vFilterParameterHead : elementsof BusinessObject::BOMassLoad.DataHomologation;
+//
+		////Config
+		//var vDataValueLogic : collectionof elementsof BusinessObject::BOMassLoad.DataHomologation.NodeHomologation;
+		//var vFieldValueLogic : elementsof BusinessObject::BOMassLoad.DataHomologation.NodeHomologation;
+//
+//
+		//this.ConfigurationReports.Delete();
+//
+			//string = FileCont.BinaryObject.content.ToString();
+			//enter = string.Find("\n");
+//
+			//if (enter == -1)
+			//{
+			  //rowTemp.Talke = string;
+			  //rowsTemp.Add(rowTemp);
+			//}
+//
+			//while (enter != -1)
+			//{
+			  //row = string.Substring(0, enter); 
+			  //rowTemp.Talke = row;
+			  //rowsTemp.Add(rowTemp);          
+			  //newrow = enter + 1;
+			  //string = string.Substring(newrow);     
+			  //enter = string.Find("\n");  
+         //
+			  //if (enter == -1)
+			  //{
+				   //rowTemp.Talke = string;
+				   //rowsTemp.Add(rowTemp);
+			  //}  
+			//}
+//
+			 //var positions = rowsTemp;
+			 //rowsTemp.Clear();
+			 //rowTemp.Clear();
+     //
+		     //foreach (var item in positions)
+			 //{         
+				  //spliter = item.Talke.Find(";");
+				  //var TableType= "";
+				  //var IndicatorExist = false;
+				  //while (spliter != -1)
+				  //{              
+					   //elementUp = item.Talke.Substring(0, spliter);                                     
+					   //newrow = spliter + 1;
+					   //item.Talke = item.Talke.Substring(newrow);
+					   //spliter = item.Talke.Find(";");    
+					  //
+					   //switch(pos)
+					   //{
+							//case 1 { vFilterParameterHead.vDescription = elementUp;}
+							//case 2 {vFieldValueLogic.OrigData = elementUp;}
+							//case 3 {vFieldValueLogic.DestData = elementUp;}
+							//case 4 {vFieldValueLogic.NDescription = elementUp;}
+								//
+					   //} 
+					 //
+					   //pos = pos + 1;                
+				  //}
+//
+				//if(!vFieldValueLogic.IsInitial())
+				//{
+					//var vvalidationHead = vDataReporLogictHead.Where(n=>n.vDescription == vFilterParameterHead.vDescription);
+					//if(vvalidationHead.Count()<=0)
+					//{
+						//vDataReporLogictHead.Add(vFilterParameterHead);
+					//}
+				//}
+//
+				  //if(!vFieldValueLogic.OrigData.IsInitial()) 				                              
+				  //vDataValueLogic.Add(vFieldValueLogic); vFieldValueLogic.Clear();
+				  //pos = 1;        
+			 //}
+//
+			 //foreach(var headRepor in vDataReporLogictHead)
+			//{
+				//var vNodeCreateReport = this.DataHomologation.Create(headRepor);
+				//var scale;
+				//
+				//var pruebaF1 = vDataValueLogic.Where(n=>n.NDescription ==headRepor.vDescription);
+				//var pruebaF2 = pruebaF1.Where(n=>n.DestData == vFieldValueLogic.DestData);
+//
+				//foreach (scale in pruebaF1 )
+				 //{  
+					//vNodeCreateReport.NodeHomologation.Create(scale);	
+				 //}
+			//}			 
+//
+	//}		 
+//
+	//case "02"
+	//{	
+		////Head
+		//var vDataReportHead : collectionof elementsof BusinessObject::BOMassLoad.ConfigurationReportData;
+		//var vFieldReportHead : elementsof BusinessObject::BOMassLoad.ConfigurationReportData;
+//
+		////Filter
+		//var vDataFilter : collectionof elementsof BusinessObject::BOMassLoad.ConfigurationReportData.ConfigurationReportDataFilter;
+		//var vFieldFilter : elementsof BusinessObject::BOMassLoad.ConfigurationReportData.ConfigurationReportDataFilter;
+//
+		////Select
+		//var vDataSelect : collectionof elementsof BusinessObject::BOMassLoad.ConfigurationReportData.ConfigurationReportDataSelect;
+		//var vFieldSelect : elementsof BusinessObject::BOMassLoad.ConfigurationReportData.ConfigurationReportDataSelect;
+//
+		//this.ConfigurationReportData.Delete();
+//
+			//string = FileCont.BinaryObject.content.ToString();
+			//enter = string.Find("\n");
+//
+			//if (enter == -1)
+			//{
+			  //rowTemp.Talke = string;
+			  //rowsTemp.Add(rowTemp);
+			//}
+//
+			//while (enter != -1)
+			//{
+			  //row = string.Substring(0, enter); 
+			  //rowTemp.Talke = row;
+			  //rowsTemp.Add(rowTemp);          
+			  //newrow = enter + 1;
+			  //string = string.Substring(newrow);     
+			  //enter = string.Find("\n");  
+         //
+			  //if (enter == -1)
+			  //{
+				   //rowTemp.Talke = string;
+				   //rowsTemp.Add(rowTemp);
+			  //}  
+			//}
+//
+			 //var positions = rowsTemp;
+			 //
+			 //rowsTemp.Clear();
+			 //rowTemp.Clear();
+     //
+			 //foreach (var item in positions)
+			 //{         
+				  //spliter = item.Talke.Find(";");
+				  //var TableType= "";
+				  //var IndicatorExist = false;
+				  //while (spliter != -1)
+				  //{              
+					   //elementUp = item.Talke.Substring(0, spliter);                                     
+					   //newrow = spliter + 1;
+					   //item.Talke = item.Talke.Substring(newrow);
+					   //spliter = item.Talke.Find(";");    
+					  //
+					   //switch(pos)
+					   //{
+						    //case 1 {
+									//vFieldReportHead.ServiceID = elementUp;
+									//vFieldFilter.ServiceID  = elementUp;
+									//vFieldSelect.ServiceID = elementUp;
+									//}
+						    //case 2 {
+									//vFieldReportHead.Description = elementUp;
+									//vFieldFilter.Description  = elementUp;
+									//vFieldSelect.Description = elementUp;
+									//}
+									//
+						    //case 3 {
+									//vFieldReportHead.ReportID = elementUp;
+									//vFieldFilter.ReportID  = elementUp;	
+									//vFieldSelect.ReportID = elementUp;
+									//}
+							//case 4 {
+									//if(elementUp == "Filter")
+										//TableType = "Filter";
+										//else
+										//TableType = "Select";}
+							//case 5 {
+									//if(TableType == "Filter")
+									//vFieldFilter.FiltersVariableID  = elementUp;
+									//else
+										//vFieldSelect.selectVariableID	 = elementUp; }
+							//case 6 {
+									//if(TableType == "Filter")
+									//vFieldFilter.FiltersDescription = elementUp; 
+									//else
+									//vFieldSelect.SelectDescription = elementUp;}
+//
+							//case 7 {
+									//if(TableType == "Filter")
+									//vFieldFilter.DataType = elementUp;
+									//}
+					   //} 
+					 //
+					   //pos = pos + 1;                
+				  //}
+//
+					   //if(!vFieldReportHead.IsInitial())
+					   //{
+							//var vvalidationHead = vDataReportHead.Where(n=>n.ServiceID == vFieldReportHead.ServiceID && n.Description == vFieldReportHead.Description && n.ReportID == vFieldReportHead.ReportID);
+							//if(vvalidationHead.Count()<=0)
+							//{
+								//vDataReportHead.Add(vFieldReportHead);
+							//}
+					   //}
+//
+				  //if(!vFieldFilter.FiltersVariableID.IsInitial()) 				                              
+				  //vDataFilter.Add(vFieldFilter); vFieldFilter.Clear();
+				  //if(!vFieldSelect.selectVariableID.IsInitial())
+				  //vDataSelect.Add(vFieldSelect); vFieldSelect.Clear();
+				  //pos = 1;        
+			 //}
+			//foreach(var headRepor in vDataReportHead)
+			//{
+				//var vNodeCreateReport = this.ConfigurationReportData.Create(headRepor);
+				//var scale;
+				////var vFilterData = vDataFilter.Where(n=>n.ServiceID == headRepor.ServiceID && n.ReportID == headRepor.ReportID && n.Description == headRepor.Description);
+				////var vSelectData = vDataSelect.Where(n=>n.ServiceID == headRepor.ServiceID && n.ReportID == headRepor.ReportID && n.Description == headRepor.Description);
+//
+				//var pruebaF1 = vDataFilter.Where(n=>n.ServiceID == headRepor.ServiceID);
+				//var pruebaF2 = pruebaF1.Where(n=>n.ReportID == headRepor.ReportID);
+				//var pruebaF3 = pruebaF2.Where(n=>n.Description == headRepor.Description);
+//
+				//var pruebaS1 = vDataSelect.Where(n=>n.ServiceID == headRepor.ServiceID);
+				//var pruebaS2 = pruebaS1.Where(n=>n.ReportID == headRepor.ReportID);
+				//var pruebaS3 = pruebaS2.Where(n=>n.Description == headRepor.Description);
+//
+				//
+				//foreach (scale in pruebaF3 )
+				 //{  
+					//vNodeCreateReport.ConfigurationReportDataFilter.Create(scale);	
+				 //}
+				 //foreach(var scale2 in pruebaS3)
+				 //{  
+					//vNodeCreateReport.ConfigurationReportDataSelect.Create(scale2);	
+				 //}
+			//}		 
+	//}
+//
+	//case "03"
+	//{
+		////Head
+		//var vDataReporLogictHead : collectionof elementsof BusinessObject::BOMassLoad.ConfigurationReports;
+		//var vFilterParameterHead : elementsof BusinessObject::BOMassLoad.ConfigurationReports;
+//
+		////Config
+		//var vDataValueLogic : collectionof elementsof BusinessObject::BOMassLoad.ConfigurationReports.ValueConfigs;
+		//var vFieldValueLogic : elementsof BusinessObject::BOMassLoad.ConfigurationReports.ValueConfigs;
+//
+//
+		//this.ConfigurationReports.Delete();
+//
+			//string = FileCont.BinaryObject.content.ToString();
+			//enter = string.Find("\n");
+//
+			//if (enter == -1)
+			//{
+			  //rowTemp.Talke = string;
+			  //rowsTemp.Add(rowTemp);
+			//}
+//
+			//while (enter != -1)
+			//{
+			  //row = string.Substring(0, enter); 
+			  //rowTemp.Talke = row;
+			  //rowsTemp.Add(rowTemp);          
+			  //newrow = enter + 1;
+			  //string = string.Substring(newrow);     
+			  //enter = string.Find("\n");  
+         //
+			  //if (enter == -1)
+			  //{
+				   //rowTemp.Talke = string;
+				   //rowsTemp.Add(rowTemp);
+			  //}  
+			//}
+//
+			 //var positions = rowsTemp;
+			 //rowsTemp.Clear();
+			 //rowTemp.Clear();
+     //
+		     //foreach (var item in positions)
+			 //{         
+				  //spliter = item.Talke.Find(";");
+				  //var TableType= "";
+				  //var IndicatorExist = false;
+				  //while (spliter != -1)
+				  //{              
+					   //elementUp = item.Talke.Substring(0, spliter);                                     
+					   //newrow = spliter + 1;
+					   //item.Talke = item.Talke.Substring(newrow);
+					   //spliter = item.Talke.Find(";");    
+					  //
+					   //switch(pos)
+					   //{
+						    //case 1 {
+									//vFilterParameterHead.zIDReport = elementUp;
+									//vFieldValueLogic.nIDReport = elementUp;
+									//}
+						    //case 2 {
+									//vFilterParameterHead.zSeparator = elementUp;
+									//vFieldValueLogic.nSeparator = elementUp;
+									//}
+							//case 3 {vFieldValueLogic.TechnicalID = elementUp; }	
+							//case 4 {vFieldValueLogic.IsConstant = elementUp; }		
+							//case 5 {vFieldValueLogic.Constant = elementUp; }		
+							//case 6 {vFieldValueLogic.BasicLogic = elementUp; }
+							//case 7 {vFieldValueLogic.zBasicLogic = elementUp; }		
+							//case 8 {vFieldValueLogic.zDependent = elementUp; }		
+							//case 9 {vFieldValueLogic.zValueDependent = elementUp; }
+							//case 10 {vFieldValueLogic.IsHomologation = elementUp; }		
+							//case 11 {vFieldValueLogic.HomologationDesc = elementUp; }	
+									//
+					   //}
+					   //pos = pos + 1;                
+				  //}
+//
+				//if(!vFieldValueLogic.IsInitial())
+				//{
+					//var vvalidationHead = vDataReporLogictHead.Where(n=>n.zIDReport == vFieldValueLogic.nIDReport && n.zSeparator== vFieldValueLogic.nSeparator);
+					//if(vvalidationHead.Count()<=0)
+					//{
+						//vDataReporLogictHead.Add(vFilterParameterHead);
+					//}
+				//}
+//
+				  //if(!vFieldValueLogic.TechnicalID.IsInitial()) 				                              
+				  //vDataValueLogic.Add(vFieldValueLogic); vFieldValueLogic.Clear();
+				  //pos = 1;        
+			 //}
+//
+			 //foreach(var headRepor in vDataReporLogictHead)
+			//{
+				//var vNodeCreateReport = this.ConfigurationReports.Create(headRepor);
+				//var scale;
+				//
+				//var pruebaF1 = vDataValueLogic.Where(n=>n.nIDReport == headRepor.zIDReport);
+				//var pruebaF2 = pruebaF1.Where(n=>n.nSeparator == headRepor.zSeparator);
+//
+				//foreach (scale in pruebaF1 )
+				 //{  
+					//vNodeCreateReport.ValueConfigs.Create(scale);	
+				 //}
+			//}			 
+	//}
+//
+	//case "04"
+	//{
+	////----------------------------------------------------------------------------------------------------------------------
+			////Head
+			//var vDataReportHead : collectionof elementsof BusinessObject::BOMassLoad.FilterParameter;
+			//var vFieldReportHead : elementsof BusinessObject::BOMassLoad.FilterParameter;
+//
+			//this.FilterParameter.Delete();
+//
+				//string = FileCont.BinaryObject.content.ToString();
+				//enter = string.Find("\n");
+//
+				//if (enter == -1)
+				//{
+				  //rowTemp.Talke = string;
+				  //rowsTemp.Add(rowTemp);
+				//}
+//
+				//while (enter != -1)
+				//{
+				  //row = string.Substring(0, enter); 
+				  //rowTemp.Talke = row;
+				  //rowsTemp.Add(rowTemp);          
+				  //newrow = enter + 1;
+				  //string = string.Substring(newrow);     
+				  //enter = string.Find("\n");  
+         //
+				  //if (enter == -1)
+				  //{
+					   //rowTemp.Talke = string;
+					   //rowsTemp.Add(rowTemp);
+				  //}  
+				//}
+//
+				 //var positions = rowsTemp;
+			 //
+				 //rowsTemp.Clear();
+				 //rowTemp.Clear();
+     //
+				 //foreach (var item in positions)
+				 //{         
+					  //spliter = item.Talke.Find(";");
+					  //var TableType= "";
+					  //var IndicatorExist = false;
+					  //while (spliter != -1)
+					  //{              
+						   //elementUp = item.Talke.Substring(0, spliter);                                     
+						   //newrow = spliter + 1;
+						   //item.Talke = item.Talke.Substring(newrow);
+						   //spliter = item.Talke.Find(";");    
+					  //
+						   //switch(pos)
+						   //{
+							//case 1 { vFieldReportHead.vDescriptionFilt = elementUp;}
+							//case 2 {vFieldReportHead.iCompany = elementUp;}
+							//case 3 {vFieldReportHead.SETecnicalID = elementUp; }	
+							//case 4 {vFieldReportHead.SEParameter = elementUp; }	
+							//case 5 {vFieldReportHead.iAcountSystem = elementUp; }	
+							//case 6 {vFieldReportHead.ASETecnicalID = elementUp; }	
+							//case 7 {vFieldReportHead.ASEParameter= elementUp; }	
+							//case 9 {vFieldReportHead.iPeriod = elementUp; }	
+							//case 10 {vFieldReportHead.PETecnicalID = elementUp; }	
+							//case 11 {vFieldReportHead.PEEParameter = elementUp; }	
+							//case 12 {vFieldReportHead.iDate = elementUp; }	
+							//case 13 {vFieldReportHead.DATecnicalID = elementUp; }	
+							//case 14 {vFieldReportHead.DAEParameter = elementUp; }	
+							//case 15 {vFieldReportHead.iGLAccount = elementUp; }	
+							//case 16 {vFieldReportHead.GLTecnicalID = elementUp; }
+							//case 17 {vFieldReportHead.GLParameter = elementUp; }
+							//case 18 {vFieldReportHead.GLCompany = elementUp; }
+							//case 19 {vFieldReportHead.GLSetOfBKS = elementUp; }
+							//case 20 {vFieldReportHead.GLParameterChart = elementUp; }	
+						   //} 
+					 //
+						   //pos = pos + 1;                
+					  //}
+//
+				//if(!vFieldReportHead.vDescriptionFilt.IsInitial()) 				                              
+				  //vDataReportHead.Add(vFieldReportHead); vFieldReportHead.Clear();
+				  //pos = 1;  
+				 //}        
+//
+			 //foreach(var HeadFilter in vDataReportHead)
+			 //{
+				//var Cabecera = this.FilterParameter.Create(HeadFilter);
+			 //}
+	//}//case4
+ //}
+//break;
+//}
+//
+//
+//

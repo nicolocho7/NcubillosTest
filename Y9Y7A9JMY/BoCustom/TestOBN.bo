@@ -1,0 +1,6 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject TestOBN {
+	[AlternativeKey][Label("Id")]			element id			: ID;
+					[Label("Quotation")]	element quotationId	: BusinessTransactionDocumentID;
+}

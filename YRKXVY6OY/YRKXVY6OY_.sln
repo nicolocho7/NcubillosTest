@@ -1,0 +1,17 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# CopernicusIsolatedShell Solution File, Format Version 11.00
+Project("{AC959CD1-5A2C-4306-BE72-259804B01F08}") = "OpenCourseNcubillos (In Development)", "YRKXVY6OY.myproj", "{09B7FF01-116A-4EC0-9534-26EA95C7AC24}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{09B7FF01-116A-4EC0-9534-26EA95C7AC24}.Debug|x86.ActiveCfg = Debug|x86
+		{09B7FF01-116A-4EC0-9534-26EA95C7AC24}.Debug|x86.Build.0 = Debug|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

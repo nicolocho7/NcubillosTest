@@ -1,0 +1,45 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: UpdateEBData
+		Node: Root
+		Action: zUpload 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+
+import ABSL;
+
+var vIsconsistent = true;
+
+if(this.Action.IsInitial()){
+	raise msg.Create("E","Falto ingresar acción");
+	vIsconsistent = false;
+}
+else{
+	switch(this.Action){
+		case CLLoadDataFECode.CO_1,CLLoadDataFECode.CO_2{//estructura
+			if(this.FunctionalUnitID.IsInitial()){
+				raise msg.Create("E","Falto ingresar unidad");
+				vIsconsistent = false;
+			}
+			if(this.DocumentType.IsInitial()){
+				raise msg.Create("E","Falto ingresar tipo de documento");
+				vIsconsistent = false;
+			}
+		}
+		
+	}
+}
+
+if(vIsconsistent){
+	switch(this.Action){
+		case CLLoadDataFECode.CO_1,CLLoadDataFECode.CO_1{this.zStructure();}
+		case CLLoadDataFECode.CO_1,CLLoadDataFECode.CO_2{this.zStructureDownload();}
+		case CLLoadDataFECode.CO_3,CLLoadDataFECode.CO_3{this.zAssignResponsability();}
+		case CLLoadDataFECode.CO_3,CLLoadDataFECode.CO_5{this.zResponsability();}
+	}
+}

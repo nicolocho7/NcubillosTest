@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sadl:definition xmlns:ass="http://sap.com/sap.nw.f.sadl/association" date="20181026" time="082956" uuid="5F2F438B5F6A49ACA6F24786C8B05D6B" xmlns:sadl="http://sap.com/sap.nw.f.sadl">
+  <sadl:conversions>
+    <sadl:conversion type="ALPHA" />
+  </sadl:conversions>
+  <sadl:modes>
+    <sadl:mode type="QUERY" />
+  </sadl:modes>
+  <sadl:dataSource name="DS" binding="YVINQABXY_BODS0D7C2319745B3402/ass:LISTFIELD3327D8A29DC989FE" type="BusinessObjectNode" d2p1:mdrsBinding="BOListOfFields.ListField" xmlns:d2p1="http://sap.com/xi/AP/PDI" />
+  <sadl:resultSet>
+    <sadl:structure name="YVINQABXY_BODS0D7C2319745B3402" dataSource="DS" d3p1:mdrsName="BOListOfFields.ListField" xmlns:d3p1="http://sap.com/xi/AP/PDI">
+      <sadl:attribute name="YVINQABXY_LILD7D4A7BAEC3ED8373" binding="LISTFIELDIDC7BC4D3257C1ACEC" d3p1:mdrsName="ListFieldID" />
+      <sadl:attribute name="YVINQABXY_LILDE316A447FD692530" binding="LISTFIDDESC4B7347DD80A9914A" d3p1:mdrsName="ListFieldDesc" />
+      <sadl:attribute name="YVINQABXY_LILD9308B5809040E94F" binding="LISTFIROUTE5F5397116D34E301" d3p1:mdrsName="ListFieldRoute" />
+      <sadl:structure name="YVINQABXY_TOLDC58F0E01EA594B71" binding="ass:TO_PARENT" d3p1:mdrsName="ToParent">
+        <sadl:attribute name="YVINQABXY_LILDB900F6856A924E87" binding="LISTOFELDID2E3D40801B14E3AC" d3p1:mdrsName="ListOfFieldID" />
+        <sadl:attribute name="YVINQABXY_LILD254F9A9EE8EBC270" binding="LISTOFDDESCA466D8A4D1D9333E" d3p1:mdrsName="ListOfFieldDesc" />
+        <sadl:attribute name="YVINQABXY_SALD6BC14FD5858839BB" binding="SAP_SYEDATAAF54AFE70C7CAE6F-CREATION_DATE_TIME" d3p1:mdrsName="SAP_SystemAdministrativeData/CreationDateTime" />
+        <sadl:attribute name="YVINQABXY_SALDC03F4FC8A8730B42" binding="SAP_SYEDATAAF54AFE70C7CAE6F-CREATION_IDENTITY_UUID-CONTENT" d3p1:mdrsName="SAP_SystemAdministrativeData/CreationIdentityUUID/content" />
+        <sadl:attribute name="YVINQABXY_SALDA8A79ABC370EDBD9" binding="SAP_SYEDATAAF54AFE70C7CAE6F-LAST_CHANGE_DATE_TIME" d3p1:mdrsName="SAP_SystemAdministrativeData/LastChangeDateTime" />
+        <sadl:attribute name="YVINQABXY_SALD12A7D7CDCA03D92D" binding="SAP_SYEDATAAF54AFE70C7CAE6F-LAST_CHANGE_IDENTITY_UUID-CONTENT" d3p1:mdrsName="SAP_SystemAdministrativeData/LastChangeIdentityUUID/content" />
+      </sadl:structure>
+    </sadl:structure>
+  </sadl:resultSet>
+  <sadl:query bo="YVINQABXY_BODS0D7C2319745B3402" name="QUERY_BY_ELEMENTS" node="OVERVIEW01FD6765E04180CBFE" type="ESI_QUERY">
+    <sadl:inputStructure>
+      <sadl:inputParameter name="LISTFIFIELDA224C6C2EBE4F752">
+        <sadl:attribute binding="YVINQABXY_LILD7D4A7BAEC3ED8373" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="LISTFIFIELDB770178F3774A98A">
+        <sadl:attribute binding="YVINQABXY_LILDE316A447FD692530" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="LISTFIFIELDC5B8A15354BAE102">
+        <sadl:attribute binding="YVINQABXY_LILD9308B5809040E94F" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="LISTOFFIELDA9FA7613D7ED45E2">
+        <sadl:attribute binding="YVINQABXY_LILDB900F6856A924E87" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="LISTOFFIELDFF4A3AA1C9C0674D">
+        <sadl:attribute binding="YVINQABXY_LILD254F9A9EE8EBC270" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="SAPSYFIELD15A85B44D22A6C54">
+        <sadl:attribute binding="YVINQABXY_SALD6BC14FD5858839BB" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="SAPSYFIELDC59FBE8A07C4CCB5-CONTENT">
+        <sadl:attribute binding="YVINQABXY_SALDC03F4FC8A8730B42" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="SAPSYFIELDC1DD2E4D6CB147F5">
+        <sadl:attribute binding="YVINQABXY_SALDA8A79ABC370EDBD9" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="SAPSYFIELDA53AA683D131BFDE-CONTENT">
+        <sadl:attribute binding="YVINQABXY_SALD12A7D7CDCA03D92D" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="SEARCH_TEXT" type="SEARCH_TEXT">
+        <sadl:inputParameter name="LISTFIFIELDA224C6C2EBE4F752" />
+        <sadl:inputParameter name="LISTOFFIELDA9FA7613D7ED45E2" />
+      </sadl:inputParameter>
+    </sadl:inputStructure>
+    <sadl:outputStructure>
+      <sadl:attribute name="LISTFIFIELDA224C6C2EBE4F752" binding="YVINQABXY_LILD7D4A7BAEC3ED8373" />
+      <sadl:attribute name="LISTFIFIELDB770178F3774A98A" binding="YVINQABXY_LILDE316A447FD692530" />
+      <sadl:attribute name="LISTFIFIELDC5B8A15354BAE102" binding="YVINQABXY_LILD9308B5809040E94F" />
+      <sadl:attribute name="LISTOFFIELDA9FA7613D7ED45E2" binding="YVINQABXY_LILDB900F6856A924E87" />
+      <sadl:attribute name="LISTOFFIELDFF4A3AA1C9C0674D" binding="YVINQABXY_LILD254F9A9EE8EBC270" />
+      <sadl:attribute name="SAPSYFIELD15A85B44D22A6C54" binding="YVINQABXY_SALD6BC14FD5858839BB" />
+      <sadl:attribute name="SAPSYFIELDC59FBE8A07C4CCB5-CONTENT" binding="YVINQABXY_SALDC03F4FC8A8730B42" />
+      <sadl:attribute name="SAPSYFIELDC1DD2E4D6CB147F5" binding="YVINQABXY_SALDA8A79ABC370EDBD9" />
+      <sadl:attribute name="SAPSYFIELDA53AA683D131BFDE-CONTENT" binding="YVINQABXY_SALD12A7D7CDCA03D92D" />
+    </sadl:outputStructure>
+  </sadl:query>
+</sadl:definition>

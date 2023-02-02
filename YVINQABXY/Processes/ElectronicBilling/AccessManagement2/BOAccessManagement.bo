@@ -1,0 +1,19 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FO.Product.Global;
+import AP.FO.ProductDataMaintenance.Global;
+
+businessobject BOAccessManagement raises msg {
+
+       
+		message msg text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[AlternativeKey] element ID:ID;
+		element UUID:UUID;
+		[Label("Company ID")]				element CompanyID				: ID;
+		association ToCompany to Company;			
+		[Label("User")]				   element User        : LANGUAGEINDEPENDENT_EXTENDED_Text ;
+		[Label("PassWord")]			   element Password    : LANGUAGEINDEPENDENT_EXTENDED_Text ;
+		[Label("Email")]			   element Email       : LANGUAGEINDEPENDENT_EXTENDED_Text ;
+	    element inconsistent: Indicator;
+
+}

@@ -1,0 +1,28 @@
+﻿import ABSL;
+
+var vIsConsistent = true;
+
+//if(this.HomologationDesc.IsInitial()){
+	//raise msg.Create("E","Missing enter description");
+	//vIsConsistent = false;
+//}
+//
+//if(this.DataHomologation.Count() <= 0){
+	//raise msg.Create("E", "Missing enter Homologation Data");
+	//vIsConsistent = false;
+//}
+//
+//var vCount = 1;
+//foreach(var vItemValue in this.DataHomologation){
+	//if(vItemValue.OrigData.IsInitial()){
+		//raise msg.Create("E","Position " + vCount.ToString() + ": Missing enter Origin Data");
+		//vIsConsistent = false;
+	//}
+	//if(vItemValue.DestData.IsInitial()){
+		//raise msg.Create("E","Position " + vCount.ToString() + ": Missing enter Destination Data");
+		//vIsConsistent = false;
+	//}
+	//vCount = vCount + 1;
+//}
+//
+return vIsConsistent;

@@ -1,0 +1,31 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BOInterfaceManagement raises msg {
+
+
+message msg text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+        // Root node must not be specified, it is created implicitly
+        //
+        // Add elements here. 
+        // 
+        // To declare an element as alternative key, use the [AlternativeKey] annotation.
+        // Please note:
+        // - An alternative key of type UUID exists implicitly for each node, enabling the node
+        //   to be used as an association target.
+        // - The QueryByElements query is created automatically for each node.
+        // - Code completion is available with CTRL + SPACE.
+
+		[Label("Company")] [AlternativeKey]			element IDCompany			: ID;
+		[Label("Company descripcion")]				element companyDesc			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Type ID") ]							element TypeID				: CLDocumentTypeSAPCode;
+		[Label("Extration Action") ]				element ActionExt			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Send Action ") ]					element SendAction			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("ReSend Action") ]					element ResendAction		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Origen System") ]					element OrigenSystem		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Destination System") ]				element DestinationSystem	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("JOB STATUS") ]						element JOBSTATUS			: Indicator;
+		[Label("URL Supplier") ]					element URLSupplier			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+													element inconsistent		: Indicator;
+
+}

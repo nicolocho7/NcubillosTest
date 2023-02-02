@@ -1,0 +1,190 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: UpdateEBData
+		Node: Root
+		Action: zStructure 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+
+import ABSL;
+
+var separador = ";";
+var string = "";
+var subString = "";
+var indiceFind = 0;
+var TemindiceFind = 0;
+var TemindiceLast;
+var Temstring = "";
+var TemsubString = "";
+var indiceLast;
+var i = 0;
+var subIndiceLast = 0;
+var subIndiceFind = 0;
+var subStringAux = "";
+var j = 0;
+var contador = 0;
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+var newCO;
+var contador2 = 0;
+var Contador1 = 0;
+
+var QryStructur = BODocumentStructures.QueryByElements;
+var ParamsStructur = QryStructur.CreateSelectionParams();
+	ParamsStructur.Add(QryStructur.FunctionalUnitID, "I", "EQ", this.FunctionalUnitID);
+	ParamsStructur.Add(QryStructur.DocumentType, "I", "EQ", this.DocumentType);
+var DataGeneral = QryStructur.Execute(ParamsStructur).GetFirst();
+DataGeneral.Delete();
+
+if(!DataGeneral.IsSet()){
+
+	DataGeneral = BODocumentStructures.Create();
+	DataGeneral.FunctionalUnitID = this.FunctionalUnitID;
+	DataGeneral.DocumentType = this.DocumentType;
+	DataGeneral.DocumentPrefix = "hola";
+}
+
+
+if (this.Attachment.IsSet() && this.Attachment.DocumentList.Count() == 1)
+{
+	var MyAtt = this.Attachment.DocumentList;
+	if(MyAtt.GetFirst().MIMECode == "text/plain"){
+		var FileCont = MyAtt.GetFirst().FileContent;
+		string = FileCont.BinaryObject.content.ToString();
+		while(indiceFind != -1){			
+			subIndiceLast = 0;
+			subIndiceFind = 0;
+			subStringAux = "";
+			j = 0;
+			i = i + 1;
+			indiceLast = string.Length() - 1;
+			indiceFind = string.Find("\n");
+			var ValidaCliente = 0;
+			if(indiceFind != -1){
+				var Items;
+				subString = string.Substring(0,indiceFind);
+				string = string.Substring(indiceFind + 1,indiceLast - indiceFind);	
+				//Detalle
+				subIndiceLast = subString.Length() - 1;
+				var FindCustomer = subString.Find(";");
+				var Cabecera = subString.Substring(0,FindCustomer).Trim();
+				var insdata = DataGeneral.Structures.Where(n=>n.StructuresDesc == Cabecera).GetFirst();
+				
+				if(DataGeneral.IsSet()){
+					ValidaCliente = 1;
+					if(!insdata.IsSet()){
+						
+						var Data : elementsof DataGeneral.Structures;
+						Data.StructuresDesc = Cabecera;
+						insdata = DataGeneral.Structures.Create(Data);
+						//var Prueba = DataGeneral.Structures.Create(Data);
+						Contador1 = Contador1 +1;
+					}
+					var Items1 : elementsof  insdata.ItemStructure;
+					Items = Items1;
+				}
+				//Items = Items1;
+				subString = subString.Substring(FindCustomer+1,subIndiceLast- (FindCustomer+1));
+				var Text; // Comentario Interno
+				while(subIndiceFind != -1){							
+					j = j + 1;
+					subIndiceLast = subString.Length() - 1;
+					subIndiceFind = subString.Find(",");
+					subStringAux = subString.Substring(0,subIndiceFind);
+					subString = subString.Substring(subIndiceFind + 1,subIndiceLast - subIndiceFind);
+					if(j == 1){
+						if(subStringAux == "X"){
+							Items.IsConstant = true;
+						}
+					}
+					if(j == 2){
+						Items.FieldID  = subStringAux;
+					}
+					if(j == 3){
+						if(subStringAux == "X"){
+							Items.IsMandatory = true;
+						}
+					}
+					if(j == 4){
+						if(subStringAux == "X"){
+							Items.IsHomologation = true;
+						}
+					}
+					if(j == 5){
+						Items.HomologationID = subStringAux;
+						Items.AdditionalComments = subString;
+					}
+					if(j==6){
+						Text = subStringAux;
+					}
+				}//fin while(indiceFind != -1){
+				var DocumentStructure = insdata.ItemStructure.Create(Items);
+				if(!Text.IsInitial()){
+					var TextCollection = DocumentStructure.TextCollection.Create();
+					var TextCreate = TextCollection.Text.Create();
+					var TextContent = TextCreate.TextContent.Create();
+					var Content = TextContent.Text.content;
+					Content = Text;
+				}
+			}else
+			{
+				if(indiceLast != 0)
+				{
+				//var Items;
+				//subString = string.Substring(0,indiceFind);
+				//string = string.Substring(indiceFind + 1,indiceLast - indiceFind);	
+				////Detalle
+				//subIndiceLast = subString.Length() - 1;
+				//var FindCustomer = subString.Find(";");
+				//var Cabecera = subString.Substring(0,FindCustomer).Trim();
+				//var insdata = DataGeneral.Structures.Where(n=>n.StructuresDesc == Cabecera).GetFirst();
+				//
+				//if(DataGeneral.IsSet()){
+					//ValidaCliente = 1;
+					//if(!insdata.IsSet()){
+						//
+						//var Data : elementsof DataGeneral.Structures;
+						//Data.StructuresDesc = Cabecera;
+						//insdata = DataGeneral.Structures.Create(Data);
+						////var Prueba = DataGeneral.Structures.Create(Data);
+						//Contador1 = Contador1 +1;
+					//}
+					//var Items1 : elementsof  insdata.ItemStructure;
+					//Items = Items1;
+				//}
+				////Items = Items1;
+				//subString = subString.Substring(FindCustomer+1,subIndiceLast- (FindCustomer+1));
+				//while(subIndiceFind != -1){					
+					//j = j + 1;
+					//subIndiceLast = subString.Length() - 1;
+					//subIndiceFind = subString.Find(",");
+					//subStringAux = subString.Substring(0,subIndiceFind);
+					//subString = subString.Substring(subIndiceFind + 1,subIndiceLast - subIndiceFind);
+					//if(j == 1){
+						//Items.IsConstant = subStringAux;
+					//}
+					//if(j == 2){
+						//Items.ListOfFieldID = subStringAux;
+					//}
+					//if(j == 3){
+						//Items.IsMandatory = subStringAux;
+					//}
+					//if(j == 4){
+						//Items.IsHomologation = subStringAux;
+					//}
+					//if(j == 5){
+						//Items.HomologationID = subStringAux;
+						//Items.AdditionalComments = subString;
+					//}
+				//}//fin while(indiceFind != -1){
+				//insdata.ItemStructure.Create(Items);
+				}
+			}
+		}
+		raise msg.Create("I", "Se cargaron "+ Contador1.ToString().Trim() + " Datos Estructura"); 
+	}
+}

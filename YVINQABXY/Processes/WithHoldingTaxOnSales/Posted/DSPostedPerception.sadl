@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sadl:definition xmlns:ass="http://sap.com/sap.nw.f.sadl/association" date="20190808" time="162631" uuid="B78EF7343D8945019EE1479ADADD02E0" xmlns:sadl="http://sap.com/sap.nw.f.sadl">
+  <sadl:conversions>
+    <sadl:conversion type="ALPHA" />
+  </sadl:conversions>
+  <sadl:modes>
+    <sadl:mode type="FSI" />
+  </sadl:modes>
+  <sadl:dataSource name="DS" binding="YVINQABXY_BOCIEA3F87A5DE2ABE3A/ass:ROOT4F903855210031B0" type="BusinessObjectNode" d2p1:mdrsBinding="BOPostedCI.Root" xmlns:d2p1="http://sap.com/xi/AP/PDI" />
+  <sadl:resultSet>
+    <sadl:structure name="YVINQABXY_BOCIEA3F87A5DE2ABE3A" dataSource="DS" d3p1:mdrsName="BOPostedCI.Root" xmlns:d3p1="http://sap.com/xi/AP/PDI">
+      <sadl:attribute name="WITHHOUSROOT18983F3DF5F61B1E" binding="WITHHOTATUS9071B89C50E62646" d3p1:mdrsName="WithholdingStatus" />
+      <sadl:attribute name="ADVICEIDROOT1CF6622041C2DAF4" binding="ADVICEIDDAC248311FB0584F" d3p1:mdrsName="AdviceID" />
+      <sadl:attribute name="PAYMENPEROOT5321F202F8A4F243" binding="PAYMENTTYPE73AF06E6A208F2C6" d3p1:mdrsName="PaymentType" />
+      <sadl:attribute name="CUSTOMIDROOT24350D7856AE72AD" binding="CUSTOMERIDAABBFA1D1639E593" d3p1:mdrsName="CustomerID" />
+      <sadl:attribute name="CUSTOMSCROOT4701CA7767B88593" binding="CUSTOMRDESC7933ACD8B75A2612" d3p1:mdrsName="CustomerDesc" />
+      <sadl:attribute name="PAYMENCEROOT04B79410B9E093D0" binding="PAYMENRENCE2EA1D0DB2005057F" d3p1:mdrsName="PaymentOriginReference" />
+      <sadl:attribute name="PAYMENCEROOTE092D471B60562A5" binding="PAYMENRENCEAB05666040425BB3" d3p1:mdrsName="PaymentReference" />
+      <sadl:attribute name="PAYMENDEROOTDA37AD7E947C3B3C" binding="PAYMENECODE842830FBCA95838D" d3p1:mdrsName="PaymentTypeCode" />
+      <sadl:attribute name="BANKROOTC2A5AD4F8953F932" binding="BANKE64228640F5A0543" d3p1:mdrsName="Bank" />
+      <sadl:attribute name="PAYMENNTROOTC2FAA4CBA7C1FDA9" binding="PAYMENMOUNTC3C65F4A05B44DAE-CURRENCY_CODE" d3p1:mdrsName="PaymentAmount/currencyCode" />
+      <sadl:attribute name="PAYMENNTROOT1F6651833A42583D" binding="PAYMENMOUNTC3C65F4A05B44DAE-CONTENT" d3p1:mdrsName="PaymentAmount/content" />
+      <sadl:attribute name="COMPANIDROOT393E96E7737D2A29" binding="COMPANYIDD8CC9CD94DA9AB61" d3p1:mdrsName="CompanyID" />
+      <sadl:attribute name="DEBITIORROOTA4C19AA2EDB9C077" binding="DEBITICATORA1D3C8275A9A67EC" d3p1:mdrsName="DebitIndicator" />
+      <sadl:attribute name="POSTINTEROOT95EF3888DAFCC5D7" binding="POSTINGDATE2D52EA542B5E0E74" d3p1:mdrsName="PostingDate" />
+    </sadl:structure>
+  </sadl:resultSet>
+</sadl:definition>

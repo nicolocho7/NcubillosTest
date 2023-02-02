@@ -1,0 +1,17 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+[WithAdministrativeData] businessobject  BOMinimumWithholdingAmounPurchases raises msj {
+
+     	message msj text "&":LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[AlternativeKey] element ID:ID;
+		element UUID:UUID;
+		[Transient] element IsConsistent:Indicator;
+        [Label("Type Withholding Tax")] element TypeWithholding:CLTypeWithholdingPurchaseCode;
+		[Label("Concept")]	element Concept:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Value UVT")]element ValueUVT:Amount;
+	    [Label("UVT Base")]	element UVTBase:DecimalValue;
+		[Label("Base")]element Base:DecimalValue;
+	    [Label("Coin")]element Coin:CurrencyCode;
+		//[Label("City")]element CityID:ID;
+	    //association ToCity to BOCity;	
+}

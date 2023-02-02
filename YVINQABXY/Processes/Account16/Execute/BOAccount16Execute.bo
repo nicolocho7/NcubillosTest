@@ -1,0 +1,25 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FinancialAccounting.Global;
+
+[DeploymentUnit(Financials)][WithAdministrativeData] businessobject BOAccount16Execute raises msg {
+
+     message msg text "&1"	: LANGUAGEINDEPENDENT_EXTENDED_Text;  
+
+    [Label("ID")]								element EID	: BusinessPartnerInternalID;
+	[Label("Set Of Books")]						element EConfigBooKDialy	: SetOfBooksID;
+	[Label("OVS")]								element EOvs				: ID;
+	element EConfigBooKDialyDescription	: LANGUAGEINDEPENDENT_EXTENDED_Name;
+	element EConfigCompany				: LANGUAGEINDEPENDENT_EXTENDED_Name;
+	association ToBookConfi to BOAccount16Configuration; 
+	[Label("Company")]							element ECompany			: OrganisationalCentreID;
+	[Label("Cuenta")]							element ECuentas			: CLAccountLedgerCodeCode;
+	[Transient]									element IsConsistent		: Indicator; 
+	[Label("View Data")]						element EView				: Indicator ;
+	[Label("Executed")]							element Executed			: Indicator = false;
+	[Label("Date")]								element EDate				: Date;
+		
+		[DependentObject(AttachmentFolder)] node ReportsAttachments;
+
+	action Execute;
+
+}

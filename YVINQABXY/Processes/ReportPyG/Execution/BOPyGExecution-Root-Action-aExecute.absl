@@ -1,0 +1,14 @@
+﻿import ABSL;
+
+var vIsConsistent = true;
+if(vIsConsistent){
+	switch(this.TypeReport){
+		case CLReportPYGCode.CO_PYG1 {this.PYG1();}
+		case CLReportPYGCode.CO_PYG2 {this.PYG2();}
+		case CLReportPYGCode.CO_PYG3 {this.PYG3();}
+		case CLReportPYGCode.CO_PYG4 {this.PYG4();}
+		//case CLReportPYGCode.CO_PYG5 {this.PYG5();}
+		case CLReportPYGCode.CO_PYG5 {this.PYG7();}
+		case CLReportPYGCode.CO_PYG6 {this.PYG6();}
+	}
+}

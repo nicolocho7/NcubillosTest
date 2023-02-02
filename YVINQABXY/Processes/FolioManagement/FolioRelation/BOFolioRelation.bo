@@ -1,0 +1,40 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FO.Product.Global;
+import AP.FO.ProductDataMaintenance.Global;
+
+
+[WithAdministrativeData] businessobject BOFolioRelation raises msj{
+
+		message msj text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+	
+		[AlternativeKey][Label("ID")]element FolioRelationID:ID;
+		[Label("Company")]element CompanyID:ID;
+		association ToCompany to Company;
+		[Label("billing unit")]element billingunit:CLBillingUnitCode;
+		[Label("Folio Configuration")]element FolioConfigurationID:ID;
+		element FolioConfigurationDescription : LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Folio Matching Table")]element MatchingTableID:ID;
+		element FolioMatchingDescription : LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Folio Outbound Delivery")]element FolioOutboundDeliveryID:ID;
+		element FolioOutboundDeliveryDescription : LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Use Section 1?")] element UseSec1:Indicator;
+		[Label("Use Section 2?")] element UseSec2:Indicator;
+		[Label("Section 1 Size")] element SectionSize1:NumberValue;
+		[Label("Section 1 sequence")] element Sectionsequence1:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Section 2 Size")] element SectionSize2:NumberValue;
+		[Label("Consecutive")] element Consecutive:NumberValue;
+		element IsConsistent : Indicator;
+		[Label("Range Consecutive Initial")] element ConsecutiveInital: NumberValue;
+		[Label("Range Consecutive End")] element ConsecutiveEnd:NumberValue;
+		[Label("Consecutive Current")] element ConsecutiveCurrent:NumberValue;
+		[Label("Inactive")] element Inactive:Indicator;
+
+
+		//Para customer Invoice
+		[Label("Value X")] element ValueX:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Serie")] element Serie:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		
+
+		action DeleteRow;
+}

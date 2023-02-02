@@ -1,0 +1,44 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FO.BusinessPartner.Global;
+
+[WithAdministrativeData]businessobject AdminDetraCust raises msj {
+
+	message msj text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+	[AlternativeKey] element ID:ID;
+	[Label("Manual")]element Manual:Indicator;
+
+	[Label("Invoice")]				element InvoiceID:ID;
+	[Label("External Document ID")]	element ExternalDocumentID:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Invoice UUID")]			element InvoiceUUID:UUID;
+	[Label("Company")]	element CompanyID:ID;
+	[Label("Company")]	element CompanyDes:LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("Customer ID")]  element CustomerID:ID;								
+	[Label("Customer Name")]  element CustomerName:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Tax Number Type")]  element CustTaxNumberType:LANGUAGEINDEPENDENT_EXTENDED_Text;						
+	[Label("Tax Number")]  element CustTaxNumber:LANGUAGEINDEPENDENT_EXTENDED_Text;						
+	[Label("Posting Date")]		element PostingDate:Date;
+	[Label("Period")]	element Period:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Country")]	element Country:CountryCode;
+	[Label("Total Net Amount")]element TotalNetAmount:Amount;
+	[Label("Código bien o servicio")]element CodServicio:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	
+	//Datos detracicón
+	[Label("Withholding Code")]			element WithHoldingCode:ID;
+	[Label("Determination Accounts")]	element DeterAccounts:GeneralLedgerAccountAliasCode;
+	[Label("Amount of detractions")]element DetraAmount:Amount;
+	[Label("% DET")]element DetraPercent:DecimalValue;
+	//Datos folio
+	[Label("Type")]	element Type:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Series")]	element Series:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Number")]	element Number:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	//datos de sunat
+	[Label("No. PROF")]  element Prof:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Batch")]		element batch:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	//datos de control
+	[Label("Status")]element StatusDocument:CLStatusDetraccionCode;
+	[Label("Credit Nemo UUID")]element CreditNemoUUID:UUID;
+	element UUID:UUID;
+
+}

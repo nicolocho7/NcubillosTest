@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<QueryDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://sap.com/xi/BASIS/Global">
+  <ProxyName xmlns="">YVINQABXY_MGGQ8UPKDJVCRN</ProxyName>
+  <QueryDefintionXrepPath xmlns="">/YVINQABXY_MAIN/SRC/Processes/WithHoldingTaxOnSales/MinimumWithholdingAmountBase/BOMinimumWithholdingAmountSales-Overview01.sadl</QueryDefintionXrepPath>
+  <Description xmlns="" />
+  <AnalyticalQueryIndicator xmlns="">false</AnalyticalQueryIndicator>
+  <SensitiveQueryIndicator xmlns="">false</SensitiveQueryIndicator>
+  <LanguageCode xmlns="">EN</LanguageCode>
+  <ParentNodeProxyName xmlns="">ROOT4F903855210031B0</ParentNodeProxyName>
+  <BOProxyName xmlns="">YVINQABXY_BOES7737DD3528E569CC</BOProxyName>
+  <LogReferenceFields xmlns="">false</LogReferenceFields>
+  <QueryAnnotationElements xmlns="">
+    <QueryInputParameters>
+      <ProxyName>IDROOT5B57ADF3C76011D1</ProxyName>
+      <Name>ID</Name>
+      <Type>PDI_ABSL_IDENTIFIER</Type>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOES7737DD3528E569CC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">ID5B6AA03D69E6EFEB</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>TYPEWIROOT8FB4898DE9E7F86F</ProxyName>
+      <Name>TypeWithholding</Name>
+      <Type>YVINQABXY_714CCCBB32DB1D42</Type>
+      <uiTextProxyName>YVINQABXY_9B2AF1B0A6E67513</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOES7737DD3528E569CC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">TYPEWILDINGA2A99753D64AC63A</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>CONCEPROOT0AF70287E36E1D74</ProxyName>
+      <Name>Concept</Name>
+      <Type>APC_V_LANGUAGEIN_EXTENDED_TEXT</Type>
+      <uiTextProxyName>YVINQABXY_A3A28D209C4B5728</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOES7737DD3528E569CC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">CONCEPTAF389478F11BE8ED</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>VALUEUROOTED3971A8F55A3D73</ProxyName>
+      <Name>ValueUVT</Name>
+      <Type>APC_S_AMOUNT</Type>
+      <MetaObjectProxyName>CURRENCY_CODE</MetaObjectProxyName>
+      <MetaObjectProxyName>CONTENT</MetaObjectProxyName>
+      <uiTextProxyName>YVINQABXY_7E4985C51180D232</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOES7737DD3528E569CC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">VALUEUVTA1083E1085D48855</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>UVTBASROOT0BADC3ECEF7EEA05</ProxyName>
+      <Name>UVTBase</Name>
+      <Type>APC_V_DECIMAL_VALUE</Type>
+      <uiTextProxyName>YVINQABXY_227F5414B7DE108C</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOES7737DD3528E569CC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">UVTBASECAA3B54282DB605C</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>BASEROOTF0BB4D33B80108C2</ProxyName>
+      <Name>Base</Name>
+      <Type>APC_V_DECIMAL_VALUE</Type>
+      <uiTextProxyName>YVINQABXY_1C34979BFB1D7133</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOES7737DD3528E569CC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">BASE5CB9053AEBC61970</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>COINROOT5813BCC309E07312</ProxyName>
+      <Name>Coin</Name>
+      <Type>APC_V_CURRENCY_CODE</Type>
+      <uiTextProxyName>YVINQABXY_D8EDAD8428145664</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOES7737DD3528E569CC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">COIN65119E8CBF375A0C</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>SEARCH_TEXT</ProxyName>
+      <Name>SearchText</Name>
+      <Type>APC_V_SEARCH_TEXT</Type>
+    </QueryInputParameters>
+    <QueryQRTNElements>
+      <ProxyName>IDROOT5B57ADF3C76011D1</ProxyName>
+      <Name>ID</Name>
+      <Type>PDI_ABSL_IDENTIFIER</Type>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOES7737DD3528E569CC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">ID5B6AA03D69E6EFEB</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <QueryQRTNElements>
+      <ProxyName>TYPEWIROOT8FB4898DE9E7F86F</ProxyName>
+      <Name>TypeWithholding</Name>
+      <Type>YVINQABXY_714CCCBB32DB1D42</Type>
+      <uiTextProxyName>YVINQABXY_9B2AF1B0A6E67513</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOES7737DD3528E569CC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">TYPEWILDINGA2A99753D64AC63A</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <QueryQRTNElements>
+      <ProxyName>CONCEPROOT0AF70287E36E1D74</ProxyName>
+      <Name>Concept</Name>
+      <Type>APC_V_LANGUAGEIN_EXTENDED_TEXT</Type>
+      <uiTextProxyName>YVINQABXY_A3A28D209C4B5728</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOES7737DD3528E569CC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">CONCEPTAF389478F11BE8ED</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <QueryQRTNElements>
+      <ProxyName>VALUEUROOTED3971A8F55A3D73</ProxyName>
+      <Name>ValueUVT</Name>
+      <Type>APC_S_AMOUNT</Type>
+      <MetaObjectProxyName>CURRENCY_CODE</MetaObjectProxyName>
+      <MetaObjectProxyName>CONTENT</MetaObjectProxyName>
+      <uiTextProxyName>YVINQABXY_7E4985C51180D232</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOES7737DD3528E569CC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">VALUEUVTA1083E1085D48855</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <QueryQRTNElements>
+      <ProxyName>UVTBASROOT0BADC3ECEF7EEA05</ProxyName>
+      <Name>UVTBase</Name>
+      <Type>APC_V_DECIMAL_VALUE</Type>
+      <uiTextProxyName>YVINQABXY_227F5414B7DE108C</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOES7737DD3528E569CC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">UVTBASECAA3B54282DB605C</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <QueryQRTNElements>
+      <ProxyName>BASEROOTF0BB4D33B80108C2</ProxyName>
+      <Name>Base</Name>
+      <Type>APC_V_DECIMAL_VALUE</Type>
+      <uiTextProxyName>YVINQABXY_1C34979BFB1D7133</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOES7737DD3528E569CC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">BASE5CB9053AEBC61970</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <QueryQRTNElements>
+      <ProxyName>COINROOT5813BCC309E07312</ProxyName>
+      <Name>Coin</Name>
+      <Type>APC_V_CURRENCY_CODE</Type>
+      <uiTextProxyName>YVINQABXY_D8EDAD8428145664</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOES7737DD3528E569CC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">COIN65119E8CBF375A0C</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <ParentNodeProxyName>ROOT4F903855210031B0</ParentNodeProxyName>
+    <UseForFeedsIndicator>false</UseForFeedsIndicator>
+    <UseForEnterpriseSearchIndicator>false</UseForEnterpriseSearchIndicator>
+  </QueryAnnotationElements>
+</QueryDefinition>

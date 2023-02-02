@@ -1,0 +1,33 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: JobProfile
+		Node: Root
+		Action: close 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - This script file is mass-enabled, i.e. the keyword "this" 
+	    refers to a collection of node instances.
+	   
+*/
+
+import ABSL;
+foreach(var jobProfile in this)
+{
+	if(jobProfile.status == JobStatusCode.CO_02)
+	{
+		//Cambio de estadoa cerrado
+		jobProfile.status = JobStatusCode.CO_07;
+
+		//Consulta la instancia correspondiente y su eliminación.
+		var qryJobListing = JobListing.QueryByElements;
+		var selParam = qryJobListing.CreateSelectionParams();
+		selParam.Add(qryJobListing.id,"I","EQ",jobProfile.id);
+		var result = qryJobListing.Execute(selParam);
+		result.Delete();
+
+	}
+}
+

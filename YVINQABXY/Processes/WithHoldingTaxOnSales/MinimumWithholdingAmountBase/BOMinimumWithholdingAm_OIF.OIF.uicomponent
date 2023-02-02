@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UXComponent xmlns:base="http://www.sap.com/a1s/cd/oberon/base-1.0" xmlns:uxv="http://www.sap.com/a1s/cd/oberon/uxview-1.0" xmlns:uxc="http://www.sap.com/a1s/cd/oberon/uxcontroller-1.0" id="hNtcil5sRK2JUiJJ5ZFbTm" enableBackendOperationsClubbing="true" name="BOMinimumWithholdingAm_OIF" AuthorizationClassificationCode="Application" useUIController="true" taskRegionDisabled="true" helpId="fe4699fa-af75-47bc-b8de-31a41e415177" designtimeVersion="5.20.0.7" modelVersion="1.0" xmlns="http://www.sap.com/a1s/cd/oberon/uxcomponent-1.0">
+ <uxc:Interface id="R0Y9OjxAJKsRqJPyEWlPmm">
+  <uxc:InPorts id="r4hHUhJu_q6Yygo0UOLU60">
+   <uxc:InPort id="Jk2mrd1YY4IdNss9yxgDNW" name="OBN_View_All_Inport" portTypeReference="To_BOMinimumWithholdingAm_viewAll" portTypePackage="/YVINQABXY_MAIN/SRC/Processes/WithHoldingTaxOnSales/MinimumWithholdingAmountBase/BOMinimumWithholdingAm_PTP.PTP.uicomponent" onFire="ViewAllHandler" navBO="BOMinimumWithholdingAmountSales" navBONS="http://0004019099-one-off.sap.com/YVINQABXY_" navBONode="Root" navOperation="To_BOMinimumWithholdingAm_viewAll">
+    <uxc:Parameter id="ZHshY0yjeaAHoFfEENwAG0" name="Parameter0" bind="/Root/OBN_NAV_KEY"/>
+   </uxc:InPort>
+  </uxc:InPorts>
+  <uxc:Configuration id="SSuRNNHmS4YLM1k6mApamW"/>
+ </uxc:Interface>
+ <uxc:Implementation id="fAywusND4qgSN5VYycGl6W">
+  <uxc:DataModel id="rsIxymr7sqYPfvEumF$aIm" name="Root" designtimeMainBOProxyName="BOMinimumWithholdingAmountSales" designtimeMainBOEsrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_">
+   <base:PropertyBag id="sknewXtbvaoQKFYkMhOXwG">
+    <base:Property id="qh7Nb$1ed4YbIS38wTfTSm" name="BINDINGSTATUS" value="OK"/>
+   </base:PropertyBag>
+   <uxc:Bind id="pkrsKBFfd4onh0GqIBbNQG" proxyName="BOMinimumWithholdingAmountSales" field="Root" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+   <uxc:DataField id="s$rkJE$6cKAlLuj8_khpGG" name="@ErrorOccured" type="boolean">
+    <base:PropertyBag id="3jIl4VSOvac8cOFXCo9pDG">
+     <base:Property id="OOSl5oaJ4aATwOu7272rtG" name="BINDINGSTATUS" value="Internal"/>
+     <base:Property id="NnpCPMAFsaYhzqi2yY6l0m" name="USERCHANGEDNAME" value="True"/>
+    </base:PropertyBag>
+   </uxc:DataField>
+   <uxc:Structure id="JRTGjEiltqYiRB62F9oXZW" name="UIState">
+    <base:PropertyBag id="7$Yw15WmP4koSY8yTOhF0G">
+     <base:Property id="jJiXLJ7HwKk_3NAh4WQ$VG" name="BINDINGSTATUS" value="Internal"/>
+     <base:Property id="pgOMJpX9vaok6cQTTEIFVW" name="USERCHANGEDNAME" value="True"/>
+    </base:PropertyBag>
+    <uxc:DataField id="u0OE1YOgYasct6govafi20" name="ViewSwitchSelectedItem" type="string">
+     <base:PropertyBag id="fhLU2LnVWa2Yo2JomZ$eWm">
+      <base:Property id="osXB64Pbb4oYHi5tfU$Cem" name="BINDINGSTATUS" value="Internal"/>
+      <base:Property id="$EfWSaIs5Kk95wL6QteCMm" name="USERCHANGEDNAME" value="True"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+   </uxc:Structure>
+   <uxc:Structure id="lTHP1Q6bhaU$$49iEOZLa0" name="BOMinimumWithholdingAmountSales">
+    <base:PropertyBag id="L8VVW8xVQqYij71L25e37G">
+     <base:Property id="4RQDgq6974ITk$0TY98zem" name="BINDINGSTATUS" value="OK"/>
+     <base:Property id="7PHAcTCCqqMkE$d08kdL6W" name="USERCHANGEDNAME" value="False"/>
+    </base:PropertyBag>
+    <uxc:Bind id="4G81Zg8VaaAfnw28zG5B0G" proxyName="BOMinimumWithholdingAmountSales" field="Root" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    <uxc:DataField id="gtQ1eS6CUEaaeU0b1g6Ksw" name="ID" type="string" cctsType="identifier">
+     <base:PropertyBag id="1CeWqudPKUO2A0IqVrn0AA">
+      <base:Property id="9X0YISz2IE6NHWX9mZ7YnA" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="Jw2cLSDfR0_a130SIilBdQ" name="UITEXTID" value=""/>
+      <base:Property id="wTrkQ0Q6oUG8b6Y6cH0_dw" name="XFLD" value=""/>
+      <base:Property id="0AAzuCUg8USznvV8zO1mKw" name="XCOL" value=""/>
+      <base:Property id="tBlAPahdKUGDVykbdeAhbw" name="XTOL" value=""/>
+     </base:PropertyBag>
+     <uxc:Bind id="1Ewg5GA4f0iGkPnSNXkKtQ" proxyName="BOMinimumWithholdingAmountSales" field="-~ID" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="AKviXWJJzUel_1G3Q3TQtw" name="CompanyUUID" type="string" cctsType="identifier">
+     <base:PropertyBag id="MYj2JdCy6UyPO1extZxaQA">
+      <base:Property id="hcCTrQDrQ0qz8Syl4YOKzw" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="XizAK83o0kmD63EX_GxmWw" name="UITEXTID" value=""/>
+      <base:Property id="tsucFEujAUqjbV_124T5ug" name="XFLD" value=""/>
+      <base:Property id="tS_0rvfOw0KuVBYPr3ZfqA" name="XCOL" value=""/>
+      <base:Property id="946lTT6yp0qztyaj5SqDrw" name="XTOL" value=""/>
+     </base:PropertyBag>
+     <uxc:Bind id="xgghdHBqVUWZAAhRjo5czQ" proxyName="BOMinimumWithholdingAmountSales" field="-~CompanyUUID-~content" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="MXvbQGn200yHvLGelETA_w" name="IsConsistent" type="boolean" cctsType="indicator">
+     <base:PropertyBag id="DiE_Vipckk_F6_vlqwObnA">
+      <base:Property id="8gfN2i1RpEqhbpatWB_swQ" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="Qfz7XWUlvEOk4edNfdCUSg" name="UITEXTID" value=""/>
+      <base:Property id="sS22BwgtkkGRmUEBfXQsmw" name="XFLD" value=""/>
+      <base:Property id="KQRmHJPxoEiPxh1YDMwxOA" name="XCOL" value=""/>
+      <base:Property id="BHU2lroQyECAE_jBIymeMw" name="XTOL" value=""/>
+     </base:PropertyBag>
+     <uxc:Bind id="P7IOfYWSO0Ci739gxEWHFQ" proxyName="BOMinimumWithholdingAmountSales" field="-~IsConsistent" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="Yu5PA7O_ykSDfIjJDmWNpQ" name="UUID" type="string" cctsType="identifier">
+     <base:PropertyBag id="balSd1szL0S_AfCAOoua_Q">
+      <base:Property id="HHE0tC0tFEyVy4yjBhcI6A" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="HDWhUAAaZkqcNQVeA7fK7g" name="UITEXTID" value=""/>
+      <base:Property id="CYqAWyJgTU_To_EbP26BPw" name="XFLD" value=""/>
+      <base:Property id="Smhs2maXHUm3p_m0Qb8qvw" name="XCOL" value=""/>
+      <base:Property id="xwm9Ym9BjUWIAnaAgjn_Cg" name="XTOL" value=""/>
+     </base:PropertyBag>
+     <uxc:Bind id="cWBNMrTSuUukYM9qvccTwg" proxyName="BOMinimumWithholdingAmountSales" field="-~UUID-~content" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="PKIHK1jnO0Sm3c3NB9jF9Q" name="TypeWithholding" type="string" cctsType="code">
+     <base:PropertyBag id="A38y6WBUjEe1u6jN8UBKqQ">
+      <base:Property id="yC929wFjnESP361Xmtdqmg" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="Bc9dBC98NEmAgbGMXBuMgQ" name="UITEXTID" value="YVINQABXY_9B2AF1B0A6E67513"/>
+      <base:Property id="35GQOqA4O0OsKa50tScjag" name="XFLD" value="Type Withholding Tax"/>
+      <base:Property id="qsVP7sQFdUSZJ9lfokApVw" name="XCOL" value="Type Withholding Tax"/>
+      <base:Property id="eU_4S0VjEUiU4nKePL6shw" name="XTOL" value="Type Withholding Tax"/>
+     </base:PropertyBag>
+     <uxc:Bind id="A99ummEIdkmWtxy0lpnIpw" proxyName="BOMinimumWithholdingAmountSales" field="-~TypeWithholding" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+     <uxc:Codelist id="L33o4zcPAk28LVsThSbhNQ" type="static" typeName="CLTypeWithholdingSalesCode" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="Ps8GKrANkU_wUYiykpT7dA" name="Concept" type="string" cctsType="text">
+     <base:PropertyBag id="FOrySfaWxEa851DeP50Oag">
+      <base:Property id="_ThaK7GydEyVfblArhNjWQ" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="E5Nzp9hWXE_nV5iFOfdroQ" name="UITEXTID" value="YVINQABXY_A3A28D209C4B5728"/>
+      <base:Property id="FH99A6S0XkSLx5M4sHqb_Q" name="XFLD" value="Concept"/>
+      <base:Property id="00SeagEI90eyJNEeZ3AZXg" name="XCOL" value="Concept"/>
+      <base:Property id="4setdLDKZEKOm7B1MHPhRg" name="XTOL" value="Concept"/>
+     </base:PropertyBag>
+     <uxc:Bind id="cl1oSot45UuoMSzp5tdxuA" proxyName="BOMinimumWithholdingAmountSales" field="-~Concept" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:Structure id="dx0jEvgy70_rUse__uMAMQ" name="ValueUVT" cctsType="none">
+     <base:PropertyBag id="SCQwyAZS7Uaol0tBUJK7kw">
+      <base:Property id="Lo6CmMxeAUGozbGD3ZAVzQ" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="1XA_E3X7gEWTWZUD5c0Ogw" name="UITEXTID" value="YVINQABXY_7E4985C51180D232"/>
+      <base:Property id="tqJOQen8RUGR28xT7UFLVg" name="XFLD" value="Value UVT"/>
+      <base:Property id="3gh1Wx9jQ0GEkaeA0mHZ_A" name="XCOL" value="Value UVT"/>
+      <base:Property id="75FUWrK_bECI7dqRzvJ4uA" name="XTOL" value="Value UVT"/>
+     </base:PropertyBag>
+     <uxc:Bind id="SmAQxWlx90CbvbbWo4qkVg" proxyName="BOMinimumWithholdingAmountSales" field="-~ValueUVT" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+     <uxc:DataField id="vGyrM1CDLk_kretUl8AHnw" name="content" type="float" cctsType="amount">
+      <base:PropertyBag id="AyM0ghZlb0uFtpvUqiSUnw">
+       <base:Property id="u7E90GlF6EKV4xDUEv8z0w" name="BINDINGSTATUS" value="OK"/>
+       <base:Property id="1ZlEx_NQ60mIvGmL5w8oTw" name="UITEXTID" value="YVINQABXY_7E4985C51180D232"/>
+       <base:Property id="O3RDMZXTWkSYAPLTrM6aJQ" name="XFLD" value="Value UVT"/>
+       <base:Property id="2Arp2jBQv0GAmmZuKNg1oA" name="XCOL" value="Value UVT"/>
+       <base:Property id="uMe2_hyw4U6NdbWHRo1FCw" name="XTOL" value="Value UVT"/>
+      </base:PropertyBag>
+      <uxc:Bind id="at4fXDZ530aqqNBT84cN1Q" proxyName="BOMinimumWithholdingAmountSales" field="-~content" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+     </uxc:DataField>
+     <uxc:DataField id="LmGwwkFp9ECStsIAhgHIIA" name="currencyCode" type="string" cctsType="code">
+      <base:PropertyBag id="qe8PsmAEyUaUEO19VOerGQ">
+       <base:Property id="Ai2BBDf7U0SUhR1iZbiUrw" name="BINDINGSTATUS" value="OK"/>
+       <base:Property id="zEj133YaPkWbVBzqv2w36g" name="UITEXTID" value=""/>
+       <base:Property id="5b8eD8fffECOE5HkueDPRA" name="XFLD" value=""/>
+       <base:Property id="LVyBmMlTo0eLBgrk8k52bQ" name="XCOL" value=""/>
+       <base:Property id="NjUGgeW1YkiqmNwg8m9ARg" name="XTOL" value=""/>
+      </base:PropertyBag>
+      <uxc:Bind id="vFTIUXSM802tBat5UTdR7Q" proxyName="BOMinimumWithholdingAmountSales" field="-~currencyCode" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+      <uxc:Codelist id="3AKYlp96m0mXlv9Aa8uM4g" type="static" typeName="CurrencyCode" esrNamespace="http://sap.com/xi/BASIS/Global"/>
+     </uxc:DataField>
+    </uxc:Structure>
+    <uxc:DataField id="ploGWqC5i0amB5LMErEL4Q" name="UVTBase" type="float" cctsType="value">
+     <base:PropertyBag id="wzASkg_sMkCXEU7Z98P_XQ">
+      <base:Property id="0ayynbRGOESKAh5lOhQMFw" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="crH0eakrh0ughOzt_uDUxA" name="UITEXTID" value="YVINQABXY_227F5414B7DE108C"/>
+      <base:Property id="9lwOTAlpuUOq94uuHg9Jbg" name="XFLD" value="UVT Base"/>
+      <base:Property id="e7ZY_iKk10y_KqIQDcxWaQ" name="XCOL" value="UVT Base"/>
+      <base:Property id="D0ozhw1PqE_fZ056wXA2lQ" name="XTOL" value="UVT Base"/>
+     </base:PropertyBag>
+     <uxc:Bind id="ZfNxhjMuCUuPdnJVIuS5Nw" proxyName="BOMinimumWithholdingAmountSales" field="-~UVTBase" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="fZ4gysniJEuxKoLSZbHAxA" name="Base" type="float" cctsType="value">
+     <base:PropertyBag id="GmX0wIAMH0KVnqbAQwqr0g">
+      <base:Property id="ZwRNUKY26US0ED_Jl06mjQ" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="AlxgXX9gnUy0WJe3AMV1Ug" name="UITEXTID" value="YVINQABXY_1C34979BFB1D7133"/>
+      <base:Property id="VM2ovevPiECcBDvqrERAmQ" name="XFLD" value="Base"/>
+      <base:Property id="IttzQ1hDmEC6fC7A7UPKAQ" name="XCOL" value="Base"/>
+      <base:Property id="M4yVzlzxwE69jwZPjYLiug" name="XTOL" value="Base"/>
+     </base:PropertyBag>
+     <uxc:Bind id="iPLyGPzOU0eiLbzcD4LxhQ" proxyName="BOMinimumWithholdingAmountSales" field="-~Base" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="FFYROpxlu0ymJwZn_ywyBA" name="Coin" type="string" cctsType="code">
+     <base:PropertyBag id="HhFRsFYxMEGJoVlDErsBeQ">
+      <base:Property id="AD93jD5EUEKyhnXIasWC_g" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="Y83b7DEtxEm2xJH9zWAB9w" name="UITEXTID" value="YVINQABXY_D8EDAD8428145664"/>
+      <base:Property id="NzYO6V02sUyA23xgLb27hw" name="XFLD" value="Coin"/>
+      <base:Property id="Lg6QWD4KX0ut7GacBPxQPw" name="XCOL" value="Coin"/>
+      <base:Property id="Y76IdutNvUunIlD7FlzScg" name="XTOL" value="Coin"/>
+     </base:PropertyBag>
+     <uxc:Bind id="Nv64M9I9XEq_qa4PgMRsgA" proxyName="BOMinimumWithholdingAmountSales" field="-~Coin" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+     <uxc:Codelist id="mARg_68q0EO_7YiMAGSXog" type="static" typeName="CurrencyCode" esrNamespace="http://sap.com/xi/AP/Common/GDT"/>
+    </uxc:DataField>
+    <uxc:DataField id="Ui_5WLuOJq2nAwhJNFr5cm" name="NodeID" type="string">
+     <base:PropertyBag id="WdWWAoo3WaMRItkXql1raW">
+      <base:Property id="a5MX93C2iq6R$L3h4Xagrm" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="1MfCUnAYXqkaLi7B9G4NGm" name="USERCHANGEDNAME" value="True"/>
+     </base:PropertyBag>
+     <uxc:Bind id="evrUaMg3y4oOtk06ZwX7fm" proxyName="BOMinimumWithholdingAmountSales" field="-~NodeID" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+   </uxc:Structure>
+   <uxc:DataField id="rRcGGwTplK6ukdAknhP2a0" name="OBN_NAV_KEY" type="string">
+    <base:PropertyBag id="0eFpsQd9SaYTE8GEOiTU9m">
+     <base:Property id="XJP8DdF4qKAnrHJOxWsk_0" name="BINDINGSTATUS" value="ToBind"/>
+     <base:Property id="VvpulYI0r4oZuSukMdtn6m" name="USERCHANGEDNAME" value="True"/>
+    </base:PropertyBag>
+   </uxc:DataField>
+   <uxc:Structure id="uswqsUWT9KgmvWqHfoW1dG" name="$System">
+    <base:PropertyBag id="Q_B8wsIKGqUlHAUWUk69jW">
+     <base:Property id="OlLKCzNu4agptHRHxsIB2G" name="BINDINGSTATUS" value="Internal"/>
+    </base:PropertyBag>
+    <uxc:DataField id="4BtZf3qnDqUD3kcFlwe1am" name="SessionUrl" type="string">
+     <base:PropertyBag id="GrJWgcQh9aowC8VvYXdxDG">
+      <base:Property id="7br86fQ6FKcdG8ruzb4gR0" name="BINDINGSTATUS" value="Internal"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+    <uxc:DataField id="ARIkgJXkK4ckcD$4juWrDW" name="Saved" type="boolean">
+     <base:PropertyBag id="CeESKQCZ$qIdtdujMUCXkG">
+      <base:Property id="cuTg5Ty_JKcp9YuKkf1LiG" name="BINDINGSTATUS" value="Internal"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+    <uxc:DataField id="JN$UpF71cqQPuWE3zRFX5G" name="IsPersistent" type="boolean">
+     <base:PropertyBag id="5Jq8XAmoc4otNSCq9O4V6m">
+      <base:Property id="Yb40q_nY4qkIuTZByosdmG" name="BINDINGSTATUS" value="Internal"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+   </uxc:Structure>
+  </uxc:DataModel>
+  <uxc:EventHandlers id="e0GEm95gTq6TmlbvagGUe0">
+   <uxc:EventHandler id="2z0UHyfVXa6dSOVtDh5IYm" name="SaveHandler">
+    <uxc:WindowAction id="EcgJtU8UbacVAsBqXc2EIW" name="Save" action="Save"/>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="a2kNyfAoMq2YInIOc8Pz1G" name="CreateHandler" eventType="simple">
+    <uxc:BoOperation id="40_yiE2sH4El8zfDDI2LsW" name="Create" proxyName="BOMinimumWithholdingAmountSales" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_" operation="Create"/>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="sICdgFRIoq2Ygm4HxxqCyG" name="ViewAllHandler">
+    <uxc:BoOperation id="6ZMrk3qm0awumsdySc$qkW" name="Operation1" proxyName="BOMinimumWithholdingAmountSales" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_" operation="Read">
+     <uxc:BoOperationParameter id="txzt52_XLK6E9jLmcX1HRm" name="NavKey" bind="/Root/OBN_NAV_KEY" type="nodeId" path="/Root/BOMinimumWithholdingAmountSales/NodeID"/>
+    </uxc:BoOperation>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="vAommTVlWKEQiwTg_NxrQm" name="CloseHandler">
+    <uxc:WindowAction id="XgQfW7R1pa6sEXgr_fz_K0" name="Operation" action="Close"/>
+   </uxc:EventHandler>
+  </uxc:EventHandlers>
+  <uxc:ModelChanges/>
+ </uxc:Implementation>
+ <uxc:Navigation id="S$lJhzLTTqQXl_ly4VsLnW"/>
+ <uxc:EmbeddedComponents id="0GA_tdeGNqwVjdI04FCSzW"/>
+ <uxc:RBAMData id="50ecLbjAy4MOrdNhbfYrE0" accessCheckMode="PrivilegedExceptAccessControlledBusinessObjects">
+  <uxc:AccessControlledBusinessObject id="xyFiVTRY_qQOYNGhlRWsWW" BO="BOMinimumWithholdingAmountSales" BONS="http://0004019099-one-off.sap.com/YVINQABXY_" unrestrictedAccess="true"/>
+ </uxc:RBAMData>
+ <uxc:Description id="zs88KqsAVaMKDL3Z_faRDG" textPoolId="DTIBpVjcgqQbOYm3S4vKjW"/>
+ <Tags id="7UGpWxSINKU9cuGqT0IWHG">
+          </Tags>
+ <UXView id="Bpg7a1BnnK6cGvWTJ228OG" patternType="objectInstance" checkClassification="Standard" checkMode="Both">
+  <uxv:IdentificationRegion id="1GC_8KDui4UOJ9kNi3qAEW">
+   <uxv:Title id="PVPq6vaMIq_VzN5TFnzWtG" textPoolId="cd814d84b1254e01b1b6f092479ed179"/>
+  </uxv:IdentificationRegion>
+  <uxv:ContextualNavigationRegion id="h9yz0FHc4a_lKGh_KxYJeG">
+   <uxv:ViewSwitchNavigation id="z0GdRKlweKM$ZDOh9N4VPW">
+    <uxv:NavigationItem id="vrKkAihq8KcXjwFjX2wm5W" navigationItemId="NavigationItem_jwfa0SEV1KI6_3JN7GyKWm">
+     <base:PropertyBag id="Vw7Yv7kO2a2Cd$XcAgR_40">
+      <base:Property id="tBycSHg6w4kmHGQTb3rTN0" name="NavigationTarget" value=""/>
+     </base:PropertyBag>
+     <uxv:Title id="RSiShoqtXqEvBg16RQGXk0" textPoolId="1c6dbd827ce248b4992fac68439bcf41"/>
+    </uxv:NavigationItem>
+    <uxv:NavigationItem id="C0bo7Qy7zqY_c3JPaEq9Rm" navigationItemId="NavigationItem1_Ue5VkLVxYa2G6mbKghBFXm">
+     <base:PropertyBag id="XgOn58cGu4_Hi7UWHvL090">
+      <base:Property id="NtgWFIevuK2riw3I5RbMvm" name="NavigationTarget" value=""/>
+     </base:PropertyBag>
+     <uxv:Title id="eEpDAsb4R4EwH7iZhVZaFG" textPoolId="8898aff204454a91b0db5f1cbeb219c2"/>
+    </uxv:NavigationItem>
+    <uxv:NavigationItem id="A3q2fObDWKY2CpwEEnQKVW" navigationItemId="NavigationItem2_9lZlohXyV4MHv4jszm8wcG">
+     <base:PropertyBag id="vPdORFa3wqcrJU8oTZp$GG">
+      <base:Property id="NKWkypnLF4UCZztQN9Ykvm" name="NavigationTarget" value=""/>
+     </base:PropertyBag>
+     <uxv:Title id="DLdpbqrkEKw3N1_EGogBLm" textPoolId="72d10059fa2543c280abbe2b092f4e61"/>
+    </uxv:NavigationItem>
+    <uxv:NavigationItem id="D9sfIXiFZKQVBaOO6SMoV0" navigationItemId="NavigationItem3_b2OdjH_iKa6Gjar_bnXPHm">
+     <base:PropertyBag id="cQHP1PoiNqEl9Uie921E_G">
+      <base:Property id="k5nhWNg93KY96cws9aSseG" name="NavigationTarget" value=""/>
+     </base:PropertyBag>
+     <uxv:Title id="y1xWJyAiB4UyCNJVOukuyG" textPoolId="586dc08ebd844fe0a0237cd94ebd353e"/>
+    </uxv:NavigationItem>
+    <uxv:NavigationItem id="jnmtk83HmKUFjoPXrYKgnG" navigationItemId="NavigationItem4_Bdnm29gZ9akaOKfrn0yUUm">
+     <base:PropertyBag id="lRRVkbrz8qQZwUbA5VQPN0">
+      <base:Property id="c$ZCazoBm4kuHayAag6um0" name="NavigationTarget" value=""/>
+     </base:PropertyBag>
+     <uxv:Title id="7585kA_DHKc1pGaExvOnlG" textPoolId="ffde5dd1103f4c8f90abfc1f28ba3e4a"/>
+    </uxv:NavigationItem>
+    <uxv:SelectedNavigationItemId id="57daEC_8_aEhz2$OI0T$$W" bindingExpression="/Root/UIState/ViewSwitchSelectedItem"/>
+   </uxv:ViewSwitchNavigation>
+   <uxv:FunctionBar id="BDlGS_gSwqwEjecUamaX9m">
+    <uxv:ButtonGroup id="H2M9XNn56qogCBNXpM3DTW" name="ActionButtons">
+     <uxv:Button id="_Wv5nG_0RqAXtLfZ9QqrEm" name="Save" onClick="SaveHandler" style="Standard">
+      <uxv:Text id="rTYbk8neR4Mx7vRr1fWO$G" textPoolId="e3bbca08e04245d380a3491fa150ef7b"/>
+     </uxv:Button>
+     <uxv:Button id="wlDzWUDSA4sEnJR0t_W5GW" name="Close" onClick="CloseHandler" style="Cancel">
+      <uxv:Text id="jZo49xtTt4UblNsxNv5PuG" textPoolId="b6d3802bfa274f33a8085780fb212d02"/>
+     </uxv:Button>
+    </uxv:ButtonGroup>
+    <uxv:ButtonGroup id="_fYeoij524YxoRJO3Cy0Xm" name="ApplicationSpecificButtons">
+		 
+          </uxv:ButtonGroup>
+   </uxv:FunctionBar>
+  </uxv:ContextualNavigationRegion>
+  <uxv:ViewContainerRegion id="aAf0JbJ6C4o31qapXFaeSm">
+   <uxv:View id="_ErGk7B$iqgdXmAxmkLSc0" columns="2" rows="2" navigationItemId="NavigationItem_jwfa0SEV1KI6_3JN7GyKWm">
+    <uxv:PaneContainer id="_nKO8XXJr4IkWvnTG79G5m" column="0" row="0" colSpan="2" rowSpan="2">
+     <uxv:FormPane id="mkmo1qdNKqo7buT$U0$Zj0">
+      <uxv:SectionGroup id="vSMJXBECX4gXunrJDAVXH0" column="0" row="0" showGroupName="true">
+       <base:PropertyBag id="zy3ylzOgbKw40HAwcX2UdW">
+        <base:Property id="m8HUqhLOJKA0rZlRZaNUmm" name="Navigation" value=""/>
+       </base:PropertyBag>
+       <uxv:SectionGroupName id="xLE0RN6KH4gFrxmYxPavdG" textPoolId="zkONqtbQ7aUwmga20vcEv0"/>
+       <uxv:SectionGroupItem id="VbDNVzzM0kal8d9IKYcr2A">
+        <uxv:Label id="iuXvmtzyxE6Ys9JZriNWig" textPoolId="rosPj9wTJUek4Qo_Nr6PSg"/>
+        <uxv:InputField id="hbdO9zELTk2A71OMb9dshA" name="ID" cctsType="identifier">
+         <uxv:IdentifierCCTSConfig id="vd1EtXKoL0qe_bBIAJp0sg" interpretAsInteger="false"/>
+         <uxv:Value id="9q8_YHVOsE2_AEHDORVG2w" bindingExpression="/Root/BOMinimumWithholdingAmountSales/ID">
+          <!-- <base:PropertyBag id="MndkWtqUmE_Ibm3mOdYZKg">
+											<base:Property id="Bnh8sYRFFUWoWk595I4bnQ" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="N7dZ0NRM10CrrE1gBrYCtg">
+        <uxv:Label id="RjCQrIwDREKv0wSdRkyLOQ" textPoolId="86E1_7GWXE6f62bFPJC3_Q"/>
+        <uxv:InputField id="PSv4jI9SJEaDmds0yAee7g" name="CompanyUUID" cctsType="identifier">
+         <uxv:IdentifierCCTSConfig id="mirj2_AL50Om3lsQYctAxQ" interpretAsInteger="false"/>
+         <uxv:Value id="AinAzxz1iUCUz8CqyEKLlQ" bindingExpression="/Root/BOMinimumWithholdingAmountSales/CompanyUUID">
+          <!-- <base:PropertyBag id="yRX_Uz6VFkigSif9x2csHg">
+											<base:Property id="mHqpPGPXQUewhXu7ijKqqQ" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="k0VcdjB4v02sWkPRU8dUIQ">
+        <uxv:Label id="580GKhOHike6N8mEmxApog" textPoolId="hmjwBT8eSkeIAtWHCAS_hg"/>
+        <uxv:CheckBox id="ZbV41bPywkeaw4iUjTXJFw" name="IsConsistent" cctsType="indicator">
+         <uxv:Value id="JJMDcXOdNk2uusll_FwKLA" bindingExpression="/Root/BOMinimumWithholdingAmountSales/IsConsistent">
+          <!-- <base:PropertyBag id="xOAn2RmCtkSZZ2Fskv_YzQ">
+											<base:Property id="F0s3nkQcTU6k69m30RbrCg" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:CheckBox>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="wY40bmrYbkCHxlkqoXSHQw">
+        <uxv:Label id="TxXFbq9HVkmX9E9Ckjm1nA" textPoolId="KSbV_MwvOk_QmXcSOSNvtg"/>
+        <uxv:InputField id="oNHJ4iju202w4QDvAe9M4A" name="UUID" cctsType="identifier">
+         <uxv:IdentifierCCTSConfig id="e35TyTAK2kaz_r21GN141A" interpretAsInteger="false"/>
+         <uxv:Value id="LRhFahCaFUScAClaeUbcMw" bindingExpression="/Root/BOMinimumWithholdingAmountSales/UUID">
+          <!-- <base:PropertyBag id="k4S9dEMXdky8XmI2l8LHaQ">
+											<base:Property id="EAmcHSzbjkOvHkJtrOgqSA" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="swf2PyOEE0_hyQImNltxfw">
+        <uxv:Label id="9WMx8cjEO0aFLig_lLbS_w" textPoolId="CkUeOwSauEC12vkvZj2Ytg"/>
+        <uxv:DropDownListBox id="BtaLZoO28UO8OO3ARMBAww" name="TypeWithholding" cctsType="code">
+         <uxv:CodeCCTSConfig id="hxXU2Ar50Uu3k1rWXKjrgQ"/>
+         <uxv:Value id="o1NWQ651K0iUHC54YItXFQ" bindingExpression="/Root/BOMinimumWithholdingAmountSales/TypeWithholding">
+          <!-- <base:PropertyBag id="578zh7Ask0y9si0oM0iOkg">
+											<base:Property id="9w6prdJdTUaMocdMIzSb2w" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:DropDownListBox>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="dE7VEbbIN0ajd5bo1Kk9AQ">
+        <uxv:Label id="oVJIVC1JvEi1nSFvqVEb4Q" textPoolId="mrDoCfFZf0yPzoALWdDRJw"/>
+        <uxv:InputField id="JhygZMQ_R0eDBxsxmMC8Hg" name="Concept" cctsType="text">
+         <uxv:Value id="eeNRfOcOE0COkgPR8qPVow" bindingExpression="/Root/BOMinimumWithholdingAmountSales/Concept">
+          <!-- <base:PropertyBag id="YwB4IYXs7EmhYcJ8bGeVRw">
+											<base:Property id="eW15NMAh3kady5vZinrrwQ" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="qvF2rOOl5E6NC1LzsY8fHw">
+        <uxv:Label id="hlrdQu6KsEa9onOWJc_YMg" textPoolId="VXRopGVWSEewuY3esZkfgA"/>
+        <uxv:CompoundField id="x_KqTG3RMUCfd5LqAxa4Nw" name="ValueUVT" cctsType="amount" structureBinding="/Root/BOMinimumWithholdingAmountSales/ValueUVT">
+         <uxv:InputField id="M82dNDCvh0iEqE9ePP834A" name="content" cctsType="amount">
+          <uxv:Value id="prt4Zbwmr0yQwEQtwCD9DA" bindingExpression="/Root/BOMinimumWithholdingAmountSales/ValueUVT/content">
+           <!-- <base:PropertyBag id="y870Alo0V0uckSBz_JKIWQ">
+												<base:Property id="B90fmGvRqkCgBmbzXUMYog" name="Name" value="" />
+											</base:PropertyBag> -->
+          </uxv:Value>
+         </uxv:InputField>
+         <uxv:DropDownListBox id="gkUyJEATIUKSORJm3jcO4A" name="currencyCode" cctsType="code">
+          <uxv:CodeCCTSConfig id="XVLR9ji1UESsxJ1EQAAvqQ"/>
+          <uxv:Value id="juhPUTydsUyR5Sq5fwRU3w" bindingExpression="/Root/BOMinimumWithholdingAmountSales/ValueUVT/currencyCode">
+           <!-- <base:PropertyBag id="E_b1vOWFpUSOExSaJc_Xiw">
+												<base:Property id="yzjye_71DkOIEMnKJktW1w" name="Name" value="" />
+											</base:PropertyBag> -->
+          </uxv:Value>
+         </uxv:DropDownListBox>
+        </uxv:CompoundField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="IqxsmlErjEyV7Dggjh3VXA">
+        <uxv:Label id="NUh04xkXRkeAMrsRpernfg" textPoolId="S_N8s4N3FECev1lNkmSukw"/>
+        <uxv:InputField id="ZHuqFUa7e0u8u9w_zA97Qg" name="UVTBase" cctsType="value">
+         <uxv:Value id="Zg3PEpv770iut0TQALr21A" bindingExpression="/Root/BOMinimumWithholdingAmountSales/UVTBase">
+          <!-- <base:PropertyBag id="uDL_TsdwxkazjGfhr4thYw">
+											<base:Property id="_XyPRxkjh0aOzlpjTwvcjQ" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="GV8U1RlJNk6WydpFUzy_EA">
+        <uxv:Label id="Kt6PQO61AE_TmAzb7eKGOw" textPoolId="P_6Io1vZZ0KqJMSu5eEvKw"/>
+        <uxv:InputField id="F5OAfmKAEEKL3BVqJ_4TQQ" name="Base" cctsType="value">
+         <uxv:Value id="gDvowkxpUUGfM9eM7ehFDg" bindingExpression="/Root/BOMinimumWithholdingAmountSales/Base">
+          <!-- <base:PropertyBag id="yom0g3rRFUC1z8UvTBYAug">
+											<base:Property id="o51W1tCXoUyaKXegZfk0JQ" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="qkdH5D23EUyN5OVByz7iWQ">
+        <uxv:Label id="rLDEzgk83EaQxBzAMShM9w" textPoolId="ygjwXJoN9k21Mo_5nSIG1A"/>
+        <uxv:DropDownListBox id="K6EV1hdqpUK4mlLkAKcJAg" name="Coin" cctsType="code">
+         <uxv:CodeCCTSConfig id="cuDqIgbCMkmsfomVqXcdLw"/>
+         <uxv:Value id="Dl4wAmN1hUyX8GjERZSwfg" bindingExpression="/Root/BOMinimumWithholdingAmountSales/Coin">
+          <!-- <base:PropertyBag id="kWrZyiezZEyaxXgYcQu3aA">
+											<base:Property id="hDAQOM0o70eR09X3sjm9ew" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:DropDownListBox>
+       </uxv:SectionGroupItem>
+      </uxv:SectionGroup>
+     </uxv:FormPane>
+    </uxv:PaneContainer>
+   </uxv:View>
+   <uxv:View id="N4Y5BFvzuasNFvcvYPSYmW" columns="2" rows="2" navigationItemId="NavigationItem1_Ue5VkLVxYa2G6mbKghBFXm"/>
+   <uxv:View id="SOnyJXESR4wEXH1IBkPs3G" columns="2" rows="2" navigationItemId="NavigationItem2_9lZlohXyV4MHv4jszm8wcG"/>
+   <uxv:View id="gPBF_IkXdKcWiGKrwPfmtW" columns="2" rows="2" navigationItemId="NavigationItem3_b2OdjH_iKa6Gjar_bnXPHm"/>
+   <uxv:View id="m2Yr7JBJV4U$C87qmB1q_m" columns="1" rows="1" navigationItemId="NavigationItem4_Bdnm29gZ9akaOKfrn0yUUm"/>
+  </uxv:ViewContainerRegion>
+  <uxv:ActionForms/>
+ </UXView>
+ <TextPool>
+  <base:TextBlock language="EN" masterLanguage="true" currentLanguage="true">
+   <base:TextPoolEntry id="oDl1EhIL$aEVczFMn5i0KG" textUuid="cd814d84b1254e01b1b6f092479ed179" text="BOMinimumWithholdingAmountSales : &lt;ID and/or Description&gt;" textCategory="XTIT"/>
+   <base:TextPoolEntry id="D7dONOlLD4ohDAEGe7d11G" textUuid="e3bbca08e04245d380a3491fa150ef7b" text="Save" textCategory="XBUT"/>
+   <base:TextPoolEntry id="vg1t2LcoIqcpE7Lcvt04TW" textUuid="b6d3802bfa274f33a8085780fb212d02" text="Close" textCategory="XBUT"/>
+   <base:TextPoolEntry id="qDlO8X5JKqka5Y8gFqo6u0" textUuid="1c6dbd827ce248b4992fac68439bcf41" text="General" textCategory="XTBS"/>
+   <base:TextPoolEntry id="BBUC7XLfP4gpHz0SqtF_km" textUuid="8898aff204454a91b0db5f1cbeb219c2" text="Line Items" textCategory="XTBS"/>
+   <base:TextPoolEntry id="O8rfcZ16PK2kaN5Lt_uSb0" textUuid="72d10059fa2543c280abbe2b092f4e61" text="Changes" textCategory="XTBS"/>
+   <base:TextPoolEntry id="j$hVjWTNbqwmSJA1YyQus0" textUuid="586dc08ebd844fe0a0237cd94ebd353e" text="Notes" textCategory="XTBS"/>
+   <base:TextPoolEntry id="T66$5XtK5qo7Lyw_NFGR20" textUuid="ffde5dd1103f4c8f90abfc1f28ba3e4a" text="Attachments" textCategory="XTBS"/>
+   <base:TextPoolEntry id="VQbXjneCqaIk2lcoo3Hd0m" textUuid="zkONqtbQ7aUwmga20vcEv0" text="FieldGroup" textCategory="XGRP"/>
+   <base:TextPoolEntry id="25mWfzdlmKQi6vXK0_xXQW" textUuid="DTIBpVjcgqQbOYm3S4vKjW" text="BOMinimumWithholdingAm_OIF" textCategory="YEXP"/>
+   <base:TextPoolEntry id="t5DQ5NOjsEafVZTolk31AQ" textUuid="rosPj9wTJUek4Qo_Nr6PSg" text="ID"/>
+   <base:TextPoolEntry id="aY6EHJIK20WRQoBfXMSdlg" textUuid="86E1_7GWXE6f62bFPJC3_Q" text="CompanyUUID"/>
+   <base:TextPoolEntry id="jnLcn7Z2j0uiyHRddNqDoQ" textUuid="hmjwBT8eSkeIAtWHCAS_hg" text="IsConsistent"/>
+   <base:TextPoolEntry id="JYKZsnnYw0K8wjAjw8eZiA" textUuid="KSbV_MwvOk_QmXcSOSNvtg" text="UUID"/>
+   <base:TextPoolEntry id="G4F81MGTM02wRGAdwftmxQ" textUuid="CkUeOwSauEC12vkvZj2Ytg" text="Type Withholding Tax" esrTextId="YVINQABXY_9B2AF1B0A6E67513" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="nHv0kgCLjU6qrMha18f0mw" textUuid="mrDoCfFZf0yPzoALWdDRJw" text="Concept" esrTextId="YVINQABXY_A3A28D209C4B5728" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="natIyAmMTEuVRKIjCkfmNQ" textUuid="VXRopGVWSEewuY3esZkfgA" text="Value UVT" esrTextId="YVINQABXY_7E4985C51180D232" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="QC26xlk0EE2onTaejFPVwQ" textUuid="Tsc8StEseU2tTBB5pbkcPA" text="Value UVT" esrTextId="YVINQABXY_7E4985C51180D232" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="y5h7DK2vc0qdfLHwp2XRlg" textUuid="LtEJHosOtkaxmTtJyeLmAQ" text="currencyCode"/>
+   <base:TextPoolEntry id="AWhtuHK1HU2U9RCHIzakNQ" textUuid="S_N8s4N3FECev1lNkmSukw" text="UVT Base" esrTextId="YVINQABXY_227F5414B7DE108C" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="o_kzl5S_Lku42Iq2cAI2zQ" textUuid="P_6Io1vZZ0KqJMSu5eEvKw" text="Base" esrTextId="YVINQABXY_1C34979BFB1D7133" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="Ei3Vqq0iBkOClShO4wBRVA" textUuid="ygjwXJoN9k21Mo_5nSIG1A" text="Coin" esrTextId="YVINQABXY_D8EDAD8428145664" esrTextCategory="XFLD" textCategory="XFLD"/>
+  </base:TextBlock>
+ </TextPool>
+</UXComponent>

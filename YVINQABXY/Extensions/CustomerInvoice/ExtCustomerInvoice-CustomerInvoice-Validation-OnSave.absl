@@ -1,0 +1,149 @@
+﻿import ABSL;
+//var QueryConfiguration = BOConfigurationSolution.QueryByElements;
+//var ExecuteQueryConfiguration = QueryConfiguration.Execute();
+//var Validation = false;
+//if(ExecuteQueryConfiguration.Count()>0){
+	//if(ExecuteQueryConfiguration.GetFirst().IsSet()){
+		//if(ExecuteQueryConfiguration.GetFirst().Status== CLStatusSolutionCode.CO_01){
+			//Validation = true;
+		//}
+	//}
+//}
+//if(ExecuteQueryConfiguration.Count()<=0 || Validation == true){
+	//var isconsistent = true;
+	//var ZDocumentTypeMsj = "Document Type Is Missing.";
+	//var Estado = this.TypeCode;
+	//if(Context.GetCurrentUserLanguage().GetDescription() == "ES")
+	//{
+		//ZDocumentTypeMsj = "Falta Tipo De Documento";
+	//}
+	//while(true){
+	//if(!this.BillFromParty.IsSet()){ break;}
+	//var vBillFromParty = this.BillFromParty;
+	//if(vBillFromParty.PartyKey.IsInitial()){break;}
+	//var vBillFromPartyPartyKey = vBillFromParty.PartyKey;
+	//var QryDocumentStructures = BODocumentStructures.QueryByElements;
+	//var ParamsDocumentStructures = QryDocumentStructures.CreateSelectionParams();
+		//ParamsDocumentStructures.Add(QryDocumentStructures.FunctionalUnitID, "I", "EQ", vBillFromPartyPartyKey.PartyID.content.RemoveLeadingZeros());
+	//var ResultEstruc = QryDocumentStructures.Execute(ParamsDocumentStructures);
+		//if(ResultEstruc.Count() > 0){
+			//if(this.ZDocumentType.IsInitial())
+			//{
+				//raise msj.Create("E",ZDocumentTypeMsj);
+				//isconsistent = false;
+			//}
+		//}
+		//break;
+	//}
+	////----------------------------validacion para evitar liberar sin guardar--------------------//
+	//var vCompanyID;
+	//while(true){
+		////Company
+		//if(!this.SellerParty.IsSet()){break;}
+		//if(this.SellerParty.PartyKey.IsInitial()){break;}
+		//if(this.SellerParty.PartyKey.PartyID.IsInitial()){break;}
+		//if(this.SellerParty.PartyKey.PartyID.content.IsInitial()){break;}
+		//vCompanyID = this.SellerParty.PartyKey.PartyID.content.RemoveLeadingZeros();
+		////search Restrictions
+		//var Restriction = BORestrictionsCI.Retrieve(vCompanyID);
+		//if(!Restriction.IsSet()){break;}
+		//if(Restriction.IsSaved == false){break;}
+//
+		//if(Restriction.IsSaved == true && this.Status.ReleaseStatusCode == "3" && this.ZIsRelease == true && this.ZIsSaved == false){
+			//raise msj.Create("E","Debe Guardar antes de liberar"); 
+			//isconsistent = false;
+			//break;
+		//}
+//
+		////var vuuid;
+		////vuuid = this.Item.GetFirst().ItemBusinessTransactionDocumentReference.GetFirst().BusinessTransactionDocumentReference.UUID;
+	////
+//
+		////var qrycir = CustomerInvoiceRequest.Retrieve(vuuid);
+	////
+		////if(qrycir.IsSet()){
+			//////raise msj.Create("E","ID sol fact: "+qrycir.BaseBusinessTransactionDocumentID.content.RemoveLeadingZeros());
+			////raise msj.Create("E","Estado Release CIR: "+qrycir.Status.ConsistencyStatusCode);
+			////raise msj.Create("E","Estado ItemListConsistency CIR: "+qrycir.Status.ItemListConsistencyStatusCode);
+			////raise msj.Create("E","Estado ItemListInvoicingStatusCode CIR: "+qrycir.Status.ItemListInvoicingStatusCode);
+			////raise msj.Create("E","Estado LifeCycleStatusCode CIR: "+qrycir.Status.LifeCycleStatusCode);
+		////}
+//
+		////raise msj.Create("E","ID fact: "+this.ID.content.RemoveLeadingZeros());
+//
+		////raise msj.Create("E","Estado Release: "+this.Status.ReleaseStatusCode);
+		////raise msj.Create("E","Estado Consistency: "+this.Status.ConsistencyStatusCode);
+		////raise msj.Create("E","Estado ItemListConsistency: "+this.Status.ItemListConsistencyStatusCode);
+//
+		////var insInvo = CustomerInvoice.Retrieve(this.UUID);
+		////if(insInvo.IsSet()){
+			////raise msj.Create("E","Estado Release Retrieve: "+insInvo.Status.ReleaseStatusCode);
+		////}
+//
+		////var insInvoiceDb = this.GetFromDB();d
+		////if(insInvoiceDb.IsInitial()){
+			////isconsistent = false;
+			////raise msj.Create("E","Debe Guardar antes de liberar"); 
+			////break;
+		////}
+		//break;
+	//}
+//
+	///*______________________________Validacion Importe maximo___________________________________*/
+	//while(true){
+		////var vCompanyID;
+		//if(!this.SellerParty.IsSet()){break;}
+		//if(this.SellerParty.PartyKey.IsInitial()){break;}
+		//if(this.SellerParty.PartyKey.PartyID.IsInitial()){break;}
+		//if(this.SellerParty.PartyKey.PartyID.content.IsInitial()){break;}
+		//vCompanyID = this.SellerParty.PartyKey.PartyID.content.RemoveLeadingZeros();
+//
+		//if(this.ZDocumentType.IsInitial()){break;}
+		//var vDocumentTypeID = this.ZDocumentType.RemoveLeadingZeros();
+//
+		//var vPayCode;
+		//var qryValidationSettings = BOValidationSettings.QueryByElements;
+		//var prmValidationSettings = qryValidationSettings.CreateSelectionParams();
+			//prmValidationSettings.Add(qryValidationSettings.CompanyID, "I", "EQ", vCompanyID);
+			//if(this.PaymentControl.IsSet()){
+				//if(!this.PaymentControl.PaymentFormCode.IsInitial()){
+					//vPayCode = this.PaymentControl.PaymentFormCode;
+					//prmValidationSettings.Add(qryValidationSettings.PaymentForm, "I", "EQ",vPayCode);
+				//}
+			//}
+			//prmValidationSettings.Add(qryValidationSettings.DocumentTypeID, "I", "EQ",vDocumentTypeID);
+		//var insValidationSettings = qryValidationSettings.Execute(prmValidationSettings);
+		//if(insValidationSettings.Count() == 0){break;}
+		//var insConf;
+		//var insItem;
+		//var MetodPayment;
+	//
+		//foreach(insConf in insValidationSettings){
+			//while(true){
+				//if(vDocumentTypeID != insConf.DocumentTypeID.RemoveLeadingZeros()){break;}
+				//var ConfiguredCurrency = insConf.MaxAmountnCurrency.currencyCode;
+				//if(ConfiguredCurrency != this.TotalGrossAmount.currencyCode){break;}
+				//if(this.TotalGrossAmount.content < insConf.MaxAmountnCurrency.content){break;}
+				//if(insConf.PaymentForm != vPayCode){break;} 
+				//var vTotalAmount = this.TotalGrossAmount.content.RoundToString(2,true);
+				//var vConfiguredTotalAmount = insConf.MaxAmountnCurrency.content.RoundToString(2,true);
+	//
+				//switch(insConf.AlertType){
+					//case CLAlertTypeCode.CO_ERR{ raise msj.Create("E",vTotalAmount+" > "+vConfiguredTotalAmount+" - Importe total supero el importe configurado para "+vCompanyID+", Tipo de documento: "+vDocumentTypeID+", Forma de pago: "+insConf.PaymentForm.GetDescription()+" y moneda: "+ConfiguredCurrency); isconsistent = false;}
+					//case CLAlertTypeCode.CO_WAR{ raise msj.Create("W",vTotalAmount+" > "+vConfiguredTotalAmount+" - Importe total supero el importe configurado para "+vCompanyID+", Tipo de documento: "+vDocumentTypeID+", Forma de pago: "+insConf.PaymentForm.GetDescription()+" y moneda: "+ConfiguredCurrency);}
+					//case CLAlertTypeCode.CO_INF{ raise msj.Create("I",vTotalAmount+" > "+vConfiguredTotalAmount+" - Importe total supero el importe configurado para "+vCompanyID+", Tipo de documento: "+vDocumentTypeID+", Forma de pago: "+insConf.PaymentForm.GetDescription()+" y moneda: "+ConfiguredCurrency);}
+				//}
+				//break;
+			//}
+		//}
+//
+		//break;
+	//}
+	///*__________________________Fin Validacion Importe maximo___________________________________*/
+	//if(this.Status.ReleaseStatusCode == "3" && this.ZReason2.IsInitial() && this.ProcessingTypeCode.Matches("CCM") && this.zIsConsistent == false){isconsistent = false;}
+//}else
+//{return true;}
+
+
+return true;
+	

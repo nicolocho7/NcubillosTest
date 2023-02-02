@@ -1,0 +1,14 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BOMassLoadProductConfig {
+	[Label("ID")] 				element ID					: ID;
+	[Label("Company")] 			element CompanyID			: OrganisationalCentreID;
+
+	node Products [0,n] {
+		[Label("ProductInternalID")]			element ProductInternalID: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	}
+
+	[DependentObject(AttachmentFolder)] node Attachment;
+	action zUpload;
+	action zExecute;
+}

@@ -1,0 +1,11 @@
+﻿import AP.Common.GDT;
+import AP.Payment.Global;
+
+[Extension] businessobject AP.Payment.Global:PaymentOrder {
+ 
+			 element Payment : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			 [Label("(OLD) ID Folio")]	element	ZIDFolioPayment : Text;
+
+     
+  
+}

@@ -1,0 +1,1418 @@
+﻿/*
+	---------------------------------------------------------------------
+	 Consume WS TCI 
+	-------------------------------------------------------------------- 
+	PROGRAMA   : ElectronicInvoice TCI-BIOPAS
+	DESCRIPCION: Send Invoice to TCI and Get any Response
+	AUTOR      : Kevin Julian Ferrucho Español 
+	FECHA      : 09/12/2019
+	*********************************************************************
+                        LOG DE MODIFICACIONES
+	*********************************************************************
+	Fecha      Programador    Descripción                           ID
+	5/05/2020	Jeferson M		Establecimiento / Dir
+								Establecimiento
+	_________  ____________  ____________________________________ ____ 
+*/
+import ABSL;
+import AP.Common.GDT as APCommon;
+import AP.CustomerInvoicing.Global as APCustomInvoice;
+import AP.FO.TaxArrangement.Global;
+import AP.FO.BusinessPartner.Global;
+import AP.PC.IdentityManagement.Global;
+import BASIS.Global as basis;
+import AP.SupplierInvoicing.Global;
+import AP.FO.MOM.Global;
+import AP.FO.ProductDataMaintenance.Global;
+import AP.LogisticsExecution.Global;
+import AP.FO.IdentifiedStock.Global;
+import AP.CRM.Global;
+
+var result : DataType::LANGUAGEINDEPENDENT_EXTENDED_Text;
+var CustomerInvoiceUUID = Parameter::UUIDCustomerInvoice;
+var CustomerInvoices = CustomerInvoice.Retrieve(CustomerInvoiceUUID);
+//--------------------------------------------------Logic for send Invoice to TCI---------------------------------------------------------------------------
+
+//======================================================Web Services variables==============================================================================
+//------------------------------------------------------ComprobanteRespuesta Node--------------------------------------------------------------------------------------
+var requestCR : Library::EWSTCI_WCF.ConsultarComprobanteIndividual.Request; //request structure
+var responseCR : Library::EWSTCI_WCF.ConsultarComprobanteIndividual.Response; //request structure
+
+//------------------------------------------------------ComprobanteRespuesta Node--------------------------------------------------------------------------------------
+var requestPDF : Library::EWSTCI_WCF.Obtener_PDF.Request; //request structure
+var responsePDF : Library::EWSTCI_WCF.Obtener_PDF.Response; //request structure
+
+//------------------------------------------------------Registrar Node--------------------------------------------------------------------------------------
+var request : Library::EWSTCI_WCF.Registrar.Request; //request structure
+var requestCDetalle: Library::EWSTCI_WCF.Registrar.Request.oGeneral.oENComprobante.ComprobanteDetalle.ENComprobanteDetalle; //request Detalle structure
+var requestCDetalleReceptor : Library::EWSTCI_WCF.Registrar.Request.oGeneral.oENComprobante.Receptor.ENReceptor;//request Detalle Receptor
+var requestCDetalleDisc: Library::EWSTCI_WCF.Registrar.Request.oGeneral.oENComprobante.ComprobanteDetalle.ENComprobanteDetalle.DescuentoCargoDetalle.ENDescuentoCargoDetalle; //request Detalle Descuentos structure
+var requestCDetalleDiscGlob: Library::EWSTCI_WCF.Registrar.Request.oGeneral.oENComprobante.DescuentoCargoCabecera.ENDescuentoCargoCabecera; //request Detalle Descuentos Global structure
+var requestCDetalleTax: Library::EWSTCI_WCF.Registrar.Request.oGeneral.oENComprobante.ComprobanteDetalle.ENComprobanteDetalle.ComprobanteDetalleImpuestos.ENComprobanteDetalleImpuestos; //request Detalle Impuesto structure
+var requestCAddProp: Library::EWSTCI_WCF.Registrar.Request.oGeneral.oENComprobante.ComprobantePropiedadesAdicionales.ENComprobantePropiedadesAdicionales; //request Propiedades structure
+var requestCTexto: Library::EWSTCI_WCF.Registrar.Request.oGeneral.oENComprobante.Texto.ENTexto;
+var requestCGrilla: Library::EWSTCI_WCF.Registrar.Request.oGeneral.oENComprobante.ComprobanteGrillaCuenta.ENComprobanteGrillaCuenta;
+var requestCGuiaRem: Library::EWSTCI_WCF.Registrar.Request.oGeneral.oENComprobante.ComprobanteGuia.ENComprobanteGuia;
+var requestCVendedor: Library::EWSTCI_WCF.Registrar.Request.oGeneral.oENComprobante.Vendedor.ENVendedor;
+var requestCPaymentForm: Library::EWSTCI_WCF.Registrar.Request.oGeneral.oENComprobante.FormaPago.ENFormaPago;
+var requestCMotivoDoc: Library::EWSTCI_WCF.Registrar.Request.oGeneral.oENComprobante.ComprobanteMotivosDocumentos.ENComprobanteMotivoDocumento;
+var requestCMotivoNotaCredit: Library::EWSTCI_WCF.Registrar.Request.oGeneral.oENComprobante.ComprobanteNotaCreditoDocRef.ENComprobanteNotaDocRef;
+var requestCPropiertiesAdd: Library::EWSTCI_WCF.Registrar.Request.oGeneral.oENComprobante.ComprobantePropiedadesAdicionales.ENComprobantePropiedadesAdicionales;
+var requestCorreoTercero: Library::EWSTCI_WCF.Registrar.Request.oGeneral.oENComprobante.CorreoTerceros.ENCorreoTerceros;
+var response : Library::EWSTCI_WCF.Registrar.Response; //response structure
+
+//======================================================Variables to Save Data==============================================================================
+//For Company
+var vRucEmisor = "";
+var vDireccion = "";
+var vEmail = "";
+var vTipoDocumentoIdentificacion = "";
+var vRazonSocial = "";
+
+var Departamento = "LIMA";
+var Provincia = "MIRAFLORES";
+var	Distrito = "LIMA";
+var	CodDistrito = "150122";
+var	Urbanizacion = "";//"URBANIZACION";
+var	Calle = "AV. COMANDANTE ESPINAR NRO. 860 INT. 201";
+var CodPais = "PE";
+var	CodigoTipoDocumento = "6";
+
+//For Customer
+var vRUCCliente = "";
+var vEmailCliente = "";
+var vWebPage = "";
+var vDireccionCliente = "";
+var vTipoDocumentoIdentificacionCliente = "";
+var vRazonSocialCliente = "";
+var vNombreComercial = "";
+var vUrbanizacion = "";
+var vDepartamento = "";
+var vProvincia = "";
+var vDistrito = "";
+var vUbigueo = "";
+var vTelefono = "";
+var vFax = "";
+var CustEstablishment="";
+var CustEstablishmentAddres = "";
+
+//For Others
+var vCodigoAfectacionIGVDG = "";
+var vNombreTributoDG = "";
+var vCodigoTributoDG = "";
+var vDescripcionMaterialDG = "";
+var vSerie = "";
+var vNumero = "";
+var vRUC = "";
+var vMoneda;
+var vCondicionPago = "";
+var vTipoDocumento = "";
+var vTipoDocumentoDesc = "";
+var vNumeroDocumento = "";
+var vTipoMonedaPais = "";
+var vCodigoPais = "";
+var vImporteTotal = 0.0;
+var vFechaEmision;
+var vFechaVencimiento;
+var vMotivo;
+var vMotivoNC;
+var vSerieRef;
+var vNumeroRef;
+var vVendedor="";
+var vRefExt = "";
+var vGuiaRemserie = "";
+var vGuiaRemsNumer = "";
+var vGuiaFecha;
+var vCheckInafecta = false;
+
+//For Grilla
+var vValor1="BANCO DE CREDITO DEL PERU";
+var vValor2="SOLES"; 
+var vValor3="194 1525534033";
+var vValor4="002-194-001525534033-91";
+
+//For Values
+var vMontoLetras = "";
+var vCodigoLeyenda = "1000";
+var vTotalInafecto = 0;
+var vTotalExonerado = 0;
+var vTotalGravado = 0;
+var vTotalExportacion = 0;
+var vTotalGratuita = 0;
+var vTotal = 0;
+var vTotalNeto = 0;
+var vTotalImpuesto = 0;
+var vTipoOperacion = "";
+var VersionUbl = "2.1";
+var vValorConcepto = "";
+var vComentario = "";
+var vPorcDescuento = 0;
+var DescuentoGlobal = 0.0; 
+var Operation : APCommon : Amount;
+var infdicatorDiscountGlobal = false;
+var indicatorDiscount = false;
+var MontoTotDescGo = 0.0;
+var	MontoDescuentoGo = 0.0;
+var	vPorcentajeDescuentoGo = 0.0;
+var vGlosaRetencion="";
+var vCodEstablecimientoSUNAT = "0001";
+var vNetMount;
+var vPaymentCondition;
+var vEndDateInvoice;
+
+while(true){
+	if(CustomerInvoices.Status.ReleaseStatusCode != "3"){break;} //Solo en liberado
+	if(CustomerInvoices.TypeCode != "28"){break;}//28 = Invoice 
+	//Tipo de Documento
+	var vTypeCode;
+	switch (CustomerInvoices.ProcessingTypeCode){
+		case "CI"{
+			vTypeCode = CLDocumentTypeEICode.CO_CI;
+			vTipoDocumentoDesc = "Factura";
+			vTipoDocumento = "01";
+			if(CustomerInvoices.ZBoleta){vTypeCode = CLDocumentTypeEICode.CO_BO;vTipoDocumentoDesc = "Boleta";vTipoDocumento = "03";}
+			//if(this.zMandato){vTypeCode = CLDocumentTypeEICode.CO_CM;}
+			//if(this.zExportacion){vTypeCode = CLDocumentTypeEICode.CO_CE;}
+		}
+		case "CCM"{vTypeCode = CLDocumentTypeEICode.CO_CN;vTipoDocumentoDesc = "NotaCredito";vTipoDocumento = "07";}
+		default {break;}
+	}
+
+	//Unidad de Ventas
+	if(!CustomerInvoices.BillFromParty.IsSet()){ break;}
+	var vBillFromParty = CustomerInvoices.BillFromParty;
+	if(vBillFromParty.PartyKey.IsInitial()){break;}
+	var vBillFromPartyPartyKey = vBillFromParty.PartyKey;
+	if(vBillFromPartyPartyKey.PartyID.content.IsInitial()){break;}
+	
+	//Company
+	if(!CustomerInvoices.SellerParty.IsSet()){break;}
+	var vSellerParty = CustomerInvoices.SellerParty;
+	if(vSellerParty.PartyUUID.IsInitial()){break;} 
+	var vCompanyUUID = vSellerParty.PartyUUID;
+	if(vSellerParty.PartyKey.IsInitial()){break;}
+	var VPartyKey = vSellerParty.PartyKey;
+	if(VPartyKey.PartyID.IsInitial()){break;}
+	var VCompanyID = vSellerParty.PartyKey.PartyID.content.RemoveLeadingZeros();
+
+	//----retrieve Company Information
+	var insCompany = Company.Retrieve(vCompanyUUID);
+	if(!insCompany.IsSet()){break;}
+	vNombreComercial = "LABORATORIOS BIOPAS S.A.C.";//insCompany.NameByValidity.GetFirst().Name.content;
+	vRazonSocial = "LABORATORIOS BIOPAS SOCIEDAD ANONIMA CERRADA";//insCompany.NameByValidity.GetFirst().Name.content;
+	//vDireccion = insCompany.AddressSnapshot.PostalAddress.GetFirst().StreetName;
+	var qcta = CompanyTaxArrangement.QueryByElements;
+	var rcta = qcta.CreateSelectionParams();
+		rcta.Add(qcta.CompanyID, "I", "EQ", insCompany.ID);
+	var insConpanyTaxAr = qcta.Execute(rcta).GetFirst();
+	if (!insConpanyTaxAr.IsSet()){break;}	
+	if (insConpanyTaxAr.TaxIdentificationNumber.Count() <= 0){break;}
+	vRucEmisor = insConpanyTaxAr.TaxIdentificationNumber.GetFirst().PartyTaxID.content;
+	vRUC = vRucEmisor;
+	if(insCompany.AddressSnapshot.IsSet()){
+		if(insCompany.AddressSnapshot.DefaultEMail.IsSet()){
+			vEmail = insCompany.AddressSnapshot.DefaultEMail.URI.content;
+		}
+		if(insCompany.AddressSnapshot.PostalAddress.Count()>0){
+			var PostalAddres = insCompany.AddressSnapshot.PostalAddress.GetFirst();
+			if(!PostalAddres.StreetName.IsInitial()){
+				vDireccion = PostalAddres.StreetName;
+				Calle = PostalAddres.StreetName;
+			}
+			if(!PostalAddres.HouseID.IsInitial()){
+				vDireccion = vDireccion +" "+ PostalAddres.HouseID;
+				Calle = Calle + " " + PostalAddres.HouseID;
+			}
+			if(!PostalAddres.CityName.IsInitial()){
+				vDireccion = vDireccion +" "+ PostalAddres.CityName;
+				var findgui = PostalAddres.CityName.Find("-");
+				if(findgui != -1){
+					Distrito = PostalAddres.CityName.Substring(0,findgui);
+					var Rest = PostalAddres.CityName.Substring(findgui + 1);
+					findgui = Rest.Find("-");
+					if(findgui != -1){
+						Provincia = Rest.Substring(0,findgui);
+						Rest = Rest.Substring(findgui + 1);
+						findgui = Rest.Find("-");
+						if(findgui != -1){
+							Departamento = Rest.Substring(0,findgui);
+						}
+					}
+				}
+				//Calle = Calle+" "+ PostalAddres.CityName;
+			}
+		}
+	}
+
+	switch(insConpanyTaxAr.TaxIdentificationNumber.GetFirst().TypeCode.content){	
+		case("1") {vTipoDocumentoIdentificacion = "1";}
+		default {vTipoDocumentoIdentificacion = "0";}
+	}
+
+	//Customer
+	if(!CustomerInvoices.BuyerParty.IsSet()){break;}
+	var vBuyerParty = CustomerInvoices.BuyerParty;
+	if(vBuyerParty.PartyUUID.IsInitial()){break;}
+	var vCustomerUUID = vBuyerParty.PartyUUID;
+	if(!CustomerInvoices.ZReason2.IsInitial()){//|| vTipoDocumento == "07"){
+		vMotivo = CustomerInvoices.ZReason2;
+		vMotivoNC = CustomerInvoices.ZReason2;
+		var lenght = CustomerInvoices.ZCustomerInvoiceAssociated.Length();
+		vSerieRef = CustomerInvoices.ZCustomerInvoiceAssociated.Substring(0,4);
+		vNumeroRef = CustomerInvoices.ZCustomerInvoiceAssociated.Substring(5,(lenght-5));
+	}else{
+		vMotivo = "";
+		vMotivoNC = "";
+		var lenght = CustomerInvoices.ZCustomerInvoiceAssociated.Length();
+		vSerieRef = CustomerInvoices.ZCustomerInvoiceAssociated.Substring(0,4);
+		vNumeroRef = CustomerInvoices.ZCustomerInvoiceAssociated.Substring(5,(lenght-5));
+
+	}
+	//----Retrieve Customer Information
+	var insCliente;
+	var insCustomerInv = CustomerInvoices;
+	if (!insCustomerInv.BuyerParty.IsSet()){break;}
+	if (!insCustomerInv.BuyerParty.Party.IsSet()){break;}
+	if (!insCustomerInv.BuyerParty.Party.Customer.IsSet()){break;}
+	
+	insCliente = insCustomerInv.BuyerParty.Party.Customer;
+	if (!insCliente.CurrentCommonFormattedDefaultAddress.IsSet()){break;}
+	if (insCliente.TaxNumber.Count() <= 0){break;}
+	vRUCCliente = insCliente.TaxNumber.GetFirst().PartyTaxID.content;
+	switch(insCliente.TaxNumber.GetFirst().TaxIdentificationNumberTypeCode.content){	
+		case("1") {vTipoDocumentoIdentificacionCliente = "6";}
+		case("2") {vTipoDocumentoIdentificacionCliente = "1";}
+		case("3") {vTipoDocumentoIdentificacionCliente = "7";}
+		case("5") {vTipoDocumentoIdentificacionCliente = "4";}
+		case("6") {vTipoDocumentoIdentificacionCliente = "0";}
+		default {vTipoDocumentoIdentificacionCliente = "6";}
+	}
+	//------------------------------------------------------get Address and name of Establishment of Sales Order
+	while(true){
+		if(CustomerInvoices.Item.Count() == 0){break;}
+		var vItem = CustomerInvoices.Item.GetFirst();
+		var vSales = vItem.ItemBusinessTransactionDocumentReference.Where(n=>n.BusinessTransactionDocumentReference.TypeCode == "114").GetFirst();
+		if(!vSales.IsSet()){break;}
+		var vIDSales = vSales.BusinessTransactionDocumentReference.ID.content.RemoveLeadingZeros();
+		var qrySalesOrder = SalesOrder.QueryByElements;
+		var prmSalesOrder = qrySalesOrder.CreateSelectionParams();
+			prmSalesOrder.Add(qrySalesOrder.ID.content, "I", "EQ", vIDSales);
+		var insSalesOrder = qrySalesOrder.Execute(prmSalesOrder).GetFirst();
+		if(!insSalesOrder.IsSet()){break;}
+		if(!insSalesOrder.ServicePointLocation.IsSet()){break;}
+		if(!insSalesOrder.ServicePointLocation.AddressSnapshot.IsSet()){break;}
+		if(insSalesOrder.ServicePointLocation.AddressSnapshot.PostalAddress.Count()<=0){break;}
+		var insPostalAddress = insSalesOrder.ServicePointLocation.AddressSnapshot.PostalAddress.GetFirst();
+		if(!insPostalAddress.CareOfName.IsInitial()){
+			CustEstablishment = insPostalAddress.CareOfName.Trim();
+		}
+		if(!insSalesOrder.zEstablishmentName.IsInitial()){
+			CustEstablishment = insSalesOrder.zEstablishmentName.Trim();
+		}
+		if(!CustEstablishment.IsInitial()){
+			var PostalAddress = insSalesOrder.ServicePointLocation.AddressSnapshot.PostalAddress.GetFirst();
+			if(!PostalAddress.StreetPrefixName.IsInitial()){
+				CustEstablishmentAddres = PostalAddress.StreetPrefixName.Trim();
+			}
+			if(!PostalAddress.AdditionalStreetPrefixName.IsInitial()){
+				CustEstablishmentAddres = CustEstablishmentAddres + " - "+PostalAddress.AdditionalStreetPrefixName.Trim();
+			}
+			if(!PostalAddress.HouseID.IsInitial()){
+				CustEstablishmentAddres = CustEstablishmentAddres + " - "+PostalAddress.HouseID.Trim();
+			}
+			if(!PostalAddress.StreetName.IsInitial()){
+				CustEstablishmentAddres = CustEstablishmentAddres + " - "+PostalAddress.StreetName.Trim();
+			}
+			if(!PostalAddress.StreetSuffixName.IsInitial()){
+				CustEstablishmentAddres = CustEstablishmentAddres + " - "+PostalAddress.StreetSuffixName.Trim();
+			}
+			if(!PostalAddress.CityName.IsInitial()){
+				CustEstablishmentAddres = CustEstablishmentAddres + " - "+PostalAddress.CityName.Trim();
+			}
+		}
+		break;
+	}
+	
+	if (!insCliente.CurrentCommon.IsSet()){break;}
+	vRazonSocialCliente = insCliente.CurrentCommon.BusinessPartnerFormattedName;
+	var vCurrentCommon = insCliente.CurrentCommon;
+	vDepartamento = vCurrentCommon.zDepartamentoSDK;
+	vProvincia = vCurrentCommon.zProvinciaSDK;
+	vUrbanizacion = vCurrentCommon.zDistritoSDK;
+	vUbigueo = vCurrentCommon.zUbigeoSDK;
+	if(insCliente.CurrentDefaultAddressInformation.IsSet()){
+		if(insCliente.CurrentDefaultAddressInformation.Address.IsSet()){
+			if(insCliente.CurrentDefaultAddressInformation.Address.DefaultEMail.IsSet()){
+				vEmailCliente = insCliente.CurrentDefaultAddressInformation.Address.DefaultEMail.URI.content;
+			}
+			if(insCliente.CurrentDefaultAddressInformation.Address.DefaultConventionalPhone.IsSet()){
+				vTelefono = insCliente.CurrentDefaultAddressInformation.Address.DefaultConventionalPhone.FormattedNumberDescription.Trim();
+			}
+			if(insCliente.CurrentDefaultAddressInformation.Address.DefaultPostalAddressRepresentation.IsSet()){
+				var PostalAddress = insCliente.CurrentDefaultAddressInformation.Address.DefaultPostalAddressRepresentation;
+				if(!PostalAddress.StreetPrefixName.IsInitial()){
+					vDireccionCliente = PostalAddress.StreetPrefixName.Trim();
+				}
+				if(!PostalAddress.AdditionalStreetPrefixName.IsInitial()){
+					vDireccionCliente = vDireccionCliente + " - "+PostalAddress.AdditionalStreetPrefixName.Trim();
+				}
+				if(!PostalAddress.HouseID.IsInitial()){
+					vDireccionCliente = vDireccionCliente + " - "+PostalAddress.HouseID.Trim();
+				}
+				if(!PostalAddress.StreetName.IsInitial()){
+					vDireccionCliente = vDireccionCliente + " - "+PostalAddress.StreetName.Trim();
+				}
+				if(!PostalAddress.StreetSuffixName.IsInitial()){
+					vDireccionCliente = vDireccionCliente + " - "+PostalAddress.StreetSuffixName.Trim();
+				}
+				if(!PostalAddress.CityName.IsInitial()){
+					vDireccionCliente = vDireccionCliente + " - "+PostalAddress.CityName.Trim();
+				}
+			}
+			if(insCliente.CurrentDefaultAddressInformation.Address.DefaultFacsimile.IsSet()){
+				vFax = insCliente.CurrentDefaultAddressInformation.Address.DefaultFacsimile.FormattedNumberDescription.Trim();
+			}
+			if(insCliente.CurrentDefaultAddressInformation.Address.DefaultWeb.IsSet()){
+				vWebPage = insCliente.CurrentDefaultAddressInformation.Address.DefaultWeb.URI.Trim();
+			}
+		}
+	}
+	//Fill Variables to Root node WS
+	if(CustomerInvoices.CashDiscountTerms.IsSet()){
+		if(!CustomerInvoices.CashDiscountTerms.Code.IsInitial()){
+			vCondicionPago = CustomerInvoices.CashDiscountTerms.Code.GetDescription();
+		}
+		if(!CustomerInvoices.CashDiscountTerms.FullPaymentEndDate.IsInitial()){
+			vFechaVencimiento = CustomerInvoices.CashDiscountTerms.FullPaymentEndDate.ConvertToGlobalDateTime();
+		}
+	}
+
+	//Search Number and serie 
+	var lenght = CustomerInvoices.ZExternalID.Length();
+	vSerie = CustomerInvoices.ZExternalID.Substring(3,4);
+	vNumero = CustomerInvoices.ZExternalID.Substring(8,(lenght-8));
+
+	//Date and Currency
+	vFechaEmision = CustomerInvoices.Date;
+	vMoneda = CustomerInvoices.TotalGrossAmount.currencyCode;
+	Operation.currencyCode = vMoneda;
+
+	//search Payment Condition
+	if(CustomerInvoices.CashDiscountTerms.IsSet()){
+		var CashDiscountTerms = CustomerInvoices.CashDiscountTerms;
+		if(!CashDiscountTerms.Code.IsInitial()){
+			vPaymentCondition = CashDiscountTerms.Code.GetDescription();
+		}
+		if(!CashDiscountTerms.FullPaymentEndDate.IsInitial()){
+			vEndDateInvoice= CashDiscountTerms.FullPaymentEndDate.ToString().Replace("-","");
+		}
+	}
+
+	//Total Amounts
+	vTotal = CustomerInvoices.TotalGrossAmount.content;
+	Operation.content = CustomerInvoices.TotalGrossAmount.content;//for spell amount
+	if(vTipoDocumentoDesc == "NotaCredito"){
+		Operation.content = Operation.content * -1;
+	}
+	vTotalNeto = CustomerInvoices.TotalNetAmount.content;
+	vTotalImpuesto = CustomerInvoices.TotalTaxAmount.content;
+	vImporteTotal = CustomerInvoices.TotalGrossAmount.content;
+	if (vImporteTotal < 0){
+		vImporteTotal = vImporteTotal * -1;
+	}
+	if (vTotalNeto < 0){
+		vTotalNeto = vTotalNeto * -1;
+	}
+	if (vTotal < 0){
+		vTotal = vTotal * -1;
+	}
+	if (vTotalImpuesto < 0){
+		vTotalImpuesto = vTotalImpuesto * -1;
+	}
+	
+	//Global Discount
+	if(CustomerInvoices.PriceAndTaxCalculation.IsSet()){
+		//node Discounts of Invoice
+		if(CustomerInvoices.PriceAndTaxCalculation.MainDiscount.IsSet()){
+			infdicatorDiscountGlobal = true;
+			if(CustomerInvoices.PriceAndTaxCalculation.MainDiscount.CalculatedAmount.content < 0){
+				DescuentoGlobal = (CustomerInvoices.PriceAndTaxCalculation.MainDiscount.CalculatedAmount.content * -1);
+				MontoTotDescGo = (CustomerInvoices.PriceAndTaxCalculation.MainDiscount.CalculatedAmount.content * -1);
+				MontoDescuentoGo = (CustomerInvoices.PriceAndTaxCalculation.MainTotal.CalculatedAmount.content); //- MontoTotDescGo);
+				vPorcentajeDescuentoGo = (CustomerInvoices.PriceAndTaxCalculation.MainDiscount.Rate.DecimalValue * -1);
+				
+				vTotalNeto.Clear();
+				vImporteTotal.Clear();
+				vTotalNeto = CustomerInvoices.PriceAndTaxCalculation.MainTotal.CalculatedAmount.content;
+				vImporteTotal = CustomerInvoices.PriceAndTaxCalculation.MainTotal.CalculatedAmount.content;
+
+				indicatorDiscount =true;
+			}else{
+				DescuentoGlobal = CustomerInvoices.PriceAndTaxCalculation.MainDiscount.CalculatedAmount.content;
+				MontoTotDescGo = CustomerInvoices.PriceAndTaxCalculation.MainDiscount.CalculatedAmount.content;
+				MontoDescuentoGo = CustomerInvoices.PriceAndTaxCalculation.MainTotal.CalculatedAmount.content;// - MontoTotDescGo;
+				vPorcentajeDescuentoGo = CustomerInvoices.PriceAndTaxCalculation.MainDiscount.Rate.DecimalValue;
+
+				vTotalNeto.Clear();
+				vImporteTotal.Clear();
+				vTotalNeto = CustomerInvoices.PriceAndTaxCalculation.MainTotal.CalculatedAmount.content;
+				vImporteTotal = CustomerInvoices.PriceAndTaxCalculation.MainTotal.CalculatedAmount.content;
+
+				indicatorDiscount = true;
+			}
+			var vIndicadorDescuento = 0;
+			var vCodigoAplicadoDesc = "02";
+			if(CustomerInvoices.PriceAndTaxCalculation.ProductTaxDetails.Count()>0){
+				if(CustomerInvoices.PriceAndTaxCalculation.ProductTaxDetails.GetFirst().IsSet()){
+					if(CustomerInvoices.PriceAndTaxCalculation.ProductTaxDetails.GetFirst().TaxationCharacteristicsCode.content != "310"){
+						vCodigoAplicadoDesc = "03";
+					}
+					//if(CustomerInvoices.PriceAndTaxCalculation.ProductTaxDetails.GetFirst().TaxationCharacteristicsCode.content == "300"){
+						//request.oGeneral.oENComprobante.DescuentoNoAfecto = DescuentoGlobal;
+						//vCheckInafecta = true;
+					//}
+				}
+			}
+			requestCDetalleDiscGlob.CodigoMotivo = vCodigoAplicadoDesc;
+			requestCDetalleDiscGlob.Monto = ABSL : Numeric.ParseFromString(MontoTotDescGo.RoundToString(2,true));
+			requestCDetalleDiscGlob.MontoBase = ABSL : Numeric.ParseFromString(MontoDescuentoGo.RoundToString(2,true));
+			requestCDetalleDiscGlob.PorcentajeAplicado = vPorcentajeDescuentoGo;
+			requestCDetalleDiscGlob.Indicador = vIndicadorDescuento;
+
+			
+		}
+	}
+	///---------------------end----------------------------------------------------
+	vGlosaRetencion = "Incorporado al Regimen de Agentes de Retencion de IGV R.S. 124 2008 a partir del 01.09.2008";
+	
+
+	//Retrive a name a password of WS 
+	var QAuthenticationData = BOAuthenticationData.QueryByElements;
+	var PQueryAD = QAuthenticationData.CreateSelectionParams();
+		PQueryAD.Add(QAuthenticationData.CompanyID,"I","EQ",VCompanyID);
+	var Result = QAuthenticationData.Execute(PQueryAD).GetFirst();
+	if(!Result.IsSet()){break;}
+	var ZAuthentication;
+	var CompanyID;
+	var PassID;
+	foreach(ZAuthentication in Result.Authenticated){
+		if(ZAuthentication.ID == "TCIACCOUNTIDENT"){
+			CompanyID = ZAuthentication.Description;
+		}
+		if(ZAuthentication.ID == "TCIACCOUNTPASSWD"){
+			PassID = ZAuthentication.Description;
+		}
+	}
+	//for check any item with IGV or is Free
+	var IsFree = insCustomerInv.Item.PriceAndTaxCalculationItem.Where(n => n.TaxationCharacteristicsCode.content == "Z02").GetFirst();
+	var IGVSensor = false;
+	var	ItemCounter = insCustomerInv.Item.Count();
+	var IsIGV = insCustomerInv.Item.PriceAndTaxCalculationItem.Where(n => n.TaxationCharacteristicsCode.content == "310").GetFirst();
+	var IsIna = insCustomerInv.Item.PriceAndTaxCalculationItem.Where(n => n.TaxationCharacteristicsCode.content == "300").GetFirst();
+	var CounterGRA = 0;
+	//For Details Node and Subnodes, Assign into Subnode WS
+	foreach(var Items in insCustomerInv.Item.OrderBy(n=>n.ID)){
+		var vIdentificacionTributo;
+		var vItemTaxTotal;
+		var vCodigoValorUnitario;
+		var vCodigoMaterial;
+		var vUnidadMedida = "";
+		var vPorcentajeImpuesto = 0.0;
+		var vPorcentajeDescuento = 0.0;
+		var vImpuestoTotal = 0.0;
+		var vImpuestoNodo = 0.0;
+		var vCodigoAfectacionIGV = "";
+		var vNombreTributo = "";
+		var vCodigoTributo = "";
+		var vDescripcionMaterial = "";
+		var vIndicadorDescuento;
+		var vCodigoTipoPrecio = "01";
+		var vCodigoAplicadoDesc ="01";
+		var MontoTotDesc;
+		var MontoDescuento;
+		var vNetAmount = Items.NetAmount.content;
+		var vNetAmount1 =0.0;//= Items.NetAmount.content;
+		if(vNetAmount < 0 ){
+			vNetAmount = vNetAmount * -1;
+			vNetAmount1 = vNetAmount1 * -1;
+		}
+		var vPorcentajeDD = "";
+		var vDualDiscount = false;
+		var vCheckIGV = false;
+		var vTotalnet=0.0;
+		var vGrossAmount = Items.GrossAmount.content;
+		var vUnitaryAmount = 0.0;
+		var vUnitaryAmountIGV = 0.0;
+		var vNumeroExterno = "";
+		var vIDStock;
+		var vExpirationDate;
+		var vMultiDescription = "";
+
+		//Homologation for Unit Code
+		if(Items.Quantity.unitCode == "EA"){vUnidadMedida = "EA";}
+		else if(Items.Quantity.unitCode == "XBX"){vUnidadMedida = "BX";}
+		else {vUnidadMedida = Items.Quantity.unitCode;}
+		//Search Employee and EXT Reference
+		var refSalesOrder = Items.ItemBusinessTransactionDocumentReference.Where(n=>n.BusinessTransactionDocumentReference.TypeCode == "114").GetFirst();
+		var refDirectSale = Items.ItemBusinessTransactionDocumentReference.Where(n=>n.BusinessTransactionDocumentReference.TypeCode == "29").GetFirst();
+		if(Items.ID.RemoveLeadingZeros() == "10"){
+			if(refSalesOrder.IsSet()){
+				if(!refSalesOrder.BusinessTransactionDocumentReference.IsInitial()){
+					var BusinessTransactionDocumentReference = refSalesOrder.BusinessTransactionDocumentReference;
+					if(!BusinessTransactionDocumentReference.ID.IsInitial()){
+						var qrySalesOrder = SalesOrder.QueryByElements;
+						var prmSalesOrder = qrySalesOrder.CreateSelectionParams();
+							prmSalesOrder.Add(qrySalesOrder.ID.content, "I", "EQ", BusinessTransactionDocumentReference.ID.content.RemoveLeadingZeros());
+						var insSalesOrder = qrySalesOrder.Execute(prmSalesOrder).GetFirst();
+						if(insSalesOrder.IsSet()){
+							if(!insSalesOrder.BuyerID.IsInitial()){
+								vRefExt = insSalesOrder.BuyerID.content.RemoveLeadingZeros();
+							}
+							if(insSalesOrder.EmployeeResponsibleParty.IsSet()){
+								if(insSalesOrder.EmployeeResponsibleParty.Party.IsSet()){
+									if(insSalesOrder.EmployeeResponsibleParty.Party.CurrentName.IsSet()){
+										var insName = insSalesOrder.EmployeeResponsibleParty.Party.CurrentName;
+										vVendedor = insName.PartyFormattedName.content;
+										requestCVendedor.Nombre = vVendedor;
+										request.oGeneral.oENComprobante.Vendedor.ENVendedor.Add(requestCVendedor);
+									}else{
+										if(Items.ItemParty.Count()>0){
+											var partyIt = Items.ItemParty.Where(n=>n.RoleCode == "39").GetFirst();
+											if(partyIt.IsSet()){
+												if(partyIt.Party.IsSet()){
+													if(partyIt.Party.CurrentName.IsSet()){
+														vVendedor = partyIt.Party.CurrentName.PartyFormattedName.content;
+														requestCVendedor.Nombre = vVendedor;
+														request.oGeneral.oENComprobante.Vendedor.ENVendedor.Add(requestCVendedor);
+													}
+												}
+											}
+										}
+									}
+								}else{
+									if(Items.ItemParty.Count()>0){
+										var partyIt = Items.ItemParty.Where(n=>n.RoleCode == "39").GetFirst();
+										if(partyIt.IsSet()){
+											if(partyIt.Party.IsSet()){
+												if(partyIt.Party.CurrentName.IsSet()){
+													vVendedor = partyIt.Party.CurrentName.PartyFormattedName.content;
+													requestCVendedor.Nombre = vVendedor;
+													request.oGeneral.oENComprobante.Vendedor.ENVendedor.Add(requestCVendedor);
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}else{
+				if(Items.ItemParty.Count()>0){
+					var partyIt = Items.ItemParty.Where(n=>n.RoleCode == "39").GetFirst();
+					if(partyIt.IsSet()){
+						if(partyIt.Party.IsSet()){
+							if(partyIt.Party.CurrentName.IsSet()){
+								vVendedor = partyIt.Party.CurrentName.PartyFormattedName.content;
+								requestCVendedor.Nombre = vVendedor;
+								request.oGeneral.oENComprobante.Vendedor.ENVendedor.Add(requestCVendedor);
+							}
+						}
+					}
+				}
+			}
+		}
+		//get Id Code of master data
+		vCodigoMaterial = Items.ItemProduct.ProductKey.ProductID.content;
+		var vMaterialDetail="";
+		//get Id Number Alternative PE - SUNAT
+		var QueryMaterial = Material.QueryByDescription;
+		var ParamMaterial = QueryMaterial.CreateSelectionParams();
+			ParamMaterial.Add(QueryMaterial.ProductID.content,"I","EQ",Items.ItemProduct.ProductKey.ProductID.content);
+		var ResultMaterial = QueryMaterial.Execute(ParamMaterial).GetFirst();
+		if(ResultMaterial.IsSet()){
+			if(ResultMaterial.Common.IsSet()){
+				if(!ResultMaterial.Common.AlternativeNumberPE.IsInitial()){
+					vNumeroExterno = ResultMaterial.Common.AlternativeNumberPE.RemoveLeadingZeros();
+				}
+			}
+			if(ResultMaterial.TextCollection.IsSet()){
+				if(ResultMaterial.TextCollection.Text.Count()>0){
+					var DescriptionText=ResultMaterial.TextCollection.Text.GetFirst();
+					if(!DescriptionText.TextContent.Text.content.IsInitial()){
+					vMaterialDetail=DescriptionText.TextContent.Text.content;
+					}
+				}
+			}
+		}
+		
+		///Get ID STOCK and ExpirationDate
+		if(Items.ItemBusinessTransactionDocumentReference.Count()>0){
+			var ItemBusinessTransactionDocumentReference = Items.ItemBusinessTransactionDocumentReference;
+			var Data = ItemBusinessTransactionDocumentReference.Where(n=>(n.BusinessTransactionDocumentReference.ItemTypeCode == "14") || (n.BusinessTransactionDocumentReference.ItemTypeCode == "002")).GetFirst();
+			var Data2;
+			if(!Data.IsSet() || vTipoDocumentoDesc.Matches("NotaCredito")){
+				Data= ItemBusinessTransactionDocumentReference.Where(n=>n.BusinessTransactionDocumentReference.ItemTypeCode == "35").GetFirst();
+				if(Data.IsSet()){
+					var queryCR = CustomerReturn.QueryByElements;
+					var selectionParamsCR = queryCR.CreateSelectionParams();
+						selectionParamsCR.Add(queryCR.ID.content, "I", "EQ",Data.BusinessTransactionDocumentReference.ID.content.RemoveLeadingZeros());
+					var resultDataCR = queryCR.Execute(selectionParamsCR).GetFirst();
+					if(resultDataCR.IsSet()){
+						Data2 = resultDataCR.BusinessTransactionDocumentReference.Where(n=>n.BusinessTransactionDocumentReference.TypeCode == "24").GetFirst();
+					}
+				}
+			}
+			if(Data.IsSet() || Data2.IsSet()){
+				if(Data.IsSet() && vTipoDocumentoDesc.Matches("Factura")){
+					var insItemUUID2 = Data. BusinessTransactionDocumentReference.ItemUUID;
+					var insOutboundItem = OutboundDelivery.Item.Retrieve(insItemUUID2);
+					var IDProducto;
+					if(insOutboundItem.IsSet()){
+						///guia de Remision
+						if(insOutboundItem.ToRoot.IsSet()){
+							if(!insOutboundItem.ToRoot.ZIDFolio.IsInitial()){
+								vGuiaFecha = insOutboundItem.ToRoot.Date.GetLast().DateTimePeriod.EndDateTime.ConvertToGlobalDateTime();
+								vGuiaRemserie = insOutboundItem.ToRoot.ZIDFolio.Substring(0,4);
+								var CounterGuia = insOutboundItem.ToRoot.ZIDFolio.Length();
+								vGuiaRemsNumer = insOutboundItem.ToRoot.ZIDFolio.Substring(6,(CounterGuia-6));
+							}
+						}
+						if(insOutboundItem.Material.Count() > 0){
+							foreach (var Material in insOutboundItem.Material){
+								if(Items.ItemProduct.IsSet()){
+									if (!Items.ItemProduct.ProductKey.IsInitial()){
+										if (!Items.ItemProduct.ProductKey.ProductID.IsInitial()){
+											IDProducto= Items.ItemProduct.ProductKey.ProductID.content.Trim();
+										}
+									}
+								}
+								//===================================================Get Lote and Date Expiration===============================================================
+								var insmaterial = Material;
+								var qryIdentifiedStock = IdentifiedStock.QueryByElements;
+								var prmIdentifiedStock = qryIdentifiedStock.CreateSelectionParams();
+									prmIdentifiedStock.Add(qryIdentifiedStock.ID.content, "I", "EQ", insmaterial.IdentifiedStockKey.ID.content.RemoveLeadingZeros());
+									prmIdentifiedStock.Add(qryIdentifiedStock.MaterialKey.ProductID.content, "I", "EQ",IDProducto);
+								var isnIdentifiedStock = qryIdentifiedStock.Execute(prmIdentifiedStock).GetFirst();
+								if(isnIdentifiedStock.IsSet()){
+									vExpirationDate = isnIdentifiedStock.ExpirationDateTime.GetYear() +isnIdentifiedStock.ExpirationDateTime.GetMonth() +isnIdentifiedStock.ExpirationDateTime.GetDay();
+									if(isnIdentifiedStock.Description.Count()>0){
+										vIDStock = isnIdentifiedStock.Description.GetFirst().Description.content;
+									}
+								}
+							}
+						}
+					}
+				}
+				if(Data2.IsSet() && vTipoDocumentoDesc.Matches("NotaCredito")){
+					if(!Data2.BusinessTransactionDocumentReference.IsInitial()){
+						if(!Data2.BusinessTransactionDocumentReference.ID.IsInitial()){
+							var queryInBoundDL = ConfirmedInboundDelivery.QueryByElements;
+							var selectionParIDL = queryInBoundDL.CreateSelectionParams();
+								selectionParIDL.Add(queryInBoundDL.ID.content, "I", "EQ", Data2.BusinessTransactionDocumentReference.ID.content.RemoveLeadingZeros());
+							var resultInBoundDL = queryInBoundDL.Execute(selectionParIDL).GetFirst();
+							if(resultInBoundDL.IsSet()){
+								vGuiaFecha = resultInBoundDL.Date.GetLast().DateTimePeriod.EndDateTime.ConvertToGlobalDateTime();
+								vGuiaRemserie = resultInBoundDL.ZIDFolio.Substring(0,4);
+								var CounterGuia = resultInBoundDL.ZIDFolio.Length();
+								vGuiaRemsNumer = resultInBoundDL.ZIDFolio.Substring(6,(CounterGuia-6));
+								if(resultInBoundDL.Item.Count() >0){
+									var ITEMS;
+									foreach(ITEMS in resultInBoundDL.Item){
+										if(ITEMS.ItemProduct.IsSet()){
+											var ItemProduct = ITEMS.ItemProduct;
+											if(!ItemProduct.ProductKey.IsInitial()){
+												var ProductKey = ItemProduct.ProductKey;
+												if(!ProductKey.ProductID.IsInitial()){
+													var ProductID = ProductKey.ProductID;
+													var vItemProduct = Items.ItemProduct;
+													var Quantity = Items.Quantity;
+													if(!Quantity.content.IsInitial()){
+														if(!ProductID.IsInitial() && vItemProduct.IsSet() && ITEMS.IsSet()){
+															if(!vItemProduct.ProductKey.IsInitial()){
+																if(!vItemProduct.ProductKey.ProductID.IsInitial()){
+																	if(ProductID.content.RemoveLeadingZeros() == vItemProduct.ProductKey.ProductID.content.Trim() && ITEMS.DeliveryQuantity.Quantity.content == Quantity.content){
+																		var Site = ITEMS.ItemBusinessTransactionDocumentReferenceSiteLogisticsLotMaterialOutput.Where(n=>n.ConfirmMainInventorySeparatingValues.MaterialKey.ProductID.content.RemoveLeadingZeros() == vItemProduct.ProductKey.ProductID.content.Trim());
+																		if(Site.Count() > 0 ){
+																			var SinteIndiv;
+																			foreach(SinteIndiv in Site){
+																				vIDStock =SinteIndiv.ConfirmIdentifiedStockInventorySeparatingValues.IdentifiedStockKey.ID.content;
+																				var queryStock = IdentifiedStock.QueryByElements;
+																				var selectionParamsStock = queryStock.CreateSelectionParams();
+																				selectionParamsStock.Add(queryStock.ID.content, "I", "EQ", SinteIndiv.ConfirmIdentifiedStockInventorySeparatingValues.IdentifiedStockKey.ID.content);
+																				var resultDataStock = queryStock.Execute(selectionParamsStock).GetFirst();
+																				if(resultDataStock.IsSet()){
+																					vExpirationDate = resultDataStock.ExpirationDateTime.GetYear() +resultDataStock.ExpirationDateTime.GetMonth() +resultDataStock.ExpirationDateTime.GetDay();
+																					if(resultDataStock.Description.Count()>0){
+																						vIDStock = resultDataStock.Description.GetFirst().Description.content;
+																					}
+																				}
+																			}
+																		}
+																	}
+																}
+															}
+														}
+													}
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+		vMultiDescription = "LOTE: "+vIDStock+" - VCTO: "+vExpirationDate+" "+ vMaterialDetail;
+		//_---------------------------------------validation of taxes of items-----------------------------------------
+		//var Find = request.oGeneral.oENComprobante.ComprobanteDetalle.ENComprobanteDetalle.Where .Where(n =>n.CodigoTributo == "9998" || n.CodigoTributo == "1000").GetFirst();
+		var Find2;
+		//if(Find.IsInitial()){
+			Find2 = insCustomerInv.Item.PriceAndTaxCalculationItem.Where(n=>n.TaxationCharacteristicsCode.content == "300" || n.TaxationCharacteristicsCode.content == "310").GetFirst();
+		//}
+		
+		var PrinceAndTax = Items.PriceAndTaxCalculationItem;
+		if (PrinceAndTax.IsSet()){
+			var ItemTaxationTerms = Items.PriceAndTaxCalculationItemProductTaxDetails;
+			if(ItemTaxationTerms.Count()>0){
+				vItemTaxTotal = ItemTaxationTerms.GetFirst().ProductTax.Amount.content;
+			}
+			if(vItemTaxTotal < 0){
+				vItemTaxTotal = vItemTaxTotal * -1;
+			}
+			vNetAmount1 = PrinceAndTax.ItemMainPrice.CalculatedAmount.content;
+			if(vNetAmount1 < 0){
+				vNetAmount1 = vNetAmount1 * -1;
+			}					
+			////-------------------------------------------------------Item TaxNode-------------------------------------------------------
+			switch (PrinceAndTax.TaxationCharacteristicsCode.content){
+				case "300"{
+					vIdentificacionTributo = "9998";
+					vNombreTributo = "INA";//"INAFECTAS"
+					vCodigoTributo = "FRE";
+					vCodigoValorUnitario = "01";
+					vTipoOperacion = "0101";
+					vCodigoAfectacionIGV = "30";
+					if(infdicatorDiscountGlobal){
+						vTotalInafecto = vTotalInafecto + vNetAmount1;
+					}else{
+						vTotalInafecto = vTotalInafecto + vNetAmount;
+					}
+					
+					if(vNetAmount < 0 ){
+						vNetAmount = vNetAmount * -1;
+					}
+					request.oGeneral.oENComprobante.MontosTotales.Inafecto.Total = vTotalInafecto;
+				}
+				case "311"{
+					vIdentificacionTributo = "9997";
+					vNombreTributo = "EXO";//"EXONERADO";
+					vCodigoTributo = "VAT";
+					vCodigoValorUnitario = "01";
+					vTipoOperacion = "0101";
+					vCodigoAfectacionIGV = "30";
+					vTotalExonerado = vTotalExonerado + vNetAmount;
+						
+					request.oGeneral.oENComprobante.MontosTotales.Exonerado.Total = vTotalExonerado; 
+				}
+				case "310"{
+					vIdentificacionTributo = "1000";
+					vNombreTributo = "IGV";//"IMPUESTO GENERAL A LAS VENTAS";
+					vCodigoTributo = "VAT";
+					vCodigoValorUnitario = "01";
+					vTipoOperacion = "0101";
+					vCodigoAfectacionIGV = "10";
+					vTotalGravado = vTotalGravado + vNetAmount;
+
+						request.oGeneral.oENComprobante.MontosTotales.Gravado.Total =vTotalGravado;
+						request.oGeneral.oENComprobante.MontosTotales.Gravado.GravadoIGV.Base = vTotalGravado;
+				
+					vCheckIGV = true;
+					IGVSensor = true;
+					if(ItemTaxationTerms.Count()>0){
+						request.oGeneral.oENComprobante.MontosTotales.Gravado.GravadoIGV.Porcentaje = ItemTaxationTerms.GetFirst().ProductTax.Percent;
+					}
+					request.oGeneral.oENComprobante.MontosTotales.Gravado.GravadoIGV.ValorImpuesto = vTotalImpuesto;
+				}
+				case "500" {
+					vIdentificacionTributo = "9995";
+					vNombreTributo = "EXP";//"EXPORTACION";
+					vCodigoTributo = "FRE";
+					vCodigoValorUnitario = "01";
+					vTipoOperacion = "0200"; 
+					vCodigoAfectacionIGV = "40";
+					vTotalExportacion = vTotalExportacion + vNetAmount;
+					Operation.content = Operation.content + vTotalExportacion;
+					vMotivoNC = "11";
+						
+					request.oGeneral.oENComprobante.MontosTotales.Exportacion.Total = vTotalExportacion; 
+				}
+				case "Z1", "Z01"{
+					vCodigoTipoPrecio = "02";
+					vIdentificacionTributo = "9996";
+					vNombreTributo = "GRA";//"GRATUITO";
+					vCodigoTributo = "FRE";
+					vCodigoValorUnitario = "02";
+					vTipoOperacion = "0101";
+					vCodigoAfectacionIGV = "31";
+					vTotalGratuita = vTotalGratuita + vNetAmount;
+					CounterGRA = CounterGRA +1;
+						
+					request.oGeneral.oENComprobante.MontosTotales.Gratuito.GratuitoImpuesto.Base = vTotalGratuita;
+					request.oGeneral.oENComprobante.MontosTotales.Gratuito.GratuitoImpuesto.ValorImpuesto = 0;
+					request.oGeneral.oENComprobante.MontosTotales.Gratuito.Total = vTotalGratuita;
+
+					vImpuestoTotal = 0;
+					vPorcentajeImpuesto = 0;
+					
+					Operation.content = Operation.content - vNetAmount;
+					vTotalNeto = vTotalNeto - vNetAmount;
+					vImporteTotal = vImporteTotal - vNetAmount;
+					vTotal = vTotal - vNetAmount;
+
+					if(!CustomerInvoices.ZMixta && CounterGRA == 1){
+						requestCPropiertiesAdd.Codigo = "1002";
+						requestCPropiertiesAdd.Valor = "TRANSFERENCIA GRATUITA DE UN BIEN Y/O SERVICIO PRESTADO GRATUITAMENTE"; 
+						request.oGeneral.oENComprobante.ComprobantePropiedadesAdicionales.ENComprobantePropiedadesAdicionales.Add(requestCPropiertiesAdd);
+					}
+				}
+				case "Z2", "Z02"{
+					vCodigoTipoPrecio = "02";
+					vIdentificacionTributo = "9996";
+					vNombreTributo = "GRA";//"GRATUITO";
+					vCodigoTributo = "FRE";
+					vCodigoValorUnitario = "02";
+					vTipoOperacion = "0101";
+					vCodigoAfectacionIGV = "13";
+					vTotalGratuita = vTotalGratuita + vNetAmount;
+					CounterGRA = CounterGRA +1;	
+					
+					request.oGeneral.oENComprobante.MontosTotales.Gratuito.GratuitoImpuesto.Base = vTotalGratuita;
+					request.oGeneral.oENComprobante.MontosTotales.Gratuito.GratuitoImpuesto.ValorImpuesto = vTotalGratuita * 0.18;
+					request.oGeneral.oENComprobante.MontosTotales.Gratuito.Total = vTotalGratuita;
+					if(!CustomerInvoices.ZMixta){
+						Operation.content = 0;
+						vTotalNeto = 0.00;
+						//vImporteTotal = 0.00;//vImporteTotal + vNetAmount;
+						vImpuestoTotal = 0.00;
+						vTotalImpuesto = 0.00;//vTotalImpuesto - vNetAmount;
+						vTotal = 0.00;
+						if(CounterGRA == 1){
+							requestCPropiertiesAdd.Codigo = "1002";
+							requestCPropiertiesAdd.Valor = "TRANSFERENCIA GRATUITA DE UN BIEN Y/O SERVICIO PRESTADO GRATUITAMENTE"; 
+							request.oGeneral.oENComprobante.ComprobantePropiedadesAdicionales.ENComprobantePropiedadesAdicionales.Add(requestCPropiertiesAdd);
+						}
+					}else{
+						if(vItemTaxTotal < 0){
+							vItemTaxTotal = vItemTaxTotal* -1;
+						}
+						Operation.content = Operation.content - vNetAmount - vItemTaxTotal;//- (vTotalGratuita * 0.18);//OSC
+						vTotalNeto = vTotalNeto - vNetAmount;
+						vImporteTotal = vImporteTotal - vNetAmount;
+						vTotal = vTotal - vNetAmount - vItemTaxTotal; //- (vTotalGratuita * 0.18);//OSC
+						//vTotalImpuesto = vTotalImpuesto - (vTotalGratuita * 0.18);//OSC
+						vTotalImpuesto = vTotalImpuesto - vItemTaxTotal;
+						request.oGeneral.oENComprobante.MontosTotales.Gravado.GravadoIGV.ValorImpuesto = vTotalImpuesto;
+					}
+					
+					
+				}
+			}
+			///---------------------end----------------------------------------------------
+				
+		}
+		vImpuestoTotal = Items.TaxAmount.content;
+		vImpuestoNodo = Items.TaxAmount.content;
+		if (vIdentificacionTributo == "1000" && infdicatorDiscountGlobal){// || (IGVSensor && vIdentificacionTributo == "1000")){
+			vImpuestoTotal = vNetAmount1 * 0.18;
+			vImpuestoNodo = vNetAmount1 * 0.18;
+			if(vTipoDocumentoDesc == "NotaCredito"){
+				if(vPorcentajeDescuentoGo < 0) {vPorcentajeDescuentoGo = vPorcentajeDescuentoGo * -1;}
+				vImpuestoTotal = (vNetAmount1 - (vNetAmount1 *(vPorcentajeDescuentoGo/100)))* 0.18;
+				vImpuestoNodo = (vNetAmount1 - (vNetAmount1 *(vPorcentajeDescuentoGo/100))) * 0.18;
+			}
+		}
+		if(Items.TaxAmount.content < 0){
+			vImpuestoTotal = Items.TaxAmount.content * -1;
+			vImpuestoNodo = Items.TaxAmount.content * -1;
+		}
+		if(PrinceAndTax.TaxationCharacteristicsCode.content == "Z2" || PrinceAndTax.TaxationCharacteristicsCode.content == "Z02") {
+			vImpuestoTotal = 0.00;
+		}
+		
+		//---------------------------------------------------------Items Discounts---------------------------------------------------------
+		if(PrinceAndTax.ItemMainDiscount.IsSet()){
+			vIndicadorDescuento = 0;
+			vCodigoAplicadoDesc = "00";
+			if(PrinceAndTax.ItemMainDiscount.CalculatedAmount.content < 0){
+				MontoTotDesc = (PrinceAndTax.ItemMainDiscount.CalculatedAmount.content * -1);
+				MontoDescuento = PrinceAndTax.ItemMainDiscount.CalculationBasis.Amount.content;
+				vPorcentajeDescuento = (PrinceAndTax.ItemMainDiscount.Rate.DecimalValue * -1);
+				indicatorDiscount = true;
+			}else{
+				MontoTotDesc = PrinceAndTax.ItemMainDiscount.CalculatedAmount.content;
+				MontoDescuento = PrinceAndTax.ItemMainDiscount.CalculationBasis.Amount.content;
+				vPorcentajeDescuento = PrinceAndTax.ItemMainDiscount.Rate.DecimalValue;
+				indicatorDiscount = true;
+			} 
+		}else{
+			if(PrinceAndTax.OperationalItemPriceComponent.Count()>0){
+				foreach(var Discounts in PrinceAndTax.OperationalItemPriceComponent.Where(n => n.TypeCode.content == "7PR6")){
+					MontoTotDesc = Items.NetAmount.content;
+					MontoDescuento = MontoDescuento + (Discounts.CalculatedAmount.content * -1) ;
+					var CalulationDisc = (MontoDescuento/MontoTotDesc)*100;
+					vPorcentajeDescuento = CalulationDisc;
+					if(vPorcentajeDD.IsInitial()){
+						var calc = (Discounts.Rate.DecimalValue * -1);
+						vPorcentajeDD = calc.RoundToString(2, true);
+					}else{
+						var calc = (Discounts.Rate.DecimalValue * -1);
+						vPorcentajeDD = vPorcentajeDD +" - "+calc.RoundToString(2, true);
+					}
+					indicatorDiscount = true;
+					vDualDiscount = true;
+				}
+				
+			}
+		}
+		//----------------------------------------For determinate percentage of tax and determinant-------------------------------------------
+		var ItemTaxationTerms = Items.PriceAndTaxCalculationItemProductTaxDetails;
+		if(ItemTaxationTerms.Count()>0){
+			vPorcentajeImpuesto = ItemTaxationTerms.GetFirst().ProductTax.Percent;
+		}else if((vCheckIGV||IGVSensor) && ItemTaxationTerms.Count()<=0 && vIdentificacionTributo == "1000"){
+			vPorcentajeImpuesto = 18;
+		}
+		requestCDetalle.Determinante = vCodigoTipoPrecio;
+		
+		//---------------------------Get Unitary Price-----------------------------//
+		if(PrinceAndTax.ItemMainPrice.IsSet()){
+			var ItemMainPrice = PrinceAndTax.ItemMainPrice;
+			if(!ItemMainPrice.Rate.IsInitial()){
+				var vRate = ItemMainPrice.Rate;
+				if(!vRate.DecimalValue.IsInitial()){
+					if(infdicatorDiscountGlobal == true){
+						vNetAmount.Clear();
+						vNetAmount1 = ItemMainPrice.CalculatedAmount.content;
+						vNetAmount = vNetAmount1;
+					}
+					if(vCheckIGV){
+						vUnitaryAmountIGV = PrinceAndTax.ItemMainTotal.Rate.DecimalValue * (1.18);
+						if(!Items.ToParent.zGratuita && vIdentificacionTributo != "9996" && vPorcentajeDescuento == 0 && vCheckIGV){
+							vUnitaryAmount = ItemMainPrice.Rate.DecimalValue;
+						}else if (vTipoDocumentoDesc == "NotaCredito" && vPorcentajeDescuento < 0 && vIdentificacionTributo == "1000"){
+							vUnitaryAmount = ItemMainPrice.Rate.DecimalValue - (ItemMainPrice.Rate.DecimalValue * ((vPorcentajeDescuento* -1)/100));
+						}else if (vTipoDocumentoDesc == "NotaCredito" && infdicatorDiscountGlobal && vIdentificacionTributo == "1000"){
+							vUnitaryAmount = ItemMainPrice.Rate.DecimalValue - (ItemMainPrice.Rate.DecimalValue * ((vPorcentajeDescuentoGo* -1)/100));
+							vUnitaryAmountIGV = vUnitaryAmount * (1.18);
+						}else if (!Items.ToParent.zGratuita && vIdentificacionTributo != "9996" && vCheckIGV && vPorcentajeDescuento > 0){
+							vUnitaryAmount = ItemMainPrice.Rate.DecimalValue;// - (ItemMainPrice.Rate.DecimalValue * ((* -1)/100));
+						}
+					}else{
+						vUnitaryAmountIGV = PrinceAndTax.ItemMainTotal.Rate.DecimalValue;
+						if(vIdentificacionTributo != "9996" && vTipoDocumentoDesc == "Factura"){
+							vUnitaryAmount = ItemMainPrice.Rate.DecimalValue;
+						}else if(vIdentificacionTributo == "9996"){
+							vUnitaryAmount = 0.00;
+						}else if(vTipoDocumentoDesc == "NotaCredito" && vPorcentajeDescuento < 0){
+							vUnitaryAmount = ItemMainPrice.Rate.DecimalValue - (ItemMainPrice.Rate.DecimalValue * ((vPorcentajeDescuento* -1)/100)); 
+						}else if (vTipoDocumentoDesc == "NotaCredito" && infdicatorDiscountGlobal && (vIdentificacionTributo == "9998" || vIdentificacionTributo == "1000")){
+							vUnitaryAmount = ItemMainPrice.Rate.DecimalValue - (ItemMainPrice.Rate.DecimalValue * ((vPorcentajeDescuentoGo* -1)/100));
+							if(vIdentificacionTributo.Matches("1000")){
+								vUnitaryAmountIGV = vUnitaryAmount * (1.18);
+							}
+						}else{
+							vUnitaryAmount = ItemMainPrice.Rate.DecimalValue;
+						}
+
+					}
+				}
+			}
+			vTotalnet = vUnitaryAmountIGV * Items.Quantity.content;
+		}
+		if(vNetAmount < 0 ){
+			vNetAmount = vNetAmount * -1;
+		}
+//-----------------------------------------------------------------here insert items into WS----------------------------------------------------------------------------
+		//Node Items WS
+		requestCDetalle.Item = (ABSL : Numeric.ParseFromString(Items.ID)/10);
+		requestCDetalle.Cantidad = Items.Quantity.content;
+		requestCDetalle.Total = ABSL : Numeric.ParseFromString(vNetAmount.RoundToString(2,true));
+		requestCDetalle.CodigoTipoPrecio = vCodigoTipoPrecio;
+		requestCDetalle.Descripcion = Items.Description.content;
+		requestCDetalle.MultiDescripcion.string.Add(vMultiDescription);
+		requestCDetalle.ValorVentaUnitario = ABSL : Numeric.ParseFromString(vUnitaryAmount.RoundToString(2,true));
+		requestCDetalle.ValorVentaUnitarioIncIgv = ABSL : Numeric.ParseFromString(vUnitaryAmountIGV.RoundToString(2,true));
+		requestCDetalle.UnidadComercial = vUnidadMedida;
+		requestCDetalle.UnidadMedidaEmisor = vUnidadMedida;
+		requestCDetalle.CodigoProductoSunat = vNumeroExterno;
+		requestCDetalle.ImpuestoTotal = ABSL : Numeric.ParseFromString(vImpuestoTotal.RoundToString(2,true));
+		if(vTipoDocumentoDesc.Matches("Factura")){
+			requestCDetalle.Nota = vPorcentajeDescuento.RoundToString(2,true);
+			if(vDualDiscount){
+				requestCDetalle.Nota = vPorcentajeDD;
+			}
+		}
+		requestCDetalle.Codigo = vCodigoMaterial;
+
+		//Node Discount Items
+		if(PrinceAndTax.ItemMainDiscount.IsSet() && MontoTotDesc != 0){
+			requestCDetalleDisc.Monto = ABSL : Numeric.ParseFromString(MontoTotDesc.RoundToString(2,true));
+			requestCDetalleDisc.MontoBase = ABSL : Numeric.ParseFromString(MontoDescuento.RoundToString(2,true));
+			if(vPorcentajeDescuento>0){
+				requestCDetalleDisc.Porcentaje = ABSL : Numeric.ParseFromString(vPorcentajeDescuento.RoundToString(2,true));
+			}else{
+				vPorcentajeDescuento = vPorcentajeDescuento * -1;
+				requestCDetalleDisc.Porcentaje = ABSL : Numeric.ParseFromString(vPorcentajeDescuento.RoundToString(2,true));
+			}
+			requestCDetalleDisc.Indicador = vIndicadorDescuento;
+			requestCDetalleDisc.CodigoAplicado = vCodigoAplicadoDesc;
+			requestCDetalle.DescuentoCargoDetalle.ENDescuentoCargoDetalle.Add(requestCDetalleDisc);
+		}
+
+		//Node Taxation Items
+		requestCDetalleTax.ImporteTributo =ABSL : Numeric.ParseFromString(vImpuestoNodo.RoundToString(2,true));
+		requestCDetalleTax.ImporteExplicito = ABSL : Numeric.ParseFromString(vImpuestoNodo.RoundToString(2,true));
+		requestCDetalleTax.AfectacionIGV = vCodigoAfectacionIGV;
+		requestCDetalleTax.CodigoTributo = vIdentificacionTributo;
+		requestCDetalleTax.DesTributo = vNombreTributo;
+		requestCDetalleTax.CodigoUN = vCodigoTributo;
+		requestCDetalleTax.MontoBase = ABSL : Numeric.ParseFromString(vNetAmount.RoundToString(2,true));
+		requestCDetalleTax.TasaAplicada = ABSL : Numeric.ParseFromString(vPorcentajeImpuesto.RoundToString(2,true));
+
+		//add Items and Taxes into Node General
+		requestCDetalle.ComprobanteDetalleImpuestos.ENComprobanteDetalleImpuestos.Add(requestCDetalleTax);
+
+		request.oGeneral.oENComprobante.ComprobanteDetalle.ENComprobanteDetalle.Add(requestCDetalle);
+		requestCDetalleTax.Clear();
+		requestCDetalle.Clear();
+	}
+	//-------------------------------------------------------Spell Amount--------------------------------------------------------------		
+	var IntegerValue = Operation.SpellAmount().IntegerValue;
+	var DecimalNumber = Operation.content.RoundToString(2,true);
+	var DecimalLenght = DecimalNumber.Length();
+	var findPoint = DecimalNumber.Find(".");
+	var GetNumber = DecimalNumber.Substring(findPoint + 1 ,2);
+	var CurrencyCod = CustomerInvoices.TotalGrossAmount.currencyCode;
+	if (!CurrencyCod.Matches("PEN")){
+		vMontoLetras = IntegerValue+" con "+  GetNumber +"/100 "+ CustomerInvoices.TotalGrossAmount.currencyCode.GetDescription();
+	}else{
+		vMontoLetras = IntegerValue+" con "+  GetNumber +"/100 SOLES";
+	}
+	//-----------------------------------------------------------END-------------------------------------------------------------------
+
+	//validate discounts for Inafectas Invoices
+	if (DescuentoGlobal > 0){
+		//vTotalNeto = vTotalNeto - DescuentoGlobal;
+		vImporteTotal = vImporteTotal-DescuentoGlobal;
+	}
+	if(vTotalImpuesto > 0 && DescuentoGlobal > 0){
+		vTotalNeto = vTotalNeto - DescuentoGlobal;
+		vImporteTotal = vImporteTotal + vTotalImpuesto;
+	}
+	//-----------------------------------------------------------header node in WS-----------------------------------------------------------------
+	//General Node 
+	request.oGeneral.oENComprobante.Ruc = vRUCCliente;
+	request.oGeneral.oENComprobante.NrodePedido = vRefExt;
+	request.oGeneral.oENComprobante.RazonSocial = vRazonSocialCliente;
+	request.oGeneral.oENComprobante.ClienteDireccion = vDireccionCliente;
+	request.oGeneral.oENComprobante.Serie = vSerie;
+	request.oGeneral.oENComprobante.Numero = vNumero;
+	request.oGeneral.oENComprobante.NroOrdenCompra = vRefExt;
+	request.oGeneral.oENComprobante.FechaEmision = vFechaEmision.ConvertToGlobalDateTime();
+	request.oGeneral.oENComprobante.HoraEmision = "00:00:00";
+	request.oGeneral.oENComprobante.ImporteTotal = vTotal;
+	request.oGeneral.oENComprobante.TipoComprobante = vTipoDocumento;
+	request.oGeneral.oENComprobante.TipoDocumentoIdentidad = vTipoDocumentoIdentificacionCliente;
+	request.oGeneral.oENComprobante.Moneda = vMoneda;
+	request.oGeneral.oENComprobante.CorreoElectronico = vEmailCliente;
+	request.oGeneral.oENComprobante.TipoOperacion =  vTipoOperacion;
+	request.oGeneral.oENComprobante.DescuentoGlobal = ABSL : Numeric.ParseFromString(DescuentoGlobal.RoundToString(2,true));
+	request.oGeneral.oENComprobante.TotalImpuesto = ABSL : Numeric.ParseFromString(vTotalImpuesto.RoundToString(2,true));
+	request.oGeneral.oENComprobante.TotalValorVenta = ABSL : Numeric.ParseFromString(vTotalNeto.RoundToString(2,true));
+	
+	//to Send invoice
+	requestCorreoTercero.ToReceive=vEmailCliente;
+	requestCorreoTercero.Template="EST";
+	request.oGeneral.oENComprobante.CorreoTerceros.ENCorreoTerceros.Add(requestCorreoTercero);
+	
+	//Validation for total value in invoice
+	if(!IsFree.IsSet()){
+		request.oGeneral.oENComprobante.TotalPrecioVenta = ABSL : Numeric.ParseFromString(vImporteTotal.RoundToString(2,true));
+	}else if(CustomerInvoices.ZMixta){
+		request.oGeneral.oENComprobante.TotalPrecioVenta = ABSL : Numeric.ParseFromString(vTotal.RoundToString(2,true));
+	}
+
+	//Versions
+	request.oGeneral.oENComprobante.VersionUbl = "2.1";
+	request.oGeneral.oENComprobante.TipoPlantilla = "ST2";
+
+	//Spell Amount
+	requestCPropiertiesAdd.Codigo = vCodigoLeyenda;
+	requestCPropiertiesAdd.Valor = vMontoLetras;
+	request.oGeneral.oENComprobante.ComprobantePropiedadesAdicionales.ENComprobantePropiedadesAdicionales.Add(requestCPropiertiesAdd);
+
+	//Global Discount
+	
+	if(indicatorDiscount && infdicatorDiscountGlobal){
+		requestCTexto.Texto3 = DescuentoGlobal.RoundToString(2,true);
+		request.oGeneral.oENComprobante.DescuentoCargoCabecera.ENDescuentoCargoCabecera.Add(requestCDetalleDiscGlob);
+	}
+	//Extra Fields
+	requestCTexto.Texto1 = vTelefono;
+	requestCTexto.Texto2 = vMotivo;
+	if(!CustEstablishment.IsInitial()){
+		requestCTexto.Texto4 = CustEstablishment;
+	}
+	if(!CustEstablishmentAddres.IsInitial()){
+		requestCTexto.Texto5 = CustEstablishmentAddres;	
+	}
+	request.oGeneral.oENComprobante.Texto.ENTexto.Add(requestCTexto);
+
+	//If Memo Credit this node is Filled
+	if( vTipoDocumento == "07"){
+		//memo credit node
+		//---query for retrive reference document
+		var QueryCustInv = CustomerInvoice.QueryByElements;
+		var ParamCustInv = QueryCustInv.CreateSelectionParams();
+			ParamCustInv.Add(QueryCustInv.ZExternalID_CR0EY8D0SJQNS8MJQV3SXP1B4,"I","EQ",CustomerInvoices.ZCustomerInvoiceAssociated);
+		var ResultQRY = QueryCustInv.Execute(ParamCustInv).GetFirst();
+
+		if(ResultQRY.IsSet()){
+			requestCMotivoDoc.CodigoMotivoEmision = vMotivoNC;
+			requestCMotivoDoc.NumeroDocRef = vNumeroRef;
+			requestCMotivoDoc.SerieDocRef = vSerieRef;
+			var sustento : Library :: EWSTCI_WCF.Registrar.Request.oGeneral.oENComprobante.ComprobanteMotivosDocumentos.ENComprobanteMotivoDocumento.Sustentos.ENComprobanteMotivoDocumentoSustento;
+			sustento.Sustento = "DEVOLUCION POR OTRO MOTIVO";
+			if(CustomerInvoices.TextCollection.IsSet()){
+				if(CustomerInvoices.TextCollection.Text.Count()>0){
+					if(CustomerInvoices.TextCollection.Text.TextContent.Count()>0){
+						if(!CustomerInvoices.TextCollection.Text.TextContent.GetFirst().Text.content.IsInitial()){}
+							sustento.Sustento = CustomerInvoices.TextCollection.Text.TextContent.GetFirst().Text.content;
+					}
+				}
+			
+			}
+			requestCMotivoDoc.Sustentos.ENComprobanteMotivoDocumentoSustento.Add(sustento);
+			request.oGeneral.oENComprobante.ComprobanteMotivosDocumentos.ENComprobanteMotivoDocumento.Add(requestCMotivoDoc);
+
+			var TypeDocument;
+			switch (ResultQRY.ProcessingTypeCode){
+				case "CI"{
+					TypeDocument = "01";
+					if(ResultQRY.ZBoleta){TypeDocument = "03";}
+				}
+			}
+			var Long = ResultQRY.ZExternalID.Length();
+			var SerieDoc = ResultQRY.ZExternalID.Substring(3,4);
+			var NumeroDoc = ResultQRY.ZExternalID.Substring(8,(lenght-8));
+			requestCMotivoNotaCredit.Serie = SerieDoc;
+			requestCMotivoNotaCredit.Numero = NumeroDoc;
+			requestCMotivoNotaCredit.FechaDocRef = ResultQRY.Date.ToString();
+			requestCMotivoNotaCredit.TipoComprobante = TypeDocument;
+			request.oGeneral.oENComprobante.ComprobanteNotaCreditoDocRef.ENComprobanteNotaDocRef.Add(requestCMotivoNotaCredit);
+		}else{
+			var TypeDocument;
+			var Long = CustomerInvoices.ZCustomerInvoiceAssociated.Length();
+			var SerieDoc = CustomerInvoices.ZCustomerInvoiceAssociated.Substring(0,4);
+			var NumeroDoc = CustomerInvoices.ZCustomerInvoiceAssociated.Substring(5,(Long-5));
+
+			requestCMotivoDoc.CodigoMotivoEmision = vMotivoNC;
+			requestCMotivoDoc.NumeroDocRef = NumeroDoc;
+			requestCMotivoDoc.SerieDocRef = SerieDoc;
+			var sustento : Library :: EWSTCI_WCF.Registrar.Request.oGeneral.oENComprobante.ComprobanteMotivosDocumentos.ENComprobanteMotivoDocumento.Sustentos.ENComprobanteMotivoDocumentoSustento;
+			sustento.Sustento = "DEVOLUCION POR OTRO MOTIVO";
+			if(CustomerInvoices.TextCollection.IsSet()){
+				if(CustomerInvoices.TextCollection.Text.Count()>0){
+					if(CustomerInvoices.TextCollection.Text.TextContent.Count()>0){
+						if(!CustomerInvoices.TextCollection.Text.TextContent.GetFirst().Text.content.IsInitial()){}
+							sustento.Sustento = CustomerInvoices.TextCollection.Text.TextContent.GetFirst().Text.content;
+					}
+				}
+			
+			}
+			requestCMotivoDoc.Sustentos.ENComprobanteMotivoDocumentoSustento.Add(sustento);
+			request.oGeneral.oENComprobante.ComprobanteMotivosDocumentos.ENComprobanteMotivoDocumento.Add(requestCMotivoDoc);
+
+			requestCMotivoNotaCredit.Serie = SerieDoc;
+			requestCMotivoNotaCredit.Numero = NumeroDoc;
+			requestCMotivoNotaCredit.FechaDocRef = CustomerInvoices.Date.ToString();
+			requestCMotivoNotaCredit.TipoComprobante = "01";
+			request.oGeneral.oENComprobante.ComprobanteNotaCreditoDocRef.ENComprobanteNotaDocRef.Add(requestCMotivoNotaCredit);
+		}
+	}
+
+	//Buyer/Receipter Node
+	requestCDetalleReceptor.Ubigeo = vUbigueo;
+	requestCDetalleReceptor.Provincia = vProvincia;
+	requestCDetalleReceptor.Departamento = vDepartamento;
+	requestCDetalleReceptor.Urbanizacion = vUrbanizacion;
+	requestCDetalleReceptor.Telefono = vTelefono;
+	requestCDetalleReceptor.Calle = vDireccionCliente;
+	requestCDetalleReceptor.ContactoFax = vFax;
+	requestCDetalleReceptor.ContactoTelefono = vTelefono;
+	request.oGeneral.oENComprobante.Receptor.ENReceptor.Add(requestCDetalleReceptor);
+
+	//Company/Sender/Seller Node
+	request.oGeneral.oENEmpresa.Ruc = "20511417253";
+	request.oGeneral.oENEmpresa.RazonSocial = vRazonSocial;
+	request.oGeneral.oENEmpresa.Departamento = Departamento;
+	request.oGeneral.oENEmpresa.Provincia = Provincia;
+	request.oGeneral.oENEmpresa.Distrito = Distrito;
+	request.oGeneral.oENEmpresa.CodDistrito = "150122";
+	request.oGeneral.oENEmpresa.Urbanizacion = Urbanizacion;
+	request.oGeneral.oENEmpresa.Calle = Calle;
+	request.oGeneral.oENEmpresa.CodPais = "PE";
+	request.oGeneral.oENEmpresa.CodigoTipoDocumento = "6";
+	request.oGeneral.oENEmpresa.CodigoEstablecimientoSUNAT = vCodEstablecimientoSUNAT;
+	request.oGeneral.oENEmpresa.Web = "www.biopasgroup.com";
+	request.oGeneral.oENEmpresa.Telefono = "2 43 6628";
+	request.oGeneral.oENEmpresa.NombreComercial = vNombreComercial;
+	
+	//Remision
+	if(vTipoDocumentoDesc == "Factura"){
+		requestCGuiaRem.TipoDocReferencia = "09";
+		requestCGuiaRem.Fecha = vGuiaFecha;
+		requestCGuiaRem.Numero = vGuiaRemsNumer;
+		requestCGuiaRem.Serie = vGuiaRemserie;
+		request.oGeneral.oENComprobante.ComprobanteGuia.ENComprobanteGuia.Add(requestCGuiaRem);
+	}
+
+	//Grilla of end Document
+	requestCGrilla.Descripcion = vValor1;
+	requestCGrilla.Valor1 = vValor2;
+	requestCGrilla.Valor2 = vValor3;
+	requestCGrilla.Valor3 = vValor4;
+	request.oGeneral.oENComprobante.ComprobanteGrillaCuenta.ENComprobanteGrillaCuenta.Add(requestCGrilla);
+
+	//Metod of Payments
+	requestCPaymentForm.CodigoFormaPago = "002";
+	requestCPaymentForm.FechaVencimiento = vFechaVencimiento;
+	requestCPaymentForm.NotaInstruccion = vCondicionPago;
+	request.oGeneral.oENComprobante.FormaPago.ENFormaPago.Add(requestCPaymentForm);
+
+	//principal Fields
+	request.oTipoComprobante = vTipoDocumentoDesc;
+	request.TipoCodigo = 1;//if want request bar code replace 1 to 0
+	request.IdComprobanteCliente = 0;
+	request.Otorgar = "1";//0-manual 1-automatic
+
+	//authentication Node
+	request.oGeneral.Autenticacion.Clave = PassID;
+	request.oGeneral.Autenticacion.Ruc = CompanyID;
+
+	//ResponseComprobant Node
+	requestCR.oENconsulta.RucEmpresa = CompanyID;
+	requestCR.oENconsulta.TipoConsulta = 1;
+	requestCR.oENconsulta.NComprobante.Serie = vSerie;
+	requestCR.oENconsulta.NComprobante.Numero = vNumero;
+	requestCR.oENconsulta.NComprobante.IdComprobanteCliente = 0;
+	requestCR.oENconsulta.NComprobante.TipoComprobante = vTipoDocumentoDesc;
+	requestCR.oENconsulta.base.Autenticacion.Clave = PassID;
+	requestCR.oENconsulta.base.Autenticacion.Ruc = CompanyID;
+
+	//Response PDF
+	requestPDF.oENPeticion.Numero = vNumero;
+	requestPDF.oENPeticion.Serie = vSerie;
+	requestPDF.oENPeticion.TipoComprobante = vTipoDocumentoDesc;
+	requestPDF.oENPeticion.Ruc = CompanyID;
+	requestPDF.oENPeticion.IndicadorComprobante = 1;
+	requestPDF.oENPeticion.base.Autenticacion.Clave= PassID;
+	requestPDF.oENPeticion.base.Autenticacion.Ruc = CompanyID;
+
+	//--------------------------------------------------------------------ConsumeWS----Get-Response--------------------------------------------------------------------
+	var scenario = "CSTCI_WCF"; //scenario
+	
+	response = Library::EWSTCI_WCF.Registrar(request, "", scenario);//enter the document into Supplier integration and SUNAT
+	if(!response.IsInitial()){
+		if(!response.CommunicationFault.IsInitial()){
+				
+			// - - - - - - Crear BO LOG - - - - //
+			var vNewSendLog : elementsof BO2SendLog;
+				vNewSendLog.LogID = CustomerInvoices.ID.content.RemoveLeadingZeros();
+				vNewSendLog.DocumentStatus = CLStatusDocFECode.CO_1;
+				vNewSendLog.TrafficLigths = CLTrafficLightCode.CO_2;
+				vNewSendLog.DocumentPrefix	= "BIOPAS-PERÚ TCI";
+				vNewSendLog.CustomerID = vBuyerParty.PartyKey.PartyID.content.RemoveLeadingZeros();
+				//vNewSendLog.CustomerDesc		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				vNewSendLog.CompanyID = VCompanyID.Trim();
+				//vNewSendLog.CompanyDesc		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			var vInsSendLog = BO2SendLog.Create(vNewSendLog);
+			
+			if(!vInsSendLog.IsSet()){ break;}
+
+			var insAction : elementsof BO2SendLog.Actions;
+				insAction.ActionDate = Context.GetCurrentUserDate();
+				insAction.ActionHour = Context.GetCurrentUserDateTime().ToString();
+				var insIdentity = Identity.Retrieve(Context.GetCurrentIdentityUUID());
+				if(insIdentity.IsSet()){
+					insAction.ActionUser = insIdentity.ID.content.Trim() + " - " + insIdentity.FormattedName.Trim();
+				}
+				insAction.ActionDesc = "CREATE";
+				insAction.ActionText = "Ceación de documento";
+			vInsSendLog.Actions.Create(insAction);
+			vInsSendLog.ToInvoice = CustomerInvoices;
+			
+			//Get Document status
+			responseCR = Library::EWSTCI_WCF.ConsultarComprobanteIndividual(requestCR, "", scenario);
+			var ResponseCR = "";
+			if(!responseCR.IsInitial()){
+				if(!responseCR.ConsultarComprobanteIndividualResult.IsInitial()){
+					ResponseCR = responseCR.ConsultarComprobanteIndividualResult.Respuesta.ToString() +": "+ responseCR.ConsultarComprobanteIndividualResult.DescripcionRespuesta;
+				}
+				if(!responseCR.CommunicationFault.IsInitial()){
+					ResponseCR = responseCR.CommunicationFault.Item.GetFirst().Note.Trim();
+				}
+			}
+			var Notes = "";
+			if(response.CommunicationFault.Item.Count()>0){
+				foreach(var Items in response.CommunicationFault.Item){
+					Notes = Notes +", "+Items.Note;
+				}
+			}else{
+				Notes = response.Cadena+" Hash Code: "+response.CodigoHash;
+				vInsSendLog.TrackingIDCuIn = response.CodigoHash;
+				vInsSendLog.DocumentStatus = CLStatusDocFECode.CO_2;
+			}
+			result = Notes;			 
+			var name	:LANGUAGEINDEPENDENT_LONG_Name;
+			var type	:DocumentTypeCode;
+			var desc	:Description;
+			var binary	:basis:BinaryObject;
+				name = "Documento TCI "  + CustomerInvoices.ID.content.RemoveLeadingZeros()+".txt";
+				type.content = "10001";
+				type.listID = "10296";
+				binary.mimeCode = "text/plain";
+				binary.content = Binary.ParseFromString(Notes + "\r" + ResponseCR);
+			var vInsMyAtt = vInsSendLog.MYATTACH.Create();
+			if(vInsMyAtt.IsSet()){
+				vInsMyAtt.CreateFile(type, name, name, desc, binary);
+			}
+
+			responsePDF = Library::EWSTCI_WCF.Obtener_PDF(requestPDF, "", scenario);
+			if(!responsePDF.IsInitial()){
+				if(!responsePDF.Obtener_PDFResult.IsInitial()){
+					name = responsePDF.Obtener_PDFResult.NombrePDF +".pdf";
+					type.content = "10001";
+					type.listID = "10296";
+					binary.mimeCode = "application/pdf";
+					var bin = responsePDF.Obtener_PDFResult.ArchivoPDF;
+					binary.content = bin;
+					if(vInsMyAtt.IsSet()){
+						vInsMyAtt.CreateFile(type, name, name, desc, binary);
+					}
+					//for put into textbox the token,
+					//if(this.TextCollection.IsSet()){this.TextCollection.Delete();}
+				}
+			}else{
+				result = "PDF no generado aún, Verificar en cloud.desarrollo.efacturacion.pe/appefacturacion/pages/login.jsf";
+			}
+			
+		}
+		
+	}
+	break;
+}	
+
+return result;

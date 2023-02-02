@@ -1,0 +1,45 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+[WithAdministrativeData] businessobject BODocumentStructures raises msg{
+
+        message msg text "&":LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[AlternativeKey][Label("ID")]		element DocumentStructuresID	:ID;
+		[Label("Functional Unit")]			element FunctionalUnitID		:OrganisationalCentreID;
+		[Label("Functional Unit")]			element FunctionalUnitDesc		:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Document Type")]			element DocumentType			: CLDocumentTypeEICode;
+		[Label("Document Prefix")]			element DocumentPrefix			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		//[Label("Document With Unique Position")]element DocumentUniquePosition			: Indicator;
+
+		node Structures[0,n]raises msgStructures{
+
+			message msgStructures text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("ID")]				element StructuresID	:ID;//no se usa
+			[Label("Position")]			element PositionID		:DecimalValue;
+			[Label("Description")]		element StructuresDesc	:LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Is Item?")]			element IsItem			:Indicator;
+			[Label("Separator")]		element Separator		:LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Is sub structure?")]element IsSubStructure	:Indicator;
+
+			node ItemStructure[0,n]raises msgItemStructure{
+				message msgItemStructure text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Position")]				element ItemStructurePosition	:DecimalValue;
+				[Label("Is Constant?")]			element IsConstant				:Indicator;
+				[Label("List of field")]		element ListOfFieldID			:ID; //ID List Of Field
+				[Label("Description")]			element ListOfFieldDesc			:LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Field ID ")]			element FieldID					:ID; //ID Field
+				[Label("Field Description")]	element FieldDesc				:LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Field Route")]			element FieldRoute				:LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Is Mandatory?")]		element IsMandatory				:Indicator;
+				[Label("Is Homologation necessary?")]element IsHomologation		:Indicator;
+				[Label("Homologation ID")]		element HomologationID			:ID;
+				[Label("Homologaion Description")]element HomologationDesc		:LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Additional comments")]	element AdditionalComments		:LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+				[DependentObject(TextCollection)] node TextCollection;
+				action aUp;
+				action aDown;
+			}
+		}		
+		action  aUpdate;
+		action aDelete;	
+}

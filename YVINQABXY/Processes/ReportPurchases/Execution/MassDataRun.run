@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MassDataRunObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://sap.com/ByD/PDI/MassDataRunObjectDefinition">
+  <MdroEsrNameSpace xmlns="">http://0004019099-one-off.sap.com/YVINQABXY_</MdroEsrNameSpace>
+  <MdroEsrName xmlns="">MassDataRun</MdroEsrName>
+  <MdroPrxName xmlns="">YVINQABXY_MAUN920729F2BD4C8A99</MdroPrxName>
+  <ParallelProcessing xmlns="" />
+  <ApplicationLogDetailLevelCode xmlns="">5</ApplicationLogDetailLevelCode>
+  <ApplicationLogRetentionTimeCode xmlns="">P1D</ApplicationLogRetentionTimeCode>
+  <AccessControlledBoList xmlns="">
+    <AccessControlledBo>
+      <ActionEntity>
+        <BoEsrNameSpace>http://0004019099-one-off.sap.com/YVINQABXY_</BoEsrNameSpace>
+        <BoEsrName>BOPruchasesExecution</BoEsrName>
+        <BoPrxName>YVINQABXY_BOONB44C2AB009EE0813</BoPrxName>
+        <BoEsrNodeName>Root</BoEsrNodeName>
+        <BoPrxNodeName>ROOT4F903855210031B0</BoPrxNodeName>
+        <BoEsrEntityName>Execution</BoEsrEntityName>
+        <BoPrxEntityName>EXECUTIOND4226987BC810438</BoPrxEntityName>
+      </ActionEntity>
+      <ActionPath>\TO_PARENT</ActionPath>
+      <QueryEntity>
+        <BoEsrNameSpace>http://0004019099-one-off.sap.com/YVINQABXY_</BoEsrNameSpace>
+        <BoEsrName>BOPruchasesExecution</BoEsrName>
+        <BoPrxName>YVINQABXY_BOONB44C2AB009EE0813</BoPrxName>
+        <BoEsrNodeName>QryPurchase</BoEsrNodeName>
+        <BoPrxNodeName>QRYPURCHASE7A1329F90AFF7068</BoPrxNodeName>
+        <BoEsrEntityName>QueryByElements</BoEsrEntityName>
+        <BoPrxEntityName>QUERY_BY_ELEMENTS</BoPrxEntityName>
+      </QueryEntity>
+      <QueryParameterList>
+        <QueryParameter>
+          <QueryEsrParameterName>State</QueryEsrParameterName>
+          <QueryPrxParameterName>STATEROOT264BC3A9D49FFCB8</QueryPrxParameterName>
+          <QueryPrxParameterDataType>APC_V_INDICATOR</QueryPrxParameterDataType>
+          <MdroEsrNodeName>SelectByState</MdroEsrNodeName>
+          <MdroPrxNodeName>SEL_BY_STTE4AF77DAD5AAA7F7F</MdroPrxNodeName>
+          <QueryParameterValueList>
+            <QueryParameterValue>
+              <InclusionExclusionCode>I</InclusionExclusionCode>
+              <IntervalBoundaryTypeCode>EQ</IntervalBoundaryTypeCode>
+              <LowerBoundaryValue />
+            </QueryParameterValue>
+          </QueryParameterValueList>
+        </QueryParameter>
+      </QueryParameterList>
+    </AccessControlledBo>
+  </AccessControlledBoList>
+</MassDataRunObject>

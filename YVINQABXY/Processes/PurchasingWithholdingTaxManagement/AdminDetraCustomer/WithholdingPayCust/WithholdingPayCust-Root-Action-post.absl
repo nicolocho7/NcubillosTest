@@ -1,0 +1,47 @@
+/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: WithholdingPayCust
+		Node: Root
+		Action: post 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+
+import ABSL;
+if(this.Positions.Count() > 0){
+	foreach(var Row in this.Positions.Where(n=>n.ISCheck == true)){
+		Row.ToAdminDetraCust.StatusDocument = "2";
+		var Date = Context.GetCurrentSystemDate();
+		var Year = Date.GetYear();
+		var YearString = Year.Substring(2,2);
+		var Consecutive;
+		if (this.ID.IsInitial()){
+			var queryBuildID = BOBuildID.QueryByElements;
+			var paramBuildID = queryBuildID.CreateSelectionParams();
+			paramBuildID.Add(queryBuildID.ID, "I", "EQ", "BOWITHHOLDINGPAYCUST");
+			var resultBuildID = queryBuildID.Execute(paramBuildID).GetFirst();
+			if (resultBuildID.IsSet()){
+				Consecutive= resultBuildID.consecutive + 1;
+			}else{
+				Consecutive = 1;
+			}
+		}
+		var StringConse = Consecutive.ToString();
+		var x = StringConse.Length();
+		if(x > 4){
+			StringConse = StringConse.Substring(0,4);
+		}else{
+			while(x < 4){
+				StringConse = "0" + StringConse;
+				x = x +1;
+			} 
+		}
+		var NoLote = YearString + StringConse;
+		Row.ToAdminDetraCust.batch = NoLote;
+		
+	}
+}

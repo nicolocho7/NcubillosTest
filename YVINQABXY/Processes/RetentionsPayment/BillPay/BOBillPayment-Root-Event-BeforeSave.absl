@@ -1,0 +1,35 @@
+/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BOBillPayment
+		Node: Root
+		Event: BeforeSave 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script when:
+		- the instance of the business object is being saved.
+		- the instance of the business object is created from other sources like web services, preview screen, and so on.
+*/
+
+import ABSL;
+
+var insInvoices = this.Results.Where(n=>n.CMUUID.IsInitial() == false);
+//for save folios in all bills this evits folio fields empty
+foreach(var insInvoiceToUpdate in insInvoices){
+	insInvoiceToUpdate.FolioBill = this.Folio;
+	var qryBillsRetentions = BOBillsRetentions.QueryByElements;
+	var prmBillsRetentions = qryBillsRetentions.CreateSelectionParams();
+		prmBillsRetentions.Add(qryBillsRetentions.BillID, "I", "EQ", insInvoiceToUpdate.BillID.RemoveLeadingZeros());
+	var insBillsRetentions = qryBillsRetentions.Execute(prmBillsRetentions).GetFirst();
+	if(insBillsRetentions.IsSet()){
+		if(insBillsRetentions.Folio.IsInitial()){
+			insBillsRetentions.Folio = insInvoiceToUpdate.FolioBill.Trim();
+		}else{
+			insBillsRetentions.Folio.Clear();
+			insBillsRetentions.Folio = insInvoiceToUpdate.FolioBill.Trim();
+		}
+		insBillsRetentions.BillStatus =	CLStatusRetentionBillsCode.CO_4;		
+	}
+}

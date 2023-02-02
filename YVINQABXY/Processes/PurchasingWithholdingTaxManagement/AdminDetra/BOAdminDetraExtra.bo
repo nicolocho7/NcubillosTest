@@ -1,0 +1,65 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+
+businessobject BOAdminDetraExtra raises msg {
+
+	message msg text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+    [AlternativeKey] element ID:ID;
+	//Filters
+	[Label("Company")]element CompanyID:ID;
+	association ToCompany to Company;
+	[Label("Supplier")]  element SupplierID:ID;								
+	[Label("Supplier Name")]  element SupName:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Invoice")]element InvoiceID:ID;
+	[Label("Initial Date")]		element InitialDate:Date;
+	[Label("End Date")]		element EndDate:Date;
+	//Datos folio
+	[Label("Type")]	element Type:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Series")]	element Series:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Number")]	element Number:LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+	[Label("Bank Account ID")]element BankAccountID:ID;
+	
+
+	[WithAdministrativeData] node NodoTB2 [1, n] raises msg{
+		
+		action SelectTotal;//Marcar
+		action DeSectTotal;//Desmarcar
+		
+		[Label("Invoice")]element InvoiceID:ID; 
+		association ToAdminDetra to BOAdminDetra;
+		[Label("Pay")]element ISCheck: Indicator;
+
+		/// no se usa
+		[Label("no se usa")]  element ID  : ID;
+		[Label("no se usa")]  element status:ValidityStatusCode;      
+		[Label("no se usa")]element CompanyID:ID;
+	  		association ToCompany to Company;
+		[Label("no se usa")]element CompanyDes:LANGUAGEINDEPENDENT_EXTENDED_Text;		
+		[Label("no se usa")]  element SupTaxNumberType:LANGUAGEINDEPENDENT_EXTENDED_Text;	//cuenta					
+		[Label("no se usa")]  element SupTaxNumber:LANGUAGEINDEPENDENT_EXTENDED_Text;					
+		[Label("no se usa")]  element SupName:LANGUAGEINDEPENDENT_EXTENDED_Text;						
+		[Label("no se usa")]  element Prof:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("no se usa")]				element WithHoldingCode:ID;	
+		[Label("no se usa")]			element Account:LANGUAGEINDEPENDENT_EXTENDED_Text;	
+		[Label("no se usa")]	element DeterAccounts:GeneralLedgerAccountAliasCode;
+		[Label("no se usa")]element Amount:Amount;
+		[Label("no se usa")]			element OperaType:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("no se usa")]	element Period:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("no se usa")]	element Type:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("no se usa")]	element Series:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("no se usa")]	element Number:LANGUAGEINDEPENDENT_EXTENDED_Text;
+    }
+
+	[DependentObject(AttachmentFolder)] node Attachment;
+	action load;
+	action download;
+	action calculateTotal;
+	action post;
+
+	//No se usa
+	[Label("No se usa")]element UUID:UUID;
+	[Label("No se usa")]	element Period:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("No se usa")]	element Batch:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Total")]	element Total:Amount;
+}

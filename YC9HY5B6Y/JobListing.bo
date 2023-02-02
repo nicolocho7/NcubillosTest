@@ -1,0 +1,29 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.BusinessPartner.Global;
+
+businessobject JobListing {
+
+	[AlternativeKey]	[Label	("Job ID")]					element id				:	ID;
+						[Label	("Title")]					element title			:	LONG_Description;
+						[Label	("Country")]				element	jobLocation		:	CountryCode;
+						[Label	("Work Area")]				element domain			:	DomainCode;
+						[Label	("Employment Type")]		element empType			:	EmploymentTypeCode;
+						[Label	("End Date")]				element jobEndDate		:	Date;
+						[Label	("Employee ID")]			element empID			:	EmployeeID;
+						[Label	("Name")]					element	name			:	LANGUAGEINDEPENDENT_LONG_Name;
+						[Label	("Achievements")]			element	achvmts			:	LONG_Note;
+															element	phNo			:	PhoneNumber;	
+						[Label	("Email ID")]				element	emailID			:	EmailURI;
+						[Label	("Applied")]				element	applied			:	Indicator;
+						[Label	("Hiring Manager")]			element	hireMgrName		:	LANGUAGEINDEPENDENT_LONG_Name;
+
+						association ToEmployee to Employee;
+
+						[DependentObject(AttachmentFolder)] node ItemAttachmentFolder;
+
+						action	apply;
+						action	withdraw;
+
+
+
+}

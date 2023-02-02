@@ -1,0 +1,13 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject ConsumeService {
+	
+	[AlternativeKey][Label("Job id")]			element id			: ID;
+					[Label("Title")]			element title		: LONG_Description;
+					[Label("Posting date")]		element postingDate	: Date;
+					[Label("Hiring manager id")]element hireMgrId	: EmployeeID;
+					[Label("Country")]			element jobLocation	: CountryCode;
+					[Label("End date")]			element jobEndDate	: Date;
+
+	action callWebService;
+}

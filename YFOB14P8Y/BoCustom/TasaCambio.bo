@@ -1,0 +1,10 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject TasaCambio {
+
+	[AlternativeKey] [Label("Id")]	element id			: ID;
+	[Label("Origin currency")]		element originCur	: CurrencyCode;
+	[Label("Destination currency")] element destCur		: CurrencyCode;
+	[Label("Media price")]			element amount		: DecimalValue;
+	[Label("Date")]					element date		: Date;
+}

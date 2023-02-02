@@ -1,0 +1,17 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+
+[WithAdministrativeData] businessobject BOWithholdingFolio raises msj {
+		
+		message msj text "&":LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+		[AlternativeKey] element ID:ID;
+		[Label("Company")]element CompanyID:ID;
+		association ToCompany to Company;
+
+		[Label("Serie")]	element Serie:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Separator")]	element Seperator:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Correlative")]	element Correlative:DecimalValue;
+
+		[Label("Enable")]	element Enable:Indicator;
+}

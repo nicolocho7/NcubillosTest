@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UXComponent xmlns:base="http://www.sap.com/a1s/cd/oberon/base-1.0" xmlns:uxv="http://www.sap.com/a1s/cd/oberon/uxview-1.0" xmlns:uxc="http://www.sap.com/a1s/cd/oberon/uxcontroller-1.0" id="${9130xnIMIqkaxub7ntdAT0}" name="/YC9HY5B6Y_MAIN/MashupPB.PB" componentType="mashupRegistry" AuthorizationClassificationCode="ReuseComponent" helpId="6eba10ce-b844-49ff-9bb9-ff85bda25094" designtimeVersion="25.0.555.1045" modelVersion="1.0" xmlns="http://www.sap.com/a1s/cd/oberon/uxcomponent-1.0">
+ <uxc:Interface id="4uty4IiuK4IYu$xfRs9veW"/>
+ <uxc:Implementation id="oMyzuNwJ7aU_bsHk$XYSXG">
+  <uxc:DataModel id="PDbhTPamhaM59g42waH8wm" name="">
+   <base:PropertyBag id="jQReih9XQawfwEi_1QvUA0">
+    <base:Property id="Mmw5kxQ_BKEfI85aRJXBrW" name="USERCHANGEDNAME" value="True"/>
+    <base:Property id="4kBE$MuD946Vdn2aJvj_pm" name="BINDINGSTATUS" value="ToBind"/>
+   </base:PropertyBag>
+   <uxc:DataField id="IR07GqyKJ4wQi6pSW1F6$G" name="@ErrorOccured" type="boolean">
+    <base:PropertyBag id="_u1DGvZq1KgHvg3x33cOX0">
+     <base:Property id="Exvzfxjp6ascOWT9_Ve9Xm" name="BINDINGSTATUS" value="Internal"/>
+    </base:PropertyBag>
+   </uxc:DataField>
+   <uxc:DataField id="uqm9NCcNiaciSXtbx_lnIm" name="@TransitionErrorOccurred" type="string">
+    <base:PropertyBag id="LkOUljmuDq2bhP6wqYIotW">
+     <base:Property id="Jn5AqXkYfKwJJn72nno0wW" name="BINDINGSTATUS" value="Internal"/>
+    </base:PropertyBag>
+   </uxc:DataField>
+   <uxc:Structure id="5g_sQLrP04k4UzQL98bNNm" name="$System">
+    <base:PropertyBag id="Bpkp8Hi3D4oqobwMwr$dDW">
+     <base:Property id="1cEyoRpgI4gbQJ8vygiqU0" name="BINDINGSTATUS" value="Internal"/>
+    </base:PropertyBag>
+    <uxc:DataField id="kH3W4hAqCqQLnSa7dXDR$W" name="SessionUrl" type="string">
+     <base:PropertyBag id="o77U7q1dl42v7$dLeGkrom">
+      <base:Property id="VL0Ro1dVb4svHxmjEjcATG" name="BINDINGSTATUS" value="Internal"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+    <uxc:DataField id="5c9g2OwdvqQqoY1ToUGqV0" name="MessageMappingContext" type="string">
+     <base:PropertyBag id="DrA_WSkYTaodIpWcY7XV8m">
+      <base:Property id="uzkmZCJfX4_qnjCYOc__UG" name="BINDINGSTATUS" value="Internal"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+    <uxc:DataField id="1D8UWSWTqaAGmxPEiVeBaG" name="OnDemand" type="boolean">
+     <base:PropertyBag id="jFjWvWB1M4cYfhZxMCZCCm">
+      <base:Property id="Wny5Ci$_fqUW5yq5I3Vx_G" name="BINDINGSTATUS" value="Internal"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+    <uxc:DataField id="uUprmo3f7a2S9PvBTvYkIW" name="Saved" type="boolean">
+     <base:PropertyBag id="bZTysdvuWa6RQ_OQNhGxY0">
+      <base:Property id="1mrHutd_346aZjh1mi8YJG" name="BINDINGSTATUS" value="Internal"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+    <uxc:DataField id="kfoNMKvdFKU83IH4M4305W" name="IsPersistent" type="boolean">
+     <base:PropertyBag id="BuLRbPKptqANklKSq7c19W">
+      <base:Property id="8JJVL4b15K_hGnsrZZeKbm" name="BINDINGSTATUS" value="Internal"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+    <uxc:DataField id="ay5hi$x1SaQOU1chHrYjrG" name="IsOnlineMode" type="boolean" initialValue="True">
+     <base:PropertyBag id="q6qTdw0lf46A$p6bB6GHam">
+      <base:Property id="k6qjW7rb2qwjSwOhgT4toW" name="BINDINGSTATUS" value="Internal"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+    <uxc:DataField id="0ys2Jd3EdKgmrB3KHxL3pm" name="IsOfflineMode" type="boolean" initialValue="False">
+     <base:PropertyBag id="XQHb1L7Keqo25xYJ1EgUcG">
+      <base:Property id="CgbmUFEDAacEQ0av70ggIm" name="BINDINGSTATUS" value="Internal"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+    <uxc:DataField id="snkMNGX7eqA$DmOlOv9tQ0" name="DeviceType" type="string">
+     <base:PropertyBag id="EgtErdt4UK_V237x6ElggG">
+      <base:Property id="kVPGgmdMk4gT_O1Noeo7QG" name="BINDINGSTATUS" value="Internal"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+    <uxc:DataField id="9qZ2B6NDuK20NtCv4BBa60" name="IsNativeCloud" type="boolean">
+     <base:PropertyBag id="t34ilcuh4KQc0k1$im8Mkm">
+      <base:Property id="tmsd3wc$3aQSOr8BUZmwG0" name="BINDINGSTATUS" value="Internal"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+   </uxc:Structure>
+   <uxc:Structure id="zsYwtMbpjKcgHBgabdS8Wm" name="UIState">
+    <base:PropertyBag id="Q5b3TcfY942GgF74JYcNjm">
+     <base:Property id="71XlgGojHK6_AX0GbcIunG" name="BINDINGSTATUS" value="ToBind"/>
+    </base:PropertyBag>
+   </uxc:Structure>
+  </uxc:DataModel>
+  <uxc:MashupModel id="2v0cay_lpa2aIAv04IHYiG">
+   <MashupRegistry id="oS7xo_9LrqMtFZrRaPTZZG" xmlns="http://www.sap.com/a1s/cd/oberon/uxmashup-1.0">
+    <MashupCategories id="I8D8I9mtsaozSzIT$9grCG">
+     <MashupCategory id="" name="/YC9HY5B6Y_MAIN/MashupPB.PB" inPortTypePackage="/YC9HY5B6Y_MAIN/SRC/PortTypePackage1.PTP.uicomponent" inPortTypeReference="inport" outPortTypePackage="" outPortTypeReference="" semanticCategory="LocationTravel">
+      <DisplayName id="" textPoolId="displayName" fallbackValue="" fallbackValueType="string"/>
+      <Description id="" textPoolId="description" fallbackValue="" fallbackValueType="string"/>
+     </MashupCategory>
+    </MashupCategories>
+   </MashupRegistry>
+  </uxc:MashupModel>
+  <uxc:ModelChanges/>
+ </uxc:Implementation>
+ <uxc:Prerequisites/>
+ <uxc:TechnicalConflicts/>
+ <uxc:SoDConflicts/>
+ <TextPool>
+  <base:TextBlock language="EN" masterLanguage="true" currentLanguage="true">
+   <base:TextPoolEntry id="text" textUuid="displayName" text="/YC9HY5B6Y_MAIN/MashupPB" textCategory="XTIT"/>
+   <base:TextPoolEntry id="text" textUuid="description" text="" textCategory="YTXT"/>
+  </base:TextBlock>
+ </TextPool>
+</UXComponent>

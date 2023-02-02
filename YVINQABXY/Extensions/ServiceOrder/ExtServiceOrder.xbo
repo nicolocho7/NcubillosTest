@@ -1,0 +1,22 @@
+﻿import AP.Common.GDT;
+import AP.CRM.Global;
+
+[Extension] businessobject AP.CRM.Global:ServiceOrder raises msj{
+
+		message msj text "&":LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+		[Label("(OLD) Perú Delivery Guide")]		element zFolioID	:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("(OLD) Reason of Transportation")]	element zReasonOfTransportationSO : LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("(OLD) Reason of Transportation")]	element zReasonOfTransportationV2 : CLReasonOfTransportationCode;
+		
+   		node ServiceReferenceObject {
+   	    } 
+    
+   		node Item {
+   	    } 
+    
+   		node SolutionProposal {
+   	    } 
+     
+  
+}

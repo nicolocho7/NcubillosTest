@@ -1,0 +1,247 @@
+﻿import ABSL;
+import AP.FO.BusinessPartner.Global;
+
+var result : collectionof elementsof BusinessObject::BOListOfFields.ListField;
+var insField :  elementsof BusinessObject::BOListOfFields.ListField;
+var CustomerUUID = Parameter::UUIDCustomer;
+
+while(true){
+	
+	if(CustomerUUID.content.IsInitial()){break;}
+	
+	var insCustomer = Customer.Retrieve(CustomerUUID);
+	if(!insCustomer.IsSet()){break;}
+	
+	if(!insCustomer.InternalID.IsInitial()){
+		insField.Clear();
+		insField.ListFieldID = "CU001";//ID de Cliente
+		insField.ListFieldDesc = insCustomer.InternalID.RemoveLeadingZeros();
+		result.Add(insField);
+	}
+
+
+	if(insCustomer.TaxNumber.Count()>0){	
+		var insTaxNumber = insCustomer.TaxNumber.GetFirst();
+		if(!insTaxNumber.PartyTaxID.IsInitial()){
+			insField.Clear();
+			insField.ListFieldID = "CU003";//Identificacion Fiscal con DV
+			insField.ListFieldDesc = insTaxNumber.PartyTaxID.content;
+			result.Add(insField);
+
+			if(insTaxNumber.TaxIdentificationNumberTypeCode.content == "1"){
+				if(insTaxNumber.PartyTaxID.content.Length() == 10){
+					insField.Clear();
+					insField.ListFieldID = "CU002";//NumeroIdentificacionFiscalCompany sin DV
+					insField.ListFieldDesc = insTaxNumber.PartyTaxID.content.Substring(0,9);
+					result.Add(insField);
+				}
+			}
+			else{
+				insField.Clear();
+				insField.ListFieldID = "CU002";//NumeroIdentificacionFiscalCompany sin DV
+				insField.ListFieldDesc = insTaxNumber.PartyTaxID.content.Substring(0,9);
+				result.Add(insField);
+			}
+		}
+		if(!insTaxNumber.TaxIdentificationNumberTypeCode.IsInitial()){
+			insField.Clear();
+			insField.ListFieldID = "CU004";//tipo de identificacion
+			insField.ListFieldDesc = insTaxNumber.TaxIdentificationNumberTypeCode.content;
+			result.Add(insField);
+		}
+	}
+
+	if(insCustomer.CurrentCommon.IsSet()){
+		var vCurrentCommon = insCustomer.CurrentCommon;
+		if(!vCurrentCommon.zDepartamentoSDK.IsInitial()){
+			insField.Clear();
+			insField.ListFieldID = "CU023";//Departamento
+			insField.ListFieldDesc = vCurrentCommon.zDepartamentoSDK;
+			result.Add(insField);
+		}
+		if(!vCurrentCommon.zProvinciaSDK.IsInitial()){
+			insField.Clear();
+			insField.ListFieldID = "CU024";//Provincia
+			insField.ListFieldDesc = vCurrentCommon.zProvinciaSDK;
+			result.Add(insField);
+		}
+		if(!vCurrentCommon.zDistritoSDK.IsInitial()){
+			insField.Clear();
+			insField.ListFieldID = "CU025";//Distrito
+			insField.ListFieldDesc = vCurrentCommon.zDistritoSDK;
+			result.Add(insField);
+		}
+		if(!vCurrentCommon.zUbigeoSDK.IsInitial()){
+			insField.Clear();
+			insField.ListFieldID = "CU026";//Ubigeo
+			insField.ListFieldDesc = vCurrentCommon.zUbigeoSDK;
+			result.Add(insField);
+		}
+
+		if(insCustomer.CategoryCode == "2"){
+			if(!vCurrentCommon.Organisation.Name.FirstLineName.IsInitial()){
+				insField.Clear();
+				insField.ListFieldID = "CU005";//Razon social - Agrupado
+				insField.ListFieldDesc = vCurrentCommon.Organisation.Name.FirstLineName.Replace(","," ").Trim() + vCurrentCommon.Organisation.Name.SecondLineName.Replace(","," ").Trim();
+				result.Add(insField);
+				insField.Clear();
+				insField.ListFieldID = "CU022";//Nombre y apellido Cliente
+				insField.ListFieldDesc = vCurrentCommon.Organisation.Name.FirstLineName.Replace(","," ").Trim() + vCurrentCommon.Organisation.Name.SecondLineName.Replace(","," ").Trim();;
+				result.Add(insField);
+			}
+			if(insCustomer.CurrentDefaultHasContactPerson.IsSet()){
+				var insCurrentDefaultHasContactPerson = insCustomer.CurrentDefaultHasContactPerson;
+				if(insCurrentDefaultHasContactPerson.RelationshipBusinessPartner.IsSet()){
+					var insBusinessPartnerRelationship = insCurrentDefaultHasContactPerson.RelationshipBusinessPartner;
+					if(insBusinessPartnerRelationship.CurrentCommon.IsSet()){
+						var vCurrentCommonBP = insBusinessPartnerRelationship.CurrentCommon;
+						insField.Clear();
+						insField.ListFieldID = "CU020";//Nombre del contacto
+						insField.ListFieldDesc = vCurrentCommonBP.BusinessPartnerFormattedName.Replace(","," ").Trim();;
+						result.Add(insField);
+					}
+				}
+			}
+
+		}else if(insCustomer.CategoryCode == "1"){
+			if(!vCurrentCommon.Person.Name.GivenName.IsInitial()){
+				insField.Clear();
+				insField.ListFieldID = "CU015";//Nombre - persona natural
+				insField.ListFieldDesc = vCurrentCommon.Person.Name.GivenName.Trim();
+				result.Add(insField);
+			}
+
+			if(!vCurrentCommon.Person.Name.FamilyName.IsInitial()){
+				insField.Clear();
+				insField.ListFieldID = "CU016";//Apellido - persona natural
+				insField.ListFieldDesc = vCurrentCommon.Person.Name.FamilyName.Trim();
+				result.Add(insField);
+			}
+
+			insField.Clear();
+			insField.ListFieldID = "CU020";//Nombre del contacto
+			insField.ListFieldDesc = vCurrentCommon.Person.Name.GivenName.Trim() + vCurrentCommon.Person.Name.FamilyName.Trim();
+			result.Add(insField);
+			var Validation = result.Where(n=>n.ListFieldID.RemoveLeadingZeros() == "CU005").GetFirst();
+			if(Validation.IsInitial()){
+				insField.Clear();
+				insField.ListFieldID = "CU022";//Nombre y apellido Cliente
+				insField.ListFieldDesc = vCurrentCommon.Person.Name.GivenName.Trim() + vCurrentCommon.Person.Name.FamilyName.Trim();
+				result.Add(insField);
+			}else
+			{
+				if(Validation.ListFieldDesc.IsInitial()){
+					insField.Clear();
+					insField.ListFieldID = "CU022";//Nombre y apellido Cliente
+					insField.ListFieldDesc = vCurrentCommon.Person.Name.GivenName.Trim() + vCurrentCommon.Person.Name.FamilyName.Trim();
+					result.Add(insField);
+				}else
+				{
+					insField.Clear();
+					insField.ListFieldID = "CU022";//Nombre y apellido Cliente
+					insField.ListFieldDesc = Validation.ListFieldDesc;
+					result.Add(insField);
+				}
+			}
+		}
+
+		//if(!vCurrentCommon.zNumMatriMer.IsInitial()){
+			//insField.Clear();
+			//insField.ListFieldID = "CU012";//Número de matricula mercantil
+			//insField.ListFieldDesc = vCurrentCommon.zNumMatriMer;
+			//result.Add(insField);
+		//}
+//
+		//if(!vCurrentCommon.zTypePersonID.IsInitial()){
+			//insField.Clear();
+			//insField.ListFieldID = "CU013";//Tipo de persona
+			//insField.ListFieldDesc = vCurrentCommon.zTypePersonID.RemoveLeadingZeros();
+			//result.Add(insField);
+		//}
+
+		if(!vCurrentCommon.zConditionCustomer.IsInitial()){
+			insField.Clear();
+			insField.ListFieldID = "CU014";//Tipo de regimen
+			insField.ListFieldDesc = vCurrentCommon.zConditionCustomer.RemoveLeadingZeros();
+			result.Add(insField);
+		}
+
+		//if(!vCurrentCommon.zCityID.IsInitial()){
+			//insField.Clear();
+			//insField.ListFieldID = "CU008";//Ciudad codigo;
+			//insField.ListFieldDesc = vCurrentCommon.zCityID.RemoveLeadingZeros();
+			//result.Add(insField);
+		//}
+//
+		//if(!vCurrentCommon.zCityDesc.IsInitial()){
+			//insField.Clear();
+			//insField.ListFieldID = "CU019";//Ciudad descripción;
+			//insField.ListFieldDesc = vCurrentCommon.zCityDesc.Replace(","," ").Trim();
+			//result.Add(insField);
+		//}
+	}
+
+	if(insCustomer.AddressSnapshot.IsSet()){
+		var AddressSnapshot = insCustomer.AddressSnapshot;
+		if(AddressSnapshot.PostalAddress.Count()>0){
+			var PostalAddress = AddressSnapshot.PostalAddress.GetFirst();
+			if(!PostalAddress.StreetName.IsInitial()){
+				insField.Clear();
+				insField.ListFieldID = "CU006";//Direccion
+				insField.ListFieldDesc = PostalAddress.StreetName.Trim() + " " + PostalAddress.HouseID.Trim();
+				result.Add(insField);
+			}
+			if(!PostalAddress.RegionCode.IsInitial()){
+				insField.Clear();
+				insField.ListFieldID = "CU007";//Departamento
+				insField.ListFieldDesc = PostalAddress.RegionCode.GetDescription();
+				result.Add(insField);
+			}
+			if(!PostalAddress.CountryCode.IsInitial()){
+				insField.Clear();
+				insField.ListFieldID = "CU009";//Pais - codigo
+				insField.ListFieldDesc = PostalAddress.CountryCode;
+				result.Add(insField);
+
+				insField.Clear();
+				insField.ListFieldID = "CU010";//Pais- Descripción
+				insField.ListFieldDesc = PostalAddress.CountryCode.GetDescription();
+				result.Add(insField);
+			}
+			if(!PostalAddress.StreetPostalCode.IsInitial()){
+				insField.Clear();
+				insField.ListFieldID = "CU011";//Codigo Postal
+				insField.ListFieldDesc = PostalAddress.StreetPostalCode;
+				result.Add(insField);
+			}
+		}
+
+		if(AddressSnapshot.DefaultEMail.IsSet()){
+			var Email = AddressSnapshot.DefaultEMail;
+			insField.Clear();
+			insField.ListFieldID = "CU017";//Correo electronico
+			insField.ListFieldDesc = Email.URI.content;
+			result.Add(insField);
+		}
+		if(AddressSnapshot.DefaultConventionalPhone.IsSet()){
+			var vPhone = AddressSnapshot.DefaultConventionalPhone;
+			insField.Clear();
+			insField.ListFieldID = "CU021";//Telefono
+			insField.ListFieldDesc = vPhone.FormattedNumberDescription.Trim();
+			result.Add(insField);
+		}
+	}
+
+	var insResponsabilities = BOAssignResponsabilities.Retrieve(insCustomer.InternalID);
+	if(insResponsabilities.IsSet()){
+		if(insResponsabilities.Codes.Count() > 0){
+			insField.Clear();
+			insField.ListFieldID = "CU018";//Responsabilidades
+			insField.ListFieldDesc = insResponsabilities.Codes.GetFirst().CustomerResponsabilitiesID.RemoveLeadingZeros();
+			result.Add(insField);
+		}
+	}
+
+	break;
+}
+return result;

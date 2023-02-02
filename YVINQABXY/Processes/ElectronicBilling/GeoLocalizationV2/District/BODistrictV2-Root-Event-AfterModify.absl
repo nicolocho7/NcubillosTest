@@ -1,0 +1,37 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BODistrictV2
+		Node: Root
+		Event: AfterModify 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - This script file is mass-enabled, i.e. the keyword "this" 
+	    refers to a collection of node instances.
+	  - The solution uses this script if:
+		- the value of any field in the node in which this script is contained is modified.
+		- the node itself is modified by another business object within the same solution.
+*/
+
+import ABSL;
+
+var qryDep = BODepartament.QueryByElements;
+var selDep = qryDep.CreateSelectionParams();
+	selDep.Add(qryDep.CountryCode,"I","EQ",this.zPais);
+	selDep.Add(qryDep.DepartamentCode,"I","EQ",this.zDepartamentoCode);
+var objDep = qryDep.Execute(selDep).GetFirst();
+if(objDep.IsSet()){
+	this.toDepartament = objDep; 
+}
+
+var qryProv = BOProvinceV2.QueryByElements;
+var selProv = qryProv.CreateSelectionParams();
+	selProv.Add(qryProv.zPais,"I","EQ",this.zPais);
+	selProv.Add(qryProv.zDepartamentoCode,"I","EQ",this.zDepartamentoCode);
+	selProv.Add(qryProv.zProvinciaCode,"I","EQ",this.zProvinciaCode);
+var objProv = qryProv.Execute(selProv).GetFirst();
+if(objProv.IsSet()){
+	this.toProvince = objProv; 
+}

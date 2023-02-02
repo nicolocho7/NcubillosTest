@@ -1,0 +1,66 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.BankDirectoryEntry.Global as Bank;
+import AP.FO.BusinessPartner.Global as Supplier;
+import AP.FO.MOM.Global;
+import AP.FinancialAccounting.Global;
+
+[WithAdministrativeData][DeploymentUnit(Financials)]businessobject BOMassPayments raises msj{
+
+    message msj text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[AlternativeKey] [Label("ID")]element ID:ID;
+	element UUID:UUID;
+	
+	[Label("Status")]						element StatusCode		: CLStatusPaymentMassCode;
+	[Label("Company")]						element CompanyID		: ID;
+	association ToCompany to Company;
+	[Label("Format type")]					element FormatType		: CLTypeBankPaymentCode;
+	[Label("Execution Type")]				element ExecutionType	: CLTypeExecutionPaymentCode;
+	[Label("Execution ID")]					element ExecutionID		: ID;
+	[Label("Año")]							element year			: Year;
+	[Label("Currency")]						element CurrencyCode	: CurrencyCode;
+	[Label("Profit Centre")]				element ProfitCentreID	: OrganisationalCentreID;
+	association ToProfitCentre to ProfitCentre;
+	[Label("Accounting Document")]			element AccountingDocumentID	: ID;
+	[Label("Accounting Document UUID")]		element AccountingDocumentUUID: UUID;
+	association ToAccountingDocument to AccountingDocument;
+	[Label("PaymentID")]					element PaymentID		:ID;//No se usa
+
+	node Details [1,n] {
+		[Label("Company")]					element CompanyID		: ID;
+		[Label("Company")]					element CompanyDes		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Supplier")]					element SupplierID		: ID;
+		[Label("Supplier")]					element SupplierDes		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Documents")]				element Documents		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Bank account ID")]			element BankAccountID	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Amount")]					element Amount			: Amount;
+		element PaymentOrderUUID:UUID;
+	}
+
+	node Payments [1,n] {
+		[Label("Payment ID")]				element PaymentID		: ID;
+		[Label("UUID")]						element PaymentUUID		: UUID;
+	}
+
+	[Transient] element IsConsistent: Indicator;
+		
+	[DependentObject(AttachmentFolder)] node myAttachments;
+
+	action ExportTable;
+	action ConvertFormat;
+	action Generate;
+	action Compensate;
+	action Return;
+	action GetAccounting;
+	action BCP;
+	action SCOTIA;
+	action SCOTIA2;
+	action Scotiabank;
+	//action BBogota;
+	//action BCitybank;
+	//action BAlianza;
+	//action BAMA;
+	//action BFALABELLA;
+	action BBVA;
+	//action BDavivienda;
+//
+}

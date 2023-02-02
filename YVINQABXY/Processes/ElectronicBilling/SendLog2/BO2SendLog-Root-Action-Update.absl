@@ -1,0 +1,310 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BO2SendLog
+		Node: Root
+		Action: Update 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+
+import ABSL;
+import AP.FO.BusinessPartner.Global;
+import AP.FO.MOM.Global;
+import AP.FO.Product.Global;
+import AP.CustomerInvoicing.Global;
+import AP.FO.Party.Global;
+import AP.FO.ProductDataMaintenance.Global;
+import AP.Payment.Global;
+import AP.Common.GDT;
+import BASIS.Global as basis;
+import AP.PC.IdentityManagement.Global;
+
+this.TextCollection.Delete();
+while(true){
+	var Serie		="";
+	var Correlativo	="";
+	var Tipo		="";
+
+	if(this.ToInvoice.IsSet())
+	{
+		if(!this.ToInvoice.ZExternalID.IsInitial())
+		{
+			var zfindGuion = this.ToInvoice.ZExternalID.Find("-");
+			var zLenghtExternalID= this.ToInvoice.ZExternalID.Length();
+			var counter = 1;
+			var EXT = this.ToInvoice.ZExternalID;
+			while(zfindGuion != -1)
+			{			
+				var SubStringAux = EXT.Substring(0,zfindGuion);
+				EXT = EXT.Substring(zfindGuion+1,zLenghtExternalID-(zfindGuion+1));
+				zfindGuion = EXT.Find("-");
+				zLenghtExternalID = EXT.Length();
+				if(counter == 1)
+				Tipo = SubStringAux;
+				if(counter == 2)
+				Serie = SubStringAux;
+				if(zfindGuion == -1)
+				{
+					Correlativo = EXT;
+				}
+				counter = counter+ 1;
+			}
+		}
+	}
+	switch(this.DocumentStatus){
+		
+		case CLStatusDocFECode.CO_1{//Pendiente de enviar
+			
+		// - - - - - - Consumo del servicio - - - - - - - //
+			var QAuthenticationData = BOAuthenticationData.QueryByElements;
+			var PQueryAD = QAuthenticationData.CreateSelectionParams();
+				PQueryAD.Add(QAuthenticationData.CompanyID,"I","EQ",this.CompanyID.RemoveLeadingZeros());
+			var Result = QAuthenticationData.Execute(PQueryAD).GetFirst();
+			if(!Result.IsSet()){break;}
+
+			var ZAuthentication;
+			var LBICCompanyID;
+			var LBICAccountID;
+			var insAction : elementsof BO2SendLog.Actions;
+			var insIdentity = Identity.Retrieve(Context.GetCurrentIdentityUUID());
+
+			foreach(ZAuthentication in Result.Authenticated){
+				if(ZAuthentication.ID == "LBICCOMPANYID"){
+					LBICCompanyID = ZAuthentication.Description;
+				}
+				if(ZAuthentication.ID == "LBICACCOUNTID"){
+					LBICAccountID = ZAuthentication.Description;
+				}
+			}
+			if(LBICAccountID.IsInitial() || LBICCompanyID.IsInitial()){
+				insAction.Clear();
+				insAction.ActionDate = Context.GetCurrentUserDate();
+				insAction.ActionHour = Context.GetCurrentUserDateTime().ToString();
+				if(insIdentity.IsSet()){
+					insAction.ActionUser = insIdentity.ID.content.Trim() + " - " + insIdentity.FormattedName.Trim();
+				}
+				insAction.ActionDesc = "UPLOADDOCUMENT";
+				insAction.ActionText = "Falta configuración de servicio web";
+				this.Actions.Create(insAction);
+				break;
+			}
+
+			var STRLine = "";
+			var name	:LANGUAGEINDEPENDENT_LONG_Name;
+			name = "Documento "  + this.LogID.RemoveLeadingZeros()+".txt";
+
+			if(this.MYATTACH.IsSet() && this.MYATTACH.DocumentList.Count() == 1){
+				var MyAtt = this.MYATTACH.DocumentList;
+				if(MyAtt.GetFirst().MIMECode == "text/plain"){
+					var FileCont = MyAtt.GetFirst().FileContent;
+					STRLine = FileCont.BinaryObject.content.ToString();
+				}
+			}
+			
+			var LBIntegrationRicoh = Library::RL_ElectronicBilling.RicohIntegrationSend_Function(LBICCompanyID,Correlativo,Serie,Tipo,STRLine);
+			if(LBIntegrationRicoh.Count()>0){
+				foreach(var insResponse in LBIntegrationRicoh){
+					//var response = LBIntegrationCarvajal.GetFirst();
+					if(insResponse.ListOfFieldID == "E"){
+						insAction.Clear();
+						insAction.ActionDate = Context.GetCurrentUserDate();
+						insAction.ActionHour = Context.GetCurrentUserDateTime().ToString();
+						if(insIdentity.IsSet()){
+							insAction.ActionUser = insIdentity.ID.content.Trim() + " - " + insIdentity.FormattedName.Trim();
+						}
+						insAction.ActionDesc = "UPLOADDOCUMENT";
+						if(insResponse.ListOfFieldDesc.Length() > 255){
+							insAction.ActionText = insResponse.ListOfFieldDesc.Substring(0,255);
+						}
+						else{
+							insAction.ActionText = insResponse.ListOfFieldDesc;
+						}
+						this.Actions.Create(insAction);
+						raise msg.Create("E",insResponse.ListOfFieldDesc);
+					}
+					else{
+						if(!insResponse.ListOfFieldID.IsInitial()){
+							this.InterfaceResponseCuIn = insResponse.ListOfFieldDesc;
+							this.TrackingIDCuIn= insResponse.ListOfFieldID.RemoveLeadingZeros();
+							this.DocumentStatus = CLStatusDocFECode.CO_2;
+						}
+						insAction.Clear();
+						insAction.ActionDate = Context.GetCurrentUserDate();
+						insAction.ActionHour = Context.GetCurrentUserDateTime().ToString();
+						if(insIdentity.IsSet()){
+							insAction.ActionUser = insIdentity.ID.content.Trim() + " - " + insIdentity.FormattedName.Trim();
+						}
+						insAction.ActionDesc = "UPLOADDOCUMENT";
+						if(insResponse.ListOfFieldDesc.Length() > 255){
+							insAction.ActionText = insResponse.ListOfFieldDesc.Substring(0,255);
+						}
+						else{
+							insAction.ActionText = insResponse.ListOfFieldDesc;
+						}
+						this.Actions.Create(insAction);
+					}
+				}
+			}
+		}
+
+		case CLStatusDocFECode.CO_2{//Enviado
+			
+			if(this.TrackingIDCuIn.IsInitial()){break;}
+				
+			var qAuthenticationData = BOAuthenticationData.QueryByElements;
+			var pAuthenticationData = qAuthenticationData.CreateSelectionParams();
+				pAuthenticationData.Add(qAuthenticationData.CompanyID,"I","EQ",this.CompanyID);
+			var insAuthenticationData = qAuthenticationData.Execute(pAuthenticationData).GetFirst();
+			if(!insAuthenticationData.IsSet()){break;}
+			var zAuthentication;
+			var vLBICCompanyID;
+			var vLBICAccountID;
+			foreach(zAuthentication in insAuthenticationData.Authenticated){
+				if(zAuthentication.ID == "LBICCOMPANYID"){
+					vLBICCompanyID = zAuthentication.Description;
+				}
+				if(zAuthentication.ID == "LBICACCOUNTID"){
+					vLBICAccountID = zAuthentication.Description;
+				}
+			}
+			if(vLBICAccountID.IsInitial() || vLBICCompanyID.IsInitial()){
+				var insAction : elementsof BO2SendLog.Actions;
+					insAction.ActionDate = Context.GetCurrentUserDate();
+					insAction.ActionHour = Context.GetCurrentUserDateTime().ToString();
+					var insIdentity = Identity.Retrieve(Context.GetCurrentIdentityUUID());
+					if(insIdentity.IsSet()){
+						insAction.ActionUser = insIdentity.ID.content.Trim() + " - " + insIdentity.FormattedName.Trim();
+					}
+					insAction.ActionDesc = "QUERYSTATUS";
+					insAction.ActionText = "Falta configuración de servicio web";
+				this.Actions.Create(insAction);
+				break;
+			}
+
+			var vGetDocument = false;
+			//var LBIntegrationRicoh = Library::RL_ElectronicBilling.RicohIntegrationDocumentStatus(Serie,vLBICAccountID,Correlativo,Tipo);
+			//Oscar yela - Cambio hecho para Hilti perú
+			var LBIntegrationRicoh : collectionof elementsof BusinessObject::BOListOfFields;
+			var Elementsof : elementsof BusinessObject::BOListOfFields;
+
+			var request : Library::EWSI_Ricoh.EstadoDocumento.Request; //request structure
+			var response : Library::EWSI_Ricoh.EstadoDocumento.Response; //response structure
+			var scenario = "CSIntegrationRicoh"; //scenario
+
+			request.parameters.RequestEstado.correlativo = Correlativo;
+			request.parameters.RequestEstado.ruc = vLBICAccountID;
+			request.parameters.RequestEstado.serie = Serie;
+			request.parameters.RequestEstado.tipo = Tipo;
+
+			//________________________Send Parameters
+			response = Library::EWSI_Ricoh.EstadoDocumento(request,"",scenario);	
+			//fault messages
+			var faultItems = response.CommunicationFault.Item;
+			if (faultItems.Count() > 0){
+				Elementsof.Clear();
+				Elementsof.ListOfFieldID = "E";
+				Elementsof.ListOfFieldDesc = "WS:" + faultItems.GetLast().Note;
+				LBIntegrationRicoh.Add(Elementsof);
+			}
+
+			if(!response.IsInitial()){
+				Elementsof.Clear();
+				Elementsof.ListOfFieldID	= "Menssage";
+				Elementsof.ListOfFieldDesc	= response.parameters.return.mensajeError;
+				LBIntegrationRicoh.Add(Elementsof);
+				Elementsof.Clear();
+				Elementsof.ListOfFieldID	= "PDF";
+				Elementsof.ListOfFieldDesc	= response.parameters.return.pdfImpresion;
+				LBIntegrationRicoh.Add(Elementsof);
+				Elementsof.Clear();
+				Elementsof.ListOfFieldID	= "Code";
+				Elementsof.ListOfFieldDesc	= response.parameters.return.codigoError;
+				LBIntegrationRicoh.Add(Elementsof);
+				Elementsof.Clear();
+				Elementsof.ListOfFieldID	= "Status";
+				Elementsof.ListOfFieldDesc	= response.parameters.return.estado;
+				LBIntegrationRicoh.Add(Elementsof);
+			}
+
+			while(true){
+				var insItemTextCollection = this.TextCollection.Create();
+				if(!insItemTextCollection.IsSet()){break;}
+				var vl_Text = insItemTextCollection.Text.Create();
+				if(!vl_Text.IsSet()){break;}
+				var lv_textContent = vl_Text.TextContent.Create();
+				if(lv_textContent.IsSet()){
+					lv_textContent.Text.content = response.parameters.return.pdfImpresion;
+				}
+				break;
+			}
+
+			//Fin Oscar yela - Cambio hecho para Hilti perú
+
+			var insAction : elementsof BO2SendLog.Actions;
+			if(LBIntegrationRicoh.Count()>0){
+				
+				insAction.ActionDate = Context.GetCurrentUserDate();
+				insAction.ActionHour = Context.GetCurrentUserDateTime().ToString();
+				var insIdentity = Identity.Retrieve(Context.GetCurrentIdentityUUID());
+				if(insIdentity.IsSet()){
+					insAction.ActionUser = insIdentity.ID.content.Trim() + " - " + insIdentity.FormattedName.Trim();
+				}
+				insAction.ActionDesc = "QUERYSTATUS";
+				foreach(var insResp in LBIntegrationRicoh){
+					switch(insResp.ListOfFieldID){
+						case "Code"{ insAction.ActionText = insAction.ActionText+ " " + insResp.ListOfFieldDesc;}
+						case "Menssage"{ insAction.ActionText = insResp.ListOfFieldDesc;}
+						case "Status"{ 
+							insAction.ProcessStatus  = insResp.ListOfFieldDesc;
+							if(insAction.ProcessStatus == "1"){
+								insAction.ActionText = "Documento aceptado por la Sunat";
+							}else if(insAction.ProcessStatus == "0"){
+								insAction.ActionText = "Error en el documento: "+response.parameters.return.mensajeError;
+							}
+						}
+						case "E"{raise msg.Create("E",insResp.ListOfFieldDesc);}
+						case "PDF"{ 
+								if(!insResp.ListOfFieldDesc.IsInitial()){
+									while(true){
+										if(!this.TextCollection.IsSet()){break;}
+										if(this.TextCollection.Text.Count() == 0){break;}
+										if(!this.TextCollection.Text.GetFirst().TextContent.IsSet()){break;}
+										
+										
+										var name	:LANGUAGEINDEPENDENT_LONG_Name;
+										var type	:DocumentTypeCode;
+										var desc	:Description;
+										var binary	:BinaryObject;
+										var DownloadData = insResp.ListOfFieldDesc;
+										name = "Documento "  + this.LogID.RemoveLeadingZeros()+".pdf";
+										type.content = "10001";
+										type.listID = "10296";
+										binary.mimeCode = "application/pdf";
+
+										binary.content = Binary.ParseFromBase64String(this.TextCollection.Text.GetFirst().TextContent.Text.content);
+										//binary.content =   this.TextCollection.Text.GetFirst().TextContent.Text.content;
+										
+										this.MYATTACH.CreateFile(type,name,name,desc,binary);				
+										this.IsPDF = true;
+
+										break;
+									}
+								}
+							}
+						}
+					}
+				}
+				this.Actions.Create(insAction);
+			}
+		//
+		//default{}
+	}
+
+	break;
+}
+
+

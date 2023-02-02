@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ProcessIntegration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://sap.com/ByD/PDI/ProcessIntegrationDefinition">
+  <Header>
+    <Name>IC_SDS_To_RDS</Name>
+    <Namespace>http://0004019099-one-off.sap.com/YVINQABXY_</Namespace>
+    <IntegrationTypeCode>1</IntegrationTypeCode>
+    <IntegrationPatternTypeCode>1</IntegrationPatternTypeCode>
+    <IntegrationTriggerTypeCode>1</IntegrationTriggerTypeCode>
+    <ConsistencyStatus>2</ConsistencyStatus>
+  </Header>
+  <InteractionModel name="IC_SDS_To_RDS">
+    <ExecutionModeCode>1</ExecutionModeCode>
+    <TransmissionModeCode>1</TransmissionModeCode>
+    <PreventDataDeletion>true</PreventDataDeletion>
+    <Reconciliation>true</Reconciliation>
+    <Sequencing standard="true" />
+    <InteractionRole type="1" name="OfferingIC_SDS_To_RDS" />
+    <InteractionRole type="2" name="ConsumingIC_SDS_To_RDS" />
+    <Interaction>
+      <InteractionMessage name="Maintain">
+        <Request formattedIdField="RInvoiceUUID" formattedIdReadOnly="false">
+          <LeadingBusinessObject name="ReceiveDirectSales" namespace="http://0004019099-one-off.sap.com/YVINQABXY_" node="Root" />
+          <Mapping type="sadl" href="IC_SDS_To_RDS-Maintain-In.sadl" uuid="DC8B9614BB0C43A092D550C9867DE5FD" timestamp="20191205110215" />
+        </Request>
+      </InteractionMessage>
+    </Interaction>
+  </InteractionModel>
+  <InteractionActor type="1" roleType="1">
+    <Outbound name="Maintain" conditionTraversalDir="0">
+      <RequestRef>
+        <Mapping type="sadl" href="IC_SDS_To_RDS-Maintain-Out.sadl" uuid="18548224501D4CC4885018152E26E161" timestamp="20191205110215" />
+      </RequestRef>
+      <BusinessObject name="SendDirectSales" namespace="http://0004019099-one-off.sap.com/YVINQABXY_">
+        <Node name="Root" />
+      </BusinessObject>
+    </Outbound>
+  </InteractionActor>
+  <InteractionActor type="2" roleType="2">
+    <Inbound name="Maintain">
+      <BusinessObject name="ReceiveDirectSales" namespace="http://0004019099-one-off.sap.com/YVINQABXY_">
+        <Node name="Root" readOnly="false">
+          <AlternativeKey name="RInvoiceUUID" readOnly="false" />
+        </Node>
+      </BusinessObject>
+      <ErrorHandling />
+    </Inbound>
+  </InteractionActor>
+</ProcessIntegration>

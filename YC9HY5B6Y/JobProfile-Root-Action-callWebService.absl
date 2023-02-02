@@ -1,0 +1,21 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: JobProfile
+		Node: Root
+		Action: callWebService 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+
+import ABSL;
+
+var request : Library :: JPExtInt.Create.Request;
+
+request.JobProfileCreateRequest_sync.JobProfile.id = "JP10015";
+request.JobProfileCreateRequest_sync.JobProfile.empType = EmploymentTypeCode.CO_01;
+
+var response = Library :: JPExtInt.Create(request," ","CS_JPExtInt");

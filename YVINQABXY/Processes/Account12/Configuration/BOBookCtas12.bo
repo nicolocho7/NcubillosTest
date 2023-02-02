@@ -1,0 +1,28 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FinancialAccounting.Global;
+
+[DeploymentUnit(Financials)][WithAdministrativeData] businessobject BOBookCtas12 raises msg  {
+
+      message msg text "&1"	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			
+	 [Label("ID")]						 element ID							: BusinessPartnerInternalID;
+	 [Label("Company")]					 element CompanyID					: OrganisationalCentreID;
+	 [Label("RUC Company")]				 element RucCompany					: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	 [Label("Set Of Books")]			 element SetOfBooksID				: SetOfBooksID;
+	 [Label("Account Ledger")]			 element Cuenta						: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	 [Label("Plan de Cuentas")]			 element PlanCuenta					: ChartOfAccountsCode;
+	 element EBooKDialyDescription											: LANGUAGEINDEPENDENT_EXTENDED_Name;
+	 element ECompanyDescription											: LANGUAGEINDEPENDENT_EXTENDED_Name;
+	 element UUID:UUID;
+	 association ToCompany to BOBookCtas12;
+	 association ToSetofBooks to SetOfBooks  using ID;
+	 element ChartOfAccountsCode: ChartOfAccountsCode;
+	 [Label("Book Dialy Descripcion")]	 element BookDiarieDescripcionID	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	 [Transient]						 element IsConsistent				: Indicator; //Is consistente;
+
+	 
+	 [WithAdministrativeData] node GLAccounts [1,n] raises msg {
+			[Label("Cuenta de Mayor")]			element NCuentas			: ChartOfAccountsItemCode;
+		}
+
+}

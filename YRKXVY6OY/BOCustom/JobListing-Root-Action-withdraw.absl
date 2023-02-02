@@ -1,0 +1,19 @@
+﻿import ABSL;
+
+foreach(var jobList in this){
+	jobList.applied = " ";
+
+	var qryJobApply = JobApplications.QueryByElements;
+	var selParam = qryJobApply.CreateSelectionParams();
+	selParam.Add(qryJobApply.jobID, "I", "EQ", jobList.id);
+	selParam.Add(qryJobApply.candidateID.content, "I", "EQ", jobList.empID.content);
+	var result = qryJobApply.Execute(selParam);
+	result.Delete();
+
+	var qryJobProfile = JobProfile.QueryByElements;
+	var selParamJP = qryJobProfile.CreateSelectionParams();
+	selParamJP.Add(qryJobProfile.jobID, "I", "EQ", jobList.id);
+	var resultJP = qryJobProfile.Execute(selParamJP).GetFirst();
+	var canApplied = resultJP.candidatesApplied.Where(n => n.empID.content == jobList.empID.content);
+	canApplied.Delete();
+}

@@ -1,0 +1,9 @@
+﻿import ABSL;
+
+foreach(var jobApplication in this){
+	var qryJobProfile = JobProfile.QueryByElements;
+	var selParam = qryJobProfile.CreateSelectionParams();
+	selParam.Add(qryJobProfile.jobID, "I", "EQ", jobApplication.jobID);
+	var canAccept = qryJobProfile.Execute(selParam).GetFirst().candidatesApplied.Where(n => n.empID.content == jobApplication.candidateID.content);
+	canAccept.GetFirst().offerStatus = OfferStatusCode.CO_01;
+}

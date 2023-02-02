@@ -1,0 +1,30 @@
+﻿import ABSL;
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+
+var msgFormatType = "Debe seleccionar tipo de formato.";
+var msgDetails = "No existen detalles para generar documento.";
+ 
+if (LanguageCode != "ES"){
+	msgFormatType = "You must select type of format.";	
+	msgDetails = "No details to generate document.";
+}
+var isConsistent = true;
+
+if (this.FormatType.IsInitial()){
+	raise msj.Create("E", msgFormatType);
+	isConsistent = false;
+}
+
+if (this.Details.Count() <= 0){
+	raise msj.Create("E", msgDetails);
+	isConsistent = false;
+}
+
+if (isConsistent){
+	switch (this.FormatType){
+		case CLTypeBankPaymentCode.CO_1 { this.BCP(); }
+		case CLTypeBankPaymentCode.CO_2 { this.SCOTIA(); }
+		case CLTypeBankPaymentCode.CO_3 { this.SCOTIA2(); }
+		case CLTypeBankPaymentCode.CO_4 { this.BBVA(); }
+	}
+}

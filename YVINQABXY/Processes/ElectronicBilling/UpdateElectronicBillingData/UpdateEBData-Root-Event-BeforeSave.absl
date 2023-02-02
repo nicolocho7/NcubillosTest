@@ -1,0 +1,61 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: UpdateEBData
+		Node: Root
+		Event: BeforeSave 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script when:
+		- the instance of the business object is being saved.
+		- the instance of the business object is created from other sources like web services, preview screen, and so on.
+*/
+
+import ABSL;
+
+if(this.ID.IsInitial()){
+	var Code = "UPDATEEBDATA";
+	var InsBOBuildIDV2 = BOBuildIDV2.Retrieve(Code);
+	if(InsBOBuildIDV2.IsSet())
+	{
+		InsBOBuildIDV2.Increase();		
+	}else
+	{
+		var StructureBOBuildIDV2 : elementsof BOBuildIDV2;
+		StructureBOBuildIDV2.ID = Code;
+		StructureBOBuildIDV2.description = "FE - Update";
+		StructureBOBuildIDV2.UUID.content = UUID.Generate();
+		InsBOBuildIDV2 = BOBuildIDV2.Create(StructureBOBuildIDV2);
+		InsBOBuildIDV2.Increase();
+	}
+
+	this.ID = InsBOBuildIDV2.consecutive;
+}
+//if(this.ID.IsInitial()){
+	//var queryBuildID  = BOBuildID.QueryByElements;
+	//var paramBuildID = queryBuildID.CreateSelectionParams();
+		//paramBuildID.Add(queryBuildID.ID, "I", "EQ", "UPDATEEBDATA");
+	//var resultBuildID = queryBuildID.Execute(paramBuildID).GetFirst();
+	//
+	//if(resultBuildID.IsSet())
+	//{
+		//resultBuildID.consecutive = resultBuildID.consecutive + 1;
+		//this.ID = resultBuildID.consecutive.ToString();
+		////this.UUID.content = UUID.Generate();
+	//}
+	//else
+	//{
+		//this.ID = "1";
+		////this.UUID.content = UUID.Generate();
+		////-- create new register
+		//var insBuildID = BOBuildID.Create();
+		//if(insBuildID.IsSet()){
+			//insBuildID.consecutive = 1;
+			//insBuildID.description = "FE - Update";
+			//insBuildID.ID = "UPDATEEBDATA";
+			//insBuildID.UUID.content = UUID.Generate();
+		//}
+	//}
+//}

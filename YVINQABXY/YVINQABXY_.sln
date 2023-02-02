@@ -1,0 +1,17 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# CopernicusIsolatedShell Solution File, Format Version 11.00
+Project("{AC959CD1-5A2C-4306-BE72-259804B01F08}") = "Seidor Peruvian Localization@Cloud (In Development)", "YVINQABXY.myproj", "{90875764-5655-4896-B469-F6912E671596}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{90875764-5655-4896-B469-F6912E671596}.Debug|x86.ActiveCfg = Debug|x86
+		{90875764-5655-4896-B469-F6912E671596}.Debug|x86.Build.0 = Debug|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

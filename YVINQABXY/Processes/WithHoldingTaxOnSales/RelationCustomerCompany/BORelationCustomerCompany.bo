@@ -1,0 +1,37 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.Product.Global;
+
+[WithAdministrativeData] businessobject BORelationCustomerCompany raises msj {
+
+	message msj text "&":LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[AlternativeKey] element ID:ID;
+	element CompanyUUID:UUID;
+	element UUID:UUID;
+	[Transient] element IsConsistent:Indicator;
+
+	//All
+	[Label("Company Tax Status Code")]	element ConditionCompanyID:ID;
+	association ToConditionCompany to BOConditionCompanySales;
+
+	[Label("Customer Tax Status Code")]	element ConditionCustomerID:ID;
+	association ToConditionCustomer to BOConditionCustomer;
+
+	[Label("Type Withholding Tax")]		element TypeWithholding:CLTypeWithholdingSalesCode;
+
+	[Label("Withholding Minimun Amount ID")]element AmountMinimun:ID;
+	association ToMinimumWithholdingAmountSales to BOMinimumWithholdingAmountSales;
+
+	[Label("Country")] element Country:CountryCode;
+	[Label("Withholding Code")]			element WithHoldingCode:ID;
+	[Label("Withholding Description")]	element WithHoldingDesc:LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+	[Label("Bank Account ID")]element BankAccountID:ID;
+
+	//Percepcion
+	[Label("Withholding Percent")]element Percent:Percent;
+	//Percepcion
+	[Label("Category Product")] element CategoryID:ID;
+	association ToCategoryProduct to ProductCategoryHierarchy.ProductCategory;
+
+	action DeleteInstance;
+}

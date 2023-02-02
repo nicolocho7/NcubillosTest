@@ -1,0 +1,29 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: WithholdingPayCust
+		Node: Root
+		Action: calculateTotal 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+
+import ABSL;
+import AP.Common.GDT as apCommonGDT;
+import BASIS.Global as basis;
+	   
+//Head
+this.Total.Clear();
+		
+var ins;
+//Invoices
+foreach(var Row in this.Positions.Where(n=>n.ISCheck == true)){
+	ins = Row.ToAdminDetraCust;
+	Row.ToAdminDetraCust.DetraAmount.content = Row.ToAdminDetraCust.TotalNetAmount.content;
+	Row.ToAdminDetraCust.DetraAmount.currencyCode = Row.ToAdminDetraCust.TotalNetAmount.currencyCode;
+	this.Total.content = this.Total.content + Row.ToAdminDetraCust.DetraAmount.content;
+	this.Total.currencyCode = Row.ToAdminDetraCust.DetraAmount.currencyCode;
+}

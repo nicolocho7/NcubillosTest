@@ -1,0 +1,47 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: JobListing
+		Node: Root
+		Event: AfterModify 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script if:
+		- the value of any field in the node in which this script is contained is modified.
+		- the node itself is modified by another business object within the same solution.
+*/
+
+import ABSL;
+import AP.PC.IdentityManagement.Global;
+import AP.FO.BusinessPartner.Global;
+
+// Para identificar el usuario logeado y asi determinar el ID de empleado y su nombre
+var identityUUID = Context.GetCurrentIdentityUUID();
+var iden : Identity;
+var qryIden = iden.QueryByElements;
+var selParam = qryIden.CreateSelectionParams();
+selParam.Add(qryIden.UUID.content,"I","EQ",identityUUID.content);
+var idenResult = qryIden.Execute(selParam);
+var idenResultFinal = idenResult.GetFirst();
+
+if(idenResultFinal.IsSet())
+{
+	//this.name = idenResultFinal.FormattedName;
+	this.name = CustomReuseLibrary.IdentityEmployee(identityUUID); // llamado de la libreria reutilizable
+	var busPartUUID = idenResultFinal.BusinessPartnerUUID;
+	var employee = Employee.Retrieve(busPartUUID);
+	if(employee.IsSet())
+	{
+		this.empID = employee.IdentificationEmployeeID.EmployeeID;
+
+		// Codigo para asignar la asociacion ToEmployee
+		var emp = Employee.Identification.Retrieve(this.empID);
+		if(emp.IsSet())
+		{
+			this.ToEmployee = emp.ToRoot;
+		}
+	}
+}
+

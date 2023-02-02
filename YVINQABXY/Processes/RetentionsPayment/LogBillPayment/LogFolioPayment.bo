@@ -1,0 +1,12 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+[DeploymentUnit(SupplierInvoicing)]businessobject LogFolioPayment raises msg{
+
+       message msg text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+	   [Label("Log ID")]		element LogID						: ID; 
+	   association ToBOBillPayment to BOBillPayment.Results;
+	   node Responses [0,n]{
+			[Label("Response ID")]		element ResponseID			: ID;
+			[Label("Value")]			element Value				: LANGUAGEINDEPENDENT_EXTENDED_Text; 
+	   }
+}

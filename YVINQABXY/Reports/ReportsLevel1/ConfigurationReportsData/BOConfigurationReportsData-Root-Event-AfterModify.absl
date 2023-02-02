@@ -1,0 +1,12 @@
+﻿//
+//import ABSL;
+//
+//while(true)
+//{
+	//if(this.zRUC.IsInitial() && this.zIdentifyBook.IsInitial()){break;}
+//
+	//this.NameBook = this.zIdentifyBook + this.zRUC;
+//
+//break;
+//}
+//

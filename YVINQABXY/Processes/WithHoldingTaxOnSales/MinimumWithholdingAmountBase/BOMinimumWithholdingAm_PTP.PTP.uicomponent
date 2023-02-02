@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UXComponent xmlns:base="http://www.sap.com/a1s/cd/oberon/base-1.0" xmlns:uxv="http://www.sap.com/a1s/cd/oberon/uxview-1.0" xmlns:uxc="http://www.sap.com/a1s/cd/oberon/uxcontroller-1.0" id="KqNylIGOOKgBfgYtbZFIiG" enableBackendOperationsClubbing="true" name="BOMinimumWithholdingAm_PTP" componentType="portTypePackage" AuthorizationClassificationCode="ReuseComponent" useUIController="true" helpId="d2252edc-3cf5-414e-96cc-111d7916b5f6" designtimeVersion="5.13.0.18" modelVersion="1.0" xmlns="http://www.sap.com/a1s/cd/oberon/uxcomponent-1.0">
+ <uxc:Interface id="J60hxEOrAqo$SUWxBnNckG">
+  <uxc:Configuration id="e8pOq3GJY4Q4nVNMrjEYLW"/>
+  <uxc:PortTypes id="PvVURGrk5qYsdTSQgXJfqG">
+   <uxc:PortType id="aaaawlIv9akhuLk8tEftNq" name="To_BOMinimumWithholdingAm_viewAll"/>
+   <uxc:PortType id="m0ckJxpxmaQQ7lLke9gEJm" name="To_BOMinimumWithholdingAm_create"/>
+   <uxc:PortType id="johdwlIv9akhuLk8tEftNW" name="To_BOMinimumWithholdingAm_edit"/>
+   <uxc:PortType id="johdwlIv9akhuLkJOSCHSA" name="OpenByKey"/>
+   <uxc:PortType id="johdwlIv9akhuLXXXHJJKL" name="CreateWithReference"/>
+  </uxc:PortTypes>
+ </uxc:Interface>
+ <uxc:EmbeddedComponents id="SppAFLAVxq22ZvuclsqyG0"/>
+ <TextPool>
+  <base:TextBlock language="EN" masterLanguage="true" currentLanguage="true"/>
+ </TextPool>
+</UXComponent>

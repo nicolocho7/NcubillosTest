@@ -1,0 +1,37 @@
+import AP.Common.GDT;
+import AP.FO.ProductDataMaintenance.Global;
+
+[Extension] businessobject AP.FO.ProductDataMaintenance.Global:Material {
+ 
+        // You must activate this business object before you can access the extension fields
+        // or messages in script files, forms, and screens.
+
+    
+   		node SupplierInformation {
+   	    } 
+    
+   		node SalesProcessInformation {
+   	    } 
+    
+   		node Common {
+			 [Label("(OLD) Product Type")]	element	ProductType : CLTypeProductCode;
+			 [Scenario (PES_Material)][Label("(OLD) Alternative Number Material PE")]	element	AlternativeNumberPE : ID;
+   	    } 
+    
+   		node CompetitorInformation {
+   	    } 
+    
+   		node CustomerInformation {
+   	    } 
+    
+   		node AvailabilityConfirmationProcessInformation {
+   	    } 
+    
+   		node SupplyPlanningProcessInformation {
+   	    } 
+    
+   		node OwnProduct {
+   	    } 
+     
+  
+}

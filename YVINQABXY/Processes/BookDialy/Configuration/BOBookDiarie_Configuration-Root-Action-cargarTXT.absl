@@ -1,0 +1,75 @@
+﻿import ABSL;
+
+var inslistInsAgrupTemps : elementsof BOBookDiarie_Configuration.ZNodoCuentas;
+//var crearPedido : elementsof CargaMasivaPedidos;
+
+var string = "";
+var subString="";
+var indiceFind = 0;
+var indiceLast;
+var i = 0;
+var subIndiceLast = 0;
+var subIndiceFind = 0;
+var subStringAux = "";
+var j = 0;
+
+this.IsConsistent = true;
+
+if (this.ReportsAttachments.DocumentList.Count() == 1){
+ 
+ var MyAtt = this.ReportsAttachments.DocumentList;
+  
+  var FileCont = MyAtt.GetFirst().FileContent;
+  string = FileCont.BinaryObject.content.ToString();
+  
+  while(indiceFind != -1){
+   subIndiceLast = 0;
+   subIndiceFind = 0;
+   subStringAux = "";
+   j = 0;
+   i = i + 1;
+   indiceLast = string.Length() - 1;
+   indiceFind = string.Find("\n");
+   if(indiceFind != -1){
+    inslistInsAgrupTemps.Clear();
+    subString = string.Substring(0,indiceFind);
+    string = string.Substring(indiceFind + 1,indiceLast - indiceFind); 
+    //Detalle
+    while(subIndiceFind != -1){
+     j = j + 1;
+     subIndiceLast = subString.Length() - 1;
+     subIndiceFind = subString.Find(";");
+     subStringAux = subString.Substring(0,subIndiceFind);
+     subString = subString.Substring(subIndiceFind + 1,subIndiceLast - subIndiceFind);
+     if(j == 1){
+      inslistInsAgrupTemps.ZNumCuentas= subStringAux.Trim();
+     }else if(j == 2){
+      inslistInsAgrupTemps.ZDescpricion = subStringAux.Trim();
+     }else if(j == 3){
+      inslistInsAgrupTemps.ZNumCuentas2 = subStringAux.Trim();
+     }else if(j == 4){
+      inslistInsAgrupTemps.ZDescripcion2 = subStringAux.Trim();
+	  
+      //this.ZCarga.Create(inslistInsAgrupTemp);
+      
+      
+	  this.ZNodoCuentas.Create(inslistInsAgrupTemps);
+	  subIndiceFind = -1;
+     }
+      
+	        
+     
+    }//fin while(subIndiceFind != -1){      
+   }//fin if(indiceFind != -1){
+  }//fin while(indiceFind != -1){
+ //}
+ //else{
+  //this.IsConsistent = false;
+  //raise Msj.Create("E", "Solo debe adjuntar un archivo .txt");
+ //}
+}
+else{
+ this.IsConsistent = false;
+ //raise  msj.Create("E", "Solo debe adjuntar un archivo .txt");
+} 
+

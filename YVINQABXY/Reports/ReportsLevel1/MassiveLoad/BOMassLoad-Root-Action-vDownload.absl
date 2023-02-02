@@ -1,0 +1,170 @@
+﻿//import ABSL;
+//
+//import AP.Common.GDT as apCommonGDT;
+//import BASIS.Global as basis;
+//
+//var String = "";
+//var name :LANGUAGEINDEPENDENT_LONG_Name;
+//var type :DocumentTypeCode;
+//var desc :Description;
+//var binary :basis:BinaryObject;
+//var TypeDocument = this.vTypeLoad;
+//
+//
+//while(true)
+//{
+	//if(this.vTypeLoad.IsInitial()){break;}
+//
+	//var TypeSeleccion = this.vTypeLoad;
+	//
+	//switch(TypeSeleccion)
+	//{
+		//case "01"
+		//{
+			 //Query BOSelect
+			//var QueryHomologation = BOHomologation.QueryByElements;
+			//var parameterHomologation = QueryHomologation.CreateSelectionParams();
+			//var ResultQueryHomologation = QueryHomologation.Execute();
+//
+			//if(ResultQueryHomologation.Count()<=0){break;}
+			//String = "";
+			//var separador = ";";
+				//
+				//foreach(var itemHead in ResultQueryHomologation)
+				//{
+					//String = String + itemHead.HomologationDesc + separador;
+					//foreach(var itemNode in itemHead.DataHomologation)
+					//{
+						//String = String + itemNode.OrigData + separador;
+						//String = String + itemNode.DestData + separador;
+						//String = String + itemHead.HomologationDesc + separador;
+					//}
+//
+					//String =String + "\r\n";
+				//}
+		//}
+//
+		//case "02"
+		//{
+			//var QueryConfigReportData = BOConfigurationReportsData.QueryByElements;
+			//var parameterConfigReportData = QueryConfigReportData.CreateSelectionParams();
+			//var ResultQueryConfigReport = QueryConfigReportData.Execute();
+//
+			//if(ResultQueryConfigReport.Count()<=0){break;}
+			//String = "";
+			//var separador = ";";
+//
+			//foreach(var itemHeadConfig in ResultQueryConfigReport)
+			//{
+				//var header =	itemHeadConfig.ServiceID + separador+ itemHeadConfig.Description + separador + itemHeadConfig.ReportID + separador;
+				//
+					//foreach(var itemNodeFilter in itemHeadConfig.Filters)
+					//{
+						//String = String + header;
+						//String = String + "Filter" + separador;
+						//String = String + itemNodeFilter.FiltersVariableID + separador;
+						//String = String + itemNodeFilter.FiltersDescription + separador;
+						//String = String + itemNodeFilter.DataType + separador;
+						//String =String + "\r\n";
+					//}
+					//foreach(var itemNodeSelect in itemHeadConfig.Select)
+					//{
+						//String = String + header;
+						//String = String + "Select" + separador;
+						//String = String + itemNodeSelect.selectVariableID + separador;
+						//String = String + itemNodeSelect.SelectDescription + separador;
+						//String =String + "\r\n";
+					//}
+				//String =String + "\r\n";
+			//}
+//
+		//}
+//
+		//case "03"
+		//{
+			//var QuerySelectReport = BOConfigurationReports.QueryByElements;
+			//var parameterSelectReport = QuerySelectReport.CreateSelectionParams();
+			//var ResultQuerySelect = QuerySelectReport.Execute();
+//
+			//if(ResultQuerySelect.Count()<=0){break;}
+			//String = "";
+			//var separador = ";";
+			//
+			//foreach(var headSelect in ResultQuerySelect)
+			//{
+				//var Header = headSelect.ConfRepID.RemoveLeadingZeros() + separador + headSelect.Separator +  separador; 
+//
+					//foreach(var itemSelectNode in headSelect.Values)
+					//{
+						//String = String + Header;
+						//String = String + itemSelectNode.TechnicalID + separador;
+						//String = String + itemSelectNode.IsConstant.ToString() + separador;
+						//String = String + itemSelectNode.Constant + separador;
+						//String = String + itemSelectNode.BasicLogic.RemoveLeadingZeros() + separador;
+						//String = String + itemSelectNode.zBasicLogic + separador;
+						//String = String + itemSelectNode.zDependent + separador;
+						//String = String + itemSelectNode.zValueDependent + separador;
+						//String = String + itemSelectNode.IsHomologation.ToString()+ separador;
+						//String = String + itemSelectNode.HomologationDesc + separador;
+						//String =String + "\r\n";
+					//}
+//
+					//String =String + "\r\n";
+			//}	
+		//}
+//
+//
+		//case "04"
+		//{
+		//
+			//var queryFilter = BOFilters.QueryByElements;
+			//var parameterFilter = queryFilter.CreateSelectionParams();
+			//var resultQueryFilter = queryFilter.Execute();
+			//
+			//if(resultQueryFilter.Count()<=0){break;}
+			//String = "";
+			//var separador = ";";
+//
+			//foreach(var headFilter in  resultQueryFilter)
+			//{
+				//String = String + headFilter.FiltersDesc + separador;
+				//String = String + headFilter.Company.ToString() + separador;
+				//String = String + headFilter.COSelctionP + separador;
+				//String = String + headFilter.COTechnicalId + separador;
+//
+				//String = String + headFilter.AccountingSystem.ToString() + separador;
+				//String = String + headFilter.ASSelctionP + separador;
+				//String = String + headFilter.ASTechnicalId + separador;
+				//
+				//String = String + headFilter.Period.ToString() + separador;
+				//String = String + headFilter.PESelctionP + separador;
+				//String = String + headFilter.PETechnicalId + separador;
+//
+				//String = String + headFilter.Date.ToString() + separador;
+				//String = String + headFilter.DASelctionP + separador;
+				//String = String + headFilter.DATechnicalId + separador;
+				//
+				//String = String + headFilter.AccountGL.ToString() + separador;
+				//String = String + headFilter.GLCompany + separador;
+				//String = String + headFilter.GLSetOfBooks.content + separador;
+				//String = String + headFilter.GLAccount + separador;
+				//
+				//String =String + "\r\n";
+			//}
+			 //
+		//
+		//String =String + "\r\n";
+		//}
+		//
+//
+	//}
+//break;
+//}
+//
+//name = TypeDocument + ".TXT";
+//type.content = "10001";
+//type.listID = "10296";
+//
+//binary.mimeCode = "text/plain";
+//binary.content = Binary.ParseFromString(String);
+//this.ReportsAttachments.CreateFile(type,name,name,desc,binary);	

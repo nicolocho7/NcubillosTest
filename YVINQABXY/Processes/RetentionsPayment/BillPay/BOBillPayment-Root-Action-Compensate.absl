@@ -1,0 +1,90 @@
+/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BOBillPayment
+		Node: Root
+		Action: Compensate 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+
+import ABSL;
+import AP.SupplierInvoicing.Global;
+
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+var msgMissingConf = "No se encontro configuracion para la Empresa y Tipo de Retencion seleccionada.";
+var msgMissingSelections = "No hay registros seleccionados.";
+
+if (LanguageCode != "ES"){
+	msgMissingConf = "Can not find configuration for the Company and Type of Retention selected.";
+	msgMissingSelections = "No records selected.";
+}
+
+var insInvoices = this.Results.Where(n=>n.CMUUID.IsInitial() == false);
+
+if(insInvoices.Count() > 0){ 
+	var insInvoice;
+	foreach(insInvoice in insInvoices){
+		var insSupplierInvoice = SupplierInvoice.Retrieve(insInvoice.CMUUID);
+		if(insSupplierInvoice.IsSet()){
+			insSupplierInvoice.FinishDataEntryProcessing();
+			insSupplierInvoice.Post();
+		}
+	}
+	//Logica Folio Wilson Inicio
+	var QryFolioPayment = BOPaymentFolio.QueryByElements;
+	var ParamsFolioPayment = QryFolioPayment.CreateSelectionParams();
+		ParamsFolioPayment.Add(QryFolioPayment.CompanyID,"I","EQ",this.CompanyID.content.RemoveLeadingZeros());
+		//ParamsFolioPayment.Add(QryFolioPayment.SupplierID ,"I","EQ",this.BusinessPartnerID);
+		ParamsFolioPayment.Add(QryFolioPayment.Inactive,"I","EQ", false);
+	var ResultFolcioPayment = QryFolioPayment.Execute(ParamsFolioPayment).GetFirst();
+	if(this.Folio.IsInitial()){
+		if(ResultFolcioPayment.IsSet()){
+			if(ResultFolcioPayment.CorrelativeCurrent.IsInitial()){
+				ResultFolcioPayment.CorrelativeCurrent = ResultFolcioPayment.CorrelativeInitial;
+			}else{
+				ResultFolcioPayment.CorrelativeCurrent = ResultFolcioPayment.CorrelativeCurrent + 1;
+			}
+			var Consecutivo = ResultFolcioPayment.CorrelativeCurrent.RoundToString(0,true);
+			var ContConsecutivo = Consecutivo.Length();
+			if(ContConsecutivo < ResultFolcioPayment.CorrelativeLength){
+				while (ContConsecutivo<ResultFolcioPayment.CorrelativeLength){
+					Consecutivo = "0" + Consecutivo;
+					ContConsecutivo = ContConsecutivo + 1;
+				}
+			}else{
+				Consecutivo = Consecutivo.Substring(0, ResultFolcioPayment.CorrelativeLength);
+			}
+			var Folio = ResultFolcioPayment.Serie+"-"+Consecutivo;
+			this.Folio = Folio;
+			var insInvoiceToUpdate;
+			foreach(insInvoiceToUpdate in insInvoices){
+				insInvoiceToUpdate.FolioBill = this.Folio;
+				var qryBillsRetentions = BOBillsRetentions.QueryByElements;
+				var prmBillsRetentions = qryBillsRetentions.CreateSelectionParams();
+					prmBillsRetentions.Add(qryBillsRetentions.BillID, "I", "EQ", insInvoice.BillID.RemoveLeadingZeros());
+				var insBillsRetentions = qryBillsRetentions.Execute(prmBillsRetentions).GetFirst();
+				if(insBillsRetentions.IsSet()){
+					if(insBillsRetentions.Folio.IsInitial()){
+						insBillsRetentions.Folio = insInvoiceToUpdate.FolioBill;
+						insBillsRetentions.ExecutionDate = this.ExecuteDate;
+					}else{
+						insBillsRetentions.Folio.Clear();
+						insBillsRetentions.Folio = insInvoiceToUpdate.FolioBill;
+						insBillsRetentions.ExecutionDate = this.ExecuteDate;
+					}
+					insBillsRetentions.BillStatus =	CLStatusRetentionBillsCode.CO_4;		
+				}
+			}
+			this.BillStatusF = CLStatusRetentionBillsCode.CO_4;
+		}
+	}
+}else{
+	raise msj.Create("E", msgMissingSelections);
+}
+
+
+

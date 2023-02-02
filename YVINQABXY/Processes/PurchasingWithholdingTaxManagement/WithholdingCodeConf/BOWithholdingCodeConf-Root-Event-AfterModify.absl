@@ -1,0 +1,81 @@
+﻿
+import ABSL;
+import AP.FO.Product.Global;
+
+
+if (!this.ConditionCompayID.IsInitial() ){
+	
+	var qConditionCompany = BOConditionCompanyPurchase.QueryByElements;
+	var pConditionCompany = qConditionCompany.CreateSelectionParams();
+
+	pConditionCompany.Add(qConditionCompany.ID,"I","EQ",this.ConditionCompayID);
+	var insConditionCompany = qConditionCompany.Execute(pConditionCompany).GetFirst();
+
+	if (insConditionCompany.IsSet()){
+	
+	this.ToConditionCompany = insConditionCompany;
+	}
+	else{
+	this.ToConditionCompany.Reset();
+	}
+
+}
+
+
+if (!this.ConditionSupplierID.IsInitial() ){
+	
+	var qConditionSupplier = BOConditionSupplier.QueryByElements;
+	var pConditionSupplier = qConditionSupplier.CreateSelectionParams();
+
+	pConditionSupplier.Add(qConditionSupplier.ID,"I","EQ",this.ConditionSupplierID);
+	var insConditionSupplier = qConditionSupplier.Execute(pConditionSupplier).GetFirst();
+
+	if (insConditionSupplier.IsSet()){
+	
+	this.ToConditionSupplier = insConditionSupplier;
+	}
+	else{
+	this.ToConditionSupplier.Reset();
+	}
+
+}
+
+
+if (!this.AmountMinimun.IsInitial() ){
+	
+	var qAmountMinimun = BOMinimumWithholdingAmounPurchases.QueryByElements;
+	var pAmountMinimun = qAmountMinimun.CreateSelectionParams();
+
+	pAmountMinimun.Add(qAmountMinimun.ID,"I","EQ",this.AmountMinimun);
+	var insAmountMinimun = qAmountMinimun.Execute(pAmountMinimun).GetFirst();
+
+	if (insAmountMinimun.IsSet()){
+	
+	this.ToMinimumWithholdingAmounPurchases = insAmountMinimun;
+	}
+	else{
+	this.ToMinimumWithholdingAmounPurchases.Reset();
+	}
+
+}
+
+
+if (!this.CategoryID.IsInitial() ){
+	
+	var qCategory = ProductCategoryHierarchy.ProductCategory.QueryByElements;
+	var pCategory = qCategory.CreateSelectionParams();
+
+	pCategory.Add(qCategory.InternalID,"I","EQ",this.CategoryID);
+	var insCategory = qCategory.Execute(pCategory).GetFirst();
+
+	if (insCategory.IsSet()){
+	
+	this.ToCategoryProduct = insCategory;
+	}
+	else{
+	this.ToCategoryProduct.Reset();
+	}
+
+}
+
+

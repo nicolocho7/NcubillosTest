@@ -1,0 +1,35 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BOExecutionFlujoEfectivo
+		Node: Root
+		Event: AfterModify 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script if:
+		- the value of any field in the node in which this script is contained is modified.
+		- the node itself is modified by another business object within the same solution.
+*/
+
+import ABSL;
+
+if(!this.ID.IsInitial()){
+	var ConfigurationEfect = BOConfigurationFlujoEfectivo.QueryByElements;
+	var ParamsEfect = ConfigurationEfect.CreateSelectionParams();
+	ParamsEfect.Add(ConfigurationEfect.ID, "I", "EQ", this.ID.RemoveLeadingZeros());
+	var ResultEfect = ConfigurationEfect.Execute(ParamsEfect).GetFirst();
+	if (ResultEfect.IsSet()){
+		this.CompanyID = ResultEfect.CompanyID;
+		if(ResultEfect.ToCompany.IsSet()){
+			this.ToCompany = ResultEfect.ToCompany;
+		}
+		this.CompanyRuc = ResultEfect.CompanyRuc;
+		if(ResultEfect.ToSetofBooks.IsSet()){
+			this.ToSetofBooks = ResultEfect.ToSetofBooks;
+		}
+		this.SetOfBooksID = ResultEfect.SetOfBooksID;
+		
+	}
+}

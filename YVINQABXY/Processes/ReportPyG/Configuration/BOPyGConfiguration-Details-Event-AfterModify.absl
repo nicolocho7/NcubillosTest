@@ -1,0 +1,28 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BOPyGConfiguration
+		Node: Details
+		Event: AfterModify 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script if:
+		- the value of any field in the node in which this script is contained is modified.
+		- the node itself is modified by another business object within the same solution.
+*/
+
+import ABSL;
+
+if(!this.AccountFrom.content.IsInitial()){
+	if(ABSL:Numeric.IsNumeric(this.AccountFrom.content)){
+		this.AccountFromNumeric = ABSL:Numeric.ParseFromString(this.AccountFrom.content);
+	}
+}
+
+if(!this.AccountTo.content.IsInitial()){
+	if(ABSL:Numeric.IsNumeric(this.AccountTo.content)){
+		this.AccountToNumeric = ABSL:Numeric.ParseFromString(this.AccountTo.content);
+	}
+}

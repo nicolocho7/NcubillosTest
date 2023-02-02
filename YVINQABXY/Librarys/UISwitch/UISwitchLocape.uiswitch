@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UISwitch xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="YVINQABXY_UISwitchLocape" nameTextPoolId="YVINQABXY_UISAPEB26633E4281B7906" descriptionTextPoolId="YVINQABXY_UISIOND75F4139C561CA32" xmlns="http://www.sap.com/a1s/cd/oberon/uimodelchange-1.0">
+ <TextPool xmlns="">
+  <TextBlock language="EN" masterLanguage="true" xmlns="http://www.sap.com/a1s/cd/oberon/base-1.0">
+   <TextPoolEntry id="YVINQABXY_UISwitchLocapeNAME" textUuid="YVINQABXY_UISAPEB26633E4281B7906" text="UISwitchLocape" textCategory="XTXT"/>
+   <TextPoolEntry id="YVINQABXY_UISwitchLocapeDESCRIPTION" textUuid="YVINQABXY_UISIOND75F4139C561CA32" text="Localización - Peru" textCategory="YTXT"/>
+  </TextBlock>
+ </TextPool>
+</UISwitch>

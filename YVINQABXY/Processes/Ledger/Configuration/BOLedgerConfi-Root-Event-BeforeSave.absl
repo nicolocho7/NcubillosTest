@@ -1,0 +1,79 @@
+﻿import ABSL;
+
+
+this.IsConsistent = true;
+
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+var msgCompany = "Por favor ingresar Compañia";
+var msgSetBook = "Por favor ingresar Sistema Contable";
+var msgSetDesp = "Por favor ingresar Descripcion";
+
+if(LanguageCode != "ES"){
+	msgCompany = "Please enter Company";
+	msgSetBook = "Please enter Set Book"; 
+	msgSetDesp = "Please enter Set Book Descripcion";
+}
+
+//Validacion Company
+if(this.CompanyID.IsInitial()){
+	this.IsConsistent = false; 
+	raise msg.Create("E",msgCompany);
+}
+
+if(this.SetOfBooksID.content.IsInitial()){
+	this.IsConsistent = false; 
+	raise msg.Create("E",msgSetBook);
+}
+
+if(this.BookDiarieDescripcionID.IsInitial()){
+	this.IsConsistent = false; 
+	raise msg.Create("E",msgSetDesp);
+}
+
+if(this.ID.IsInitial()){
+	var Code = "LEDGER";
+	var InsBOBuildIDV2 = BOBuildIDV2.Retrieve(Code);
+	if(InsBOBuildIDV2.IsSet())
+	{
+		InsBOBuildIDV2.Increase();		
+	}else
+	{
+		var StructureBOBuildIDV2 : elementsof BOBuildIDV2;
+		StructureBOBuildIDV2.ID = Code;
+		StructureBOBuildIDV2.description = "Libro Mayor";
+		StructureBOBuildIDV2.UUID.content = UUID.Generate();
+		InsBOBuildIDV2 = BOBuildIDV2.Create(StructureBOBuildIDV2);
+		InsBOBuildIDV2.Increase();
+	}
+
+	this.ID = InsBOBuildIDV2.consecutive;
+}
+//if (this.ID.IsInitial())
+//{
+ //
+ //var queryBuildID = BOBuildID.QueryByElements;
+ //var paramBuildID = queryBuildID.CreateSelectionParams();
+ //paramBuildID.Add(queryBuildID.ID, "I", "EQ", "LEDGER");
+ //var resultBuildID = queryBuildID.Execute(paramBuildID).GetFirst();
+ //if (resultBuildID.IsSet())
+ //{
+  //resultBuildID.consecutive = resultBuildID.consecutive + 1;
+  //this.ID = resultBuildID.consecutive.ToString();
+  //this.UUID.content = UUID.Generate();
+ //}
+ //else
+ //{
+  //this.ID = "1";
+  //this.UUID.content = UUID.Generate();
+  ////-- create new register
+  //var insBuildID = BOBuildID.Create();
+  //if (insBuildID.IsSet())
+  //{
+   //insBuildID.consecutive = 1;
+   //insBuildID.description = "Libro Mayor";
+   //insBuildID.ID = "LEDGER";
+   //insBuildID.UUID.content = UUID.Generate();
+  //}
+ //}
+//}
+//

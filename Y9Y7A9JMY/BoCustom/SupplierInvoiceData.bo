@@ -1,0 +1,31 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject SupplierInvoiceData raises msg {
+
+	message msg text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[AlternativeKey][Label("Id")]					element ID						: ID;
+					[Label("Invoice id")]			element SupplierInvoiceID		: BusinessTransactionDocumentID;
+					[Label("Invoice type")]			element SupplierInvoiceTypeCode	: BusinessTransactionDocumentTypeCode;
+					[Label("Supplier id")]			element SupplierID				: BusinessPartnerInternalID;
+					[Label("Company id")]			element CompanyID				: OrganisationalCentreID;
+					[Label("Invoice to")]			element InvoiceTo				: OrganisationalCentreID;
+					[Label("Invoice from")]			element InvoiceFrom				: BusinessPartnerInternalID;
+					[Label("External Document ID")]	element ExternalDocumentID		: ID;
+					[Label("Invoice date")]			element InvoiceDate				: Date;
+					[Label("Receipt date")]			element ReceiptDate				: Date;
+					[Label("Transaction date")]		element TransactionDate			: Date;
+
+	action CreateSupplierInvoice;
+
+	node Item [0, n] raises msgItm {
+
+		message msgItm text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Invoice type")]		element InvoiceItemTypeCode : BusinessTransactionDocumentItemTypeCode;
+		[Label("Product id")]		element ProductId			: ProductID;
+		[Label("Product type")]		element ProductTypeCode		: ProductTypeCode;
+		[Label("Quantity")]			element Quantity			: Quantity;
+		[Label("Unit price")]		element NetUnitPrice		: Amount;
+		[Label("Country tax code")]	element CountryTaxCode		: CountryCode;
+		[Label("TaxCode")]			element TaxCode				: ProductTaxationCharacteristicsCode;
+	}					
+}

@@ -1,0 +1,24 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+[WithAdministrativeData] businessobject UpdateEBData raises msg {
+
+		message msg text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("ID")]					element ID					: ID;
+		[Label("Action")]				element Action				: CLLoadDataFECode;
+		//Estructura
+		[Label("Functional Unit")]		element FunctionalUnitID	: OrganisationalCentreID;
+		[Label("Functional Unit")]		element FunctionalUnitDesc	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Document Type")]		element DocumentType		: CLDocumentTypeEICode;
+		//Asignar responsabilidades
+		[Label("Customer ID")]			element CustomerID			: BusinessPartnerInternalID;
+		[Label("Customer Description")]	element Customerdescription	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Upload?")]				element IsLoad				: Indicator;
+
+		[DependentObject(AttachmentFolder)] node Attachment;
+
+		action zUpload;
+		action zAssignResponsability;
+		action zStructure;
+		action zResponsability;
+		action zStructureDownload;
+}

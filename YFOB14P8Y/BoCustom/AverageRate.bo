@@ -1,0 +1,13 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject AverageRate raises msg {
+
+	message msg text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+	[AlternativeKey] [Label("Id")]	element id		: ID;
+    [Label("Initial date")]			element iniDate		: Date;
+	[Label("End date")]				element endDate		: Date;
+	[Label("Average amount")]		element amount		: DecimalValue;	
+
+	action Calculate;
+}

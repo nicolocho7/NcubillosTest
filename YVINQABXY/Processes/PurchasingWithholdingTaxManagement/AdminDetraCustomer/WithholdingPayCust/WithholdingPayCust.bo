@@ -1,0 +1,36 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FO.BusinessPartner.Global;
+
+businessobject WithholdingPayCust raises msj{
+
+       message msj text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+    [AlternativeKey]			element ID			: ID;
+	//Filters
+	[Label("Company")]			element CompanyID	: ID;
+	association ToCompany to Company;
+	[Label("Customer")]			element CustomerID	: ID;								
+	[Label("Customer desc")]	element CustomerDesc: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Invoice")]			element InvoiceID	: ID;
+	[Label("Initial Date")]		element InitialDate	: Date;
+	[Label("End Date")]			element EndDate		: Date;
+	//Datos folio
+	[Label("Total")]	element Total		:Amount;
+	[Label("Bank Account ID")]element BankAccountID:ID;
+
+	[WithAdministrativeData] node Positions [1, n] raises msj{
+		action MarcarTodos;		//Boton Marcar
+		action DesmarcarTodos;	//Boton Desmarcar
+
+		[Label("Pay")]		element ISCheck		: Indicator;
+		[Label("Invoice")]	element InvoiceID	:	ID;
+		association ToAdminDetraCust to AdminDetraCust;
+		
+	}
+
+	[DependentObject(AttachmentFolder)] node Attachment;
+	action load;
+	action download;
+	action calculateTotal;
+	action post;
+}

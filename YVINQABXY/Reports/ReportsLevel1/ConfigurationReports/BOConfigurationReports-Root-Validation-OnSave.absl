@@ -1,0 +1,10 @@
+﻿import ABSL;
+
+var vIsConsistent = true;
+
+//if(this.ReportID.IsInitial() || this.Separator.IsInitial() || this.Description.IsInitial()){
+	//raise msg.Create("E", "Please enter the required data (*)");
+	//vIsConsistent = false;
+//}
+//
+return vIsConsistent;

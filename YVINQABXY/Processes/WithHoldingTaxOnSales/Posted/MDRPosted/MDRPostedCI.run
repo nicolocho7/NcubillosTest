@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MassDataRunObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://sap.com/ByD/PDI/MassDataRunObjectDefinition">
+  <MdroEsrNameSpace xmlns="">http://0004019099-one-off.sap.com/YVINQABXY_</MdroEsrNameSpace>
+  <MdroEsrName xmlns="">MDRPostedCI</MdroEsrName>
+  <MdroPrxName xmlns="">YVINQABXY_MDCI0575A085261EBA0F</MdroPrxName>
+  <ParallelProcessing xmlns="" />
+  <ApplicationLogDetailLevelCode xmlns="">9</ApplicationLogDetailLevelCode>
+  <ApplicationLogRetentionTimeCode xmlns="">P1D</ApplicationLogRetentionTimeCode>
+  <AccessControlledBoList xmlns="">
+    <AccessControlledBo>
+      <ActionEntity>
+        <BoEsrNameSpace>http://0004019099-one-off.sap.com/YVINQABXY_</BoEsrNameSpace>
+        <BoEsrName>BOPostedCI</BoEsrName>
+        <BoPrxName>YVINQABXY_BOCIEA3F87A5DE2ABE3A</BoPrxName>
+        <BoEsrNodeName>Root</BoEsrNodeName>
+        <BoPrxNodeName>ROOT4F903855210031B0</BoPrxNodeName>
+        <BoEsrEntityName>Post</BoEsrEntityName>
+        <BoPrxEntityName>POSTBA0E0487908FCB7A</BoPrxEntityName>
+      </ActionEntity>
+      <ActionPath>\TO_PARENT</ActionPath>
+      <QueryEntity>
+        <BoEsrNameSpace>http://0004019099-one-off.sap.com/YVINQABXY_</BoEsrNameSpace>
+        <BoEsrName>BOPostedCI</BoEsrName>
+        <BoPrxName>YVINQABXY_BOCIEA3F87A5DE2ABE3A</BoPrxName>
+        <BoEsrNodeName>QYSales</BoEsrNodeName>
+        <BoPrxNodeName>QYSALESD1FCC6117D88CD0F</BoPrxNodeName>
+        <BoEsrEntityName>QueryByElements</BoEsrEntityName>
+        <BoPrxEntityName>QUERY_BY_ELEMENTS</BoPrxEntityName>
+      </QueryEntity>
+      <QueryParameterList>
+        <QueryParameter>
+          <QueryEsrParameterName>WithholdingStatus</QueryEsrParameterName>
+          <QueryPrxParameterName>WITHHOROOT3BF3AB854AF10141</QueryPrxParameterName>
+          <QueryPrxParameterDataType>YVINQABXY_90C2DE37E2651C89</QueryPrxParameterDataType>
+          <MdroEsrNodeName>SelectByWithholdingStatus</MdroEsrNodeName>
+          <MdroPrxNodeName>SEL_BY_WIUSA44D340FC4C1CB50</MdroPrxNodeName>
+          <QueryParameterValueList>
+            <QueryParameterValue>
+              <InclusionExclusionCode>I</InclusionExclusionCode>
+              <IntervalBoundaryTypeCode>EQ</IntervalBoundaryTypeCode>
+              <LowerBoundaryValue>1</LowerBoundaryValue>
+            </QueryParameterValue>
+          </QueryParameterValueList>
+        </QueryParameter>
+        <QueryParameter>
+          <QueryEsrParameterName>CustomerID</QueryEsrParameterName>
+          <QueryPrxParameterName>CUSTOMROOTA041C400605ED038</QueryPrxParameterName>
+          <QueryPrxParameterDataType>PDI_ABSL_IDENTIFIER</QueryPrxParameterDataType>
+          <MdroEsrNodeName>SelectByCustomerID</MdroEsrNodeName>
+          <MdroPrxNodeName>SEL_BY_CUID89C4362CD0A64470</MdroPrxNodeName>
+        </QueryParameter>
+        <QueryParameter>
+          <QueryEsrParameterName>Bank</QueryEsrParameterName>
+          <QueryPrxParameterName>BANKROOTFA9F00941F3E27A8</QueryPrxParameterName>
+          <QueryPrxParameterDataType>APC_V_LANGUAGEINDEPENDENT_TEXT</QueryPrxParameterDataType>
+          <MdroEsrNodeName>SelectByBank</MdroEsrNodeName>
+          <MdroPrxNodeName>SEL_BY_BANK650A936E3F7C300D</MdroPrxNodeName>
+        </QueryParameter>
+        <QueryParameter>
+          <QueryEsrParameterName>CompanyID</QueryEsrParameterName>
+          <QueryPrxParameterName>COMPANROOT1DF618FBC9BFD399</QueryPrxParameterName>
+          <QueryPrxParameterDataType>APC_V_LANGUAGEINDEPENDENT_TEXT</QueryPrxParameterDataType>
+          <MdroEsrNodeName>SelectByCompanyID</MdroEsrNodeName>
+          <MdroPrxNodeName>SEL_BY_COID991B92D859B71D50</MdroPrxNodeName>
+        </QueryParameter>
+        <QueryParameter>
+          <QueryEsrParameterName>PostingDate</QueryEsrParameterName>
+          <QueryPrxParameterName>POSTINROOTF318236489BF092A</QueryPrxParameterName>
+          <QueryPrxParameterDataType>CDT_DATE</QueryPrxParameterDataType>
+          <MdroEsrNodeName>SelectByPostingDate</MdroEsrNodeName>
+          <MdroPrxNodeName>SEL_BY_POTEC4F4D493A4310B5A</MdroPrxNodeName>
+        </QueryParameter>
+      </QueryParameterList>
+    </AccessControlledBo>
+  </AccessControlledBoList>
+</MassDataRunObject>

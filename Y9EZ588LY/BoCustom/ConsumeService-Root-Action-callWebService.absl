@@ -1,0 +1,26 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: ConsumeService
+		Node: Root
+		Action: callWebService 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+
+import ABSL;
+
+var request: Library:: JPConExtServ.Create.Request;
+
+request.JobProfileCreateRequest_sync.JobProfile.jobID = this.id;
+request.JobProfileCreateRequest_sync.JobProfile.title.content = this.title.content;
+request.JobProfileCreateRequest_sync.JobProfile.jobLocation = this.jobLocation;
+request.JobProfileCreateRequest_sync.JobProfile.jobEndDate = this.jobEndDate;
+request.JobProfileCreateRequest_sync.JobProfile.postingDate = this.postingDate;
+request.JobProfileCreateRequest_sync.JobProfile.hireMgrID.content = this.hireMgrId.content;
+request.JobProfileCreateRequest_sync.JobProfile.empType = "01";
+
+var response = Library:: JPConExtServ.Create(request, " ", "CS_JPConExtServ");

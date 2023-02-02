@@ -1,0 +1,40 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FinancialAccounting.Global;
+
+[DeploymentUnit(Financials)] businessobject BOMassLoadPYGConfiguration raises msj {
+
+        message msj text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+        
+		[Label("ID")][AlternativeKey]	element ID	: ID;
+		[Label("Description")]	element Description	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Load")]						element cargado: Indicator;
+		[DependentObject(AttachmentFolder)] node Attachment;
+
+
+		//Header
+		[Label("Estructura ID")]			element IDEstructura							: ID;
+		[Label("Company")]					 element CompanyID					: OrganisationalCentreID;
+		association ToCompany to Company;
+		[Label("RUC")]			element CompanyRuc: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Set Of Books")]			 element SetOfBooksID				: SetOfBooksID;
+		association ToSetofBooks to SetOfBooks  using ID;
+		[Label("Chart of Accounts")]element ChartOfAccountsCode: ChartOfAccountsCode;
+		//FinHeader
+
+
+		node Details [0,n] raises msjDetails {
+			message msjDetails text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			
+			[Label("Account from")]element AccountFrom: ChartOfAccountsItemCode;
+			[Label("Account to")]element AccountTo: ChartOfAccountsItemCode;
+			[Label("Code EF")]			element CodeEF: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("AREA FUNCIONAL")]	element AreaFuncional: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			
+	}
+
+	action zUpload;
+	action zRun;
+
+
+}

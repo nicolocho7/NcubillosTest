@@ -1,0 +1,19 @@
+﻿
+import ABSL;
+import AP.Common.GDT as apCommonGDT;
+import BASIS.Global as basis;
+	   
+	//Head
+	this.Total.Clear();
+		
+	//Invoices
+	foreach(var Row in this.NodoTB2.Where(n=>n.ISCheck == true)){
+		var Hola = Row.ToAdminDetra;
+		Row.ToAdminDetra.DetraAmount.content = Row.ToAdminDetra.TotalNetAmount.content;
+		Row.ToAdminDetra.DetraAmount.currencyCode = Row.ToAdminDetra.TotalNetAmount.currencyCode;
+		this.Total.content = this.Total.content + Row.ToAdminDetra.DetraAmount.content;
+		this.Total.currencyCode = Row.ToAdminDetra.DetraAmount.currencyCode;
+	}
+		
+			
+			

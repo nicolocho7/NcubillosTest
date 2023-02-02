@@ -1,0 +1,31 @@
+﻿
+
+import ABSL;
+import AP.CustomerInvoicing.Global;
+var QueryConfiguration = BOConfigurationSolution.QueryByElements;
+var ExecuteQueryConfiguration = QueryConfiguration.Execute();
+var Validation = false;
+if(ExecuteQueryConfiguration.Count()>0){
+	if(ExecuteQueryConfiguration.GetFirst().IsSet()){
+		if(ExecuteQueryConfiguration.GetFirst().Status== CLStatusSolutionCode.CO_01){
+			Validation = true;
+		}
+	}
+}
+if(ExecuteQueryConfiguration.Count()<=0 || Validation == true){
+	var BalanceConfirmation;
+	foreach (BalanceConfirmation in this.StartEndBalancePerCurrency.StartEndBalancePerCurrencyItem)
+	{
+		var QRYCusInvoice = CustomerInvoice.QueryByElements;
+		var PRMSCusInvoice = QRYCusInvoice.CreateSelectionParams();	
+			PRMSCusInvoice.Add(QRYCusInvoice.ID.content ,"I","EQ", BalanceConfirmation.BaseBusinessTransactionDocumentReference.ID.content );
+		var ResultQRY = QRYCusInvoice.Execute(PRMSCusInvoice).GetFirst();
+
+		if(ResultQRY.IsSet())
+		{
+		
+			BalanceConfirmation.ZExterID = ResultQRY.ZExternalID; 
+		}
+	}
+}
+	

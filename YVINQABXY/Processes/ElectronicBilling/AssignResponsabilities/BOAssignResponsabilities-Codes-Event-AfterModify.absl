@@ -1,0 +1,30 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BOAssignResponsabilities
+		Node: Codes
+		Event: AfterModify 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script if:
+		- the value of any field in the node in which this script is contained is modified.
+		- the node itself is modified by another business object within the same solution.
+*/
+
+import ABSL;
+
+if(!this.CustomerResponsabilitiesID.IsInitial()){
+	var qCustomerResponsability = BOCustomerResponsabilities.QueryByElements;
+	var pCustomerResponsability = qCustomerResponsability.CreateSelectionParams();
+		pCustomerResponsability.Add(qCustomerResponsability.CustomerResponsabilitiesID,"I","EQ",this.CustomerResponsabilitiesID);
+	var insCustomerResponsability = qCustomerResponsability.Execute(pCustomerResponsability).GetFirst();
+	if(insCustomerResponsability.IsSet()){
+		this.CustomerResponsabilitiesDesc = insCustomerResponsability.CustomerResponsabilitiesDesc;	
+	}
+	else{
+		this.CustomerResponsabilitiesDesc.Clear();
+	}
+}
+

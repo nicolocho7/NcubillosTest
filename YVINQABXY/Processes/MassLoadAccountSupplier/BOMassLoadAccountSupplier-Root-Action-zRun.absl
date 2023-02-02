@@ -1,0 +1,51 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BOMassLoadAccountSupplier
+		Node: Root
+		Action: zRun 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+
+import ABSL;
+import AP.FO.BusinessPartner.Global;
+
+var MsjEnBlanco = "No puede estar vacio los campos de Proveedor y cuenta contable";
+var MsjSupplier = "No existe provedor No. ";
+var MSJAccount = "No existe cuenta No. ";
+
+while(true){
+if(this.Values.Count()<=0){break;}
+var Data;
+foreach(Data in this.Values){
+	if(!Data.InitialValue.IsInitial() && !Data.BankAccountID.IsInitial()){
+		var query = Supplier.QueryByIdentification;
+		var selectionParams = query.CreateSelectionParams();
+			selectionParams.Add(query.InternalID, "I", "EQ", Data.InitialValue.RemoveLeadingZeros());
+		var resultData = query.Execute(selectionParams).GetFirst();
+		if(resultData.IsSet()){
+			var BankFiles;
+			if(resultData.BankDetails.Count() > 0){
+				BankFiles = resultData.BankDetails.Where(n=>n.BankAccountID == Data.BankAccountID).GetFirst();
+				if(BankFiles.IsSet()){
+					BankFiles.zAccountType = Data.zAccountType ;
+					BankFiles.zcMonedaCuenta = Data.zcMonedaCuenta;
+				}else{
+					raise msj.Create("E", MSJAccount + Data.BankAccountID);
+				}
+			}
+
+		}else{
+			raise msj.Create("E", MsjSupplier + Data.InitialValue.RemoveLeadingZeros());
+		}
+	}else{
+		raise msj.Create("E", MsjEnBlanco);
+	}
+}
+this.cargado = true;
+break;
+}

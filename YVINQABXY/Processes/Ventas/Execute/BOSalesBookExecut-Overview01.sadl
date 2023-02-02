@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sadl:definition xmlns:ass="http://sap.com/sap.nw.f.sadl/association" date="20180516" time="150440" uuid="91694EB499784671BC870A9CC4BC7D84" xmlns:sadl="http://sap.com/sap.nw.f.sadl">
+  <sadl:conversions>
+    <sadl:conversion type="ALPHA" />
+  </sadl:conversions>
+  <sadl:modes>
+    <sadl:mode type="QUERY" />
+  </sadl:modes>
+  <sadl:dataSource name="DS" binding="YVINQABXY_BOUT5476AC1A24F70DD8/ass:ROOT4F903855210031B0" type="BusinessObjectNode" d2p1:mdrsBinding="BOSalesBookExecut.Root" xmlns:d2p1="http://sap.com/xi/AP/PDI" />
+  <sadl:resultSet>
+    <sadl:structure name="YVINQABXY_BOUT5476AC1A24F70DD8" dataSource="DS" d3p1:mdrsName="BOSalesBookExecut.Root" xmlns:d3p1="http://sap.com/xi/AP/PDI">
+      <sadl:attribute name="YVINQABXY_EIOT567F239F54B9ED4F" binding="EID0383ADBB342D9FBD" d3p1:mdrsName="EID" />
+      <sadl:attribute name="YVINQABXY_ECOT1403D6ACB7EA4C5E" binding="ECONFIDIALYBCC6EB58C407A5B5-CONTENT" d3p1:mdrsName="EConfigBooKDialy/content" />
+      <sadl:attribute name="YVINQABXY_EOOT49CFA885F4DE658A" binding="EOVS58F88EA6CDCB2B06" d3p1:mdrsName="EOvs" />
+      <sadl:attribute name="YVINQABXY_ECOTF65BB1C53833B02E" binding="ECONFIPTIONE0D47559E50E1F13" d3p1:mdrsName="EConfigBooKDialyDescription" />
+      <sadl:attribute name="YVINQABXY_ECOTB106D7FFD28436AC" binding="ECONFIMPANYFC987D834FD7E476" d3p1:mdrsName="EConfigCompany" />
+      <sadl:attribute name="YVINQABXY_ECOT04A5667B846C54A9" binding="ECOMPANY80E94DBB9DB94B3A" d3p1:mdrsName="ECompany" />
+      <sadl:attribute name="YVINQABXY_ETOT36A9E52B16DDAC45" binding="ETIPODMENTO0C8EE543C9F33E44" d3p1:mdrsName="ETipoDocumento" />
+      <sadl:attribute name="YVINQABXY_EYOTA504089F810E3619" binding="EYEAR826A0D170C3528BD" d3p1:mdrsName="EYear" />
+      <sadl:attribute name="YVINQABXY_EMOT45AB3954C7AB44BA" binding="EMOUNTHF028C9797F1DD801" d3p1:mdrsName="EMounth" />
+      <sadl:attribute name="YVINQABXY_EMOT92B8AA9CF7629AF7" binding="EMONTHS05FBF66310E0CA49" d3p1:mdrsName="EMonths" />
+      <sadl:attribute name="YVINQABXY_EROT4FFCA81941EA49DE" binding="EREFERTERNADD728F638924FCE7" d3p1:mdrsName="EReferenciaExterna" />
+      <sadl:attribute name="YVINQABXY_EEOTADF9AD52522A44EF" binding="EEXTERNALID3005D807B9434E75" d3p1:mdrsName="EExternalId" />
+      <sadl:attribute name="YVINQABXY_EDOT344643C9DB0A30DA" binding="EDATE0A506FFA9CC6A441" d3p1:mdrsName="EDate" />
+      <sadl:attribute name="YVINQABXY_EXOTD4B5305B5AFAB2B7" binding="EXECUTED92BB4444688E8C7A" d3p1:mdrsName="Executed" />
+      <sadl:attribute name="YVINQABXY_EVOT303317A8ABEEB627" binding="EVIEW280BC8C3B89F2069" d3p1:mdrsName="EView" />
+      <sadl:attribute name="YVINQABXY_SAOTAF1C6EDFD7141562" binding="SAP_SYEDATAAF54AFE70C7CAE6F-CREATION_DATE_TIME" d3p1:mdrsName="SAP_SystemAdministrativeData/CreationDateTime" />
+      <sadl:attribute name="YVINQABXY_SAOTA65361C4FEC884AB" binding="SAP_SYEDATAAF54AFE70C7CAE6F-CREATION_IDENTITY_UUID-CONTENT" d3p1:mdrsName="SAP_SystemAdministrativeData/CreationIdentityUUID/content" />
+      <sadl:attribute name="YVINQABXY_SAOT541154E99E4531C3" binding="SAP_SYEDATAAF54AFE70C7CAE6F-LAST_CHANGE_DATE_TIME" d3p1:mdrsName="SAP_SystemAdministrativeData/LastChangeDateTime" />
+      <sadl:attribute name="YVINQABXY_SAOTCC7603CCCA9F76A9" binding="SAP_SYEDATAAF54AFE70C7CAE6F-LAST_CHANGE_IDENTITY_UUID-CONTENT" d3p1:mdrsName="SAP_SystemAdministrativeData/LastChangeIdentityUUID/content" />
+    </sadl:structure>
+  </sadl:resultSet>
+  <sadl:query bo="YVINQABXY_BOUT5476AC1A24F70DD8" name="QUERY_BY_ELEMENTS" node="OVERVIEW01FD6765E04180CBFE" type="ESI_QUERY">
+    <sadl:inputStructure>
+      <sadl:inputParameter name="EIDROOT76E41ED4CED3FBD4">
+        <sadl:attribute binding="YVINQABXY_EIOT567F239F54B9ED4F" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="ECONFIROOT2C622D4CB4CEF580-CONTENT">
+        <sadl:attribute binding="YVINQABXY_ECOT1403D6ACB7EA4C5E" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="EOVSROOTD2637A36A31B5FA9">
+        <sadl:attribute binding="YVINQABXY_EOOT49CFA885F4DE658A" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="ECONFIROOT46438EDEFF62BCD1">
+        <sadl:attribute binding="YVINQABXY_ECOTF65BB1C53833B02E" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="ECONFIROOT9EC00FA4CC7713E5">
+        <sadl:attribute binding="YVINQABXY_ECOTB106D7FFD28436AC" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="ECOMPAROOTA76B4D319D39D71C">
+        <sadl:attribute binding="YVINQABXY_ECOT04A5667B846C54A9" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="ETIPODROOT647D5860C053B4E5">
+        <sadl:attribute binding="YVINQABXY_ETOT36A9E52B16DDAC45" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="EYEARROOT4AAC2D6B8B8BD107">
+        <sadl:attribute binding="YVINQABXY_EYOTA504089F810E3619" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="EMOUNTROOT2CB214FB0224232D">
+        <sadl:attribute binding="YVINQABXY_EMOT45AB3954C7AB44BA" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="EMONTHROOTD8FE178D248A1C54">
+        <sadl:attribute binding="YVINQABXY_EMOT92B8AA9CF7629AF7" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="EREFERROOTD2FCBB9A6C12B2B8">
+        <sadl:attribute binding="YVINQABXY_EROT4FFCA81941EA49DE" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="EEXTERROOT84A56BB686755048">
+        <sadl:attribute binding="YVINQABXY_EEOTADF9AD52522A44EF" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="EDATEROOT2A3F86F3FDF38C65">
+        <sadl:attribute binding="YVINQABXY_EDOT344643C9DB0A30DA" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="EXECUTROOT856BF5E77BFBB4D5">
+        <sadl:attribute binding="YVINQABXY_EXOTD4B5305B5AFAB2B7" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="EVIEWROOT79D840F5C78B1DF1">
+        <sadl:attribute binding="YVINQABXY_EVOT303317A8ABEEB627" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="SAPSYROOT3607CB16D26C0078">
+        <sadl:attribute binding="YVINQABXY_SAOTAF1C6EDFD7141562" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="SAPSYROOT4FEAE73338D57329-CONTENT">
+        <sadl:attribute binding="YVINQABXY_SAOTA65361C4FEC884AB" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="SAPSYROOT6D5F7029BBEA12E5">
+        <sadl:attribute binding="YVINQABXY_SAOT541154E99E4531C3" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="SAPSYROOT9B01C6FC59CFF6A1-CONTENT">
+        <sadl:attribute binding="YVINQABXY_SAOTCC7603CCCA9F76A9" />
+      </sadl:inputParameter>
+    </sadl:inputStructure>
+    <sadl:outputStructure>
+      <sadl:attribute name="EIDROOT76E41ED4CED3FBD4" binding="YVINQABXY_EIOT567F239F54B9ED4F" />
+      <sadl:attribute name="ECONFIROOT2C622D4CB4CEF580-CONTENT" binding="YVINQABXY_ECOT1403D6ACB7EA4C5E" />
+      <sadl:attribute name="EOVSROOTD2637A36A31B5FA9" binding="YVINQABXY_EOOT49CFA885F4DE658A" />
+      <sadl:attribute name="ECONFIROOT46438EDEFF62BCD1" binding="YVINQABXY_ECOTF65BB1C53833B02E" />
+      <sadl:attribute name="ECONFIROOT9EC00FA4CC7713E5" binding="YVINQABXY_ECOTB106D7FFD28436AC" />
+      <sadl:attribute name="ECOMPAROOTA76B4D319D39D71C" binding="YVINQABXY_ECOT04A5667B846C54A9" />
+      <sadl:attribute name="ETIPODROOT647D5860C053B4E5" binding="YVINQABXY_ETOT36A9E52B16DDAC45" />
+      <sadl:attribute name="EYEARROOT4AAC2D6B8B8BD107" binding="YVINQABXY_EYOTA504089F810E3619" />
+      <sadl:attribute name="EMOUNTROOT2CB214FB0224232D" binding="YVINQABXY_EMOT45AB3954C7AB44BA" />
+      <sadl:attribute name="EMONTHROOTD8FE178D248A1C54" binding="YVINQABXY_EMOT92B8AA9CF7629AF7" />
+      <sadl:attribute name="EREFERROOTD2FCBB9A6C12B2B8" binding="YVINQABXY_EROT4FFCA81941EA49DE" />
+      <sadl:attribute name="EEXTERROOT84A56BB686755048" binding="YVINQABXY_EEOTADF9AD52522A44EF" />
+      <sadl:attribute name="EDATEROOT2A3F86F3FDF38C65" binding="YVINQABXY_EDOT344643C9DB0A30DA" />
+      <sadl:attribute name="EXECUTROOT856BF5E77BFBB4D5" binding="YVINQABXY_EXOTD4B5305B5AFAB2B7" />
+      <sadl:attribute name="EVIEWROOT79D840F5C78B1DF1" binding="YVINQABXY_EVOT303317A8ABEEB627" />
+      <sadl:attribute name="SAPSYROOT3607CB16D26C0078" binding="YVINQABXY_SAOTAF1C6EDFD7141562" />
+      <sadl:attribute name="SAPSYROOT4FEAE73338D57329-CONTENT" binding="YVINQABXY_SAOTA65361C4FEC884AB" />
+      <sadl:attribute name="SAPSYROOT6D5F7029BBEA12E5" binding="YVINQABXY_SAOT541154E99E4531C3" />
+      <sadl:attribute name="SAPSYROOT9B01C6FC59CFF6A1-CONTENT" binding="YVINQABXY_SAOTCC7603CCCA9F76A9" />
+    </sadl:outputStructure>
+  </sadl:query>
+</sadl:definition>

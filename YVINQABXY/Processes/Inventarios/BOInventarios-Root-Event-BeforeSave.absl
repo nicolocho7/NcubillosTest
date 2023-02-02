@@ -1,0 +1,48 @@
+﻿import ABSL;
+
+if(this.ID.IsInitial()){
+	var Code = "BOINVENTARIOS";
+	var InsBOBuildIDV2 = BOBuildIDV2.Retrieve(Code);
+	if(InsBOBuildIDV2.IsSet())
+	{
+		InsBOBuildIDV2.Increase();		
+	}else
+	{
+		var StructureBOBuildIDV2 : elementsof BOBuildIDV2;
+		StructureBOBuildIDV2.ID = Code;
+		StructureBOBuildIDV2.description = "INVENTARIOS";
+		StructureBOBuildIDV2.UUID.content = UUID.Generate();
+		InsBOBuildIDV2 = BOBuildIDV2.Create(StructureBOBuildIDV2);
+		InsBOBuildIDV2.Increase();
+	}
+
+	this.ID = InsBOBuildIDV2.consecutive;
+}
+//if (this.ID.IsInitial())
+//{
+ //
+ //var queryBuildID = BOBuildID.QueryByElements;
+ //var paramBuildID = queryBuildID.CreateSelectionParams();
+ //paramBuildID.Add(queryBuildID.ID, "I", "EQ", "BOINVENTARIOS");
+ //var resultBuildID = queryBuildID.Execute(paramBuildID).GetFirst();
+ //if (resultBuildID.IsSet())
+ //{
+  //resultBuildID.consecutive = resultBuildID.consecutive + 1;
+  //this.ID = resultBuildID.consecutive.ToString();
+  //this.UUID.content = UUID.Generate();
+ //}
+ //else
+ //{
+  //this.ID = "1";
+  //this.UUID.content = UUID.Generate();
+  ////-- create new register
+  //var insBuildID = BOBuildID.Create();
+  //if (insBuildID.IsSet())
+  //{
+   //insBuildID.consecutive = 1;
+   //insBuildID.description = "INVENTARIOS";
+   //insBuildID.ID = "BOINVENTARIOS";
+   //insBuildID.UUID.content = UUID.Generate();
+  //}
+ //}
+//}

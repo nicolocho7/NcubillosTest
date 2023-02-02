@@ -1,0 +1,27 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BoIMEI raises msg{
+
+	message msg text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+	[AlternativeKey][Label("Id")]					element id					: ID;
+					[Label("Inbound delivery id")]	element InboundDeliveryId	: BusinessTransactionDocumentID;
+
+	action ReadItems;
+	action LoadImeis;
+
+	[DependentObject(AttachmentFolder)] node ItemAttachmentFolder;
+
+	node IMEIS [0, n] raises msgItm {
+		message msgItm text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+		[Label("Product Id")]	element ProductID	: ProductID;
+		[Label("Quantity")]		element Quantity	: Quantity;
+	
+		node Serial [0, n] {
+			[Label("Serial")]	element Serial		: ID;
+			[Label("IMEI")]		element IMEIID		: ID;
+		}
+	}
+	
+}

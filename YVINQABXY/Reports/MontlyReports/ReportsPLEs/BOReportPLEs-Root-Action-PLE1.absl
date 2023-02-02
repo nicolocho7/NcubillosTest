@@ -1,0 +1,463 @@
+﻿import ABSL as absl;
+import AP.Common.GDT as apCommonGDT;
+import BASIS.Global as basis;
+import AP.FinancialAccounting.Global as APFinancialAccountingGlobal;
+import AP.FO.TaxArrangement.Global;
+
+var vDocumentName	:LANGUAGEINDEPENDENT_LONG_Name;
+var vDocumentType	:DocumentTypeCode;
+var vDocumentDesc	:Description;
+var vBinary	:basis:BinaryObject;
+
+var strLine = "";
+var strLine1 = "";
+
+while(true){
+	
+	var vIsConsistent = true;
+
+	if(this.ReportsAttachments.DocumentList.Count() > 0) {
+		this.ReportsAttachments.DocumentList.Delete();
+	}
+
+	var vAnio = this.DateInitial.GetYear();
+	var vPeriodo = this.DateInitial.GetMonth();
+	if(!vPeriodo.IsInitial()){
+		if(vPeriodo.Length() == 1){
+			vPeriodo = "0" + vPeriodo;
+		}
+	}
+	var vPeriodoAnio = vPeriodo + vAnio;
+	var vDia = this.DateInitial.GetDay();
+	if(!vDia.IsInitial()){
+		if(vDia.Length() == 1){
+			vDia = "0" + vDia;
+		}
+	}
+	// - - - - - - Armar consumo - - - - - - //
+	var serviceID = "";  
+	var parameter : NameAndValue;
+	var parameters : collectionof NameAndValue;
+
+	//Reporte: Reporte de Libro de Caja y Bancos LP 
+	//URL: RPYVINQABXY_A2A1D4EFDF7CB2QueryResults
+	serviceID = "PW00100"; 
+
+	parameter.Name = "$select";  
+	//parameter.Value = "CFISCALYEARPERIO,CACC_DOC_UUID,CCLOSESTEP,CGLACCT,CCOST_CTR_UUID,CCURRTRA,COEDPARTNER,CPOSTING_DATE,CDOC_DATE,CNOTE_HD,CDEBITCREDIT,CACCDOCTYPE,CCONTR_ITEM_ID,CREFPER_EDATE,KCAMTCOMP,CACC_DOC_IT_UUID,CCURRCOMP";
+	parameter.Value = "CCOMPANY_UUID,CFISCYEARPER,CACC_PERIOD_ID,CGLACCT,CACC_DOC_UUID_C,CCLOSESTEP,CCURRTRA,COED_PARTNER_C,CPOSTING_DATE,CNOTE_HD,CACCDOCTYPE,CACC_DOC_ITEM_ID,COEO_OBJ_TC_C,CCASH_LOC_UUID,KCAMTTRA,CCURRCOMP,KCAMTCOMP";
+	parameters.Add(parameter);
+	    
+	parameter.Name = "$filter";
+	parameter.Value = "CCOMPANY_UUID eq '" + this.CompanyID.RemoveLeadingZeros() + "'"
+					+ " and CSETOFBKS eq '" + this.SetOfBookID.content.Trim() + "'"
+					+ " and CCASH_LOC_TC eq '2'"
+					+ " and CFISCYEARPER eq " +  vPeriodoAnio;
+	parameters.Add(parameter);  
+	
+	var ws_result = WebServiceUtilities.ExecuteWebService(serviceID, parameters);
+	var Content = ws_result.ResponseContent;  
+	var returnCode = ws_result.ReturnCode; 
+	// - - - - - - fin Armar consumo - - - - - - //
+
+	// - - - - - - Exportar datos de respuesta - - - - - - //
+	vDocumentName = "Reporte generado.TXT";
+	vDocumentType.content = "10001";
+	vDocumentType.listID = "10296";
+	vBinary.mimeCode = "text/plain";
+	vBinary.content = Binary.ParseFromString(Content);
+	this.ReportsAttachments.CreateFile(vDocumentType,vDocumentName,vDocumentName,vDocumentDesc,vBinary);
+	// - - - - - - fin - Exportar datos de respuesta - - - - - - //
+
+
+	// - - - - - - Armar documento a exportar  - - - - - - //
+	var xmlResult;	
+	xmlResult = Library::RLStrings.XMLToArray(Content);
+
+	if(xmlResult.Count() <= 0){
+		raise msg.Create("E"," No se encontraron datos en el reporte 1 con los parámetros ingresados");
+
+	}
+
+	
+
+	foreach (var xmlRow in xmlResult){
+		
+		var vCampo02 = Library::RLStrings.GetElementByName(xmlRow.String, "CACC_DOC_UUID_C").Trim();
+		if(!vCampo02.IsInitial()){
+
+			var vCampo03a = Library::RLStrings.GetElementByName(xmlRow.String, "CCLOSESTEP").Trim();//Etapa de cierre													
+			var vCampo03b = Library::RLStrings.GetElementByName(xmlRow.String, "CACC_DOC_ITEM_ID").Trim();//Posición de asiento
+			var vCampo03c = "M";
+			if(!vCampo03a.IsInitial()){
+				switch(vCampo03a){
+					case "01"{vCampo03c = "A";}
+					case "010","015","020"{vCampo03c = "M";}
+					case "080","990","991"{vCampo03c = "C";}
+				}
+			}
+		
+			var vCampo04 = Library::RLStrings.GetElementByName(xmlRow.String, "CGLACCT").Trim();//
+			var vCampo05 = "";
+			var vCampo06 = "";
+			var vCampo07a = Library::RLStrings.GetElementByName(xmlRow.String, "CCURRTRA").Trim();//Tipo Moneda
+			var vCampo07b = Library::RLStrings.GetElementByName(xmlRow.String, "CCURRCOMP").Trim();//Moneda compañia
+			var vCampo07 = "1";
+			if(!vCampo07a.IsInitial()){
+			//switch(vCampo07a){
+				//case "PEN"{vCampo07 = "1";}
+				//case "USA"{vCampo07 = "2";}
+				//default {vCampo07 = "9";}
+			//}
+			vCampo07 = vCampo07a;
+		}
+			//if(!vCampo07a.IsInitial()){vCampo07 = vCampo07a;}
+			//else if(!vCampo07b.IsInitial()){vCampo07 = vCampo07b;}
+			var vCampo08a = Library::RLStrings.GetElementByName(xmlRow.String, "COED_PARTNER_C").Trim(); //Referencia
+			var vCampo08b = Library::RLStrings.GetElementByName(xmlRow.String, "CACCDOCTYPE").Trim();//tipo de documento
+			var vCampo08aLength = vCampo08a.Length();
+			var vCampo08 = "";
+			var vCampo09 = "";
+			var vCampo10 = "";
+		
+			if(vCampo08aLength == 0){
+				vCampo08 = "00";
+				vCampo09 = "";
+				vCampo10 = "00";
+			}
+			else if(vCampo08aLength >3){
+				if(!absl:Numeric.IsNumeric(vCampo08a)){
+					vCampo08 = "00";
+					vCampo09 = "";
+					vCampo10 = "00";
+				}
+				else{
+					if(vCampo08a.Substring(0,3) == "888"){
+						vCampo08 = "00";
+						vCampo09 = "";
+						vCampo10 = "00";
+					}
+					else{
+						if(vCampo08aLength >= 16){
+							var vCampo08Clear = false;
+							switch(vCampo08b){
+								case "00025","00093","90093","90025"{vCampo08Clear = true;}
+							}
+							if(!vCampo08Clear){
+								vCampo08 = vCampo08a.Substring(0,2);
+								vCampo09 = vCampo08a.Substring(4,8);
+								vCampo10 = vCampo08a.Substring(9,17);
+							}
+							else{
+								vCampo08 = "00";
+								vCampo09 = "";
+								vCampo10 = "00";
+							}
+						}
+						else{
+							vCampo08 = "00";
+							vCampo09 = "";
+							vCampo10 = "00";
+						}
+					}
+				}
+			}else{
+				vCampo08 = "00";
+				vCampo09 = "";
+				vCampo10 = "00";
+			}
+		
+			var vCampo11a = Library::RLStrings.GetElementByName(xmlRow.String, "CPOSTING_DATE").Trim();// Fecha Contable
+			var vCampo11 = vCampo11a.Substring(8,2) + "/" + vCampo11a.Substring(5,2)+"/" +vCampo11a.Substring(0,4);
+		
+			var vCampo12 = "";
+			var vCampo13 = vCampo11;
+			
+			var vCampo14 = Library::RLStrings.GetElementByName(xmlRow.String, "CASH_LOC_UUID").Trim();
+			if(vCampo14.IsInitial()){
+				vCampo14 = "Caja Menor";
+			}
+			var vCampo15 = Library::RLStrings.GetElementByName(xmlRow.String, "CNOTE_HD").Trim();//nota
+		
+			var vCampo16a = Library::RLStrings.GetElementByName(xmlRow.String, "KCAMTCOMP").Trim();//Debe
+			var vCampo16 = "0.00";
+			var vCampo17 = "0.00";
+			if(absl:Numeric.IsNumeric(vCampo16a)){
+				var vCampo16Numeric = absl:Numeric.ParseFromString(vCampo16a);
+				if(vCampo16Numeric > 0){
+					vCampo16 = vCampo16Numeric.RoundToString(2,true).Replace(",", ".");
+				}
+				else{
+					vCampo16Numeric = vCampo16Numeric * -1;
+					vCampo17 = vCampo16Numeric.RoundToString(2,true).Replace(",", ".");
+				}
+			}
+
+			var vCampo18 = "";
+
+			var vCampo19a = Library::RLStrings.GetElementByName(xmlRow.String, "CACC_PERIOD_ID").Trim();
+			var vCampo19  = "1";
+			if(absl:Numeric.IsNumeric(vCampo19a)){
+				var vPeriodoInt = absl:Numeric.ParseFromString(this.DateInitial.GetMonth());
+				var vCampo19b = absl:Numeric.ParseFromString(vCampo19a);
+				
+				if(vPeriodoInt == vCampo19b){
+					vCampo19  = "1";
+				}
+				else if(vPeriodoInt < vCampo19b){
+					vCampo19  = "8";
+				}
+				else if(vPeriodoInt > vCampo19b){
+					vCampo19  = "9";
+				}
+			}
+
+			var vCampo20  = "";
+			
+			strLine1 =strLine1 + vAnio + vPeriodo + "00" +  "|" +
+							vCampo02 + "|" + 
+							vCampo03c + vCampo03b  + "|" +
+							vCampo04  + "|" +
+							vCampo05  + "|" +
+							vCampo06  + "|" +
+							vCampo07  + "|" +
+							vCampo08  + "|" +
+							vCampo09  + "|" +
+							vCampo10  + "|" +
+							vCampo11  + "|" +
+							vCampo12  + "|" +
+							vCampo13  + "|" +
+							vCampo14  + "|" +
+							vCampo15  + "|" +
+							vCampo16  + "|" + 
+							vCampo17  + "|" +
+							vCampo18  + "|" + 
+							vCampo19  + "|" +
+							vCampo20  + "|" + "\r\n";
+						
+		}
+}//cierre del primer foreach
+//----------------------------------------REPORTE 2------------------------- // Danna Padilla 28/mar/2019
+//-------------------------------------------------//
+	var vAnio1 = this.DateInitial.GetYear();
+	var vPeriodo1 = this.DateInitial.GetMonth();
+	if(!vPeriodo1.IsInitial()){
+		if(vPeriodo1.Length() == 1){
+			vPeriodo1 = "0" + vPeriodo1;
+		}
+	}
+	var vPeriodoAnio1 = vPeriodo1 + vAnio1;
+	var vDia1 = this.DateInitial.GetDay();
+	if(!vDia1.IsInitial()){
+		if(vDia1.Length() == 1){
+			vDia1 = "0" + vDia1;
+		}
+	}
+////-------------------------------------------------
+	
+	var parameter1 : NameAndValue;
+	var parameters1 : collectionof NameAndValue;
+	var serviceID1 = "PW00116"; 
+	parameter1.Name = "$select";  
+	parameter1.Value = "CACC_DOC_UUID,CGLACCT,CCLOSESTEP,CPOSTING_DATE,CCURRTRA,CFISCALYEARPERIO,CACC_DOC_IT_UUID,COEDPARTNER,KCAMTCOMP,CACCDOCTYPE,CFISCPER";
+	parameters1.Add(parameter1);
+	parameter1.Name = "$filter";
+	parameter1.Value = "CCOMPANY_UUID eq '" + this.CompanyID.RemoveLeadingZeros() + "'"
+					+ " and CSETOFBKS eq '" + this.SetOfBookID.content.Trim() + "'"
+					+ " and CSLATYPE eq '07'"
+					+ " and (CACCDOCTYPE eq '00058' or  CACCDOCTYPE eq '90058') "
+					+ " and (CGLACCT ge '102000000' and CGLACCT le '102999999' or CGLACCT ge '1020000000' and CGLACCT le '1029999999') "
+					+ " and CGLACCT_TC eq 'CASH'"
+					+ " and CFISCALYEARPERIO eq " +  vPeriodoAnio;
+	parameters1.Add(parameter1);  
+	var ws_result1 = WebServiceUtilities.ExecuteWebService(serviceID1, parameters1);
+	var Content1 = ws_result1.ResponseContent;  
+	var returnCode1 = ws_result1.ReturnCode; 	
+	var xmlResult1 = Library::RLStrings.XMLToArray(Content1);
+	if(xmlResult1.Count() <= 0){
+		raise msg.Create("E"," No se encontraron datos en el reporte 2 con los parámetros ingresados");
+	}
+
+//////////////////////////////
+
+ 
+
+
+foreach (var xmlRow1 in xmlResult1){
+			var vCampo21 = vAnio1 + vPeriodo1+"00"; //CFISCALYEARPERIO
+			var vCampo22 = Library::RLStrings.GetElementByName(xmlRow1.String, "CACC_DOC_UUID").Trim();
+			if(!vCampo22.IsInitial()){
+
+		var vCampo23a = Library::RLStrings.GetElementByName(xmlRow1.String, "CCLOSESTEP").Trim();													
+		var vCampo23b = Library::RLStrings.GetElementByName(xmlRow1.String, "CACC_DOC_IT_UUID").Trim();
+		var vCampo23c = "M";
+		if(!vCampo23a.IsInitial()){
+			switch(vCampo23a){
+				case "01"{vCampo23c = "A";}
+				case "010","015","020"{vCampo23c = "M";}
+				case "080","990","991"{vCampo23c = "C";}
+			}
+		}
+		var vCampo24 = Library::RLStrings.GetElementByName(xmlRow1.String, "CGLACCT").Trim();
+		var vCampo25 = "";
+		var vCampo26 = "";
+		var vCampo27a = Library::RLStrings.GetElementByName(xmlRow1.String, "CCURRTRA").Trim();
+		
+		var vCampo27=vCampo27a;
+		if(vCampo27a.IsInitial()){
+			vCampo27 = "PEN";
+		}
+		//if(!vCampo27a.IsInitial()){
+			//switch(vCampo27a){
+				//case "PEN"{vCampo27 = "1";}
+				//case "USA"{vCampo27 = "2";}
+				//default {vCampo27 = "9";}
+			//}
+		//}
+		
+		var vCampo28a = Library::RLStrings.GetElementByName(xmlRow1.String, "COED_PARTNER_C").Trim(); 
+		var vCampo28b = Library::RLStrings.GetElementByName(xmlRow1.String, "CACCDOCTYPE").Trim();
+		var vCampo28aLength = vCampo28a.Length();
+		var vCampo28 = "";
+		var vCampo29 = "";
+		var vCampo30 = "";
+		// el campo 10 es el 30
+		if(vCampo28aLength == 0){
+			vCampo28 = "00";
+			vCampo29 = "";
+			vCampo30 = "00";
+		}
+		else if(vCampo28aLength >3){
+			if(!absl:Numeric.IsNumeric(vCampo28a)){
+				vCampo28 = "00";
+				vCampo29 = "";
+				vCampo30 = "00";
+			}
+			else{
+				if(vCampo28a.Substring(0,3) == "888"){
+					vCampo28 = "00";
+					vCampo29 = "";
+					vCampo30 = "00";
+				}
+				else{
+					if(vCampo28aLength >= 16){
+						var vCampo28Clear = false;
+						switch(vCampo28b){
+							case "00025","00093","90093","90025"{vCampo28Clear = true;}
+						}
+						if(!vCampo28Clear){
+							vCampo28 = vCampo28a.Substring(0,2);
+							vCampo29 = vCampo28a.Substring(4,8);
+							vCampo30 = vCampo28a.Substring(9,17);
+						}
+						else{
+							vCampo28 = "00";
+							vCampo29 = "";
+							vCampo30 = "00";
+						}
+					}
+					else{
+						vCampo28 = "00";
+						vCampo29 = "";
+						vCampo30 = "00";
+					}
+				}
+			}
+		}else{
+			vCampo28 = "00";
+			vCampo29 = "";
+			vCampo30 = "00";
+		}
+		var vCampo31a = Library::RLStrings.GetElementByName(xmlRow1.String, "CPOSTING_DATE").Trim();// Fecha Contable
+		var vCampo31 = vCampo31a.Substring(8,2) + "/" + vCampo31a.Substring(5,2)+"/" +vCampo31a.Substring(0,4);
+		var vCampo32 = "";
+		var vCampo33 = vCampo31;
+		var vCampo34 = "Arrastre de saldos";
+		var vCampo35 = "Arrastre de saldos";
+		var vCampo36a = Library::RLStrings.GetElementByName(xmlRow1.String, "KCAMTCOMP").Trim();
+		var vCampo36 = "0.00";
+		var vCampo37 = "0.00";
+		if(absl:Numeric.IsNumeric(vCampo36a)){
+			var vCampo36Numeric = absl:Numeric.ParseFromString(vCampo36a);
+			if(vCampo36Numeric > 0){
+				vCampo36 = vCampo36Numeric.RoundToString(2,true).Replace(",", ".");
+			}
+			else{
+				vCampo36Numeric = vCampo36Numeric * -1;
+				vCampo37 = vCampo36Numeric.RoundToString(2,true).Replace(",", ".");
+			}
+		}
+		var vCampo38 = "";
+		var vCampo39a = Library::RLStrings.GetElementByName(xmlRow1.String, "CFISCPER").Trim();
+		var vCampo39  = "1";
+		if(absl:Numeric.IsNumeric(vCampo39a)){
+			var vPeriodoInt = absl:Numeric.ParseFromString(this.DateInitial.GetMonth());
+			var vCampo39b = absl:Numeric.ParseFromString(vCampo39a);
+			if(vPeriodoInt == vCampo39b){
+				vCampo39  = "1";
+			}
+			else if(vPeriodoInt < vCampo39b){
+				vCampo39  = "8";
+			}
+			else if(vPeriodoInt > vCampo39b){
+				vCampo39  = "9";
+			}
+		}
+
+		var vCampo40  = "";
+		strLine = strLine + vCampo21  + "|" +
+							vCampo22 + "|" + 
+							vCampo23c + vCampo23b  + "|" +
+							vCampo24  + "|" +
+							vCampo25  + "|" +
+							vCampo26  + "|" +
+							vCampo27  + "|" +
+							vCampo28  + "|" +
+							vCampo29  + "|" +
+							vCampo30  + "|" +
+							vCampo31  + "|" +
+							vCampo32  + "|" +
+							vCampo33  + "|" +
+							vCampo34  + "|" +
+							vCampo35  + "|" +
+							vCampo36  + "|" + 
+							vCampo37  + "|" +
+							vCampo38  + "|" + 
+							vCampo39  + "|" +
+							vCampo40  + "|" + "\r\n";
+		}//
+	}//cierre segundo foreach 
+
+
+
+
+/////////////////////////////////
+
+//
+var strinelinecompl= strLine1+strLine;
+	var vNit = "";
+	var qCompanyTax = CompanyTaxArrangement.QueryByElements;
+	var pCompanyTax = qCompanyTax.CreateSelectionParams();
+		pCompanyTax.Add(qCompanyTax.CompanyID,"I","EQ",this.CompanyID.RemoveLeadingZeros());
+	var insCompanyTax = qCompanyTax.Execute(pCompanyTax).GetFirst();
+	if(insCompanyTax.IsSet()){
+		if(insCompanyTax.TaxIdentificationNumber.Count() > 0){
+			vNit = insCompanyTax.TaxIdentificationNumber.GetFirst().PartyTaxID.content;
+		}
+	}
+	var DataNombreLleno = "1";
+	if(strinelinecompl.IsInitial()){
+		DataNombreLleno = "0";
+	}
+	
+	vDocumentName = "LE" + vNit +  vAnio + vPeriodo + "00" + "010100" + "00" + "1"+DataNombreLleno+"11" + ".TXT";
+	vDocumentType.content = "10001";
+	vDocumentType.listID = "10296";
+	vBinary.mimeCode = "text/plain";
+	vBinary.content = Binary.ParseFromString(strinelinecompl);
+	this.ReportsAttachments.CreateFile(vDocumentType,vDocumentName,vDocumentName,vDocumentDesc,vBinary);		
+	
+	// - - - - - - fin - Armar documento a exportar - - - - - - //
+
+	break;
+}

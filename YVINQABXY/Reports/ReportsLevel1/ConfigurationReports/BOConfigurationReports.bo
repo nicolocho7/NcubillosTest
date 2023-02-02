@@ -1,0 +1,37 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+[WithAdministrativeData] businessobject BOConfigurationReports raises msg{
+	message msg text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+	[Label("ID")]			element ConfRepID		: ID;
+	[Label("Report")]		element	ReportID		: ID;
+	[Label("Report")]		element	ReportDesc		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Report")]		element	Report			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Description")]	element Description		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Separator")]	element	Separator		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("ID Report ")]	element vIDContent		:	ID;
+
+
+
+	[WithAdministrativeData] node Values [0,n] raises msgValues{
+		message msgValues text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+		[Label("Position")]							element	Position		: DecimalValue;
+		[Label("Technical ID")]						element	TechnicalID		: ID;
+		[Label("Technical Description")]			element	TechnicalDesc	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Is Constant?")]						element IsConstant		: Indicator;
+		[Label("Constant")]							element Constant		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Basic Logic")]						element	BasicLogic		: ID;
+		[Label("Basic Logic")]						element	zBasicLogic		: CLBasicLogicCode;
+		[Label("Is Homologation necessary?")]		element IsHomologation	: Indicator;
+		[Label("Homologation ID")]					element HomologationID	: ID;
+		[Label("Homologaion Description")]			element HomologationDesc: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Value Fixed")]						element zValueFixed		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		//Test 
+		[Label("Dependent")]						element zDependent		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Value Dependent ")]					element zValueDependent	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+	} 
+
+	action aDelete;
+}

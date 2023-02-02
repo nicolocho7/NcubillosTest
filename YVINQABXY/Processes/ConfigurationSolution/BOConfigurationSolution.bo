@@ -1,0 +1,8 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BOConfigurationSolution {
+
+	   [Label("ID")]				element ID	:ID;
+       [Label("Estado")]			element Status	:CLStatusSolutionCode;
+
+}

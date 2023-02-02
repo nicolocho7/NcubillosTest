@@ -1,0 +1,37 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: Supplier
+		Node: Root
+		Event: AfterModify 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script if:
+		- the value of any field in the node in which this script is contained is modified.
+		- the node itself is modified by another business object within the same solution.
+*/
+import ABSL;
+var QueryConfiguration = BOConfigurationSolution.QueryByElements;
+var ExecuteQueryConfiguration = QueryConfiguration.Execute();
+if(ExecuteQueryConfiguration.Count()>0){
+	if(ExecuteQueryConfiguration.GetFirst().IsSet()){
+		if(ExecuteQueryConfiguration.GetFirst().Status== CLStatusSolutionCode.CO_01){
+			if (this.CurrentCommon.IsSet())
+			{
+				if (!this.CurrentCommon.zConditionSupplier.IsInitial())
+				{
+					var desr = this.Common.GetFirst().zConditionSupplier;
+					var Qcondicion = BOConditionSupplier.QueryByElements.Execute().Where(n => n.ID.RemoveLeadingZeros() == this.CurrentCommon.zConditionSupplier.RemoveLeadingZeros());
+
+					if (Qcondicion.Count() > 0)
+					{
+						this.CurrentCommon.zConditionSupplierDesc = Qcondicion.GetFirst().ConditionSupplier;
+					}
+				}
+			}
+		}
+	}
+}
+

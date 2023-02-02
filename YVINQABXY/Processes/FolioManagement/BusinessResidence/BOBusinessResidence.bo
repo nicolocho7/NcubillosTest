@@ -1,0 +1,24 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FO.Product.Global;
+import AP.FO.ProductDataMaintenance.Global;
+
+businessobject BOBusinessResidence raises msj{
+
+        message msj text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+	
+		[AlternativeKey][Label("ID")]element ID:ID;
+		[Label("Company")]element CompanyID:ID;
+		[Label("Business Residence")]element BusinessResidence:ID;
+		[Label("Serie")]element Serie:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Serie Length")] element SerieLength:NumberValue;
+		[Label("Consecutive")] element Consecutive:NumberValue;
+		[Label("Consecutive Length")] element ConsecutiveLength:NumberValue;
+
+		[Label("Inactive")]element Inactive:Indicator;
+		association ToCompany to Company;
+		action DeleteRo;
+		node Details [1,n] {
+			[Label("Business Residence")]element BusinessResidence1:ID;
+		}
+}

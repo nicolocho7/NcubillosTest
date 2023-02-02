@@ -1,0 +1,25 @@
+﻿import ABSL;
+import AP.PC.IdentityManagement.Global;
+import AP.FO.BusinessPartner.Global;
+
+var identityUUID = Context.GetCurrentIdentityUUID();
+var iden : Identity;
+var queryIden = iden.QueryByElements;
+var selParam = queryIden.CreateSelectionParams();
+selParam.Add(queryIden.UUID.content, "I", "EQ", identityUUID.content);
+var idenResult = queryIden.Execute(selParam).GetFirst();
+
+if(idenResult.IsSet()){
+	this.name = idenResult.FormattedName;
+	var busPartUUID = idenResult.BusinessPartnerUUID;
+	var employee = Employee.Retrieve(busPartUUID);
+
+	if(employee.IsSet()){
+		this.empID = employee.IdentificationEmployeeID.EmployeeID;
+
+		var emp = Employee.Identification.Retrieve(this.empID);
+		if(emp.IsSet()){
+			this.ToEmployee = emp.ToRoot;
+		}
+	}
+}

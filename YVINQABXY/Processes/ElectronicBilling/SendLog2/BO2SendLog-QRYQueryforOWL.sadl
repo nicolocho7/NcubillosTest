@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sadl:definition xmlns:ass="http://sap.com/sap.nw.f.sadl/association" date="20221229" time="172431" uuid="033C99F0241041D6BB4C81DDE2918C6E" xmlns:sadl="http://sap.com/sap.nw.f.sadl">
+  <sadl:conversions>
+    <sadl:conversion type="ALPHA" />
+  </sadl:conversions>
+  <sadl:modes>
+    <sadl:mode type="QUERY" />
+  </sadl:modes>
+  <sadl:dataSource name="DS" binding="YVINQABXY_BOOGE9BFDC75EB9005BF/ass:ROOT4F903855210031B0" type="BusinessObjectNode" d2p1:mdrsBinding="BO2SendLog.Root" xmlns:d2p1="http://sap.com/xi/AP/PDI" />
+  <sadl:resultSet>
+    <sadl:structure name="YVINQABXY_BOOGE9BFDC75EB9005BF" dataSource="DS" d3p1:mdrsName="BO2SendLog.Root" xmlns:d3p1="http://sap.com/xi/AP/PDI">
+      <sadl:attribute name="YVINQABXY_LOOT3FDCAF9A7B999905" binding="LOGID70C3B1875BA78731" d3p1:mdrsName="LogID" />
+      <sadl:attribute name="YVINQABXY_DOOTD024CB342F57F2AF" binding="DOCUMETATUS89C4EB384B6556A3" d3p1:mdrsName="DocumentStatus" />
+      <sadl:attribute name="YVINQABXY_LEOT491E2F3F99B42F90" binding="LEGALSTATUSB482601AFA6C9297" d3p1:mdrsName="LegalStatus" />
+      <sadl:attribute name="YVINQABXY_TROT6F8E300FBF545854" binding="TRAFFIIGTHS129CB0BD6F008023" d3p1:mdrsName="TrafficLigths" />
+      <sadl:attribute name="YVINQABXY_DOOT94E7FB062CF0AA57" binding="DOCUMEREFIXEADCA4F315C88CEB" d3p1:mdrsName="DocumentPrefix" />
+      <sadl:attribute name="YVINQABXY_CUOT24350D7856AE72AD" binding="CUSTOMERIDAABBFA1D1639E593" d3p1:mdrsName="CustomerID" />
+      <sadl:attribute name="YVINQABXY_CUOT4701CA7767B88593" binding="CUSTOMRDESC7933ACD8B75A2612" d3p1:mdrsName="CustomerDesc" />
+      <sadl:attribute name="YVINQABXY_COOT393E96E7737D2A29" binding="COMPANYIDD8CC9CD94DA9AB61" d3p1:mdrsName="CompanyID" />
+      <sadl:attribute name="YVINQABXY_COOTC1212C182B323F2F" binding="COMPANYDESC2789E3E62FF8DA5C" d3p1:mdrsName="CompanyDesc" />
+      <sadl:attribute name="YVINQABXY_REOTD621D02B3051C7C3" binding="REQUESLCUIN2F5D4748251F7F24" d3p1:mdrsName="RequestDetailCuIn" />
+      <sadl:attribute name="YVINQABXY_TROT8559D01B3DD0EC3E" binding="TRACKIDCUIN442D29C1CC8207CF" d3p1:mdrsName="TrackingIDCuIn" />
+      <sadl:attribute name="YVINQABXY_INOTCF364DC3F43FA0CA" binding="INTERFECUIN919D4E77773D0914" d3p1:mdrsName="InterfaceResponseCuIn" />
+      <sadl:attribute name="YVINQABXY_EXOT933A316F836B7208" binding="EXTERNECUINF0E337E9AF4B01E9" d3p1:mdrsName="ExternalMessageCuIn" />
+      <sadl:attribute name="YVINQABXY_ISOTA85B6C5905F09974" binding="ISPDF1B09D05663A626FF" d3p1:mdrsName="IsPDF" />
+      <sadl:attribute name="YVINQABXY_CROTDA4516730AADA546" binding="CREATIECUIN4EE3D89737427CF3" d3p1:mdrsName="CreationDateCuIn" />
+      <sadl:attribute name="YVINQABXY_SEOTE24D9AF555F3A1A7" binding="SENDDAECUIN52EC9F132FAB97D6" d3p1:mdrsName="SendDateCuIn" />
+      <sadl:attribute name="YVINQABXY_USOTFB13ACEBA879060E" binding="USERSEDCUIN4BCE322AD8C261DA" d3p1:mdrsName="UserSendCuIn" />
+      <sadl:attribute name="YVINQABXY_DAOT40CB8FD78424E90F" binding="DATEREDCUINE16D4F37902E76F0" d3p1:mdrsName="DateResendCuIn" />
+      <sadl:attribute name="YVINQABXY_HOOT17FD2DD2246D3ED6" binding="HOURREDCUINDB1DA492A6C1B42F" d3p1:mdrsName="HourResendCuIn" />
+      <sadl:attribute name="YVINQABXY_USOT7786B93AC7B7F521" binding="USERREDCUINBFF7558C0377CB1D" d3p1:mdrsName="UserResendCuIn" />
+      <sadl:attribute name="YVINQABXY_CUOT8C4FA2158DE3FEE6" binding="CUSTOMICEID065E681BD30E12C7" d3p1:mdrsName="CustomerInvoiceID" />
+      <sadl:attribute name="YVINQABXY_CUOTA96C39B0EBD044B6" binding="CUSTOMPTION76210E024B9BDFAD" d3p1:mdrsName="Customerdescription" />
+      <sadl:attribute name="YVINQABXY_IDOT469924C86F9445F3" binding="ID5B6AA03D69E6EFEB" d3p1:mdrsName="ID" />
+      <sadl:attribute name="YVINQABXY_SAOTAF1C6EDFD7141562" binding="SAP_SYEDATAAF54AFE70C7CAE6F-CREATION_DATE_TIME" d3p1:mdrsName="SAP_SystemAdministrativeData/CreationDateTime" />
+      <sadl:attribute name="YVINQABXY_SAOTA65361C4FEC884AB" binding="SAP_SYEDATAAF54AFE70C7CAE6F-CREATION_IDENTITY_UUID-CONTENT" d3p1:mdrsName="SAP_SystemAdministrativeData/CreationIdentityUUID/content" />
+      <sadl:attribute name="YVINQABXY_SAOT541154E99E4531C3" binding="SAP_SYEDATAAF54AFE70C7CAE6F-LAST_CHANGE_DATE_TIME" d3p1:mdrsName="SAP_SystemAdministrativeData/LastChangeDateTime" />
+      <sadl:attribute name="YVINQABXY_SAOTCC7603CCCA9F76A9" binding="SAP_SYEDATAAF54AFE70C7CAE6F-LAST_CHANGE_IDENTITY_UUID-CONTENT" d3p1:mdrsName="SAP_SystemAdministrativeData/LastChangeIdentityUUID/content" />
+      <sadl:structure name="YVINQABXY_TOOT61037E2A8D05DEF4" binding="ass:TOINVOICEC189B4E5041BDE91" d3p1:mdrsName="ToInvoice">
+        <sadl:attribute name="YVINQABXY_IDOT0AD9185CBEC2C9DD" binding="ID-CONTENT" d3p1:mdrsName="ID/content" />
+        <sadl:attribute name="YVINQABXY_DAOTEA37BAA028B1884F" binding="DATE" d3p1:mdrsName="Date" />
+        <sadl:structure name="YVINQABXY_BUOT537C4B37A7C43334" binding="ass:BUYER_PARTY" d3p1:mdrsName="BuyerParty">
+          <sadl:attribute name="YVINQABXY_PAOTD051C1C8FD06F0B7" binding="PARTY_KEY-PARTY_TYPE_CODE" d3p1:mdrsName="PartyKey/PartyTypeCode" />
+          <sadl:attribute name="YVINQABXY_PAOTBA65621C6DF407B3" binding="PARTY_KEY-PARTY_ID-CONTENT" d3p1:mdrsName="PartyKey/PartyID/content" />
+          <sadl:structure name="YVINQABXY_ADOTA823D4A0747A54A8" binding="ass:ADDRESS_SNAPSHOT" d3p1:mdrsName="AddressSnapshot">
+            <sadl:structure name="YVINQABXY_DIOT8218E76EF20BD541" binding="ass:DISPLAY_NAME" d3p1:mdrsName="DisplayName">
+              <sadl:attribute name="YVINQABXY_FOOT3CC6567304798B08" binding="FORMATTED_NAME-LANGUAGE_CODE" d3p1:mdrsName="FormattedName/languageCode" />
+              <sadl:attribute name="YVINQABXY_FOOT49B0602C259DF659" binding="FORMATTED_NAME-CONTENT" d3p1:mdrsName="FormattedName/content" />
+            </sadl:structure>
+          </sadl:structure>
+        </sadl:structure>
+        <sadl:structure name="YVINQABXY_SEOT75E58DA3D0D8EA17" binding="ass:SELLER_PARTY" d3p1:mdrsName="SellerParty">
+          <sadl:attribute name="YVINQABXY_PAOTDCF89DEBE07DB9B1" binding="PARTY_KEY-PARTY_TYPE_CODE" d3p1:mdrsName="PartyKey/PartyTypeCode" />
+          <sadl:attribute name="YVINQABXY_PAOT02139388073E5D38" binding="PARTY_KEY-PARTY_ID-CONTENT" d3p1:mdrsName="PartyKey/PartyID/content" />
+          <sadl:structure name="YVINQABXY_ADOTAA1E8D9D7133D809" binding="ass:ADDRESS_SNAPSHOT" d3p1:mdrsName="AddressSnapshot">
+            <sadl:structure name="YVINQABXY_DIOT3230225AF86E5408" binding="ass:DISPLAY_NAME" d3p1:mdrsName="DisplayName">
+              <sadl:attribute name="YVINQABXY_FOOT20AAA94C2D083D81" binding="FORMATTED_NAME-LANGUAGE_CODE" d3p1:mdrsName="FormattedName/languageCode" />
+              <sadl:attribute name="YVINQABXY_FOOT9687454F06549FB5" binding="FORMATTED_NAME-CONTENT" d3p1:mdrsName="FormattedName/content" />
+            </sadl:structure>
+          </sadl:structure>
+        </sadl:structure>
+      </sadl:structure>
+    </sadl:structure>
+  </sadl:resultSet>
+  <sadl:query bo="YVINQABXY_BOOGE9BFDC75EB9005BF" name="QUERY_BY_ELEMENTS" node="QRYQUEOROWLE68DF5836BDB5D7A" type="ESI_QUERY">
+    <sadl:inputStructure>
+      <sadl:inputParameter name="LOGIDROOT139D491BDB05250B">
+        <sadl:attribute binding="YVINQABXY_LOOT3FDCAF9A7B999905" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="DOCUMEROOT946A9EAE20703095">
+        <sadl:attribute binding="YVINQABXY_DOOTD024CB342F57F2AF" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="LEGALSROOT5119799D03DFC138">
+        <sadl:attribute binding="YVINQABXY_LEOT491E2F3F99B42F90" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="TRAFFIROOT520F28E0F03BAE14">
+        <sadl:attribute binding="YVINQABXY_TROT6F8E300FBF545854" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="DOCUMEROOT0A1F8F3B7D38693A">
+        <sadl:attribute binding="YVINQABXY_DOOT94E7FB062CF0AA57" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="CUSTOMROOTA041C400605ED038">
+        <sadl:attribute binding="YVINQABXY_CUOT24350D7856AE72AD" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="CUSTOMROOT06E82A4AFE3D5D94">
+        <sadl:attribute binding="YVINQABXY_CUOT4701CA7767B88593" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="COMPANROOT1DF618FBC9BFD399">
+        <sadl:attribute binding="YVINQABXY_COOT393E96E7737D2A29" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="COMPANROOTB43194DDDF603842">
+        <sadl:attribute binding="YVINQABXY_COOTC1212C182B323F2F" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="REQUESROOTBFF4341C11912A6E">
+        <sadl:attribute binding="YVINQABXY_REOTD621D02B3051C7C3" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="TRACKIROOTCB085614C461B926">
+        <sadl:attribute binding="YVINQABXY_TROT8559D01B3DD0EC3E" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="INTERFROOT1DFE4DDB5E01E2DC">
+        <sadl:attribute binding="YVINQABXY_INOTCF364DC3F43FA0CA" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="EXTERNROOTD6921221FEF9787E">
+        <sadl:attribute binding="YVINQABXY_EXOT933A316F836B7208" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="ISPDFROOTF38F6217D8F9EF90">
+        <sadl:attribute binding="YVINQABXY_ISOTA85B6C5905F09974" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="CREATIROOT798AD862AB249613">
+        <sadl:attribute binding="YVINQABXY_CROTDA4516730AADA546" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="SENDDAROOT05A7717D76FFF308">
+        <sadl:attribute binding="YVINQABXY_SEOTE24D9AF555F3A1A7" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="USERSEROOTD90D082513D65817">
+        <sadl:attribute binding="YVINQABXY_USOTFB13ACEBA879060E" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="DATEREROOT76B4DE4374FF3260">
+        <sadl:attribute binding="YVINQABXY_DAOT40CB8FD78424E90F" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="HOURREROOT68FAB0317565B6D8">
+        <sadl:attribute binding="YVINQABXY_HOOT17FD2DD2246D3ED6" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="USERREROOT5F2180383962E4B9">
+        <sadl:attribute binding="YVINQABXY_USOT7786B93AC7B7F521" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="CUSTOMROOT18F1B02A4576B964">
+        <sadl:attribute binding="YVINQABXY_CUOT8C4FA2158DE3FEE6" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="CUSTOMROOTC7524C056D00BB15">
+        <sadl:attribute binding="YVINQABXY_CUOTA96C39B0EBD044B6" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="IDROOT5B57ADF3C76011D1">
+        <sadl:attribute binding="YVINQABXY_IDOT469924C86F9445F3" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="SAPSYROOT3607CB16D26C0078">
+        <sadl:attribute binding="YVINQABXY_SAOTAF1C6EDFD7141562" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="SAPSYROOT4FEAE73338D57329-CONTENT">
+        <sadl:attribute binding="YVINQABXY_SAOTA65361C4FEC884AB" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="SAPSYROOT6D5F7029BBEA12E5">
+        <sadl:attribute binding="YVINQABXY_SAOT541154E99E4531C3" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="SAPSYROOT9B01C6FC59CFF6A1-CONTENT">
+        <sadl:attribute binding="YVINQABXY_SAOTCC7603CCCA9F76A9" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="IDTOIROOTD472B0288514F40C-CONTENT">
+        <sadl:attribute binding="YVINQABXY_IDOT0AD9185CBEC2C9DD" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="DATETROOTDE7F5BD0C5520C29">
+        <sadl:attribute binding="YVINQABXY_DAOTEA37BAA028B1884F" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="PARTYKROOT05BF6623BF111D0E">
+        <sadl:attribute binding="YVINQABXY_PAOTD051C1C8FD06F0B7" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="PARTYKROOT18D697366EB35A0F-CONTENT">
+        <sadl:attribute binding="YVINQABXY_PAOTBA65621C6DF407B3" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="FORMATROOT9FAE7FA341BE06AB-LANGUAGE_CODE">
+        <sadl:attribute binding="YVINQABXY_FOOT3CC6567304798B08" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="FORMATROOT9FAE7FA341BE06AB-CONTENT">
+        <sadl:attribute binding="YVINQABXY_FOOT49B0602C259DF659" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="PARTYKROOTF9ACAB051CD4E14A">
+        <sadl:attribute binding="YVINQABXY_PAOTDCF89DEBE07DB9B1" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="PARTYKROOT263865B2C842CBA6-CONTENT">
+        <sadl:attribute binding="YVINQABXY_PAOT02139388073E5D38" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="FORMATROOT30FBDD9404070A51-LANGUAGE_CODE">
+        <sadl:attribute binding="YVINQABXY_FOOT20AAA94C2D083D81" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="FORMATROOT30FBDD9404070A51-CONTENT">
+        <sadl:attribute binding="YVINQABXY_FOOT9687454F06549FB5" />
+      </sadl:inputParameter>
+    </sadl:inputStructure>
+    <sadl:outputStructure>
+      <sadl:attribute name="LOGIDROOT139D491BDB05250B" binding="YVINQABXY_LOOT3FDCAF9A7B999905" />
+      <sadl:attribute name="DOCUMEROOT946A9EAE20703095" binding="YVINQABXY_DOOTD024CB342F57F2AF" />
+      <sadl:attribute name="LEGALSROOT5119799D03DFC138" binding="YVINQABXY_LEOT491E2F3F99B42F90" />
+      <sadl:attribute name="TRAFFIROOT520F28E0F03BAE14" binding="YVINQABXY_TROT6F8E300FBF545854" />
+      <sadl:attribute name="DOCUMEROOT0A1F8F3B7D38693A" binding="YVINQABXY_DOOT94E7FB062CF0AA57" />
+      <sadl:attribute name="CUSTOMROOTA041C400605ED038" binding="YVINQABXY_CUOT24350D7856AE72AD" />
+      <sadl:attribute name="CUSTOMROOT06E82A4AFE3D5D94" binding="YVINQABXY_CUOT4701CA7767B88593" />
+      <sadl:attribute name="COMPANROOT1DF618FBC9BFD399" binding="YVINQABXY_COOT393E96E7737D2A29" />
+      <sadl:attribute name="COMPANROOTB43194DDDF603842" binding="YVINQABXY_COOTC1212C182B323F2F" />
+      <sadl:attribute name="REQUESROOTBFF4341C11912A6E" binding="YVINQABXY_REOTD621D02B3051C7C3" />
+      <sadl:attribute name="TRACKIROOTCB085614C461B926" binding="YVINQABXY_TROT8559D01B3DD0EC3E" />
+      <sadl:attribute name="INTERFROOT1DFE4DDB5E01E2DC" binding="YVINQABXY_INOTCF364DC3F43FA0CA" />
+      <sadl:attribute name="EXTERNROOTD6921221FEF9787E" binding="YVINQABXY_EXOT933A316F836B7208" />
+      <sadl:attribute name="ISPDFROOTF38F6217D8F9EF90" binding="YVINQABXY_ISOTA85B6C5905F09974" />
+      <sadl:attribute name="CREATIROOT798AD862AB249613" binding="YVINQABXY_CROTDA4516730AADA546" />
+      <sadl:attribute name="SENDDAROOT05A7717D76FFF308" binding="YVINQABXY_SEOTE24D9AF555F3A1A7" />
+      <sadl:attribute name="USERSEROOTD90D082513D65817" binding="YVINQABXY_USOTFB13ACEBA879060E" />
+      <sadl:attribute name="DATEREROOT76B4DE4374FF3260" binding="YVINQABXY_DAOT40CB8FD78424E90F" />
+      <sadl:attribute name="HOURREROOT68FAB0317565B6D8" binding="YVINQABXY_HOOT17FD2DD2246D3ED6" />
+      <sadl:attribute name="USERREROOT5F2180383962E4B9" binding="YVINQABXY_USOT7786B93AC7B7F521" />
+      <sadl:attribute name="CUSTOMROOT18F1B02A4576B964" binding="YVINQABXY_CUOT8C4FA2158DE3FEE6" />
+      <sadl:attribute name="CUSTOMROOTC7524C056D00BB15" binding="YVINQABXY_CUOTA96C39B0EBD044B6" />
+      <sadl:attribute name="IDROOT5B57ADF3C76011D1" binding="YVINQABXY_IDOT469924C86F9445F3" />
+      <sadl:attribute name="SAPSYROOT3607CB16D26C0078" binding="YVINQABXY_SAOTAF1C6EDFD7141562" />
+      <sadl:attribute name="SAPSYROOT4FEAE73338D57329-CONTENT" binding="YVINQABXY_SAOTA65361C4FEC884AB" />
+      <sadl:attribute name="SAPSYROOT6D5F7029BBEA12E5" binding="YVINQABXY_SAOT541154E99E4531C3" />
+      <sadl:attribute name="SAPSYROOT9B01C6FC59CFF6A1-CONTENT" binding="YVINQABXY_SAOTCC7603CCCA9F76A9" />
+      <sadl:attribute name="IDTOIROOTD472B0288514F40C-CONTENT" binding="YVINQABXY_IDOT0AD9185CBEC2C9DD" />
+      <sadl:attribute name="DATETROOTDE7F5BD0C5520C29" binding="YVINQABXY_DAOTEA37BAA028B1884F" />
+      <sadl:attribute name="PARTYKROOT05BF6623BF111D0E" binding="YVINQABXY_PAOTD051C1C8FD06F0B7" />
+      <sadl:attribute name="PARTYKROOT18D697366EB35A0F-CONTENT" binding="YVINQABXY_PAOTBA65621C6DF407B3" />
+      <sadl:attribute name="PARTYKROOTF9ACAB051CD4E14A" binding="YVINQABXY_PAOTDCF89DEBE07DB9B1" />
+      <sadl:attribute name="PARTYKROOT263865B2C842CBA6-CONTENT" binding="YVINQABXY_PAOT02139388073E5D38" />
+    </sadl:outputStructure>
+  </sadl:query>
+</sadl:definition>

@@ -1,0 +1,56 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.CustomerInvoicing.Global;
+
+[WithAdministrativeData][DeploymentUnit(CustomerInvoicing)] businessobject BO2SendLog raises msg {
+
+		message msg text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+		
+		[Label("Document ID")]				element LogID	: ID;
+		[Label("Document Status")]			element DocumentStatus	: CLStatusDocFECode;
+		[Label("Legal Status")]				element LegalStatus	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Status")]					element TrafficLigths	: CLTrafficLightCode;
+		[Label("DocumentPrefix")]			element DocumentPrefix		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Customer")]					element CustomerID				: BusinessPartnerInternalID;
+		[Label("Customer Description")]		element CustomerDesc		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Company")]					element CompanyID				: OrganisationalCentreID;
+		[Label("Company Description")]		element CompanyDesc		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		//Response Supplier
+		[Label("Request Detail")]			element RequestDetailCuIn		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Tracking ID")]				element TrackingIDCuIn			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Supplier Response")]		element InterfaceResponseCuIn	: LANGUAGEINDEPENDENT_Text;
+		[Label("External Message")]			element ExternalMessageCuIn		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("PDF")]						element IsPDF:Indicator;
+		
+		node Actions[0,n]raises msgActions{
+			message msgActions text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Date")]					element ActionDate			: Date;
+			[Label("Hour")]					element ActionHour			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("User")]					element ActionUser			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Action")]				element ActionDesc			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("ProcessStatus")]		element ProcessStatus		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("LegalStatus")]			element LegalStatus			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("ProcessName")]		element ProcessName			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("BusinessStatus")]		element BusinessStatus		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Text")]					element ActionText			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		}
+
+		//not use
+		[Label("Date Of Creation")]		element CreationDateCuIn		: Date;
+		[Label("Date Of Send")]			element SendDateCuIn			: Date;
+		[Label("User Of Send")]			element UserSendCuIn			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Date Of Resend")]		element DateResendCuIn			: Date;
+		[Label("Hour Of Resend")]		element HourResendCuIn			: Time;
+		[Label("User Of Resend")]		element UserResendCuIn			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("CustomerInvoice")]		element CustomerInvoiceID		: ID;	//It's not used
+		[Label("Customer Description")]	element Customerdescription		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Log ID")]				element ID						: ID;
+
+		[DependentObject(AttachmentFolder)] node MYATTACH;
+		association ToInvoice to CustomerInvoice;
+
+		action ReSendLog;
+		action Update;
+
+		[DependentObject(TextCollection)] node TextCollection;
+		
+}

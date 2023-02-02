@@ -1,0 +1,1046 @@
+﻿import ABSL;
+import AP.CustomerInvoicing.Global as APCustomerInvoice;
+import Common.DataTypes;
+import AP.CRM.Global;
+import AP.LogisticsExecution.Global;
+
+var result : collectionof elementsof BusinessObject::BOListOfFields.ListField;
+var insField :  elementsof BusinessObject::BOListOfFields.ListField;
+var CustomerInvoiceUUID = Parameter::CustomerInvoiceUUID;
+var vLanguage :DataType::LanguageCode = Library::LanguageCode.ParseFromString("ES");
+var ValidationFieldHI039 = false;
+var Fecha;
+while(true){
+
+	if(CustomerInvoiceUUID.content.IsInitial()){break;}
+
+	var insInvoice = CustomerInvoice.Retrieve(CustomerInvoiceUUID);
+	if(!insInvoice.IsSet()){break;}
+	
+	//Indicador Positivo/Negativo por documento
+	var vIndicatorPositive = 1;
+	switch (insInvoice.ProcessingTypeCode){
+		case "CI" {vIndicatorPositive = 1;}
+		case "CCM"{vIndicatorPositive = -1;}
+		default {break;}
+	}
+	var DescriptionCurrencyCode;
+	if(insInvoice.TotalNetAmount.currencyCode == "PE"){
+		DescriptionCurrencyCode = "Nuevos Soles";
+	}else{
+		DescriptionCurrencyCode = insInvoice.TotalNetAmount.currencyCode.GetDescription().ToUpperCase();
+	}
+
+	if(insInvoice.ZDocumentUniquePosition == true){
+		insField.Clear();
+		insField.ListFieldID = "HI056";//Descripcion Documento unico
+		insField.ListFieldDesc = insInvoice.ZDescriptionUniquePosition;
+		result.Add(insField);
+	}
+
+	if(insInvoice.ZDocumentUniquePosition == true){
+		insField.Clear();
+		insField.ListFieldID = "HI059";//Id Producto Unique Position
+		insField.ListFieldDesc = insInvoice.ZProductUniquePosition;
+		result.Add(insField);
+	}
+
+	if(!insInvoice.ID.IsInitial()){
+		insField.Clear();
+		insField.ListFieldID = "HI001";//Id de documento
+		insField.ListFieldDesc = insInvoice.ID.content.RemoveLeadingZeros();
+		result.Add(insField);
+	}
+	
+	if(!insInvoice.Date.IsInitial()){
+		insField.Clear();
+		insField.ListFieldID = "HI002";//Fecha de documento
+		Fecha = insInvoice.Date;
+		insField.ListFieldDesc = insInvoice.Date.ToString().Replace("-","");
+		result.Add(insField);
+	}
+	if(!Context.GetCurrentUserTime().ToString().IsInitial()){
+		insField.ListFieldID = "HI003";// Fecha de documento
+		insField.ListFieldDesc = Context.GetCurrentUserTime().ToString();
+		result.Add(insField);
+	}
+	if(!insInvoice.ZCustomerInvoiceAssociated.IsInitial())
+	{
+		insField.ListFieldID = "HI055";// Fecha de documento
+		insField.ListFieldDesc = insInvoice.ZCustomerInvoiceAssociated;
+		result.Add(insField);
+	}
+	//--------------------------Net Amount-------------------------------------------//
+	if(insInvoice.zGratuita){
+		insField.Clear();
+		insField.ListFieldID = "HI005";//Moneda del documento
+		if(insInvoice.zMontoTotal.currencyCode != insInvoice.TotalNetAmount.currencyCode || insInvoice.zMontoTotal.currencyCode != insInvoice.TotalGrossAmount.currencyCode){
+			insField.ListFieldDesc = insInvoice.TotalNetAmount.currencyCode;
+		}else{
+			insField.ListFieldDesc = insInvoice.zMontoTotal.currencyCode;
+		}
+		result.Add(insField);
+	}
+
+	//-----------------------------Orden de sericio--------------------------
+	var ServiceOrderID1;
+	var ServiceOrder1 = insInvoice.Item.ItemBusinessTransactionDocumentReference.Where(n=>n.BusinessTransactionDocumentReference.TypeCode == "117").GetFirst();
+	if(ServiceOrder1.IsSet()){
+		if(!ServiceOrder1.BusinessTransactionDocumentReference.IsInitial()){
+			var BusinessTransactionDocumentReference = ServiceOrder1.BusinessTransactionDocumentReference;
+			if(!BusinessTransactionDocumentReference.ID.IsInitial()){
+				ServiceOrderID1=BusinessTransactionDocumentReference.ID.content.RemoveLeadingZeros();
+			}
+		}
+		var QuerySOrder= BusinessObject::ServiceOrder.QueryByElements;
+		var ParamsSOrder = QuerySOrder.CreateSelectionParams();
+			ParamsSOrder.Add(QuerySOrder.ID.content,"I","EQ",ServiceOrderID1);
+		var ResultSOrder = QuerySOrder.Execute(ParamsSOrder).GetFirst();
+		if (ResultSOrder.IsSet()){
+			insField.Clear();
+			insField.ListFieldID = "HI067";//Folio Orden de sericio
+			insField.ListFieldDesc = ResultSOrder.zFolioID;
+			result.Add(insField);
+
+
+			if(!ResultSOrder.BuyerID.content.IsInitial()){
+				insField.Clear();
+				insField.ListFieldID = "HI068";//Campo Referencia Externa - Orden de Servicio
+				//insField.ListFieldDesc = ResultSOrder.zFolioID;
+				insField.ListFieldDesc = ResultSOrder.BuyerID.content.RemoveLeadingZeros();
+
+				result.Add(insField);
+			}
+		}
+	}
+
+
+	//-----------------------------Entrega saliente--------------------------
+	var OutboundDeliveryID;
+	var OutboundDelivery = insInvoice.Item.ItemBusinessTransactionDocumentReference.Where(n=>n.BusinessTransactionDocumentReference.TypeCode == "73").GetFirst();
+	if(OutboundDelivery.IsSet()){
+		if(!OutboundDelivery.BusinessTransactionDocumentReference.IsInitial()){
+			var BusinessTransactionDocumentReference = OutboundDelivery.BusinessTransactionDocumentReference;
+			if(!BusinessTransactionDocumentReference.ID.IsInitial()){
+				OutboundDeliveryID=BusinessTransactionDocumentReference.ID.content.RemoveLeadingZeros();
+			}
+		}
+		var QuerySOrder= BusinessObject::OutboundDelivery.QueryByElements;
+		var ParamsSOrder = QuerySOrder.CreateSelectionParams();
+			ParamsSOrder.Add(QuerySOrder.ID.content,"I","EQ",OutboundDeliveryID);
+		var ResultSOrder = QuerySOrder.Execute(ParamsSOrder).GetFirst();
+		if (ResultSOrder.IsSet()){
+			
+			insField.Clear();
+			insField.ListFieldID = "HI067";//Folio Entrega saliente
+			insField.ListFieldDesc = ResultSOrder.ZIDFolio;
+			result.Add(insField);
+				
+		}
+	}
+	//---------------------------Fin Entrega saliente--------------------------
+	//---------------------------Inicio Venta Directa--------------------------
+	var DirectSalesID;
+	var DirectSales = insInvoice.Item.ItemBusinessTransactionDocumentReference.Where(n=>n.BusinessTransactionDocumentReference.TypeCode == "29").GetFirst();
+	if(DirectSales.IsSet()){
+		if(!DirectSales.BusinessTransactionDocumentReference.IsInitial()){
+			var BusinessTransactionDocumentReference = DirectSales.BusinessTransactionDocumentReference;
+			if(!BusinessTransactionDocumentReference.ID.IsInitial()){
+				DirectSalesID=BusinessTransactionDocumentReference.ID.content.RemoveLeadingZeros();
+			}
+		}
+		var qryCustomerInvoiceRequest = APCustomerInvoice:CustomerInvoiceRequest.QueryByElements;
+		var prmCustomerInvoiceRequest = qryCustomerInvoiceRequest.CreateSelectionParams();
+			prmCustomerInvoiceRequest.Add(qryCustomerInvoiceRequest.CustomerInvoiceID.content, "I", "EQ", insInvoice.ID.content.RemoveLeadingZeros());
+		var ResultCIR = qryCustomerInvoiceRequest.Execute(prmCustomerInvoiceRequest).GetFirst();
+		if (ResultCIR.IsSet()){
+			if(DirectSalesID == ResultCIR.BaseBusinessTransactionDocumentID.content.RemoveLeadingZeros()){
+				if(!ResultCIR.ReferenceBusinessTransactionDocumentID.IsInitial()){
+					insField.Clear();
+					insField.ListFieldID = "HI069";//Referencia Externa Venta Directa
+					insField.ListFieldDesc = ResultCIR.ReferenceBusinessTransactionDocumentID.content.RemoveLeadingZeros();
+					result.Add(insField);
+				}
+			}	
+		}
+	}
+	//---------------------------Fin Venta Directa------------------------------
+	var vTotalNetAmount = insInvoice.TotalNetAmount;
+	if(!vTotalNetAmount.content.IsInitial()){
+		
+		if(!insInvoice.zGratuita){
+			insField.Clear();
+			insField.ListFieldID = "HI005";//Moneda del documento
+			insField.ListFieldDesc = vTotalNetAmount.currencyCode;
+			result.Add(insField);
+		}
+		var vTotalNetAmountTexto = (vTotalNetAmount.content * vIndicatorPositive).RoundToString(2).Replace(",",".");
+		var vTotalNetAmount2 = vTotalNetAmount;
+		vTotalNetAmount2.content = Numeric.ParseFromString(vTotalNetAmountTexto);
+
+		insField.Clear();
+		insField.ListFieldID = "HI012";//Valor neto despues de Dsc y Flete
+		insField.ListFieldDesc = vTotalNetAmountTexto;
+		result.Add(insField);
+
+		insField.Clear();
+		insField.ListFieldID = "HI011";//Valor neto despues de Dsc y Flete - En Letras
+		var vSpellAmount = vTotalNetAmount2.SpellAmount(vLanguage).IntegerValue + " CON " + vTotalNetAmount2.SpellAmount(vLanguage).DecimalPart + " " + DescriptionCurrencyCode;//vTotalNetAmount.currencyCode.GetDescription().ToUpperCase();
+		var vLengthInteger = vSpellAmount.Length();
+		if(vLengthInteger > 255 ){
+			insField.ListFieldDesc = vSpellAmount.Substring(0,255);
+		}
+		else{
+			insField.ListFieldDesc = vSpellAmount;
+		}
+		result.Add(insField);
+	}
+
+	//-------------------------- PriceTax -------------------------------------------//
+	if(insInvoice.PriceAndTaxCalculation.IsSet()){
+		var PriceAndTaxCalculation = insInvoice.PriceAndTaxCalculation;
+		insField.Clear();
+		insField.ListFieldID = "HI008";//Descuento global
+		insField.ListFieldDesc = "0.00";
+		if(PriceAndTaxCalculation.MainDiscount.IsSet()){
+			var MainDiscount = PriceAndTaxCalculation.MainDiscount;
+			if(!MainDiscount.CalculatedAmount.IsInitial()){
+				var CalculatedAmount = MainDiscount.CalculatedAmount;
+				if(!CalculatedAmount.content.IsInitial()){
+					
+					var vCalculatedAmount = CalculatedAmount.content; 
+					if(vCalculatedAmount < 0){
+						vCalculatedAmount = vCalculatedAmount * (-1);
+					}
+					insField.ListFieldDesc = vCalculatedAmount.RoundToString(2).Replace(",",".");
+				}
+			}
+		}
+		result.Add(insField);
+
+		insField.Clear();
+		insField.ListFieldID = "HI009";//Porcentaje del descuento
+		insField.ListFieldDesc = "0.00";
+		if(PriceAndTaxCalculation.MainDiscount.IsSet()){
+			var MainDiscount = PriceAndTaxCalculation.MainDiscount;
+			if(!MainDiscount.Rate.IsInitial()){
+				var vMainDiscount = MainDiscount.Rate.DecimalValue; 
+				if(vMainDiscount < 0){
+					vMainDiscount = vMainDiscount * (-1);
+				}
+				insField.ListFieldDesc = vMainDiscount.RoundToString(2).Replace(",",".");
+			}
+		}
+		result.Add(insField);
+
+		insField.Clear();
+		insField.ListFieldID = "HI010";//Valor Flete
+		insField.ListFieldDesc = "0.00";
+		if(PriceAndTaxCalculation.MainSurcharge.IsSet()){
+			var insMainSurcharge = PriceAndTaxCalculation.MainSurcharge;
+			if(!insMainSurcharge.CalculatedAmount.IsInitial()){
+				if(!insMainSurcharge.CalculatedAmount.content.IsInitial()){
+					insField.ListFieldDesc = insMainSurcharge.CalculatedAmount.content.RoundToString(2, true);
+				}
+			}
+		}
+		result.Add(insField);
+
+		if(PriceAndTaxCalculation.MainTotal.IsSet()){
+			var MainTotal = PriceAndTaxCalculation.MainTotal;
+			if(!MainTotal.CalculatedAmount.IsInitial()){
+				var CalculatedAmount = MainTotal.CalculatedAmount;
+				if(!CalculatedAmount.content.IsInitial()){
+					insField.Clear();
+					insField.ListFieldID = "HI007";//Valor Neto antes de Dsc y flete 
+					insField.ListFieldDesc = (CalculatedAmount.content * vIndicatorPositive).RoundToString(2).Replace(",",".");
+					result.Add(insField);
+
+					insField.Clear();
+					insField.ListFieldID = "HI006";//Valor Neto antes de Dsc y flete - En letras
+					var vSpellAmount = CalculatedAmount.SpellAmount(vLanguage).IntegerValue + " CON "+ CalculatedAmount.SpellAmount(vLanguage).DecimalPart + " " + DescriptionCurrencyCode;//CalculatedAmount.currencyCode.GetDescription().ToUpperCase();
+					var vLengthInteger = vSpellAmount.Length();
+					if(vLengthInteger > 255 ){
+						insField.ListFieldDesc = vSpellAmount.Substring(0,255);
+					}
+					else{
+						insField.ListFieldDesc = vSpellAmount;
+					}
+					result.Add(insField);
+				}
+			}
+		}
+		if(PriceAndTaxCalculation.OperationalPriceComponent.Count()>0){
+			insField.Clear();
+			insField.ListFieldID = "HI070";//Cargo Por Devoluciones
+			var QualityLoss = PriceAndTaxCalculation.OperationalPriceComponent.Where(n => n.TypeCode.content == "7PRB");
+			if(QualityLoss.Count()>0){
+				foreach (var value in QualityLoss){
+					var positive = 0.0;
+					if(value.CalculatedAmount.content < 0){
+						positive =  value.CalculatedAmount.content * -1;
+					}else{
+						positive =  value.CalculatedAmount.content;
+					}
+					insField.ListFieldDesc = positive.RoundToString(2).Replace(",",".");
+				}
+			}else{
+				insField.ListFieldDesc = "0.00";
+			}
+			result.Add(insField);
+		}
+	}
+	//--------------------------Tax Amount-------------------------------------------//
+	insField.Clear();
+	insField.ListFieldID = "HI014";//Importe impuesto
+	insField.ListFieldDesc = "0.00";
+	var Value14 =0;
+	if(!insInvoice.TotalTaxAmount.content.IsInitial()){
+		var vTotalTaxAmount = insInvoice.TotalTaxAmount;
+		insField.ListFieldDesc = (vTotalTaxAmount.content * vIndicatorPositive).RoundToString(2).Replace(",",".");
+		Value14 = (vTotalTaxAmount.content * vIndicatorPositive);
+	}
+	result.Add(insField);
+
+	insField.Clear();
+	insField.ListFieldID = "HI057";//Afectacion grabado
+	insField.ListFieldDesc = "";
+	if(Value14 > 0){
+		insField.ListFieldDesc = "10";
+	}
+	result.Add(insField);
+
+	insField.Clear();
+	insField.ListFieldID = "HI058";//Porcentaje de impuesto
+	insField.ListFieldDesc = "";
+	if(Value14 == 0){
+		insField.ListFieldDesc = "30";
+	}
+	result.Add(insField);
+
+
+	insField.Clear();
+	insField.ListFieldID = "HI015";//Porcentaje de impuesto
+	insField.ListFieldDesc = "0.00";
+	foreach(var vItem in insInvoice.Item){//busca todas las posiciones, si una de ellas tiene porcentaje de impuesto, se imprime 
+		if(!vItem.TaxAmount.content.IsInitial()){
+			if(!vItem.NetAmount.content.IsInitial()){
+				var vPercent = (vItem.TaxAmount.content / vItem.NetAmount.content)* 100;
+				if(!vPercent.IsInitial()){
+					insField.ListFieldDesc =  vPercent.RoundToString(2,true).Replace(",",".");
+					break;
+				}
+			}
+		}
+	}
+	result.Add(insField);
+	
+	var vTotalTaxAmount = insInvoice.TotalTaxAmount;
+	if(!vTotalTaxAmount.content.IsInitial()){
+		
+		var vTotalTaxAmountTexto = (vTotalTaxAmount.content * vIndicatorPositive).RoundToString(2).Replace(",",".");
+		var vTotalTaxAmount2 = vTotalTaxAmount;
+		vTotalTaxAmount2.content = Numeric.ParseFromString(vTotalTaxAmountTexto);
+
+		insField.Clear();
+		insField.ListFieldID = "HI013";//Importe impuesto - En letras
+		var vSpellAmount = vTotalTaxAmount2.SpellAmount(vLanguage).IntegerValue + " CON " + vTotalTaxAmount2.SpellAmount(vLanguage).DecimalPart + " " + DescriptionCurrencyCode;//vTotalTaxAmount.currencyCode.GetDescription().ToUpperCase();;
+		var vLengthInteger = vSpellAmount.Length();
+		if(vLengthInteger > 255 ){
+			insField.ListFieldDesc = vSpellAmount.Substring(0,255);
+		}
+		else{
+			insField.ListFieldDesc = vSpellAmount;
+		}
+		result.Add(insField);
+	}
+	//--------------------------Total GrossAmount-------------------------------------------//
+	if(!insInvoice.TotalGrossAmount.IsInitial()){
+		var vTotalGrossAmount = insInvoice.TotalGrossAmount;
+		
+		var vTotalGrossAmountTexto = (vTotalGrossAmount.content * vIndicatorPositive).RoundToString(2);
+		var vTotalGrossAmount2 = vTotalGrossAmount;
+		vTotalGrossAmount2.content = Numeric.ParseFromString(vTotalGrossAmountTexto);
+		var FindvTotalGrossAmount2 = vTotalGrossAmountTexto.Find(",");
+		var DecimalTotalGrossAmmount = vTotalGrossAmountTexto.Substring(FindvTotalGrossAmount2+1); 
+		insField.Clear();
+		insField.ListFieldID = "HI017";//Total Bruto
+		insField.ListFieldDesc = vTotalGrossAmountTexto.Replace(",",".");
+		result.Add(insField);
+		var DecimalValueTotalGrossAmmount = DecimalTotalGrossAmmount + "/100";
+		
+		var CurrencyToValue = "SOLES";
+		if(vTotalGrossAmount.currencyCode != "PE"){
+			CurrencyToValue = insInvoice.TotalNetAmount.currencyCode.GetDescription().ToUpperCase();
+		}
+		
+		insField.Clear();
+		insField.ListFieldID = "HI016";//Total Bruto - En Letras
+		var vSpellAmount = vTotalGrossAmount2.SpellAmount(vLanguage).IntegerValue + " CON " + DecimalValueTotalGrossAmmount + " " + CurrencyToValue;//DecimalValueTotalGrossAmmount + " " + CurrencyToValue;//vTotalGrossAmount.currencyCode.GetDescription().ToUpperCase();;
+		var vLengthInteger = vSpellAmount.Length();
+		if(vLengthInteger > 255 ){
+			insField.ListFieldDesc = vSpellAmount.Substring(0,255);
+		}
+		else{
+			insField.ListFieldDesc = vSpellAmount;
+		}
+		result.Add(insField);
+	}
+
+	//-------------------------- Retenciones -------------------------------------------//
+	//insField.Clear();
+	//insField.ListFieldID = "HI033";//Total retenci�n Fuente
+	//insField.ListFieldDesc = "0.00";
+	//if(!insInvoice.zTFTECI.content.IsInitial()){
+		//insField.ListFieldDesc = insInvoice.zTFTECI.content.RoundToString(2).Replace(",",".");
+	//}
+	//result.Add(insField);
+//
+	//insField.Clear();
+	//insField.ListFieldID = "HI034";//Total retenci�n IVA
+	//insField.ListFieldDesc = "0.00";
+	//if(!insInvoice.zTIVACI.content.IsInitial()){
+		//insField.ListFieldDesc = (insInvoice.zTIVACI.content*vIndicatorPositive).RoundToString(2).Replace(",",".");
+	//}
+	//result.Add(insField);
+//
+	//var vHI035 = 0;
+	//insField.Clear();
+	//insField.ListFieldID = "HI035";//Total retenci�n distrital
+	//insField.ListFieldDesc = "0.00";
+	//if(!insInvoice.zTICACI.content.IsInitial()){
+		//vHI035 = insInvoice.zTICACI.content + insInvoice.zTDIS1CI.content + insInvoice.zTDIS2CI.content + insInvoice.zTDIS3CI.content + insInvoice.zTDIS4CI.content;
+		//insField.ListFieldDesc = (vHI035).RoundToString(2).Replace(",",".");
+	//}
+	//result.Add(insField);
+//
+	//insField.Clear();
+	//insField.ListFieldID = "HI036";//Valor Total a pagar //HI012 + HI014 - HI033 - HI034 - HI035
+	//insField.ListFieldDesc = "0.00";
+	//if(!insInvoice.zTICACI.content.IsInitial()){
+		//insField.ListFieldDesc = (vTotalNetAmount.content + vTotalTaxAmount.content + insInvoice.zTIVACI.content + insInvoice.zTIVACI.content + vHI035).RoundToString(2).Replace(",",".");
+	//}
+	//result.Add(insField);
+
+	//--------------------------Condiciones de pago-------------------------------------------//
+	if(insInvoice.CashDiscountTerms.IsSet()){
+		var CashDiscountTerms = insInvoice.CashDiscountTerms;
+		if(!CashDiscountTerms.Code.IsInitial()){
+			insField.Clear();
+			insField.ListFieldID = "HI018";//Condici�n de pago
+			insField.ListFieldDesc = CashDiscountTerms.Code.GetDescription();
+			result.Add(insField);
+		}
+		if(!CashDiscountTerms.FullPaymentEndDate.IsInitial()){
+			insField.Clear();
+			insField.ListFieldID = "HI019";//Fecha Vencimiento del documento
+			insField.ListFieldDesc = CashDiscountTerms.FullPaymentEndDate.ToString().Replace("-","");
+			result.Add(insField);
+		}
+	}
+	//--------------------------BillToParty-------------------------------------------//
+	if(insInvoice.BillToParty.IsSet()){
+		var BillToParty = insInvoice.BillToParty;
+		if(BillToParty.AddressSnapshot.IsSet()){
+			var AddressSnapshot = BillToParty.AddressSnapshot;
+			if(AddressSnapshot.Name.Count()>0){
+				var Name = AddressSnapshot.Name.GetFirst();
+				if(!Name.Name.IsInitial()){
+					insField.Clear();
+					insField.ListFieldID = "HI020";//Destinatario de mercanc�as
+					insField.ListFieldDesc = Name.Name.FirstLineName.Trim();
+					result.Add(insField);
+				}
+			}
+			if(AddressSnapshot.PostalAddress.Count()>0){
+				var PostalAddress = AddressSnapshot.PostalAddress.GetFirst();
+				if(!PostalAddress.StreetName.IsInitial()){
+					insField.Clear();
+					insField.ListFieldID = "HI021";//Direccion del destinario de mercanc�as
+					insField.ListFieldDesc = PostalAddress.StreetName.Trim();
+					result.Add(insField);
+				}
+				if(!PostalAddress.StreetPostalCode.IsInitial()){
+					insField.Clear();
+					insField.ListFieldID = "HI022";//Codigo postal del destinatario de mercanc�as
+					insField.ListFieldDesc = PostalAddress.StreetPostalCode.Trim();
+					result.Add(insField);
+				}
+				if(!PostalAddress.CityName.IsInitial()){
+					insField.Clear();
+					insField.ListFieldID = "HI023";//Ciudad del destinatario de mercanc�as
+					insField.ListFieldDesc = PostalAddress.CityName.Trim();
+					result.Add(insField);
+				}
+				if(!PostalAddress.CountryCode.IsInitial()){
+					insField.Clear();
+					insField.ListFieldID = "HI024";//Pa�s del destinatario de mercanc�as
+					insField.ListFieldDesc = PostalAddress.CountryCode.Trim();
+					result.Add(insField);
+				}
+			}
+		}
+	}
+
+	if(!insInvoice.ReferenceBusinessTransactionDocumentID.IsInitial()){
+		insField.Clear();
+		insField.ListFieldID = "HI025";//Referencia externa del documento
+		insField.ListFieldDesc = insInvoice.ReferenceBusinessTransactionDocumentID.content.RemoveLeadingZeros();
+		result.Add(insField);
+	}
+
+	if(!insInvoice.LegalID.content.IsInitial()){
+		insField.Clear();
+		insField.ListFieldID = "HI027";//ID de la factura legal
+		insField.ListFieldDesc = insInvoice.LegalID.content.Trim();
+		result.Add(insField);
+	}
+
+	var vTasaCambio = 0; 
+	if(insInvoice.TotalNetAmount.currencyCode != "PEN"){
+		insField.Clear();
+		insField.ListFieldID = "HI028";//Tasa de cambio
+		var MontoGeneral = insInvoice.TotalNetAmount.ConvertCurrencywithDate("PEN",Fecha);
+		vTasaCambio = (MontoGeneral.content / insInvoice.TotalNetAmount.content);
+		insField.ListFieldDesc = vTasaCambio.RoundToString(2,true);
+		result.Add(insField);
+	}
+
+	//--------------------------ITEM-------------------------------------------//
+	var vCountItems = insInvoice.Item.Count();
+	insField.Clear();
+	insField.ListFieldID = "HI029";//Total de lineas del documento
+	insField.ListFieldDesc = vCountItems.ToString();
+	result.Add(insField);
+	var vTotalTransferenciaGratuita = 0;
+	var vTransferenciaGratuita = 0;
+
+	if(vCountItems > 0){
+		var Item = insInvoice.Item;
+		if(Item.GetFirst().ItemBusinessTransactionDocumentReference.Count()>0){
+			var SalesOrder = Item.GetFirst().ItemBusinessTransactionDocumentReference.Where(n=>n.BusinessTransactionDocumentReference.TypeCode == "114").GetFirst();
+			if(SalesOrder.IsSet()){
+				if(!SalesOrder.BusinessTransactionDocumentReference.IsInitial()){
+					var BusinessTransactionDocumentReference = SalesOrder.BusinessTransactionDocumentReference;
+					if(!BusinessTransactionDocumentReference.ID.IsInitial()){
+						insField.Clear();
+						insField.ListFieldID = "HI026";//Pedido cliente
+						insField.ListFieldDesc = BusinessTransactionDocumentReference.ID.content.RemoveLeadingZeros();
+						result.Add(insField);
+					}
+				}
+			}
+			var ServiceOrderID;
+			var ServiceOrder = Item.GetFirst().ItemBusinessTransactionDocumentReference.Where(n=>n.BusinessTransactionDocumentReference.TypeCode == "117").GetFirst();
+			if(ServiceOrder.IsSet()){
+				if(!ServiceOrder.BusinessTransactionDocumentReference.IsInitial()){
+					var BusinessTransactionDocumentReference = ServiceOrder.BusinessTransactionDocumentReference;
+					if(!BusinessTransactionDocumentReference.ID.IsInitial()){
+						insField.Clear();
+						insField.ListFieldID = "HI066";//Orden de servicio
+						insField.ListFieldDesc = BusinessTransactionDocumentReference.ID.content.RemoveLeadingZeros();
+						ServiceOrderID=BusinessTransactionDocumentReference.ID.content.RemoveLeadingZeros();
+						result.Add(insField);
+					}
+				}
+			}
+		}
+		foreach(var Items in Item)
+		{
+			if(!Items.TaxAmount.IsInitial())
+			{
+				var ItemTaxAmount = Items.TaxAmount;
+				var Total = (ItemTaxAmount.content * vIndicatorPositive).RoundToString(2).Replace(",",".");
+				if(Total == "0.00")
+				ValidationFieldHI039 = true;
+			}
+			if(!Items.zCostoTrnsferGratuita.IsInitial())
+			{
+				vTotalTransferenciaGratuita = vTotalTransferenciaGratuita + (Items.zCostoTrnsferGratuita.content * Items.Quantity.content);
+				vTransferenciaGratuita = vTransferenciaGratuita + Items.zCostoTrnsferGratuita.content; 
+			}
+		}
+	}
+	//-------------------------- Notas-------------------------------------------//
+	if(insInvoice.TextCollection.IsSet()){
+		var TextCollection = insInvoice.TextCollection;
+		if(TextCollection.Text.Count()>0){
+			var vInternalComment =  TextCollection.Text.Where(n=>n.TypeCode.content == "10011").GetFirst();
+			if(vInternalComment.IsSet()){
+				var vTextContent = vInternalComment.TextContent;
+				if(!vTextContent.Text.IsInitial()){
+					insField.Clear();
+					insField.ListFieldID = "HI004";//Comentario interno
+					var vTextContentText = vTextContent.Text.content.Replace(","," ");
+					var vLengthInteger = vTextContentText.Length();
+					if(vLengthInteger > 255){
+						insField.ListFieldDesc = vTextContentText.Substring(0,255);
+						vLengthInteger = vLengthInteger - 255;
+						if(vLengthInteger > 241){
+							insField.ListFieldRoute = vTextContentText.Substring(255,241);
+						}
+						else{
+							insField.ListFieldRoute = vTextContentText.Substring(255,vLengthInteger);
+						}
+
+					}else{
+						insField.ListFieldDesc = vTextContentText;
+					}
+					result.Add(insField);
+				}
+			}
+
+			var vCustomerInformation =  TextCollection.Text.Where(n=>n.TypeCode.content == "10024").GetFirst();
+			if(vCustomerInformation.IsSet()){
+				if(vCustomerInformation.TextContent.IsSet()){
+					var vTextContent = vCustomerInformation.TextContent;
+					if(!vTextContent.Text.IsInitial()){
+						insField.Clear();
+						insField.ListFieldID = "HI031";//Información del cliente
+						var vTextContentText = vTextContent.Text.content.Replace(","," ");
+						vTextContentText = vTextContentText.Replace("/n"," ");
+						vTextContentText = vTextContentText.Replace("\n"," ");
+						var vLengthInteger = vTextContentText.Length();
+						if(vLengthInteger > 255){
+							insField.ListFieldDesc = vTextContentText.Substring(0,255);
+							vLengthInteger = vLengthInteger - 255;
+							if(vLengthInteger > 241){
+								insField.ListFieldRoute = vTextContentText.Substring(255,241);
+							}
+							else{
+								insField.ListFieldRoute = vTextContentText.Substring(255,vLengthInteger);
+							}
+						}else{
+							insField.ListFieldDesc = vTextContentText;
+						}
+						result.Add(insField);
+					}
+				}
+			}
+		}
+	}
+	//-----------------------------Base Gravable y No Gravable-----------------------------------
+	if(vCountItems > 0)
+	{	
+		var ZSumaBaseGravable = 0;
+		var ZSumaBaseNoGravable = 0;
+		var ZSuma300 = 0; 
+		var ZSuma311 = 0; 
+		var ZPercepcion = 0; 
+		var Items;
+		foreach(Items in insInvoice.Item){
+			if(!Items.TaxAmount.IsInitial()){
+				if(Items.TaxAmount.content != 0.0){
+					ZSumaBaseGravable = ZSumaBaseGravable + Items.NetAmount.content;
+				}
+				else{
+					ZSumaBaseNoGravable = ZSumaBaseNoGravable + Items.NetAmount.content;
+				}
+			}
+
+			if(Items.PriceAndTaxCalculationItem.IsSet()){
+				var vItemsPriceAndTaxCalculationItem = Items.PriceAndTaxCalculationItem;
+				switch(vItemsPriceAndTaxCalculationItem.TaxationCharacteristicsCode.content){
+					case "300"{ZSuma300 = ZSuma300 + Items.NetAmount.content;}
+					case "311"{ZSuma311 = ZSuma311 + Items.NetAmount.content;}
+				}
+			}
+
+			if(Items.zPer1AmountCI.content > 0){
+				ZPercepcion = ZPercepcion + Items.NetAmount.content;
+			}
+		}
+
+		insField.Clear();
+		insField.ListFieldID = "HI037";//BaseGravable
+		insField.ListFieldDesc = (ZSumaBaseGravable*vIndicatorPositive).RoundToString(2).Replace(",",".");
+		result.Add(insField);
+		//insField.Clear();
+		//insField.ListFieldID = "HI038";//BaseNOGravable
+		//insField.ListFieldDesc = (ZSumaBaseNoGravable*vIndicatorPositive).RoundToString(2).Replace(",",".");
+		//result.Add(insField);
+
+		insField.Clear();
+		insField.ListFieldID = "HI060";//Codigo de Impuesto
+		if(!insInvoice.ZCodigoImpuesto.IsInitial()){
+			insField.ListFieldDesc = insInvoice.ZCodigoImpuesto.Trim();
+			result.Add(insField);
+
+			insField.Clear();
+			insField.ListFieldID = "HI038";//Importe bruto inafecto
+			if(insInvoice.ZCodigoImpuesto == CLCodigoImpuestoCode.CO_300){
+				insField.ListFieldDesc = ZSuma300.RoundToString(2).Replace(",",".");
+			}
+			else{
+				insField.ListFieldDesc = "0.00";
+			}
+			result.Add(insField);
+
+			insField.Clear();
+			insField.ListFieldID = "HI061";//Importe bruto exonerado
+			if(insInvoice.ZCodigoImpuesto == CLCodigoImpuestoCode.CO_311){
+				insField.ListFieldDesc = ZSuma311.RoundToString(2).Replace(",",".");
+			}
+			else{
+				insField.ListFieldDesc = "0.00";
+			}
+			result.Add(insField);
+
+			insField.Clear();
+			insField.ListFieldID = "HI064";//Importe bruto exonerado
+			if(insInvoice.ZCodigoImpuesto == CLCodigoImpuestoCode.CO_Z01){
+				insField.ListFieldDesc = insInvoice.zMontoTotal.content.RoundToString(2).Replace(",",".");
+			}
+			else{
+				insField.ListFieldDesc = "0.00";
+			}
+			result.Add(insField);
+
+
+
+			insField.Clear();
+			insField.ListFieldID = "HI062";//Importe bruto exonerado al tipo de cambio
+			insField.ListFieldDesc = "0.00";
+			if(insInvoice.TotalNetAmount.currencyCode != "PEN"){
+				insField.ListFieldDesc = (ZSuma311 * vTasaCambio).RoundToString(2).Replace(",",".");
+			}else{
+				insField.ListFieldDesc = (ZSuma311).RoundToString(2).Replace(",",".");
+			}
+			result.Add(insField);
+
+			insField.Clear();
+			insField.ListFieldID = "HI065";//Importe bruto exonerado al tipo de cambio
+			insField.ListFieldDesc = "0.00";
+			if(insInvoice.ZCodigoImpuesto == CLCodigoImpuestoCode.CO_Z01){
+				if(insInvoice.TotalNetAmount.currencyCode != "PEN"){
+					insField.ListFieldDesc = (insInvoice.zMontoTotal.content * vTasaCambio).RoundToString(2).Replace(",",".");
+				}else{
+					insField.ListFieldDesc = insInvoice.zMontoTotal.content.RoundToString(2).Replace(",",".");
+				}
+			}
+			result.Add(insField);
+
+
+
+
+
+			insField.Clear();
+			insField.ListFieldID = "HI063";//Base gravable percepción
+			if(insInvoice.zTPercepcionCI.content > 0){
+				insField.ListFieldDesc = ZPercepcion.RoundToString(2).Replace(",",".");
+			}
+			else{
+				insField.ListFieldDesc = "0.00";
+			}
+			result.Add(insField);
+
+		}//Fin codigo impuesto
+	}
+
+	if(result.Count()>0)
+	{
+		var zFindHI014 = result.Where(n=>n.ListFieldID.RemoveLeadingZeros() == "HI014").GetFirst();
+		if(!zFindHI014.IsInitial()){
+
+			var zvalue014 = Numeric.ParseFromString(zFindHI014.ListFieldDesc);
+			if(zvalue014 > 0){
+				
+				if(ValidationFieldHI039){
+					insField.Clear();
+					insField.ListFieldID = "HI039";//Tributo inafecto
+					insField.ListFieldDesc = "1002";
+					result.Add(insField);
+				}
+				else{
+					insField.Clear();
+					insField.ListFieldID = "HI039";//Tributo inafecto
+					insField.ListFieldDesc = "";
+					result.Add(insField);
+				}
+				insField.Clear();
+				insField.ListFieldID = "HI040";//Tributo Grabado
+				insField.ListFieldDesc = "1001";
+				result.Add(insField);
+				
+				insField.Clear();
+				insField.ListFieldID = "HI041";//Status_impu
+				insField.ListFieldDesc = "S";
+				result.Add(insField);
+				
+				insField.Clear();
+				insField.ListFieldID = "HI042";//CODIGO_TIPO_TRIB
+				insField.ListFieldDesc = "1000";
+				result.Add(insField);
+
+				if(vIndicatorPositive == -1 ){
+					insField.Clear();
+					insField.ListFieldID = "HI043";//CODIGO_TIPO_VVEN_GRAV
+					insField.ListFieldDesc = "01";
+					result.Add(insField);
+					insField.Clear();
+					insField.ListFieldID = "HI044";//CODIGO_TIPO_VVEN_INAF
+					insField.ListFieldDesc = " ";
+					result.Add(insField);
+				}
+				else{
+					insField.Clear();
+					insField.ListFieldID = "HI043";//CODIGO_TIPO_VVEN_GRAV
+					insField.ListFieldDesc = " ";
+					result.Add(insField);
+					insField.Clear();
+					insField.ListFieldID = "HI044";//CODIGO_TIPO_VVEN_INAF
+					insField.ListFieldDesc = " ";
+					result.Add(insField);
+				}
+			}
+			else{
+				if(zvalue014 == 0){
+					insField.Clear();
+					insField.ListFieldID = "HI039";//Tributo inafecto
+					insField.ListFieldDesc = "1002";
+					result.Add(insField);
+					insField.Clear();
+					insField.ListFieldID = "HI040";//Tributo Grabado
+					insField.ListFieldDesc = "";
+					result.Add(insField);
+					
+					insField.Clear();
+					insField.ListFieldID = "HI041";//Status_impu
+					insField.ListFieldDesc = "N";
+					result.Add(insField);
+
+					insField.Clear();
+					insField.ListFieldID = "HI042";//CODIGO_TIPO_TRIB
+					insField.ListFieldDesc = "9998";
+					if(insInvoice.zGratuita)
+					{
+						insField.ListFieldDesc.Clear();
+						insField.ListFieldDesc = "9996";
+					}
+					result.Add(insField);
+					insField.ListFieldID = "HI043";//CODIGO_TIPO_VVEN_GRAV
+					insField.ListFieldDesc = " ";
+					result.Add(insField);
+					insField.Clear();
+					insField.ListFieldID = "HI044";//CODIGO_TIPO_VVEN_INAF
+					insField.ListFieldDesc = "03";
+					result.Add(insField);
+				}else
+				{
+					insField.Clear();
+					insField.ListFieldID = "HI039";//Tributo inafecto
+					insField.ListFieldDesc = " ";
+					result.Add(insField);
+					insField.Clear();
+					insField.ListFieldID = "HI040";//Tributo Grabado
+					insField.ListFieldDesc = " ";
+					result.Add(insField);
+					insField.Clear();
+					insField.ListFieldID = "HI041";//Status_impu
+					insField.ListFieldDesc = "N";
+					result.Add(insField);	
+					insField.Clear();
+					insField.ListFieldID = "HI042";//CODIGO_TIPO_TRIB
+					insField.ListFieldDesc = "9998";
+					if(insInvoice.zGratuita)
+					{
+						insField.ListFieldDesc.Clear();
+						insField.ListFieldDesc = "9996";
+					}
+					result.Add(insField);
+					insField.Clear();
+					insField.ListFieldID = "HI043";//CODIGO_TIPO_VVEN_GRAV
+					insField.ListFieldDesc = " ";
+					result.Add(insField);
+					insField.Clear();
+					insField.ListFieldID = "HI044";//CODIGO_TIPO_VVEN_INAF
+					insField.ListFieldDesc = "03";
+					result.Add(insField);		
+				}
+			}
+		}
+		//else{
+			//insField.Clear();
+			//insField.ListFieldID = "HI041";//Status_impu
+			//insField.ListFieldDesc = "CHAMA";
+			//result.Add(insField);
+		//}
+
+		var FindHI005 = result.Where(n=>n.ListFieldID.RemoveLeadingZeros() == "HI005").GetFirst();
+		var FindHI037 = result.Where(n=>n.ListFieldID.RemoveLeadingZeros() == "HI037").GetFirst();
+		var FindHI038 = result.Where(n=>n.ListFieldID.RemoveLeadingZeros() == "HI038").GetFirst();
+		var FindHI014 = result.Where(n=>n.ListFieldID.RemoveLeadingZeros() == "HI014").GetFirst();
+		var FindHI017 = result.Where(n=>n.ListFieldID.RemoveLeadingZeros() == "HI017").GetFirst();
+		var FindHI008 = result.Where(n=>n.ListFieldID.RemoveLeadingZeros() == "HI008").GetFirst();
+		var FindHI028 = result.Where(n=>n.ListFieldID.RemoveLeadingZeros() == "HI028").GetFirst();
+//
+		//var Monto = insInvoice.TotalGrossAmount;
+			////Monto.content = (Numeric.ParseFromString(FindHI037.ListFieldDesc));
+			//Monto.content = insInvoice.TotalNetAmount.content;
+			////Monto.currencyCode = FindHI005.ListFieldDesc;
+			//Monto.currencyCode = insInvoice.TotalNetAmount.currencyCode;
+		
+		if(!FindHI005.IsInitial()){
+			if(FindHI005.ListFieldDesc != "PEN"){
+				//var MontoGeneral = Monto.ConvertCurrencywithDate("PEN",Fecha);
+				//var Tasa = (MontoGeneral.content / Numeric.ParseFromString(FindHI037.ListFieldDesc));
+				//var Tasa = (MontoGeneral.content / insInvoice.TotalNetAmount.content);
+				var Tasa = vTasaCambio;
+
+				FindHI028.ListFieldDesc = Tasa.RoundToString(2,true);
+				insField.Clear();
+				insField.ListFieldID = "HI045";//IMPO_BRUTO_AFEC_SOLE
+				if(!FindHI037.ListFieldDesc.IsInitial()){
+					insField.ListFieldDesc = (Numeric.ParseFromString(FindHI037.ListFieldDesc) * Numeric.ParseFromString(FindHI028.ListFieldDesc)).RoundToString(2).Replace(",",".");
+				}
+				if(insField.ListFieldDesc.IsInitial())
+				{
+					insField.ListFieldDesc = "0.00";
+				}
+				result.Add(insField);
+				insField.Clear();
+				insField.ListFieldID = "HI046";// IMPO_DCTO_CABE_SOLE
+				if(!FindHI008.ListFieldDesc.IsInitial()){
+					insField.ListFieldDesc = (Numeric.ParseFromString(FindHI008.ListFieldDesc)* Numeric.ParseFromString(FindHI028.ListFieldDesc)).RoundToString(2).Replace(",",".");
+				}
+				if(insField.ListFieldDesc.IsInitial())
+				{
+					insField.ListFieldDesc = "0.00";
+				}
+				result.Add(insField);
+				insField.Clear();
+				insField.ListFieldID = "HI047";//IMPO_BRUTO_INAF_SOLE
+				if(!FindHI038.ListFieldDesc.IsInitial()){
+					insField.ListFieldDesc = (Numeric.ParseFromString(FindHI038.ListFieldDesc)* Numeric.ParseFromString(FindHI028.ListFieldDesc)).RoundToString(2).Replace(",",".");
+				}
+				if(insField.ListFieldDesc.IsInitial())
+				{
+					insField.ListFieldDesc = "0.00";
+				}
+				result.Add(insField);	
+				insField.Clear();
+				insField.ListFieldID = "HI048";//IMPO_IMPUESTO_SOLE
+				if(!FindHI014.ListFieldDesc.IsInitial()){
+					insField.ListFieldDesc = (Numeric.ParseFromString(FindHI014.ListFieldDesc)* Numeric.ParseFromString(FindHI028.ListFieldDesc)).RoundToString(2).Replace(",",".");
+				}
+				if(insField.ListFieldDesc.IsInitial())
+				{
+					insField.ListFieldDesc = "0.00";
+				}
+				result.Add(insField);
+				insField.Clear();
+				insField.ListFieldID = "HI049";//IMPO_TOTAL_SOLE
+				if(!FindHI017.ListFieldDesc.IsInitial()){
+					insField.ListFieldDesc = (Numeric.ParseFromString(FindHI017.ListFieldDesc)* Numeric.ParseFromString(FindHI028.ListFieldDesc)).RoundToString(2).Replace(",",".");
+				}
+				if(insField.ListFieldDesc.IsInitial())
+				{
+					insField.ListFieldDesc = "0.00";
+				}
+				result.Add(insField);
+				insField.Clear();	
+			}
+			else
+			{
+				insField.Clear();
+				insField.ListFieldID = "HI045";//IMPO_BRUTO_AFEC_SOLE
+				insField.ListFieldDesc = FindHI037.ListFieldDesc;
+				result.Add(insField);
+				insField.Clear();
+				insField.ListFieldID = "HI046";// IMPO_DCTO_CABE_SOLE
+				insField.ListFieldDesc = FindHI008.ListFieldDesc ;
+				result.Add(insField);
+				insField.Clear();
+				insField.ListFieldID = "HI047";//IMPO_BRUTO_INAF_SOLE
+				insField.ListFieldDesc = FindHI038.ListFieldDesc;
+				result.Add(insField);	
+				insField.Clear();
+				insField.ListFieldID = "HI048";//IMPO_IMPUESTO_SOLE
+				insField.ListFieldDesc = FindHI014.ListFieldDesc;
+				result.Add(insField);
+				insField.Clear();
+				insField.ListFieldID = "HI049";//IMPO_TOTAL_SOLE
+				insField.ListFieldDesc = FindHI017.ListFieldDesc;
+				result.Add(insField);
+			}
+		}
+	}
+	if(!insInvoice.zTPercepcionCI.IsInitial()){
+		var ValuePercepcion = insInvoice.zTPercepcionCI.content;
+		if(!ValuePercepcion.IsInitial())
+		{
+			insField.Clear();
+			insField.ListFieldID = "HI050";//IMPORTE_PERCEP
+			insField.ListFieldDesc = ValuePercepcion.RoundToString(2).Replace(",",".");
+			result.Add(insField);
+			if(ValuePercepcion > 0){
+				insField.Clear();
+				insField.ListFieldID = "HI051";//IMPORTE_PERCEP
+				insField.ListFieldDesc = "S";
+				result.Add(insField);
+			}else
+			{
+				insField.Clear();
+				insField.ListFieldID = "HI051";//IMPORTE_PERCEP
+				insField.ListFieldDesc = "N";
+				result.Add(insField);
+			}
+		}else
+		{
+			insField.Clear();
+			insField.ListFieldID = "HI050";//IMPORTE_PERCEP
+			insField.ListFieldDesc = "0.00";
+			result.Add(insField);
+
+			insField.Clear();
+			insField.ListFieldID = "HI051";//IMPORTE_PERCEP
+			insField.ListFieldDesc = "N";
+			result.Add(insField);
+		}
+	}else
+	{
+		insField.Clear();
+		insField.ListFieldID = "HI050";//IMPORTE_PERCEP
+		insField.ListFieldDesc = "0.00";
+		result.Add(insField);
+
+		insField.Clear();
+		insField.ListFieldID = "HI051";//IMPORTE_PERCEP
+		insField.ListFieldDesc = "N";
+		result.Add(insField);
+	}
+	if(!insInvoice.ZExternalID.IsInitial())
+	{
+		var zfindGuion = insInvoice.ZExternalID.Find("-");
+		var zLenghtExternalID= insInvoice.ZExternalID.Length();
+		var counter = 2;
+		var EXT = insInvoice.ZExternalID;
+		while(zfindGuion != -1)
+		{			
+			var SubStringAux = EXT.Substring(0,zfindGuion);
+			EXT = EXT.Substring(zfindGuion+1,zLenghtExternalID-(zfindGuion+1));
+			zfindGuion = EXT.Find("-");
+			zLenghtExternalID = EXT.Length();
+			insField.Clear();
+			insField.ListFieldID = "HI05" + counter.ToString();//IMPORTE_PERCEP
+			insField.ListFieldDesc = SubStringAux;
+			result.Add(insField);
+			counter = counter+ 1;
+			if(zfindGuion == -1)
+			{
+				insField.Clear();
+				insField.ListFieldID = "HI05" + counter.ToString();//IMPORTE_PERCEP
+				insField.ListFieldDesc = EXT;
+				result.Add(insField);
+			}
+		}
+	}
+	if(!insInvoice.zMethodPayment.IsInitial()){
+		insField.Clear();
+		insField.ListFieldID = "HI071";//Metodo de Pago (Cliente)
+		insField.ListFieldDesc = insInvoice.zMethodPayment.GetDescription();
+		result.Add(insField);
+	}
+	break;
+}
+return result;

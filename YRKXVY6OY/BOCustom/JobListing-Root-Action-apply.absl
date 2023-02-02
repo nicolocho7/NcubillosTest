@@ -1,0 +1,29 @@
+﻿import ABSL;
+
+foreach(var jobList in this){
+	jobList.applied = "X";
+
+	var jobApply = JobApplications.Create();
+	var numberRangeObject: ID = "JobApplication";
+	jobApply.id = NumberRange.DrawNumber(numberRangeObject);
+	jobApply.jobID = jobList.id;
+	jobApply.title = jobList.title;
+	jobApply.jobLocation = jobList.jobLocation;
+	jobApply.domain = jobList.domain;
+	jobApply.empType = jobList.empType;
+	jobApply.hireMgrName = jobList.hireMgrName;
+	jobApply.appDate = Context.GetCurrentUserDate();
+	jobApply.candidateID = jobList.empID;
+	jobApply.candidateName = jobList.name;
+	jobApply.emailID = jobList.emailID;
+
+	var qryJobProfile = JobProfile.QueryByElements;
+	var selParam = qryJobProfile.CreateSelectionParams();
+	selParam.Add(qryJobProfile.jobID, "I", "EQ", jobList.id);
+	var result = qryJobProfile.Execute(selParam).GetFirst();
+	var canApplied = result.candidatesApplied.Create();
+	canApplied.empID = jobList.empID;
+}
+
+var idenUUID = Context.GetCurrentIdentityUUID();
+var name = CustomReuseLibrary.Identity(idenUUID);

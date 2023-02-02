@@ -1,0 +1,63 @@
+﻿import ABSL;
+import AP.Payment.Global;
+import AP.FinancialAccounting.Global;
+import AP.CustomerInvoicing.Global;
+var QueryConfiguration = BOConfigurationSolution.QueryByElements;
+var ExecuteQueryConfiguration = QueryConfiguration.Execute();
+if(ExecuteQueryConfiguration.Count()>0){
+	if(ExecuteQueryConfiguration.GetFirst().IsSet()){
+		if(ExecuteQueryConfiguration.GetFirst().Status== CLStatusSolutionCode.CO_01){
+
+			var Ref = this.BaseBusinessTransactionDocumentReference.ID.content.RemoveLeadingZeros();
+			var Date = this.FullPaymentEndDate;
+			var Invoice;
+
+			var query = AccountingDocument.QueryByElements;
+			var selectionParams = query.CreateSelectionParams();
+				selectionParams.Add(query.OriginalEntryDocumentReference.FormattedID, "I", "EQ", Ref);
+				selectionParams.Add(query.OriginalEntryDocumentDate, "I", "EQ",Date);
+			var resultData = query.Execute(selectionParams).GetFirst();
+			if(resultData.IsSet()){
+				if(!resultData.OriginalEntryDocumentContainingObjectReference.IsInitial()){
+					var OriginalID = resultData.OriginalEntryDocumentContainingObjectReference.FormattedID;
+					var queryPA = PaymentAdvice.QueryByElements;
+					var selectionParamsPA = queryPA.CreateSelectionParams();
+						selectionParamsPA.Add(queryPA.ID.content, "I", "EQ", OriginalID);
+					var resultDataPA = queryPA.Execute(selectionParamsPA);
+
+					var searchPa = resultDataPA.Where(n => n.Date == Date).GetFirst();
+		
+					if(searchPa.IsSet()){
+						foreach(var Item in searchPa.PaymentExplanationPaymentExplanation.Item){
+							if(!Item.ExternalInvoiceReference.IsInitial()){
+								Invoice = Item.ExternalInvoiceReference.ID.content.RemoveLeadingZeros();
+								break;
+							}
+						}
+			
+						var queryCI = CustomerInvoice.QueryByElements;
+						var selectionParamsCI = queryCI.CreateSelectionParams();
+							selectionParamsCI.Add(queryCI.ID.content, "I", "EQ", Invoice);
+						var resultDataCI = queryCI.Execute(selectionParamsCI).GetFirst();
+						if(resultDataCI.IsSet()){
+							if(!resultDataCI.ZExternalID.IsInitial()){
+								this.zExternalID = resultDataCI.ZExternalID.Trim();
+							}
+						}
+					}
+				}
+			}else{
+				var queryCI = CustomerInvoice.QueryByElements;
+				var selectionParamsCI = queryCI.CreateSelectionParams();
+					selectionParamsCI.Add(queryCI.ID.content, "I", "EQ", Ref);
+				var resultDataCI = queryCI.Execute(selectionParamsCI).GetFirst();
+				if(resultDataCI.IsSet()){
+					if(!resultDataCI.ZExternalID.IsInitial()){
+						this.zExternalID = resultDataCI.ZExternalID.Trim();
+					}
+				}
+			}
+		}
+	}
+}
+

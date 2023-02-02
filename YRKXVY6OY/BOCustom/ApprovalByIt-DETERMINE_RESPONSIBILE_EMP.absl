@@ -1,0 +1,27 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Enhancement Option: BADIforApprovalCustomResponsibilityDetermination
+		Operation: DETERMINE_RESPONSIBILE_EMP
+
+		Script file signature
+		----------------------------
+		Parameter: InputData of type BADIforApprovalCustomResponsibilityDetermination
+		Returns: CustomApprovalCategoryEmployeeResponsibles
+
+	Note: 
+	  - To use code completion, press CTRL+J.
+*/
+import AP.FO.Task.Global;
+import ABSL;
+
+var result : CustomApprovalCategoryEmployeeResponsibles;
+
+var position = InputData.CategoryCode.Find("300");
+
+if(!position.IsInitial()){
+	var empUUID_tab: CustomApprovalCategoryEmployeeResponsibles.EmployeeResponsibles;
+	empUUID_tab.content = UUID.ParseFromString("8000000620");
+	result.EmployeeResponsibles.Add(empUUID_tab);
+}
+
+return result;

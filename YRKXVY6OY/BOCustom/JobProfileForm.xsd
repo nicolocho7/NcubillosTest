@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="JobProfileForm" ><xs:complexType><xs:sequence>
+    <xs:element name="JobProfile" ><xs:complexType><xs:sequence>
+    <xs:element   name="jobID"    type="ID" />
+    <xs:element   name="postingDate"    type="Date" />
+    <xs:element   name="domain"    type="DomainCode" />
+    <xs:element   name="empType"    type="EmploymentTypeCode" />
+    <xs:element   name="hireMgrID"    type="EmployeeID" />
+    <xs:element   name="hireMgrName"    type="LANGUAGEINDEPENDENT_LONG_Name" />
+    </xs:sequence></xs:complexType></xs:element>
+  </xs:sequence></xs:complexType></xs:element>
+  <xs:simpleType name="ID">
+    <xs:restriction base="xs:token"/>
+  </xs:simpleType>
+  <xs:simpleType name="Date">
+    <xs:restriction base="xs:date"/>
+  </xs:simpleType>
+  <xs:simpleType name="DomainCode">
+    <xs:restriction base="xs:token"/>
+  </xs:simpleType>
+  <xs:simpleType name="EmploymentTypeCode">
+    <xs:restriction base="xs:token"/>
+  </xs:simpleType>
+  <xs:complexType name="EmployeeID">
+  <xs:simpleContent>
+  <xs:extension base="xs:token">
+      <xs:attribute name="schemeID" type="xs:token"/>
+      <xs:attribute name="schemeAgencyID" type="xs:token"/>
+  </xs:extension>
+  </xs:simpleContent>
+  </xs:complexType>
+  <xs:simpleType name="LANGUAGEINDEPENDENT_LONG_Name">
+    <xs:restriction base="xs:string"/>
+  </xs:simpleType>
+</xs:schema>

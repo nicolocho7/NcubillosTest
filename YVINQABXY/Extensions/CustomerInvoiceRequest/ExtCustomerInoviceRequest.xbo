@@ -1,0 +1,24 @@
+﻿import AP.Common.GDT;
+import AP.CustomerInvoicing.Global;
+
+[Extension] businessobject AP.CustomerInvoicing.Global:CustomerInvoiceRequest raises mstext{
+ 
+        // You must activate this business object before you can access the extension fields
+        // or messages in script files, forms, and screens.
+
+ 		node CustomerInvoiceRequest {
+			
+			element zValideCIR:Indicator=true;	
+			element zCancelNoteCIR:Indicator;
+			element IsCinsistent : Indicator;
+
+
+   			node Item {
+				message mstext text "&":LANGUAGEINDEPENDENT_EXTENDED_Text;
+   			} 
+
+
+     } 
+     
+  
+}

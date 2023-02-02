@@ -1,0 +1,26 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import  AP.FinancialAccounting.Global;
+	   
+
+
+[DeploymentUnit(Financials)][WithAdministrativeData] businessobject BOExecuteSales raises msj {
+							
+		message msj text "&1"		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	
+	[Label("ID")]								element EID						: ID;
+	[Label("Set Of Books")]						element EConfigSistemaContable	: SetOfBooksID;
+	element EConfigSistemaContables										: LANGUAGEINDEPENDENT_EXTENDED_Name;
+	element EConfigCompany														: LANGUAGEINDEPENDENT_EXTENDED_Name;
+	association ToBookConfi						to BOSalesConfiguration; 
+	[Label("Company")]							element ECompany				: OrganisationalCentreID;
+	[Label("Year")]								element EYear					: Year;
+	[Label("Mounth")]							element EMounth					: Month;
+	[Transient]									element IsConsistent			: Indicator; 
+	[Label("View Data")]						element EView					: Indicator ;
+
+	[DependentObject(AttachmentFolder)] node ReportsAttachments;
+
+	action Execution;
+       
+
+}

@@ -1,0 +1,24 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BODepartament
+		Node: Root
+		Event: BeforeSave 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script when:
+		- the instance of the business object is being saved.
+		- the instance of the business object is created from other sources like web services, preview screen, and so on.
+*/
+
+import ABSL;
+
+
+
+if(this.DepartamentCode.RemoveLeadingZeros().Length() == 1){//Si tiene 1, aumentar 1 cero
+	this.DepartamentID = this.CountryCode + "0" + this.DepartamentCode.RemoveLeadingZeros() ;
+}else{
+	this.DepartamentID = this.CountryCode + this.DepartamentCode.RemoveLeadingZeros() ;
+}

@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="utf-8"?>
+<QueryDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://sap.com/xi/BASIS/Global">
+  <ProxyName xmlns="">YVINQABXY_GSDMGQV1IJCVRG</ProxyName>
+  <QueryDefintionXrepPath xmlns="">/YVINQABXY_MAIN/SRC/Reports/ReportsLevel1/ConfigurationReportsData/BOConfigurationReportsData-QueryConfigSelect.sadl</QueryDefintionXrepPath>
+  <Description xmlns="" />
+  <AnalyticalQueryIndicator xmlns="">false</AnalyticalQueryIndicator>
+  <SensitiveQueryIndicator xmlns="">false</SensitiveQueryIndicator>
+  <LanguageCode xmlns="">EN</LanguageCode>
+  <ParentNodeProxyName xmlns="">SELECTF933BA6E05AE371C</ParentNodeProxyName>
+  <BOProxyName xmlns="">YVINQABXY_BOTAB74293865A29DBAC</BOProxyName>
+  <LogReferenceFields xmlns="">false</LogReferenceFields>
+  <QueryAnnotationElements xmlns="">
+    <QueryInputParameters>
+      <ProxyName>SELECTELECT7E3A105865B1BAA3</ProxyName>
+      <Name>selectVariableID</Name>
+      <Type>PDI_ABSL_IDENTIFIER</Type>
+      <uiTextProxyName>YVINQABXY_5FF25BB26E9D3748</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOTAB74293865A29DBAC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">SELECTF933BA6E05AE371C</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">SELECTBLEIDA6775219761AE992</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>SELECTELECT31D2F0A5D6220AB6</ProxyName>
+      <Name>SelectDescription</Name>
+      <Type>APC_V_LANGUAGEIN_EXTENDED_TEXT</Type>
+      <uiTextProxyName>YVINQABXY_DD237D314AC4C91B</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOTAB74293865A29DBAC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">SELECTF933BA6E05AE371C</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">SELECTPTION2026B70771CC0318</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>CONFREELECT8856A607A8085F38</ProxyName>
+      <Name>ToParent_ConfRepoDataID</Name>
+      <Type>PDI_ABSL_IDENTIFIER</Type>
+      <uiTextProxyName>YVINQABXY_F23EB5763C35CF12</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOTAB74293865A29DBAC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">CONFREATAIDE6FE2B8D60C8001C</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>SERVICELECT4572A70B9F2A0AC4</ProxyName>
+      <Name>ToParent_ServiceID</Name>
+      <Type>APC_V_LANGUAGEIN_EXTENDED_TEXT</Type>
+      <uiTextProxyName>YVINQABXY_2FC831114A24EACA</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOTAB74293865A29DBAC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">SERVICEID72E586B7D3F09348</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>DESCRIELECT440B60B1D282B200</ProxyName>
+      <Name>ToParent_Description</Name>
+      <Type>APC_V_LANGUAGEIN_EXTENDED_TEXT</Type>
+      <uiTextProxyName>YVINQABXY_DD9D00CD73E68098</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOTAB74293865A29DBAC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">DESCRIPTIONCA703A683EA9E244</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>REPORTELECT3398C6DAE24D530C</ProxyName>
+      <Name>ToParent_ReportID</Name>
+      <Type>APC_V_LANGUAGEIN_EXTENDED_TEXT</Type>
+      <uiTextProxyName>YVINQABXY_A6517098764DF0FE</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOTAB74293865A29DBAC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">REPORTID7DD1CF2EE5B56034</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>SAPSYELECT68D6B820BE449D7E</ProxyName>
+      <Name>ToParent_SAP_SystemAdministrativeDataCreationDateTime</Name>
+      <Type>GDT_GLOBAL_DATE_TIME</Type>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOTAB74293865A29DBAC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">SAP_SYEDATAAF54AFE70C7CAE6F-CREATION_DATE_TIME</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>SAPSYELECTE93AC08FC1283830</ProxyName>
+      <Name>ToParent_SAP_SystemAdministrativeDataCreationIdentityUUID</Name>
+      <Type>APC_V_UUID</Type>
+      <MetaObjectProxyName>CONTENT</MetaObjectProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOTAB74293865A29DBAC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">SAP_SYEDATAAF54AFE70C7CAE6F-CREATION_IDENTITY_UUID</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>SAPSYELECT2051327262646B1D</ProxyName>
+      <Name>ToParent_SAP_SystemAdministrativeDataLastChangeDateTime</Name>
+      <Type>GDT_GLOBAL_DATE_TIME</Type>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOTAB74293865A29DBAC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">SAP_SYEDATAAF54AFE70C7CAE6F-LAST_CHANGE_DATE_TIME</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>SAPSYELECTBEF60A067B151E41</ProxyName>
+      <Name>ToParent_SAP_SystemAdministrativeDataLastChangeIdentityUUID</Name>
+      <Type>APC_V_UUID</Type>
+      <MetaObjectProxyName>CONTENT</MetaObjectProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOTAB74293865A29DBAC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">SAP_SYEDATAAF54AFE70C7CAE6F-LAST_CHANGE_IDENTITY_UUID</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryQRTNElements>
+      <ProxyName>SELECTELECT7E3A105865B1BAA3</ProxyName>
+      <Name>selectVariableID</Name>
+      <Type>PDI_ABSL_IDENTIFIER</Type>
+      <uiTextProxyName>YVINQABXY_5FF25BB26E9D3748</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOTAB74293865A29DBAC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">SELECTF933BA6E05AE371C</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">SELECTBLEIDA6775219761AE992</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <QueryQRTNElements>
+      <ProxyName>SELECTELECT31D2F0A5D6220AB6</ProxyName>
+      <Name>SelectDescription</Name>
+      <Type>APC_V_LANGUAGEIN_EXTENDED_TEXT</Type>
+      <uiTextProxyName>YVINQABXY_DD237D314AC4C91B</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOTAB74293865A29DBAC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">SELECTF933BA6E05AE371C</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">SELECTPTION2026B70771CC0318</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <QueryQRTNElements>
+      <ProxyName>CONFREELECT8856A607A8085F38</ProxyName>
+      <Name>ToParent_ConfRepoDataID</Name>
+      <Type>PDI_ABSL_IDENTIFIER</Type>
+      <uiTextProxyName>YVINQABXY_F23EB5763C35CF12</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOTAB74293865A29DBAC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">CONFREATAIDE6FE2B8D60C8001C</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <QueryQRTNElements>
+      <ProxyName>SERVICELECT4572A70B9F2A0AC4</ProxyName>
+      <Name>ToParent_ServiceID</Name>
+      <Type>APC_V_LANGUAGEIN_EXTENDED_TEXT</Type>
+      <uiTextProxyName>YVINQABXY_2FC831114A24EACA</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOTAB74293865A29DBAC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">SERVICEID72E586B7D3F09348</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <QueryQRTNElements>
+      <ProxyName>DESCRIELECT440B60B1D282B200</ProxyName>
+      <Name>ToParent_Description</Name>
+      <Type>APC_V_LANGUAGEIN_EXTENDED_TEXT</Type>
+      <uiTextProxyName>YVINQABXY_DD9D00CD73E68098</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOTAB74293865A29DBAC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">DESCRIPTIONCA703A683EA9E244</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <QueryQRTNElements>
+      <ProxyName>REPORTELECT3398C6DAE24D530C</ProxyName>
+      <Name>ToParent_ReportID</Name>
+      <Type>APC_V_LANGUAGEIN_EXTENDED_TEXT</Type>
+      <uiTextProxyName>YVINQABXY_A6517098764DF0FE</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOTAB74293865A29DBAC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">REPORTID7DD1CF2EE5B56034</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <QueryQRTNElements>
+      <ProxyName>SAPSYELECT68D6B820BE449D7E</ProxyName>
+      <Name>ToParent_SAP_SystemAdministrativeDataCreationDateTime</Name>
+      <Type>GDT_GLOBAL_DATE_TIME</Type>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOTAB74293865A29DBAC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">SAP_SYEDATAAF54AFE70C7CAE6F-CREATION_DATE_TIME</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <QueryQRTNElements>
+      <ProxyName>SAPSYELECTE93AC08FC1283830</ProxyName>
+      <Name>ToParent_SAP_SystemAdministrativeDataCreationIdentityUUID</Name>
+      <Type>APC_V_UUID</Type>
+      <MetaObjectProxyName>CONTENT</MetaObjectProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOTAB74293865A29DBAC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">SAP_SYEDATAAF54AFE70C7CAE6F-CREATION_IDENTITY_UUID</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <QueryQRTNElements>
+      <ProxyName>SAPSYELECT2051327262646B1D</ProxyName>
+      <Name>ToParent_SAP_SystemAdministrativeDataLastChangeDateTime</Name>
+      <Type>GDT_GLOBAL_DATE_TIME</Type>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOTAB74293865A29DBAC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">SAP_SYEDATAAF54AFE70C7CAE6F-LAST_CHANGE_DATE_TIME</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <QueryQRTNElements>
+      <ProxyName>SAPSYELECTBEF60A067B151E41</ProxyName>
+      <Name>ToParent_SAP_SystemAdministrativeDataLastChangeIdentityUUID</Name>
+      <Type>APC_V_UUID</Type>
+      <MetaObjectProxyName>CONTENT</MetaObjectProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOTAB74293865A29DBAC</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">SAP_SYEDATAAF54AFE70C7CAE6F-LAST_CHANGE_IDENTITY_UUID</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <ParentNodeProxyName>SELECTF933BA6E05AE371C</ParentNodeProxyName>
+    <UseForFeedsIndicator>false</UseForFeedsIndicator>
+    <UseForEnterpriseSearchIndicator>false</UseForEnterpriseSearchIndicator>
+  </QueryAnnotationElements>
+</QueryDefinition>

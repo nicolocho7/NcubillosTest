@@ -1,0 +1,13 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BOBuildIDV2 raises msjBobuildID {
+
+	message msjBobuildID text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("ID")][AlternativeKey] element ID:ID;
+	[Label("UUID")]element UUID:UUID;
+	[Label("Description")]element description:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Consecutive")]element consecutive:NumberValue;
+	[Label("CompanyUUID")]element companyUUID:UUID;
+	action Increase;
+
+}

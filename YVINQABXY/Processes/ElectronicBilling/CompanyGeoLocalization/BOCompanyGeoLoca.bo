@@ -1,0 +1,25 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FO.Product.Global;
+import AP.FO.ProductDataMaintenance.Global;
+
+businessobject BOCompanyGeoLoca {
+
+        message msg text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+        [AlternativeKey] element ID:ID;
+		element UUID:UUID;
+		[Label("Company ID")]	element CompanyID				: ID;
+		association ToCompany to Company;
+		[Label("Country")]  element zCountryDirecM			:	CountryCode;
+		[Label("Departament")] element zDepartamentID		:	ID;
+		association  ToDepartament to BODepartament;
+		[Label("Province")]element zProvinceID		:	ID;	
+	    association toProvince to BOProvinceV2;
+		[Label("District")]element zDistrictID		:	ID;
+		association toDistrict to BODistrictV2;
+		[Label("Urbanization")]element zUrbanizacion   : LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Ubigeo")]element zUbigeo			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+
+
+}

@@ -1,0 +1,39 @@
+﻿//import ABSL;
+//
+//if(this.FilterID.IsInitial()){
+  	//var Code = "BOExecute";
+	//var InsBOBuildIDV2 = BOBuildIDV2.Retrieve(Code);
+	//if(InsBOBuildIDV2.IsSet())
+	//{
+		//InsBOBuildIDV2.Increase();		
+	//}else
+	//{
+		//var StructureBOBuildIDV2 : elementsof BOBuildIDV2;
+		//StructureBOBuildIDV2.ID = Code;
+		//StructureBOBuildIDV2.description = "Execute";
+		//StructureBOBuildIDV2.UUID.content = UUID.Generate();
+		//InsBOBuildIDV2 = BOBuildIDV2.Create(StructureBOBuildIDV2);
+		//InsBOBuildIDV2.Increase();
+	//}
+	//this.FilterID = InsBOBuildIDV2.consecutive;
+//
+	////var queryBuildID = BOBuildID.QueryByElements;
+	////var paramBuildID = queryBuildID.CreateSelectionParams();
+		////paramBuildID.Add(queryBuildID.ID, "I", "EQ", "");
+	////var resultBuildID = queryBuildID.Execute(paramBuildID).GetFirst();
+	////if(resultBuildID.IsSet()){
+		////resultBuildID.consecutive = resultBuildID.consecutive + 1;
+		////this. = resultBuildID.consecutive.ToString();		
+	////}
+	////else{
+		////this.FilterID = "1";		
+		//////-- create new register
+		////var insBuildID = BOBuildID.Create();
+		////if(insBuildID.IsSet()){
+			////insBuildID.consecutive = 1;
+			////insBuildID.description = "";
+			////insBuildID.ID = "BOExecute";
+			////insBuildID.UUID.content = UUID.Generate();
+		////}
+	////}
+//}

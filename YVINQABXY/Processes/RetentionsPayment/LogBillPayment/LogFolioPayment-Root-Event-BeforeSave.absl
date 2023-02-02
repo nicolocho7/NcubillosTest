@@ -1,0 +1,16 @@
+﻿import ABSL;
+if (this.LogID.IsInitial())
+{
+	var Code = "BOLOGFOLIOPAYMENT";
+	var InsBOBuildIDV2 = BOBuildIDV2.Retrieve(Code);
+	if(!InsBOBuildIDV2.IsSet())
+	{	
+		var StructureBOBuildIDV2 : elementsof BOBuildIDV2;
+		StructureBOBuildIDV2.ID = Code;
+		StructureBOBuildIDV2.description = "Log of Folio Payment";
+		StructureBOBuildIDV2.UUID.content = UUID.Generate();
+		InsBOBuildIDV2 = BOBuildIDV2.Create(StructureBOBuildIDV2);
+	}
+	InsBOBuildIDV2.Increase();	
+	this.LogID = InsBOBuildIDV2.consecutive;
+}

@@ -1,0 +1,505 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UXComponent xmlns:base="http://www.sap.com/a1s/cd/oberon/base-1.0" xmlns:uxv="http://www.sap.com/a1s/cd/oberon/uxview-1.0" xmlns:uxc="http://www.sap.com/a1s/cd/oberon/uxcontroller-1.0" id="hNtcil5sRK2JUiJJ5ZFbTm" enableBackendOperationsClubbing="true" name="BOBillsRetentions_OIF" AuthorizationClassificationCode="Application" useUIController="true" taskRegionDisabled="true" helpId="fe4699fa-af75-47bc-b8de-31a41e415177" designtimeVersion="5.20.0.7" modelVersion="1.0" xmlns="http://www.sap.com/a1s/cd/oberon/uxcomponent-1.0">
+ <uxc:Interface id="R0Y9OjxAJKsRqJPyEWlPmm">
+  <uxc:InPorts id="r4hHUhJu_q6Yygo0UOLU60">
+   <uxc:InPort id="Jk2mrd1YY4IdNss9yxgDNW" name="OBN_View_All_Inport" portTypeReference="To_BOBillsRetentions_viewAll" portTypePackage="/YVINQABXY_MAIN/SRC/Processes/RetentionsPayment/BillsRetentions/BOBillsRetentions_PTP.PTP.uicomponent" onFire="ViewAllHandler" navBO="BOBillsRetentions" navBONS="http://0004019099-one-off.sap.com/YVINQABXY_" navBONode="Root" navOperation="To_BOBillsRetentions_viewAll">
+    <uxc:Parameter id="ZHshY0yjeaAHoFfEENwAG0" name="Parameter0" bind="/Root/OBN_NAV_KEY"/>
+   </uxc:InPort>
+  </uxc:InPorts>
+  <uxc:Configuration id="SSuRNNHmS4YLM1k6mApamW"/>
+ </uxc:Interface>
+ <uxc:Implementation id="fAywusND4qgSN5VYycGl6W">
+  <uxc:DataModel id="rsIxymr7sqYPfvEumF$aIm" name="Root" designtimeMainBOProxyName="BOBillsRetentions" designtimeMainBOEsrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_">
+   <base:PropertyBag id="sknewXtbvaoQKFYkMhOXwG">
+    <base:Property id="qh7Nb$1ed4YbIS38wTfTSm" name="BINDINGSTATUS" value="OK"/>
+   </base:PropertyBag>
+   <uxc:Bind id="pkrsKBFfd4onh0GqIBbNQG" proxyName="BOBillsRetentions" field="Root" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+   <uxc:DataField id="s$rkJE$6cKAlLuj8_khpGG" name="@ErrorOccured" type="boolean">
+    <base:PropertyBag id="3jIl4VSOvac8cOFXCo9pDG">
+     <base:Property id="OOSl5oaJ4aATwOu7272rtG" name="BINDINGSTATUS" value="Internal"/>
+     <base:Property id="NnpCPMAFsaYhzqi2yY6l0m" name="USERCHANGEDNAME" value="True"/>
+    </base:PropertyBag>
+   </uxc:DataField>
+   <uxc:Structure id="JRTGjEiltqYiRB62F9oXZW" name="UIState">
+    <base:PropertyBag id="7$Yw15WmP4koSY8yTOhF0G">
+     <base:Property id="jJiXLJ7HwKk_3NAh4WQ$VG" name="BINDINGSTATUS" value="Internal"/>
+     <base:Property id="pgOMJpX9vaok6cQTTEIFVW" name="USERCHANGEDNAME" value="True"/>
+    </base:PropertyBag>
+    <uxc:DataField id="u0OE1YOgYasct6govafi20" name="ViewSwitchSelectedItem" type="string">
+     <base:PropertyBag id="fhLU2LnVWa2Yo2JomZ$eWm">
+      <base:Property id="osXB64Pbb4oYHi5tfU$Cem" name="BINDINGSTATUS" value="Internal"/>
+      <base:Property id="$EfWSaIs5Kk95wL6QteCMm" name="USERCHANGEDNAME" value="True"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+   </uxc:Structure>
+   <uxc:Structure id="lTHP1Q6bhaU$$49iEOZLa0" name="BOBillsRetentions">
+    <base:PropertyBag id="L8VVW8xVQqYij71L25e37G">
+     <base:Property id="4RQDgq6974ITk$0TY98zem" name="BINDINGSTATUS" value="OK"/>
+     <base:Property id="7PHAcTCCqqMkE$d08kdL6W" name="USERCHANGEDNAME" value="False"/>
+    </base:PropertyBag>
+    <uxc:Bind id="4G81Zg8VaaAfnw28zG5B0G" proxyName="BOBillsRetentions" field="Root" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    <uxc:DataField id="cCxPMWln3EqKajCwUDaLIg" name="CompanyID" type="string" cctsType="identifier">
+     <base:PropertyBag id="kAoLkNzmlkqu4u3IbiDNnQ">
+      <base:Property id="voBjbP1gjk_JKpo7kjinRA" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="IwAuIE8pTUOc7dbAxBLNkA" name="UITEXTID" value="YVINQABXY_0462A33974F2B443"/>
+      <base:Property id="mZaHjP4quUytXRLjlQYkAg" name="XFLD" value="Company ID"/>
+      <base:Property id="als52ekl3kewmra2xBA4xA" name="XCOL" value="Company ID"/>
+      <base:Property id="jrBc6fIqiEOG19MZxU3GVQ" name="XTOL" value="Company ID"/>
+     </base:PropertyBag>
+     <uxc:Bind id="QazxKXv8tEWELVCEukA3oQ" proxyName="BOBillsRetentions" field="-~CompanyID-~content" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="JH41vRq_rUOm3WQWaAFIrg" name="DocumentDate" type="date" cctsType="date">
+     <base:PropertyBag id="e7srTkf2v064pCkPG9gZSA">
+      <base:Property id="N0TS52wfdUu3iKQKd1L2_A" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="e_FTPEQZSEueZwP7BQ7tCQ" name="UITEXTID" value="YVINQABXY_11787285E9E3AD9C"/>
+      <base:Property id="piQPvAMgKkCARXCRC8eViA" name="XFLD" value="Document Date"/>
+      <base:Property id="NphlzIe3kEiKy2T3EBPxWQ" name="XCOL" value="Document Date"/>
+      <base:Property id="5XlyOvVuk0KNSUEqR5cuQw" name="XTOL" value="Document Date"/>
+     </base:PropertyBag>
+     <uxc:Bind id="eOLsEjp8AEGQueeTguAKmg" proxyName="BOBillsRetentions" field="-~DocumentDate" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="Btd2unsp9UaNjPDgU9bjAQ" name="AccountingDate" type="date" cctsType="date">
+     <base:PropertyBag id="OeWbMrFXjk6_W1EirlJlYw">
+      <base:Property id="f5HpcCesrU_6RbRWswU4Jw" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="AEj5rbncKU2bKS75rV_pwg" name="UITEXTID" value="YVINQABXY_4595EECFF70BFEB6"/>
+      <base:Property id="eAbVviOUxECtR2lm3psw9w" name="XFLD" value="Accounting Date"/>
+      <base:Property id="nfrpmZIzI0y9Kq5xAPTFsw" name="XCOL" value="Accounting Date"/>
+      <base:Property id="6KDOfXZkf0q1WC1jfS0wyQ" name="XTOL" value="Accounting Date"/>
+     </base:PropertyBag>
+     <uxc:Bind id="ohvLZHF0ZkyP5vViQE2rhA" proxyName="BOBillsRetentions" field="-~AccountingDate" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="vGYo8G_iRU_jBGMdXP8drg" name="ExternalReferenceID" type="string" cctsType="identifier">
+     <base:PropertyBag id="sfWAsYYnzEyJOJuxvdsEQQ">
+      <base:Property id="UsMhe25oKk21LffqdIVnpg" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="ieY4FVY0Kk6L1M59JZtumg" name="UITEXTID" value="YVINQABXY_C5C7C6DA4F6E8AB4"/>
+      <base:Property id="F9mRUhfQfE6WQ0te0Bi8cw" name="XFLD" value="External Reference ID"/>
+      <base:Property id="_4KuftA760Oj_9ts_GBoPA" name="XCOL" value="External Reference ID"/>
+      <base:Property id="zjz6Ain1AkOLZBwZaTeWew" name="XTOL" value="External Reference ID"/>
+     </base:PropertyBag>
+     <uxc:Bind id="ZEcHBFT0UkmRUjERZ9KoAA" proxyName="BOBillsRetentions" field="-~ExternalReferenceID" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="dKF5bQ6IfEWHr9xC9KWoYw" name="BillID" type="string" cctsType="identifier">
+     <base:PropertyBag id="3DUBU_kHJ02000WkEV6Y8Q">
+      <base:Property id="Q_bp5oLDK0qfdfvqWL7NeA" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="eCxy3vkMMEWLnmjoCILnZg" name="UITEXTID" value="YVINQABXY_E10BF6085733C517"/>
+      <base:Property id="ARWF_qK1TU_6cd0Ze9AhyQ" name="XFLD" value="Bill ID"/>
+      <base:Property id="bRA44DRf8UiPAeok_RdsuQ" name="XCOL" value="Bill ID"/>
+      <base:Property id="TuJo4BT30066MXKXjAnIgg" name="XTOL" value="Bill ID"/>
+     </base:PropertyBag>
+     <uxc:Bind id="diXbAaDOw0a2OcYLOB_AQQ" proxyName="BOBillsRetentions" field="-~BillID" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="Ao05tOeDSUSBQyhZNSF2fA" name="BillUUID" type="string" cctsType="identifier">
+     <base:PropertyBag id="FFasZGk7MEmOlBzfkJb6VA">
+      <base:Property id="mhy6eIL9kEmB60K_HGlAwQ" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="BTXc7MhIBE2Rm4tVABo1Qg" name="UITEXTID" value="YVINQABXY_534AD658BB610D92"/>
+      <base:Property id="O9AcG87G2E2hl_Ki8qTG6Q" name="XFLD" value="Bill UUID"/>
+      <base:Property id="YSX6aENMB0_BG4VXlGKQLw" name="XCOL" value="Bill UUID"/>
+      <base:Property id="YVDJ9lOQ_E2mc4LP2nEAMg" name="XTOL" value="Bill UUID"/>
+     </base:PropertyBag>
+     <uxc:Bind id="PoAgwGPUAU_OtHT_6WIGEQ" proxyName="BOBillsRetentions" field="-~BillUUID-~content" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:Structure id="MtBN8_ZtxUi9b_H6ynofxQ" name="NetAmount" cctsType="none">
+     <base:PropertyBag id="dW05_mywKUKfCxV1RWlVXQ">
+      <base:Property id="PAStjCtWr0Wm5bZ_VP_xww" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="GBW57z6a_0ywwBqx53yiNw" name="UITEXTID" value="YVINQABXY_77E8E8396096906A"/>
+      <base:Property id="IoJucnHRVkuvXYnvA_NCAQ" name="XFLD" value="Net Amount"/>
+      <base:Property id="_Ad1AEMJjkOQmQAjAkkX4A" name="XCOL" value="Net Amount"/>
+      <base:Property id="B02M446WN0uGxgPRYAighw" name="XTOL" value="Net Amount"/>
+     </base:PropertyBag>
+     <uxc:Bind id="2L_c69dJTUCiuAe_C0GVzw" proxyName="BOBillsRetentions" field="-~NetAmount" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+     <uxc:DataField id="LO5QxjO59kKZfMdk8ddhRQ" name="content" type="float" cctsType="amount">
+      <base:PropertyBag id="h2U4O8J2MUO3JLVfQW8ihA">
+       <base:Property id="HAThW4Ebo0Wdwz8CVFQW1g" name="BINDINGSTATUS" value="OK"/>
+       <base:Property id="O7PFU5zl00_bhHgArl0jkQ" name="UITEXTID" value="YVINQABXY_77E8E8396096906A"/>
+       <base:Property id="BJMmRDh9H0OY4ZRYvk9FmA" name="XFLD" value="Net Amount"/>
+       <base:Property id="EKyRZ6AdxU_3oaqFcSF_Eg" name="XCOL" value="Net Amount"/>
+       <base:Property id="kmXuQO9q5UypwrdcSSX4qQ" name="XTOL" value="Net Amount"/>
+      </base:PropertyBag>
+      <uxc:Bind id="AVod6Ju5mkSZPkCS6ZkTzQ" proxyName="BOBillsRetentions" field="-~content" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+     </uxc:DataField>
+     <uxc:DataField id="iI7XPmw4SUm5PVwdw_2jCg" name="currencyCode" type="string" cctsType="code">
+      <base:PropertyBag id="zYuQDaGA0EKEQP_nPX39uQ">
+       <base:Property id="TyynWBNLzE6GZVJ3tR5vEA" name="BINDINGSTATUS" value="OK"/>
+       <base:Property id="DFjcSDgbsEmyBoA00j2AlQ" name="UITEXTID" value=""/>
+       <base:Property id="L1S2DPS91EWfCvpvnFre7A" name="XFLD" value=""/>
+       <base:Property id="grJUJo7eZE6ACICLo8I5Hg" name="XCOL" value=""/>
+       <base:Property id="sUwZqRY5yEmB0JvfDqjL7A" name="XTOL" value=""/>
+      </base:PropertyBag>
+      <uxc:Bind id="PYA1YCPKEkiAtdoPI_gPew" proxyName="BOBillsRetentions" field="-~currencyCode" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+      <uxc:Codelist id="vSn2zRzSuEWFkC0BArlBSw" type="static" typeName="CurrencyCode" esrNamespace="http://sap.com/xi/BASIS/Global"/>
+     </uxc:DataField>
+    </uxc:Structure>
+    <uxc:Structure id="UqNdSOVwNEqFHmMOVX1nAw" name="GrossAmount" cctsType="none">
+     <base:PropertyBag id="b5bcsmaYoEiZCsxigk8tdw">
+      <base:Property id="g26IzBtlIE_FzO4mvuo14g" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="XVkC8CJOk02q9KhsDqgzDQ" name="UITEXTID" value="YVINQABXY_F0F38EC8DE3F1E81"/>
+      <base:Property id="56Q1bS0eC0WRyCFf6GnssA" name="XFLD" value="Gross Amount"/>
+      <base:Property id="AIyb3AFUJUOPltvOkqp_aQ" name="XCOL" value="Gross Amount"/>
+      <base:Property id="nxNIUKpP9ESAPNaqzKLnkw" name="XTOL" value="Gross Amount"/>
+     </base:PropertyBag>
+     <uxc:Bind id="Mvmvxt0ZHUuBAXs5rtAkTw" proxyName="BOBillsRetentions" field="-~GrossAmount" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+     <uxc:DataField id="A3aRPx9F8kuULTHiAVe45A" name="content" type="float" cctsType="amount">
+      <base:PropertyBag id="isHIctk_5UmdnxnSZYGZKg">
+       <base:Property id="535tATHvKEaWhS_3Vr79SA" name="BINDINGSTATUS" value="OK"/>
+       <base:Property id="GC9qMik1FkCxUd687ufFyw" name="UITEXTID" value="YVINQABXY_F0F38EC8DE3F1E81"/>
+       <base:Property id="KGoYyNKrCka04P6ktWRveA" name="XFLD" value="Gross Amount"/>
+       <base:Property id="EgEAVzurW0GIpLFbkdvwHw" name="XCOL" value="Gross Amount"/>
+       <base:Property id="aqATsqdzuUyhHai2pf_vIA" name="XTOL" value="Gross Amount"/>
+      </base:PropertyBag>
+      <uxc:Bind id="4xgSrKWzUU_0h4rMxoKcwg" proxyName="BOBillsRetentions" field="-~content" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+     </uxc:DataField>
+     <uxc:DataField id="qsDf4kpoXku1HT1fW60WTg" name="currencyCode" type="string" cctsType="code">
+      <base:PropertyBag id="dzhOi6WC4UycuHyOHa2g_g">
+       <base:Property id="A2Qx961Q_0O2T4HjZA29yg" name="BINDINGSTATUS" value="OK"/>
+       <base:Property id="_iITKTx9VkGgaA2my5hpEw" name="UITEXTID" value=""/>
+       <base:Property id="4AJuA69MnUuov6XvTtIIMA" name="XFLD" value=""/>
+       <base:Property id="AAyZVTr0ZUuH0Lxc0TX5dw" name="XCOL" value=""/>
+       <base:Property id="eFe511LdlUunJr2fZ_pN9A" name="XTOL" value=""/>
+      </base:PropertyBag>
+      <uxc:Bind id="Ej_jmKEVJUmftaxb2szNlg" proxyName="BOBillsRetentions" field="-~currencyCode" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+      <uxc:Codelist id="DfeP9ELCu0SNFpJZ_Qq3jg" type="static" typeName="CurrencyCode" esrNamespace="http://sap.com/xi/BASIS/Global"/>
+     </uxc:DataField>
+    </uxc:Structure>
+    <uxc:Structure id="TeMopQx6UUOXqMfuQ1qE5g" name="RetentionAmount" cctsType="none">
+     <base:PropertyBag id="IZywJWbLc0y9s89mxq0MrQ">
+      <base:Property id="ZJCEt507HkiYQo4_D94d9g" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="Si9f8V5o5USilTayqaojpQ" name="UITEXTID" value="YVINQABXY_4FDA9A900E6215EC"/>
+      <base:Property id="DpqNu3zgeUWAKbBUrkt4xw" name="XFLD" value="Retention Amount"/>
+      <base:Property id="TlAHhBu1s0m5xfTSsYrLUg" name="XCOL" value="Retention Amount"/>
+      <base:Property id="ulYYRDW6SE6xXULuXBT47A" name="XTOL" value="Retention Amount"/>
+     </base:PropertyBag>
+     <uxc:Bind id="SgFzCaLThkahcWbC6Uz0yg" proxyName="BOBillsRetentions" field="-~RetentionAmount" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+     <uxc:DataField id="DhjWYP3aKEGKeUnUXZYkKw" name="content" type="float" cctsType="amount">
+      <base:PropertyBag id="W8j1oVcKnkW6dPD3ydR8bQ">
+       <base:Property id="gjrIdTBE30abhG8L4mukcQ" name="BINDINGSTATUS" value="OK"/>
+       <base:Property id="SN1iyRs61Eq2zNg93xRbCw" name="UITEXTID" value="YVINQABXY_4FDA9A900E6215EC"/>
+       <base:Property id="flv_iwuGLkiOnspAiFWTHg" name="XFLD" value="Retention Amount"/>
+       <base:Property id="DUEpmriZa0mOvxtnhkSX5Q" name="XCOL" value="Retention Amount"/>
+       <base:Property id="XEz4Lq83Rke0SLdoqlKywg" name="XTOL" value="Retention Amount"/>
+      </base:PropertyBag>
+      <uxc:Bind id="CluoLOzJ102BaB0aDiym9g" proxyName="BOBillsRetentions" field="-~content" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+     </uxc:DataField>
+     <uxc:DataField id="JfSTAwwN5kqQdSbtioXHWA" name="currencyCode" type="string" cctsType="code">
+      <base:PropertyBag id="Ty1ARxuBOUqElFQb0GGugA">
+       <base:Property id="PQKTNu8gTkiyZn7gnzXaVQ" name="BINDINGSTATUS" value="OK"/>
+       <base:Property id="tkrtquAkREaufvBWpz6G_g" name="UITEXTID" value=""/>
+       <base:Property id="bmDFFVvluEOI28NpwCQHjQ" name="XFLD" value=""/>
+       <base:Property id="rAoRVYlEAkquI0UeA1Htjg" name="XCOL" value=""/>
+       <base:Property id="Gnkzak6fSEaE0yb3DNCpaw" name="XTOL" value=""/>
+      </base:PropertyBag>
+      <uxc:Bind id="OOjGWUfx80KDyMewcwKDhw" proxyName="BOBillsRetentions" field="-~currencyCode" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+      <uxc:Codelist id="Gxb_LyVG5ECANUDrAdR9xQ" type="static" typeName="CurrencyCode" esrNamespace="http://sap.com/xi/BASIS/Global"/>
+     </uxc:DataField>
+    </uxc:Structure>
+    <uxc:DataField id="AwinQPD9ykmyyEReizWlVw" name="Currency" type="string" cctsType="code">
+     <base:PropertyBag id="MPbs_xNhQ06TYYriqxbcLg">
+      <base:Property id="8z2llt2W5021W25fyNxSWQ" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="C_6pQcowWEGNHFH4fTB28w" name="UITEXTID" value="YVINQABXY_DF0375ED1F20820B"/>
+      <base:Property id="2daFG43qD0mdzVIXBNhemA" name="XFLD" value="Currency"/>
+      <base:Property id="rjnMFQ2Ao0akuEj3RFby9w" name="XCOL" value="Currency"/>
+      <base:Property id="G8M5minrnkWJMlUNVTSAog" name="XTOL" value="Currency"/>
+     </base:PropertyBag>
+     <uxc:Bind id="6bhfmfUd_k2LAACfu1aqOA" proxyName="BOBillsRetentions" field="-~Currency" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+     <uxc:Codelist id="9AjtXyQFiUe0XNVSjLQhTA" type="static" typeName="CurrencyCode" esrNamespace="http://sap.com/xi/AP/Common/GDT"/>
+    </uxc:DataField>
+    <uxc:DataField id="Ui_5WLuOJq2nAwhJNFr5cm" name="NodeID" type="string">
+     <base:PropertyBag id="WdWWAoo3WaMRItkXql1raW">
+      <base:Property id="a5MX93C2iq6R$L3h4Xagrm" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="1MfCUnAYXqkaLi7B9G4NGm" name="USERCHANGEDNAME" value="True"/>
+     </base:PropertyBag>
+     <uxc:Bind id="evrUaMg3y4oOtk06ZwX7fm" proxyName="BOBillsRetentions" field="-~NodeID" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+   </uxc:Structure>
+   <uxc:DataField id="rRcGGwTplK6ukdAknhP2a0" name="OBN_NAV_KEY" type="string">
+    <base:PropertyBag id="0eFpsQd9SaYTE8GEOiTU9m">
+     <base:Property id="XJP8DdF4qKAnrHJOxWsk_0" name="BINDINGSTATUS" value="ToBind"/>
+     <base:Property id="VvpulYI0r4oZuSukMdtn6m" name="USERCHANGEDNAME" value="True"/>
+    </base:PropertyBag>
+   </uxc:DataField>
+   <uxc:Structure id="uswqsUWT9KgmvWqHfoW1dG" name="$System">
+    <base:PropertyBag id="Q_B8wsIKGqUlHAUWUk69jW">
+     <base:Property id="OlLKCzNu4agptHRHxsIB2G" name="BINDINGSTATUS" value="Internal"/>
+    </base:PropertyBag>
+    <uxc:DataField id="4BtZf3qnDqUD3kcFlwe1am" name="SessionUrl" type="string">
+     <base:PropertyBag id="GrJWgcQh9aowC8VvYXdxDG">
+      <base:Property id="7br86fQ6FKcdG8ruzb4gR0" name="BINDINGSTATUS" value="Internal"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+    <uxc:DataField id="ARIkgJXkK4ckcD$4juWrDW" name="Saved" type="boolean">
+     <base:PropertyBag id="CeESKQCZ$qIdtdujMUCXkG">
+      <base:Property id="cuTg5Ty_JKcp9YuKkf1LiG" name="BINDINGSTATUS" value="Internal"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+    <uxc:DataField id="JN$UpF71cqQPuWE3zRFX5G" name="IsPersistent" type="boolean">
+     <base:PropertyBag id="5Jq8XAmoc4otNSCq9O4V6m">
+      <base:Property id="Yb40q_nY4qkIuTZByosdmG" name="BINDINGSTATUS" value="Internal"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+   </uxc:Structure>
+  </uxc:DataModel>
+  <uxc:EventHandlers id="e0GEm95gTq6TmlbvagGUe0">
+   <uxc:EventHandler id="2z0UHyfVXa6dSOVtDh5IYm" name="SaveHandler">
+    <uxc:WindowAction id="EcgJtU8UbacVAsBqXc2EIW" name="Save" action="Save"/>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="a2kNyfAoMq2YInIOc8Pz1G" name="CreateHandler" eventType="simple">
+    <uxc:BoOperation id="40_yiE2sH4El8zfDDI2LsW" name="Create" proxyName="BOBillsRetentions" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_" operation="Create"/>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="sICdgFRIoq2Ygm4HxxqCyG" name="ViewAllHandler">
+    <uxc:BoOperation id="6ZMrk3qm0awumsdySc$qkW" name="Operation1" proxyName="BOBillsRetentions" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_" operation="Read">
+     <uxc:BoOperationParameter id="txzt52_XLK6E9jLmcX1HRm" name="NavKey" bind="/Root/OBN_NAV_KEY" type="nodeId" path="/Root/BOBillsRetentions/NodeID"/>
+    </uxc:BoOperation>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="vAommTVlWKEQiwTg_NxrQm" name="CloseHandler">
+    <uxc:WindowAction id="XgQfW7R1pa6sEXgr_fz_K0" name="Operation" action="Close"/>
+   </uxc:EventHandler>
+  </uxc:EventHandlers>
+  <uxc:ModelChanges/>
+ </uxc:Implementation>
+ <uxc:Navigation id="S$lJhzLTTqQXl_ly4VsLnW"/>
+ <uxc:EmbeddedComponents id="0GA_tdeGNqwVjdI04FCSzW"/>
+ <uxc:RBAMData id="50ecLbjAy4MOrdNhbfYrE0" accessCheckMode="PrivilegedExceptAccessControlledBusinessObjects">
+  <uxc:AccessControlledBusinessObject id="xyFiVTRY_qQOYNGhlRWsWW" BO="BOBillsRetentions" BONS="http://0004019099-one-off.sap.com/YVINQABXY_" unrestrictedAccess="true"/>
+ </uxc:RBAMData>
+ <uxc:Description id="zs88KqsAVaMKDL3Z_faRDG" textPoolId="DTIBpVjcgqQbOYm3S4vKjW"/>
+ <Tags id="7UGpWxSINKU9cuGqT0IWHG">
+          </Tags>
+ <UXView id="Bpg7a1BnnK6cGvWTJ228OG" patternType="objectInstance" checkClassification="Standard" checkMode="Both">
+  <uxv:IdentificationRegion id="1GC_8KDui4UOJ9kNi3qAEW">
+   <uxv:Title id="PVPq6vaMIq_VzN5TFnzWtG" textPoolId="cd814d84b1254e01b1b6f092479ed179"/>
+  </uxv:IdentificationRegion>
+  <uxv:ContextualNavigationRegion id="h9yz0FHc4a_lKGh_KxYJeG">
+   <uxv:ViewSwitchNavigation id="z0GdRKlweKM$ZDOh9N4VPW">
+    <uxv:NavigationItem id="vrKkAihq8KcXjwFjX2wm5W" navigationItemId="NavigationItem_jwfa0SEV1KI6_3JN7GyKWm">
+     <base:PropertyBag id="Vw7Yv7kO2a2Cd$XcAgR_40">
+      <base:Property id="tBycSHg6w4kmHGQTb3rTN0" name="NavigationTarget" value=""/>
+     </base:PropertyBag>
+     <uxv:Title id="RSiShoqtXqEvBg16RQGXk0" textPoolId="1c6dbd827ce248b4992fac68439bcf41"/>
+    </uxv:NavigationItem>
+    <uxv:NavigationItem id="C0bo7Qy7zqY_c3JPaEq9Rm" navigationItemId="NavigationItem1_Ue5VkLVxYa2G6mbKghBFXm">
+     <base:PropertyBag id="XgOn58cGu4_Hi7UWHvL090">
+      <base:Property id="NtgWFIevuK2riw3I5RbMvm" name="NavigationTarget" value=""/>
+     </base:PropertyBag>
+     <uxv:Title id="eEpDAsb4R4EwH7iZhVZaFG" textPoolId="8898aff204454a91b0db5f1cbeb219c2"/>
+    </uxv:NavigationItem>
+    <uxv:NavigationItem id="A3q2fObDWKY2CpwEEnQKVW" navigationItemId="NavigationItem2_9lZlohXyV4MHv4jszm8wcG">
+     <base:PropertyBag id="vPdORFa3wqcrJU8oTZp$GG">
+      <base:Property id="NKWkypnLF4UCZztQN9Ykvm" name="NavigationTarget" value=""/>
+     </base:PropertyBag>
+     <uxv:Title id="DLdpbqrkEKw3N1_EGogBLm" textPoolId="72d10059fa2543c280abbe2b092f4e61"/>
+    </uxv:NavigationItem>
+    <uxv:NavigationItem id="D9sfIXiFZKQVBaOO6SMoV0" navigationItemId="NavigationItem3_b2OdjH_iKa6Gjar_bnXPHm">
+     <base:PropertyBag id="cQHP1PoiNqEl9Uie921E_G">
+      <base:Property id="k5nhWNg93KY96cws9aSseG" name="NavigationTarget" value=""/>
+     </base:PropertyBag>
+     <uxv:Title id="y1xWJyAiB4UyCNJVOukuyG" textPoolId="586dc08ebd844fe0a0237cd94ebd353e"/>
+    </uxv:NavigationItem>
+    <uxv:NavigationItem id="jnmtk83HmKUFjoPXrYKgnG" navigationItemId="NavigationItem4_Bdnm29gZ9akaOKfrn0yUUm">
+     <base:PropertyBag id="lRRVkbrz8qQZwUbA5VQPN0">
+      <base:Property id="c$ZCazoBm4kuHayAag6um0" name="NavigationTarget" value=""/>
+     </base:PropertyBag>
+     <uxv:Title id="7585kA_DHKc1pGaExvOnlG" textPoolId="ffde5dd1103f4c8f90abfc1f28ba3e4a"/>
+    </uxv:NavigationItem>
+    <uxv:SelectedNavigationItemId id="57daEC_8_aEhz2$OI0T$$W" bindingExpression="/Root/UIState/ViewSwitchSelectedItem"/>
+   </uxv:ViewSwitchNavigation>
+   <uxv:FunctionBar id="BDlGS_gSwqwEjecUamaX9m">
+    <uxv:ButtonGroup id="H2M9XNn56qogCBNXpM3DTW" name="ActionButtons">
+     <uxv:Button id="_Wv5nG_0RqAXtLfZ9QqrEm" name="Save" onClick="SaveHandler" style="Standard">
+      <uxv:Text id="rTYbk8neR4Mx7vRr1fWO$G" textPoolId="e3bbca08e04245d380a3491fa150ef7b"/>
+     </uxv:Button>
+     <uxv:Button id="wlDzWUDSA4sEnJR0t_W5GW" name="Close" onClick="CloseHandler" style="Cancel">
+      <uxv:Text id="jZo49xtTt4UblNsxNv5PuG" textPoolId="b6d3802bfa274f33a8085780fb212d02"/>
+     </uxv:Button>
+    </uxv:ButtonGroup>
+    <uxv:ButtonGroup id="_fYeoij524YxoRJO3Cy0Xm" name="ApplicationSpecificButtons">
+		 
+          </uxv:ButtonGroup>
+   </uxv:FunctionBar>
+  </uxv:ContextualNavigationRegion>
+  <uxv:ViewContainerRegion id="aAf0JbJ6C4o31qapXFaeSm">
+   <uxv:View id="_ErGk7B$iqgdXmAxmkLSc0" columns="2" rows="2" navigationItemId="NavigationItem_jwfa0SEV1KI6_3JN7GyKWm">
+    <uxv:PaneContainer id="_nKO8XXJr4IkWvnTG79G5m" column="0" row="0" colSpan="2" rowSpan="2">
+     <uxv:FormPane id="mkmo1qdNKqo7buT$U0$Zj0">
+      <uxv:SectionGroup id="vSMJXBECX4gXunrJDAVXH0" column="0" row="0" showGroupName="true">
+       <base:PropertyBag id="zy3ylzOgbKw40HAwcX2UdW">
+        <base:Property id="m8HUqhLOJKA0rZlRZaNUmm" name="Navigation" value=""/>
+       </base:PropertyBag>
+       <uxv:SectionGroupName id="xLE0RN6KH4gFrxmYxPavdG" textPoolId="zkONqtbQ7aUwmga20vcEv0"/>
+       <uxv:SectionGroupItem id="ezDfyjynC0GBlOB5uPrFxw">
+        <uxv:Label id="jBVUaWnTI0GD2xSo5xowFQ" textPoolId="X0PWbXAIm0alNpV4IMPYxA"/>
+        <uxv:InputField id="W9ABuQeVLkKUcAhfjMGM3w" name="CompanyID" cctsType="identifier">
+         <uxv:IdentifierCCTSConfig id="5fnimTwgSEymSIat_BXVbw" interpretAsInteger="false"/>
+         <uxv:Value id="4ImELQuYJEapifHWiCU4JQ" bindingExpression="/Root/BOBillsRetentions/CompanyID">
+          <!-- <base:PropertyBag id="XvxnsafwsUaAf6Bq9OVnIQ">
+											<base:Property id="s2_Oo7dso0yt9y15qdyZeQ" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="C3BmnfGp9EWghkWBJ1nDsg">
+        <uxv:Label id="pzO2PzlKrUetENKB0MIqyg" textPoolId="SBccVLpU30u5K05GAcfpHQ"/>
+        <uxv:InputField id="RiQw3oeibUWQt0Hd9_Iccg" name="DocumentDate" cctsType="date">
+         <uxv:DateCCTSConfig id="KwcJdc88VkWRLgAYB9kEOA"/>
+         <uxv:Value id="ZauQiMuAh0ulH6OfSB7GDQ" bindingExpression="/Root/BOBillsRetentions/DocumentDate">
+          <!-- <base:PropertyBag id="kOyg2Jljj068Vy2iR0qxAw">
+											<base:Property id="UgZpCCrOeUq6hohvF4ZilQ" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="qdFvnPwc0k_L1R_RAEBz7Q">
+        <uxv:Label id="QlmZX3Np9EGmNeokzV8VPQ" textPoolId="TGmn2TAZuU2wX5wA3T_kQg"/>
+        <uxv:InputField id="HDWOcpwgP0_4CQgyNb3Sww" name="AccountingDate" cctsType="date">
+         <uxv:DateCCTSConfig id="5ArzYSO2GEWXeVo_lOdNaA"/>
+         <uxv:Value id="ConrbfouPEG62FhkJU_qxQ" bindingExpression="/Root/BOBillsRetentions/AccountingDate">
+          <!-- <base:PropertyBag id="rktgSgHwAEiQrfNu_D41Tw">
+											<base:Property id="KZDWII2jI021zY_FYJ8Ymg" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="WA4qOJ2nuEy4WyFi9D78qA">
+        <uxv:Label id="6aAUuZCZeEO9z0aKSx3tiw" textPoolId="yM28PZHTKEOH095sM7qwBw"/>
+        <uxv:InputField id="qUsD1n8FVE2qQxRhdIPHmQ" name="ExternalReferenceID" cctsType="identifier">
+         <uxv:IdentifierCCTSConfig id="n2Eim_oxzE2kEVTZ9vy7ww" interpretAsInteger="false"/>
+         <uxv:Value id="PLFjKDWdAEaXhLwbjfEzBA" bindingExpression="/Root/BOBillsRetentions/ExternalReferenceID">
+          <!-- <base:PropertyBag id="OoU6FEFJOUeeEnKdNoBT4A">
+											<base:Property id="iAQmHSav_E6Ni2UYVh4tUQ" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="FgRjF_U_F0erBAS3CBuPqg">
+        <uxv:Label id="FSFt_kZKqE6Ovk2W2anZlw" textPoolId="pYLfzjQ38Em02kw3TmOB7g"/>
+        <uxv:InputField id="iST8Ntsv9Uuxkk_iIVxUDA" name="BillID" cctsType="identifier">
+         <uxv:IdentifierCCTSConfig id="tTdHvt4zaEyjJtcrBT3x3A" interpretAsInteger="false"/>
+         <uxv:Value id="jO_FTy7gik6CxTgiornU1A" bindingExpression="/Root/BOBillsRetentions/BillID">
+          <!-- <base:PropertyBag id="3NajGPm06EiCgSM64xlkTw">
+											<base:Property id="DHeiNFkC30mT5ASVGnxuQA" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="IXCdoAd25kWWeVuB7g4dOQ">
+        <uxv:Label id="WxRI11l2ZEOXBOQmae47Gg" textPoolId="ZsPjcGxKnki6gATm81qwnQ"/>
+        <uxv:InputField id="s2j43kU9aUmvTlwkd2VZJg" name="BillUUID" cctsType="identifier">
+         <uxv:IdentifierCCTSConfig id="k_42aLhjEUG3nRlkkP3A7w" interpretAsInteger="false"/>
+         <uxv:Value id="J6PAoGDKyEOVjqiqK85bfQ" bindingExpression="/Root/BOBillsRetentions/BillUUID">
+          <!-- <base:PropertyBag id="kBOVO4fI6EehlFPcAYisaA">
+											<base:Property id="seVE30T8OkS_kYb1SAMyJg" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="LmsETmNsI0ah452hCEub_Q">
+        <uxv:Label id="jkuTJCxXbUOzXmDrVbrymw" textPoolId="0uiJyvDuv0eZf6fWAi3Beg"/>
+        <uxv:CompoundField id="xu65t7JXGEqKsBuQaOZ70w" name="NetAmount" cctsType="amount" structureBinding="/Root/BOBillsRetentions/NetAmount">
+         <uxv:InputField id="PMB03iqqs06fm9yALSmbGw" name="content" cctsType="amount">
+          <uxv:Value id="UyhyuRdxbUKfdQPs6851bw" bindingExpression="/Root/BOBillsRetentions/NetAmount/content">
+           <!-- <base:PropertyBag id="FOKBtj5K5keYR03SCCVHmg">
+												<base:Property id="GKguHoc5nEaNxuBztDQyeA" name="Name" value="" />
+											</base:PropertyBag> -->
+          </uxv:Value>
+         </uxv:InputField>
+         <uxv:DropDownListBox id="16HGo2KaLEGIcedrZphdfA" name="currencyCode" cctsType="code">
+          <uxv:CodeCCTSConfig id="gQl2sRK81EOLYHH0X_HMYg"/>
+          <uxv:Value id="dhgV6Mnbv0CZowLXYfEe9A" bindingExpression="/Root/BOBillsRetentions/NetAmount/currencyCode">
+           <!-- <base:PropertyBag id="OerDtsIG1EermPQG21uVEg">
+												<base:Property id="j9sh0_YLOEuf1VFG08ju_w" name="Name" value="" />
+											</base:PropertyBag> -->
+          </uxv:Value>
+         </uxv:DropDownListBox>
+        </uxv:CompoundField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="4g1RE1AWOUGhHisF9b99RQ">
+        <uxv:Label id="5lE9PBDx_0qHdQVwIvRxjA" textPoolId="xh5oIXEKiEisIcvz3XI_VA"/>
+        <uxv:CompoundField id="xqc64Lu1tEy4ZcaAFI6JHw" name="GrossAmount" cctsType="amount" structureBinding="/Root/BOBillsRetentions/GrossAmount">
+         <uxv:InputField id="AiK8Sg9xi0ObQfjln5a9Fw" name="content" cctsType="amount">
+          <uxv:Value id="z05A9nSS5k6c76YvrBFAIg" bindingExpression="/Root/BOBillsRetentions/GrossAmount/content">
+           <!-- <base:PropertyBag id="AWQhia4f8kSAS9mEuJpCRA">
+												<base:Property id="SWqgcGmbski2AgKDIvUUcw" name="Name" value="" />
+											</base:PropertyBag> -->
+          </uxv:Value>
+         </uxv:InputField>
+         <uxv:DropDownListBox id="6Y7Ex5HJSU6ACp8AhFeUag" name="currencyCode" cctsType="code">
+          <uxv:CodeCCTSConfig id="itsVbdxdIk_ayuIapeDjbg"/>
+          <uxv:Value id="852NXGw9z0C6GtLhNRpA6w" bindingExpression="/Root/BOBillsRetentions/GrossAmount/currencyCode">
+           <!-- <base:PropertyBag id="OqIaC82mkUuhoE3eX1TXNQ">
+												<base:Property id="DGbn8VtAV0_firk3p1vrNg" name="Name" value="" />
+											</base:PropertyBag> -->
+          </uxv:Value>
+         </uxv:DropDownListBox>
+        </uxv:CompoundField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="zVaWDZTNbkCFJezxJdeppA">
+        <uxv:Label id="nL49NOVx_kakeb4JkK16EA" textPoolId="WBgTxm0CAEC8U_Cn_KMA9Q"/>
+        <uxv:CompoundField id="YgNDa8z25EufWlkOSn9ACg" name="RetentionAmount" cctsType="amount" structureBinding="/Root/BOBillsRetentions/RetentionAmount">
+         <uxv:InputField id="mfBjGexA3E_V8dGOiYGRyA" name="content" cctsType="amount">
+          <uxv:Value id="oXWbGrvOBEmEQTQy0ZgO9w" bindingExpression="/Root/BOBillsRetentions/RetentionAmount/content">
+           <!-- <base:PropertyBag id="EPrhLufcV0uoMDXn0kuaOg">
+												<base:Property id="8CksZOsQeEiFu8Jr7cC0ew" name="Name" value="" />
+											</base:PropertyBag> -->
+          </uxv:Value>
+         </uxv:InputField>
+         <uxv:DropDownListBox id="YQx_i0diAEOQx9ykiqoZmA" name="currencyCode" cctsType="code">
+          <uxv:CodeCCTSConfig id="HxV6lMvACUuWjck6ntaezg"/>
+          <uxv:Value id="WakVIBtmqkOTgKXNp0_mTg" bindingExpression="/Root/BOBillsRetentions/RetentionAmount/currencyCode">
+           <!-- <base:PropertyBag id="XC7W1gqxN02A8C9J7nQQXQ">
+												<base:Property id="LDs6LsZw_k6A4uu3MUEzFw" name="Name" value="" />
+											</base:PropertyBag> -->
+          </uxv:Value>
+         </uxv:DropDownListBox>
+        </uxv:CompoundField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="xDfbkry5Z0GJi9WbzAys2w">
+        <uxv:Label id="J71slyWEcUG4JP5f2IPPDQ" textPoolId="2uVHqCCbWUmeIVIAHVab5w"/>
+        <uxv:DropDownListBox id="eqWimiLZskuYDtMuerHgqg" name="Currency" cctsType="code">
+         <uxv:CodeCCTSConfig id="JAKSCvXPUkOuKPAPoJeIuw"/>
+         <uxv:Value id="17E0BC8NJkODUXZPvID8hQ" bindingExpression="/Root/BOBillsRetentions/Currency">
+          <!-- <base:PropertyBag id="euhcHf_pwUSAZPGfumKnrg">
+											<base:Property id="rGiKzBhx4EyAvFWArbKc3w" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:DropDownListBox>
+       </uxv:SectionGroupItem>
+      </uxv:SectionGroup>
+     </uxv:FormPane>
+    </uxv:PaneContainer>
+   </uxv:View>
+   <uxv:View id="N4Y5BFvzuasNFvcvYPSYmW" columns="2" rows="2" navigationItemId="NavigationItem1_Ue5VkLVxYa2G6mbKghBFXm"/>
+   <uxv:View id="SOnyJXESR4wEXH1IBkPs3G" columns="2" rows="2" navigationItemId="NavigationItem2_9lZlohXyV4MHv4jszm8wcG"/>
+   <uxv:View id="gPBF_IkXdKcWiGKrwPfmtW" columns="2" rows="2" navigationItemId="NavigationItem3_b2OdjH_iKa6Gjar_bnXPHm"/>
+   <uxv:View id="m2Yr7JBJV4U$C87qmB1q_m" columns="1" rows="1" navigationItemId="NavigationItem4_Bdnm29gZ9akaOKfrn0yUUm"/>
+  </uxv:ViewContainerRegion>
+  <uxv:ActionForms/>
+ </UXView>
+ <TextPool>
+  <base:TextBlock language="EN" masterLanguage="true" currentLanguage="true">
+   <base:TextPoolEntry id="oDl1EhIL$aEVczFMn5i0KG" textUuid="cd814d84b1254e01b1b6f092479ed179" text="BOBillsRetentions : &lt;ID and/or Description&gt;" textCategory="XTIT"/>
+   <base:TextPoolEntry id="D7dONOlLD4ohDAEGe7d11G" textUuid="e3bbca08e04245d380a3491fa150ef7b" text="Save" textCategory="XBUT"/>
+   <base:TextPoolEntry id="vg1t2LcoIqcpE7Lcvt04TW" textUuid="b6d3802bfa274f33a8085780fb212d02" text="Close" textCategory="XBUT"/>
+   <base:TextPoolEntry id="qDlO8X5JKqka5Y8gFqo6u0" textUuid="1c6dbd827ce248b4992fac68439bcf41" text="General" textCategory="XTBS"/>
+   <base:TextPoolEntry id="BBUC7XLfP4gpHz0SqtF_km" textUuid="8898aff204454a91b0db5f1cbeb219c2" text="Line Items" textCategory="XTBS"/>
+   <base:TextPoolEntry id="O8rfcZ16PK2kaN5Lt_uSb0" textUuid="72d10059fa2543c280abbe2b092f4e61" text="Changes" textCategory="XTBS"/>
+   <base:TextPoolEntry id="j$hVjWTNbqwmSJA1YyQus0" textUuid="586dc08ebd844fe0a0237cd94ebd353e" text="Notes" textCategory="XTBS"/>
+   <base:TextPoolEntry id="T66$5XtK5qo7Lyw_NFGR20" textUuid="ffde5dd1103f4c8f90abfc1f28ba3e4a" text="Attachments" textCategory="XTBS"/>
+   <base:TextPoolEntry id="VQbXjneCqaIk2lcoo3Hd0m" textUuid="zkONqtbQ7aUwmga20vcEv0" text="FieldGroup" textCategory="XGRP"/>
+   <base:TextPoolEntry id="25mWfzdlmKQi6vXK0_xXQW" textUuid="DTIBpVjcgqQbOYm3S4vKjW" text="BOBillsRetentions_OIF" textCategory="YEXP"/>
+   <base:TextPoolEntry id="N4Z2IH3jOk6x1qZK0V2vrw" textUuid="X0PWbXAIm0alNpV4IMPYxA" text="Company ID" esrTextId="YVINQABXY_0462A33974F2B443" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="EVz4V25AAEiyFFSXg0qSGg" textUuid="SBccVLpU30u5K05GAcfpHQ" text="Document Date" esrTextId="YVINQABXY_11787285E9E3AD9C" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="1mINOZA8WEmHlOHMTlusIw" textUuid="TGmn2TAZuU2wX5wA3T_kQg" text="Accounting Date" esrTextId="YVINQABXY_4595EECFF70BFEB6" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="FoCIcti7h0GZigxJWJ0UgA" textUuid="yM28PZHTKEOH095sM7qwBw" text="External Reference ID" esrTextId="YVINQABXY_C5C7C6DA4F6E8AB4" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="yLFP1JPIX0isl9MGbme9yg" textUuid="pYLfzjQ38Em02kw3TmOB7g" text="Bill ID" esrTextId="YVINQABXY_E10BF6085733C517" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="E7iY5NLoeU_x0eqDeH2AhA" textUuid="ZsPjcGxKnki6gATm81qwnQ" text="Bill UUID" esrTextId="YVINQABXY_534AD658BB610D92" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="jtgAHUdMB027Xn5zpIkQgQ" textUuid="0uiJyvDuv0eZf6fWAi3Beg" text="Net Amount" esrTextId="YVINQABXY_77E8E8396096906A" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="12ZxKOP_TkScvfO_tY2cgA" textUuid="Mzj9yIaLkEWAiyiGia5E9w" text="Net Amount" esrTextId="YVINQABXY_77E8E8396096906A" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="2J4E02q8SE_fqB4KcaCwDg" textUuid="s8tskbKxkkSNYWC4z8AfEQ" text="currencyCode"/>
+   <base:TextPoolEntry id="_lB8TXS9FkeWEkzeyJS0UA" textUuid="xh5oIXEKiEisIcvz3XI_VA" text="Gross Amount" esrTextId="YVINQABXY_F0F38EC8DE3F1E81" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="6VK5tS7L30uAAqaLWGrAsg" textUuid="HBz0R2UUp0KO7y_i0QQfLQ" text="Gross Amount" esrTextId="YVINQABXY_F0F38EC8DE3F1E81" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="IfGzYDToD0C3_QNwCc2lNg" textUuid="ueAK2cjYP02oS9uy0ZwxXA" text="currencyCode"/>
+   <base:TextPoolEntry id="uoHVho0YZ0SklV6aVACylA" textUuid="WBgTxm0CAEC8U_Cn_KMA9Q" text="Retention Amount" esrTextId="YVINQABXY_4FDA9A900E6215EC" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="cAFIaKzGk0a1fbnBmNg8Dw" textUuid="df9NkZl7kkSASr9qYe1QzQ" text="Retention Amount" esrTextId="YVINQABXY_4FDA9A900E6215EC" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="AqD0RlP9pkezlFASt2q4Dg" textUuid="uDjwqqbYSUCHAcWkAcm14A" text="currencyCode"/>
+   <base:TextPoolEntry id="spZ86SnoFUytxNgPiB8fDA" textUuid="2uVHqCCbWUmeIVIAHVab5w" text="Currency" esrTextId="YVINQABXY_DF0375ED1F20820B" esrTextCategory="XFLD" textCategory="XFLD"/>
+  </base:TextBlock>
+ </TextPool>
+</UXComponent>

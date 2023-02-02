@@ -1,0 +1,77 @@
+﻿//import ABSL;
+//
+//var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+//var msjStructre = "Falto ingresar Estructura.";
+//var msjStartDate = "Falto ingresar fecha de inicio.";
+//var msjEndDate = "Falto ingresar fecha final.";
+//var msjBetDate = "Fecha inicial no debe ser mayor a la fecha final.";
+//
+//if(LanguageCode != "ES"){
+	//msjStructre = "Please enter the Company.";
+	//msjStartDate = "Please enter start date.";
+	//msjEndDate = "Please enter end date.";
+//}
+//
+//if(this.StructureID.IsInitial()){
+	//raise msjReport.Create("E", msjStructre);
+	//this.IsConsistent = false;	
+//}
+//
+//if(this.StartDate.IsInitial()){
+	//this.IsConsistent = false;
+	//raise msjReport.Create("E", msjStartDate);
+//}
+//
+//if(this.EndDate.IsInitial()){
+	//this.IsConsistent = false;
+	//raise msjReport.Create("E", msjEndDate);
+//}
+//
+//if(!this.StartDate.IsInitial() && !this.EndDate.IsInitial()){
+	//if(this.StartDate.GreaterEquals(this.EndDate)){
+		//this.IsConsistent = false;
+		//raise msjReport.Create("E", msjBetDate);
+	//}
+//}
+//
+//if(this.Filters.Count() > 0){
+	//var vCont = 1;
+	//foreach(var insFilter in this.Filters){
+		//if(!insFilter.Filter.IsInitial()){
+			//switch(insFilter.Filter){
+				//case CLFilterObjectCode.CO_1{//ProfitCenterID
+					//if(insFilter.ProfitCenterID.IsInitial()){
+						//this.IsConsistent = false;
+						//raise msjReport.Create("E", "Posición " + vCont.ToString() + " : Falto ingresar centro de beneficio");
+					//}
+				//}
+//
+				//case CLFilterObjectCode.CO_2{//CostObjectID
+					//if(insFilter.CostObjectID.IsInitial()){
+						//this.IsConsistent = false;
+						//raise msjReport.Create("E", "Posición " + vCont.ToString() + " : Falto ingresar objeto de costo");
+					//}
+				//}
+//
+				//case CLFilterObjectCode.CO_3{//CostCenterID
+					//if(insFilter.CostCenterID.IsInitial()){
+						//this.IsConsistent = false;
+						//raise msjReport.Create("E", "Posición " + vCont.ToString() + " : Falto ingresar centro de costo");
+					//}
+				//}
+//
+				//case CLFilterObjectCode.CO_4{//SegmentID
+					//if(insFilter.SegmentID.IsInitial()){
+						//this.IsConsistent = false;
+						//raise msjReport.Create("E", "Posición " + vCont.ToString() + " : Falto ingresar segmento");
+					//}
+				//}
+			//}
+		//}
+		//else{
+			//this.IsConsistent = false;
+			//raise msjReport.Create("E", "Posición " + vCont.ToString() + " : Debe seleccionar el tipo de filtro");
+		//}
+		//vCont = vCont + 1;
+	//}
+//}

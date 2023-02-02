@@ -1,0 +1,23 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FO.Product.Global;
+import AP.FO.ProductDataMaintenance.Global;
+businessobject BOHomoIdentificationDoc raises msg{
+
+message msg text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+        [AlternativeKey] element ID:ID;
+		element UUID:UUID;
+		[Label("Company ID")]				element CompanyID				: ID;
+		association ToCompany to Company;
+		[Label("Country")]		element Country:CountryCode;
+		[Label("Document Type SAP")]		element DocumentTypeSAP					: TaxIdentificationNumberTypeCode;			
+		[Label("Document Type Technological Supplier")]			element DocumentTypeSup			: ID;
+		[Label("Description")]	element DescriptionType : LANGUAGEINDEPENDENT_EXTENDED_Text;		
+		[Label("Technological Supplier")]		element DescriptionSupplier		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("no usar")]		element QuanUnitCodeSAP			: ID;
+		[Label("no usar")]	    element QuanUnitCodeSup			: ID;
+	   
+	
+        element inconsistent : Indicator;
+}

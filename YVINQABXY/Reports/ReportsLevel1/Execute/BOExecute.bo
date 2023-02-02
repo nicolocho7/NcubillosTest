@@ -1,0 +1,51 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BOExecute raises msg {
+	message msg text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+	[Label("Filter")]				element FilterID			:	ID;
+	[Label("Description")]			element FilterDesc			:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+	element uuu : PeriodRoleCode;
+	element Company				:	Indicator;
+	[Label("Selection parameter")]	element COSelctionP			:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Technical ID")]			element COTechnicalId		:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Company")]				element CompanyID			:   OrganisationalCentreID;
+	[Label("Descripcion Company")]	element CompanyDescr		:   LANGUAGEINDEPENDENT_EXTENDED_Text;
+		
+	element AccountingSystem	:	Indicator;
+	[Label("Set Of Books")]				element SetOfBooksID		: SetOfBooksID;
+	[Label("Set Of Books Description")]	element SetOfBooksDesc		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+	//element GLAccount			: Indicator;
+	//[Label("Set Of Books")]				element AccountGL			: 
+	//[Label("Set Of Books Description")]	element SetOfBooksDesc		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		
+	element Period				:	Indicator;
+	[Label("Period")]				element EPeriod					:	Date;
+	[Label("Period")]				element PeriodoPosting					:	Date;
+		
+	element Date				:	Indicator;
+	[Label("Date 1")]				element EDate				:	Date;
+	
+	[Label("Select")]				element SelectID			:	ID;
+	[Label("Description")]			element SelectDesc			:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+	
+	[Label("Tipo de Libro")]		element ZTipoLibro			: CLTypeBookCode;
+	[Label("Date 2")]				element Date2				:	Date;
+	[Label("Between")]				element zBetween			:	Indicator;
+	
+	//G/L Account
+	element IndicatorAccount	:   Indicator;
+	[Label("G/L Account")]			element OVSAccount			:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+									
+
+	[Label("Libro de Balances y/o Inventarios")]				element zBalance			:	Indicator;
+
+	[Transient]						element IsConsistent		: Indicator; 
+
+	[DependentObject(AttachmentFolder)] node ReportsAttachments;
+     action zExecute;
+	 action zClean;
+	 action zDelete;
+
+}

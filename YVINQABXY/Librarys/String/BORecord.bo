@@ -1,0 +1,15 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BORecord {
+
+       element Row		: NumberValue; //Row index
+	element String		: LANGUAGEINDEPENDENT_Name; //Fields
+
+	node Columns [0, n]	{
+		element Index	: NumberValue; //Column index
+		element Name	: LANGUAGEINDEPENDENT_SHORT_Name; //Column Name
+		element Value	: LANGUAGEINDEPENDENT_Name; //Column Value
+	} 
+
+
+}

@@ -1,0 +1,156 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: UpdateEBData
+		Node: Root
+		Action: zAssignResponsability 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+
+import ABSL;
+import AP.Common.GDT as apCommonGDT;
+import AP.FinancialAccounting.Global;
+import AP.FO.BusinessPartner.Global;
+import AP.FO.MOM.Global;
+import AP.FO.Product.Global;
+import AP.CustomerInvoicing.Global;
+import AP.FO.Party.Global;
+import AP.FO.ProductDataMaintenance.Global;
+import AP.Payment.Global;
+import BASIS.Global as basis;
+import AP.PC.IdentityManagement.Global;
+
+
+var separador = ";";
+var string = "";
+var subString = "";
+var indiceFind = 0;
+var TemindiceFind = 0;
+var TemindiceLast;
+var Temstring = "";
+var TemsubString = "";
+var indiceLast;
+var i = 0;
+var subIndiceLast = 0;
+var subIndiceFind = 0;
+var subStringAux = "";
+var j = 0;
+var contador = 0;
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+var newCO;
+var contador2 = 0;
+var Contador1 = 0;
+
+if (this.Attachment.IsSet() && this.Attachment.DocumentList.Count() == 1){
+	var MyAtt = this.Attachment.DocumentList;
+	if(MyAtt.GetFirst().MIMECode == "text/plain"){
+		var FileCont = MyAtt.GetFirst().FileContent;
+		string = FileCont.BinaryObject.content.ToString();
+		while(indiceFind != -1){			
+			subIndiceLast = 0;
+			subIndiceFind = 0;
+			subStringAux = "";
+			j = 0;
+			i = i + 1;
+			indiceLast = string.Length() - 1;
+			indiceFind = string.Find("\n");
+			var ValidaCliente = 0;
+			if(indiceFind != -1){
+				subString = string.Substring(0,indiceFind);
+				string = string.Substring(indiceFind + 1,indiceLast - indiceFind);	
+				//Detalle
+				subIndiceLast = subString.Length() - 1;
+				var FindCustomer = subString.Find(";");
+				var IdCustomer = subString.Substring(0,FindCustomer).Trim();
+				var DataAssig = BOAssignResponsabilities.Retrieve(IdCustomer);
+				var insdata;
+				var queryCustomer = Customer.QueryByIdentification;
+				var paramsCustomer = queryCustomer.CreateSelectionParams();
+					paramsCustomer.Add(queryCustomer.InternalID,"I","EQ",IdCustomer);
+				var insCustomer = queryCustomer.Execute(paramsCustomer).GetFirst();
+				if(insCustomer.IsSet()){
+					ValidaCliente = 1;
+					if(DataAssig.IsSet()){
+						insdata = DataAssig;
+					}else{
+						insdata = BOAssignResponsabilities.Create();
+						insdata.CustomerID = IdCustomer;
+						Contador1 = Contador1 +1;
+					}
+				}
+				subString = subString.Substring(FindCustomer+1,subIndiceLast- (FindCustomer+1));
+				while(subIndiceFind != -1){					
+					j = j + 1;
+					subIndiceLast = subString.Length() - 1;
+					subIndiceFind = subString.Find(",");
+					if(subIndiceFind != -1||subString != "")
+					{
+						
+						subStringAux = subString.Substring(0,subIndiceFind);
+						subString = subString.Substring(subIndiceFind + 1,subIndiceLast - subIndiceFind);
+						if(ValidaCliente == 1){
+							var DataCode = insdata.Codes.Where(n=>n.CustomerResponsabilitiesID == subStringAux);
+							if(DataCode.Count()<=0){
+								var inscode = insdata.Codes.Create();
+								inscode.CustomerResponsabilitiesID = subStringAux;
+								contador2 = contador2 +1;
+							}
+						}
+					}
+				}//fin while(indiceFind != -1){
+				var prueba1 = insdata;
+				var prueba =insdata.Codes;
+				var k = 0;
+			}else
+			{
+				if(indiceLast != 0)
+				{
+					var Valida = 0;
+					var FindCustomer = string.Find(";");
+					var IdCustomer = string.Substring(0,FindCustomer);
+					var DataAssig = BOAssignResponsabilities.Retrieve(IdCustomer);
+					var insdata;
+					var queryCustomer = Customer.QueryByIdentification;
+					var paramsCustomer = queryCustomer.CreateSelectionParams();
+						paramsCustomer.Add(queryCustomer.InternalID,"I","EQ",IdCustomer);
+					var insCustomer = queryCustomer.Execute(paramsCustomer).GetFirst();
+					if(insCustomer.IsSet()){
+						Valida = 1;
+						if(DataAssig.IsSet()){
+							insdata = DataAssig;
+						}else{
+							insdata = BOAssignResponsabilities.Create();
+							insdata.CustomerID = IdCustomer;
+							Contador1 = Contador1 +1;
+						}
+					}
+					subIndiceLast = string.Length() - 1;
+					subString = string.Substring(FindCustomer+1,subIndiceLast- (FindCustomer));
+					while(subIndiceFind != -1){
+						j = j + 1;
+						subIndiceLast = subString.Length() - 1;
+						subIndiceFind = subString.Find(",");
+						if(subIndiceFind != -1||subString != "")
+						{
+							subStringAux = subString.Substring(0,subIndiceFind);
+							subString = subString.Substring(subIndiceFind + 1,subIndiceLast - subIndiceFind);
+							var DataCode = insdata.Codes.Where(n=>n.CustomerResponsabilitiesID == subStringAux);
+							if(Valida == 1){
+								if(DataCode.Count()<=0){
+									var inscode = insdata.Codes.Create();
+									inscode.CustomerResponsabilitiesID = subStringAux;
+									contador2 = contador2 +1;
+								}
+							}
+						}
+					}//fin while(indiceFind != -1){
+				}
+			}
+		}
+		raise msg.Create("I", "Se cargaron "+ contador2.ToString().Trim() + " posiciones y " + Contador1.ToString().Trim() + " Clientes"); 
+	}
+}

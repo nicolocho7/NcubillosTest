@@ -1,0 +1,48 @@
+﻿import AP.Common.GDT;
+import AP.FO.BusinessPartner.Global;
+
+[Extension] businessobject AP.FO.BusinessPartner.Global:BusinessPartner {
+ 
+        // You must activate this business object before you can access the extension fields
+        // or messages in script files, forms, and screens.
+		
+    
+   		node AddressInformation raises msjAI{
+				
+			message msjAI text "&"	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Scenario(PES_BusinessPartnerHeader)]element zDepartamentID   :	ID;
+			[Scenario(PES_BusinessPartnerHeader)]element zDepartamentDes  :	LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Scenario(PES_BusinessPartnerHeader)]element zProvinceID	  :	ID;
+			[Scenario(PES_BusinessPartnerHeader)]element zProvinceDes	  :	LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Scenario(PES_BusinessPartnerHeader)]element zDistrictID	  :	ID;
+			[Scenario(PES_BusinessPartnerHeader)]element zDistrictDes	  :	LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Scenario(PES_BusinessPartnerHeader)]element zLocalityID	  :	ID;
+			[Scenario(PES_BusinessPartnerHeader)]element zLocalityDes	  :	LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Scenario(PES_BusinessPartnerHeader)]element zUbigeo		  :	ID;
+
+   	    } 
+    
+   		node BankDetails {
+   	    } 
+    
+   		node Common {
+			message msjAIHead text "&"	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element zCountryDirecM			:	CountryCode;
+			element zDepartamentIDDirecM	:	ID;
+			element zDepartamentDesDirecM	:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element zProvinceIDDirecM		:	ID;
+			element zProvinceDesDirecM		:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element zDistrictIDDirecM		:	ID;
+			element zDistrictDesDirecM		:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element zLocalityIDDirecM		:	ID;
+			element zLocalityDesDirecM		:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element zUbigeoDirecM			:	ID;
+			element zUbigeoReal				:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+   	    
+		} 
+    
+   		node CurrentEmployeeResponsible {
+   	    } 
+     
+  
+}

@@ -1,0 +1,22 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FinancialAccounting.Global;
+
+businessobject BOReportsPLEsConsignation raises msg {
+
+	message msg text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+	
+	[AlternativeKey][Label("ID")]				element ID					: ID;
+	[Label("Company")]							element CompanyID			: OrganisationalCentreID;
+	[Label("Company Desc")]						element CompanyDesc			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Date Execution Initial")]			element DateInitial			: Date; 
+	[Label("Date Execution End")]				element DateEnd				: Date;
+	[Label("Type Of Report")]					element TypeReport			: CLPLESConsignationTypeCode;
+
+	association ToCompany to Company;
+	[DependentObject(AttachmentFolder)] node ReportsAttachments;
+
+	action Execute;
+	action PLE1;//REGISTRO DE CONSIGNACIONES - CONTROL DE BIENES ENTREGADOS EN CONSIGNACIÓN
+	action PLE2;//REGISTRO DE CONSIGNACIONES - CONTROL DE BIENES RECIBIDOS EN CONSIGNACIÓN
+}

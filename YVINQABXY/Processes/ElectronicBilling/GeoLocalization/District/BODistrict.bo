@@ -1,0 +1,19 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BODistrict raises Msj {
+//
+
+message Msj text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+	[Label("Cod Distrito")]					                 		element		DistrictCod			:	LANGUAGEINDEPENDENT_EXTENDED_Text; //BusinessPartnerID; //
+	[Label("Cod Distrito")]	[AlternativeKey]				        element		DisCod			    :	BusinessPartnerID; 
+	[Label("Descripcion Distrito")]									element		DistrictDesc			:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Cod Departamento")]										element		DistrictDepartament	:	ID;
+	[Label("Cod Departamento")]										element		DistrictDepartament2	:	BusinessPartnerID;
+	[Label("Cod Departamento")]										element		DistrictDepartament3	:	RegionCode;
+	//[Label("Cod Pais")]												element		CiudadPais			:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+	//[Label("Cod Pais")]												element		CiudadPais2			:	CountryCode;
+	[Label("IsConsistent")]											element		DistritoIsConsistent	:	Indicator;
+	action DeleteRow;
+  
+}

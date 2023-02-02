@@ -1,0 +1,73 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: UpdateEBData
+		Node: Root
+		Action: zResponsability 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+
+import ABSL;
+
+var separador = ";";
+var string = "";
+var subString = "";
+var indiceFind = 0;
+var TemindiceFind = 0;
+var TemindiceLast;
+var Temstring = "";
+var TemsubString = "";
+var indiceLast;
+var i = 0;
+var subIndiceLast = 0;
+var subIndiceFind = 0;
+var subStringAux = "";
+var j = 0;
+var contador = 0;
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+var newCO;
+var contador2 = 0;
+
+if (this.Attachment.IsSet() && this.Attachment.DocumentList.Count() == 1)
+{
+	var MyAtt = this.Attachment.DocumentList;
+	if(MyAtt.GetFirst().MIMECode == "text/plain"){
+		var FileCont = MyAtt.GetFirst().FileContent;
+		string = FileCont.BinaryObject.content.ToString();
+		while(indiceFind != -1)
+		{			
+			subIndiceLast = 0;
+			subIndiceFind = 0;
+			subStringAux = "";
+			j = 0;
+			i = i + 1;
+			indiceLast = string.Length() - 1;
+			indiceFind = string.Find("\n");
+			if(indiceFind != -1)
+			{
+				
+				subString = string.Substring(0,indiceFind);
+				string = string.Substring(indiceFind + 1,indiceLast - indiceFind);	
+				//Detalle
+				subIndiceLast = subString.Length() - 1;
+				var FindCustomer = subString.Find(",");
+				var IdCode = subString.Substring(0,FindCustomer);
+				var DescriptionCode =  subString.Substring(FindCustomer+1,subIndiceLast- (FindCustomer+1));
+				var Data = BOCustomerResponsabilities.Retrieve(IdCode);
+				if(!Data.IsSet()){
+					var insdata = BOCustomerResponsabilities.Create();
+					insdata.CustomerResponsabilitiesID = IdCode;
+					insdata.CustomerResponsabilitiesDesc =  DescriptionCode;
+					this.IsLoad = true;
+					contador2 = contador2+1;
+				}
+			}
+		}
+		raise msg.Create("I", "Se cargaron "+ contador2.ToString().Trim() + " posiciones"); 
+	}
+}
+

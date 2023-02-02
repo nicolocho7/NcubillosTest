@@ -1,0 +1,46 @@
+﻿import ABSL;
+import BASIS.Global as basis;
+import AP.Common.GDT as common;
+
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+
+var msgexists = "No existe posiciones de detalle para generar archivo.";
+
+if (LanguageCode != "ES")
+{
+	msgexists = "There is no detail positions to generate file.";
+}
+
+var partyID : DataType::LANGUAGEINDEPENDENT_MEDIUM_Text;
+var name : LANGUAGEINDEPENDENT_LONG_Name;
+var type : DocumentTypeCode;
+var desc : Description;
+var binary : BinaryObject;
+var MIME : basis:MIMECode;
+var string = "";
+
+if (this.Details.Count() > 0)
+{
+	foreach (var itemDetails in this.Details)
+	{		
+		string = string + itemDetails.CompanyID.RemoveLeadingZeros() + "\t"
+						+ itemDetails.CompanyDes + "\t"
+						+ itemDetails.SupplierID.RemoveLeadingZeros() + "\t"
+						+ itemDetails.SupplierDes + "\t"
+						+ itemDetails.Documents + "\t"
+						+ itemDetails.BankAccountID + "\t"
+						+ itemDetails.Amount.content.RoundToString(2) + "\n"; 
+	}
+
+	name = "Export Table";
+	type.content = "10001";
+	type.listID = "10296";
+	binary.mimeCode = "text/plain";
+	binary.content = Binary.ParseFromString(string);
+
+	this.myAttachments.CreateFile(type, name, name, desc, binary);
+}
+else
+{
+	raise msj.Create("E", msgexists);
+}

@@ -1,0 +1,262 @@
+﻿
+
+import ABSL;
+import AP.FO.BusinessPartner.Global;
+import AP.Common.GDT as apCommonGDT;
+import BASIS.Global as basis;
+
+
+while(true){
+	
+	var vIsConsistent = true;
+	var insPYGConfiguration;
+	var vPeriodo = "";
+	var vPalote = "|";
+	var vDia = "";
+	var year = "";
+	var vStringExport = "";
+
+	if(this.ID.IsInitial()){
+		vIsConsistent = false;
+		raise msj.Create("E","Falto ingresar ID de estructura ");
+	}
+	else{
+		var qPyGConfig = BOPyGConfiguration.QueryByElements;
+		var pPyGConfig = qPyGConfig.CreateSelectionParams();
+			pPyGConfig.Add(qPyGConfig.ID, "I", "EQ", this.ID.RemoveLeadingZeros());
+		var rPyGConfig = qPyGConfig.Execute(pPyGConfig).GetFirst();
+		if (rPyGConfig.IsSet()){
+			insPYGConfiguration = rPyGConfig;
+		}
+		else{
+			this.ID.Clear();
+			vIsConsistent = false;
+			raise msj.Create("E","ID de Estructura no valida");
+		}
+	}
+
+	if(this.ReportDate.IsInitial()){
+		vIsConsistent = false;
+		raise msj.Create("E","Falto ingresar fecha de reporte");
+	}
+
+	if(this.DateFrom.IsInitial()){
+		vIsConsistent = false;
+		raise msj.Create("E","Falto ingresar Periodo");
+	}
+	else{
+		vPeriodo = this.DateFrom.GetMonth() + this.DateFrom.GetYear();
+		vDia = this.DateFrom.GetYear() + this.DateFrom.GetMonth() + this.DateFrom.GetDay();
+		year = this.DateFrom.GetYear();
+	}
+
+	if(!vIsConsistent){ break;}
+	var Detalle;
+	foreach (Detalle in insPYGConfiguration.Details){
+		var insItemDetails = this.Details.Create();
+		if(insItemDetails.IsSet()){
+			insItemDetails.Period = vDia;
+			insItemDetails.CatalogCode = "09";
+			insItemDetails.EFCode = Detalle.CodeEF;
+			insItemDetails.Amount.content = 0;
+			insItemDetails.StatusOperation = "1";
+			insItemDetails.AccountFromNumeric = Detalle.AccountFromNumeric;
+			insItemDetails.AccountToNumeric = Detalle.AccountToNumeric;
+			insItemDetails.AreaFuncional = Detalle.AreaFuncional;
+			//break;	
+		}
+	}
+
+	var serviceID = "";  
+	var parameter : NameAndValue;  
+	var parameters : collectionof NameAndValue;
+	//serviceID = "PW00052";
+	serviceID = "PW00120";
+	parameter.Name = "$select";  
+	parameter.Value = "CFISCALYEARPERIO,CGLACCT,KCAMTCOMP,CFUNCAREA";
+	parameters.Add(parameter);
+	
+	parameter.Name = "$filter";  
+	parameter.Value = "CCOMPANY_UUID eq '" + insPYGConfiguration.CompanyID.RemoveLeadingZeros() 
+					+ "' and CSETOFBKS eq '" + insPYGConfiguration.SetOfBooksID.content.Trim() 
+					+ "' and CFISCALYEARPERIO le " + vPeriodo + " and CFISCYEAR eq " + year; // 112016"
+	parameters.Add(parameter);  
+		
+	//parameter.Name = "$top";  
+	//parameter.Value = "999999";
+	//parameters.Add(parameter); 
+
+	var ws_result = WebServiceUtilities.ExecuteWebService(serviceID, parameters);  
+		
+	var Content = ws_result.ResponseContent;  
+	var returnCode = ws_result.ReturnCode;
+		
+	var xmlResult;
+	xmlResult = Library::RLStrings.XMLToArray(Content);
+	var IsItems = false;
+	
+	foreach(var vItems in xmlResult){
+		var prueba = Library::RLStrings.GetElementByName(vItems.String, "CFISCALYEARPERIO");
+		var vCuentaText = Library::RLStrings.GetElementByName(vItems.String, "CGLACCT");
+		var vCuentaNum =  0 ;
+		if(ABSL:Numeric.IsNumeric(vCuentaText)){
+			vCuentaNum = ABSL:Numeric.ParseFromString(vCuentaText);
+			//var vLengthValue = vCuentaText.Length();
+			//switch(vLengthValue){
+				//case 3{vCuentaNum = vCuentaNum * 10000000;}
+				//case 4{vCuentaNum = vCuentaNum * 1000000;}
+				//case 5{vCuentaNum = vCuentaNum * 100000;}
+				//case 6{vCuentaNum = vCuentaNum * 10000;}
+				//case 7{vCuentaNum = vCuentaNum * 1000;}
+				//case 8{vCuentaNum = vCuentaNum * 100;}
+			//}
+		}
+
+		var vValueItemText = Library::RLStrings.GetElementByName(vItems.String, "KCAMTCOMP");
+		var vValueItem = 0;
+		if(ABSL:Numeric.IsNumeric(vValueItemText)){
+			vValueItem = ABSL:Numeric.ParseFromString(vValueItemText);
+		}
+		var Area = Library::RLStrings.GetElementByName(vItems.String, "CFUNCAREA");
+		var vIsDetails = false;
+		foreach(var insDetails in this.Details){
+			if(vCuentaNum >= insDetails.AccountFromNumeric && vCuentaNum <= insDetails.AccountToNumeric){
+				if(insDetails.AreaFuncional.IsInitial()){
+					insDetails.Amount.content = insDetails.Amount.content + vValueItem;
+					vIsDetails = true;
+					//break;
+				}else{
+					var Data = insDetails.AreaFuncional.Find(Area);
+					if(Data >= 0){
+						insDetails.Amount.content = insDetails.Amount.content + vValueItem;
+						vIsDetails = true;
+						//break;
+					}
+				}
+			}
+		}
+
+		if(!vIsDetails){
+			foreach(var insPyGConfig in insPYGConfiguration.Details){
+				if(vCuentaNum >= insPyGConfig.AccountFromNumeric && vCuentaNum <= insPyGConfig.AccountToNumeric){
+					if(insPyGConfig.AreaFuncional.IsInitial()){
+						var insItemDetails = this.Details.Create();
+						if(insItemDetails.IsSet()){
+							insItemDetails.Period = vDia;
+							insItemDetails.CatalogCode = "09";
+							insItemDetails.EFCode = insPyGConfig.CodeEF;
+							insItemDetails.Amount.content = insItemDetails.Amount.content  + vValueItem;
+							insItemDetails.StatusOperation = "1";
+							insItemDetails.AccountFromNumeric = insPyGConfig.AccountFromNumeric;
+							insItemDetails.AccountToNumeric = insPyGConfig.AccountToNumeric;
+							insItemDetails.AreaFuncional = "";
+							//break;	
+						}
+					}else{
+						var Data = insPyGConfig.AreaFuncional.Find(Area);
+						if(Data >= 0){
+							var insItemDetails = this.Details.Create();
+								insItemDetails.Period = vDia;
+								insItemDetails.CatalogCode = "09";
+								insItemDetails.EFCode = insPyGConfig.CodeEF;
+								insItemDetails.Amount.content = insItemDetails.Amount.content  + vValueItem;
+								insItemDetails.StatusOperation = "1";
+								insItemDetails.AccountFromNumeric = insPyGConfig.AccountFromNumeric;
+								insItemDetails.AccountToNumeric = insPyGConfig.AccountToNumeric;
+								insItemDetails.AreaFuncional = insPyGConfig.AreaFuncional;
+								//break;	
+						}
+						
+					}
+				}
+			}
+		}
+		IsItems = true;
+	}
+	
+
+	//- - - - - - - - - - -  Export txt - - - - - - - - - -//
+	var xname : LANGUAGEINDEPENDENT_LONG_Name;
+	var xtype : DocumentTypeCode;
+	var xdesc : Description;
+	var xbinary : basis:BinaryObject;
+
+
+	if(!IsItems){
+		raise msj.Create("E", "No se encontraron datos con los parametros ingresados");
+	}
+	else{
+		this.Execute = true;
+		var DataItems;
+		foreach(DataItems in this.Details){
+			var CondEF = this.Details_Impr.Where(n=>n.EFCode == DataItems.EFCode).GetFirst();
+			if(CondEF.IsSet()){
+				CondEF.Amount.content = CondEF.Amount.content + DataItems.Amount.content;
+			}else{
+				var insItemDetails = this.Details_Impr.Create();
+				if(insItemDetails.IsSet()){
+					insItemDetails.Period = DataItems.Period;
+					insItemDetails.CatalogCode = DataItems.CatalogCode;
+					insItemDetails.EFCode = DataItems.EFCode;
+					insItemDetails.Amount.content = DataItems.Amount.content;
+					insItemDetails.StatusOperation = DataItems.StatusOperation;
+					insItemDetails.AccountFromNumeric = DataItems.AccountFromNumeric;
+					insItemDetails.AccountToNumeric = DataItems.AccountToNumeric;
+				}
+			}
+		}
+
+
+
+
+
+		foreach(var vItem in this.Details_Impr){
+			if(vItem.Amount.content != 0){
+				var vValueItemText = "";
+				if(vItem.Amount.content < 0 ){
+					vValueItemText = (vItem.Amount.content * -1).RoundToString(2,true);
+				}else{
+					vValueItemText = vItem.Amount.content.RoundToString(2,true);
+				}
+				vValueItemText.Replace(",","");
+				vStringExport = vStringExport 
+							+ vItem.Period.GetYear() + vItem.Period.GetMonth() + vItem.Period.GetDay()//Periodo
+							+ vPalote + vItem.CatalogCode//Código del Catalogo
+							+ vPalote + vItem.EFCode //Código del Rubro del Estado Financiero
+							+ vPalote + vValueItemText //Saldo del Rubro Contable
+							+ vPalote + vItem.StatusOperation//Indica el Estado de la Operación
+							+ vPalote + vItem.CampoLibre + "\r\n";
+			}
+		}
+
+		// - Archivo Generado
+		var Name = "1";
+		if(vStringExport.IsInitial()){
+			Name = "0";
+		}
+
+
+
+		xname =  "LE" + this.CompanyRuc + this.DateFrom.GetYear() + this.DateFrom.GetMonth() + this.DateFrom.GetDay() + "032400" + "07" + "1"+Name+"11" + ".TXT";
+		
+		xtype.content = "10001";
+		xtype.listID = "10296";
+		xbinary.mimeCode = "text/plain";
+		xbinary.content = Binary.ParseFromString(vStringExport);
+		this.ReportsAttachments.CreateFile(xtype, xname, xname, xdesc, xbinary);
+	}
+
+
+	
+	xname = "Reporte leído";
+	xtype.content = "10001";
+	xtype.listID = "10296";
+	xbinary.mimeCode = "text/plain";
+	xbinary.content = Binary.ParseFromString(Content);
+	this.ReportsAttachments.CreateFile(xtype, xname, xname, xdesc, xbinary);
+
+	break;
+}
+
+
+

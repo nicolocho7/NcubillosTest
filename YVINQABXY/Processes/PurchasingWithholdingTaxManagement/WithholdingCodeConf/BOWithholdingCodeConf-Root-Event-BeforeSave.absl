@@ -1,0 +1,141 @@
+﻿import ABSL;
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+
+var msgConditionCompanyID = "Falto ingresar empresa.";
+var msgConditionCustomerID = "Falto ingresar proveedor.";
+var msgCountry = "Falto ingresar país.";
+var msgWithHoldingCode = "Falto ingresar codigo de retención.";
+var msgTypeWithholding = "Falto seleccionar un tipo de retención.";
+var msgNeto = "Falto ingresar procentaje Neto.";
+var msgCategoryID = "Falto ingresar categoría.";
+var msgCityID = "Falto ingresar ciudad.";
+var msgAmountMinimun = "Falto seleccionar ID valor monto minimo de retención.";
+var msgDeterAccounts = "Falto ingresar determinación de cuentas.";  
+
+if (LanguageCode != "ES")
+{
+	msgConditionCompanyID = "I miss enter company.";
+	msgConditionCustomerID = "I miss enter supplier.";
+	msgCountry = "I miss enter country.";
+	msgWithHoldingCode = "I miss enter code retention";
+	msgTypeWithholding = "I miss selecting a type of retention.";
+	msgNeto = "I miss enter net percentage.";
+	msgCategoryID = "I miss enter category.";
+	msgCityID = "I miss enter city.";
+	msgAmountMinimun = "I miss select ID minimum amount value retention.";
+	msgDeterAccounts = "I miss enter account determination.";
+}
+
+// Validation
+this.IsConsistent = true;
+
+if (this.ConditionCompayID.IsInitial())
+{
+	raise msj.Create("E", msgConditionCompanyID);
+	this.IsConsistent = false;
+}
+
+if (this.ConditionSupplierID.IsInitial())
+{
+	raise msj.Create("E", msgConditionCustomerID);
+	this.IsConsistent = false;
+}
+
+if (this.AmountMinimun.IsInitial())
+{
+	raise msj.Create("E", msgAmountMinimun);
+	this.IsConsistent = false;
+}
+
+if (this.Country.IsInitial())
+{
+	raise msj.Create("E", msgCountry);
+	this.IsConsistent = false;
+}
+
+if (this.WithHoldingCode.IsInitial())
+{
+	raise msj.Create("E", msgWithHoldingCode);
+	this.IsConsistent = false;
+}
+
+if (this.DeterAccounts.IsInitial())
+{
+	raise msj.Create("E", msgDeterAccounts);
+	this.IsConsistent = false;
+}
+
+if (this.CategoryID.IsInitial())
+{
+	raise msj.Create("E", msgCategoryID);
+	this.IsConsistent = false;
+}
+
+
+if (this.TypeWithholding.IsInitial())
+{
+	raise msj.Create("E", msgTypeWithholding);
+	this.IsConsistent = false;
+}
+else
+{
+	//switch (this.TypeWithholding)
+	//{
+		//case CLTypeWithholdingPurchaseCode.CO_PE_DETR
+		//{
+			//if (this.PercentNet.IsInitial())
+			//{
+				//raise msj.Create("E", msgNeto);
+				//this.IsConsistent = false;
+			//}
+		//}
+		//
+	//}
+}
+
+if(this.ID.IsInitial()){
+	var Code = "BORELSUPCOM";
+	var InsBOBuildIDV2 = BOBuildIDV2.Retrieve(Code);
+	if(InsBOBuildIDV2.IsSet())
+	{
+		InsBOBuildIDV2.Increase();		
+	}else
+	{
+		var StructureBOBuildIDV2 : elementsof BOBuildIDV2;
+		StructureBOBuildIDV2.ID = Code;
+		StructureBOBuildIDV2.description = "Relation Supplier Company";
+		StructureBOBuildIDV2.UUID.content = UUID.Generate();
+		InsBOBuildIDV2 = BOBuildIDV2.Create(StructureBOBuildIDV2);
+		InsBOBuildIDV2.Increase();
+	}
+
+	this.ID = InsBOBuildIDV2.consecutive;
+}
+//if (this.ID.IsInitial())
+//{
+	//var queryBuildID = BOBuildID.QueryByElements;
+	//var paramBuildID = queryBuildID.CreateSelectionParams();
+	//paramBuildID.Add(queryBuildID.ID, "I", "EQ", "BORELSUPCOM");
+	//var resultBuildID = queryBuildID.Execute(paramBuildID).GetFirst();
+	//if (resultBuildID.IsSet())
+	//{
+		//resultBuildID.consecutive = resultBuildID.consecutive + 1;
+		//this.ID = resultBuildID.consecutive.ToString();
+		//this.UUID.content = UUID.Generate();
+	//}
+	//else
+	//{
+		//this.ID = "1";
+		//this.UUID.content = UUID.Generate();
+		////-- create new register
+		//var insBuildID = BOBuildID.Create();
+		//if (insBuildID.IsSet())
+		//{
+			//insBuildID.consecutive = 1;
+			//insBuildID.description = "Relation Supplier Company";
+			//insBuildID.ID = "BORELSUPCOM";
+			//insBuildID.UUID.content = UUID.Generate();
+		//}
+	//}
+//}
+

@@ -1,0 +1,194 @@
+﻿//import ABSL;
+//
+//
+//var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+//
+//var msgMissingAtta = "Falta adjuntar un archivo";
+	//if(LanguageCode != "ES")
+	//{
+		//msgMissingAtta = "Missing attachment";
+	//}
+//
+//
+//while(true)
+//{
+//
+	//var TypeSeleccion = this.vTypeLoad;
+	//switch(TypeSeleccion)
+	//{
+		//case "01" 
+		//{
+//
+		//var eTemHomologation   	: elementsof BusinessObject::BOHomologation;
+		//var eTemNodeHomologation : elementsof  BusinessObject::BOHomologation.DataHomologation;
+			//
+			//var CreateHead;
+			//
+			//foreach(var itemHeaderHomologation in this.DataHomologation)
+			//{
+				//eTemHomologation.HomologationDesc = itemHeaderHomologation.vDescription;
+				//
+				//if(!eTemHomologation.IsInitial())
+				//{
+					//CreateHead =  BOHomologation.Create(eTemHomologation);
+					//foreach(var itemValue in itemHeaderHomologation.NodeHomologation)
+					//{
+						//eTemNodeHomologation.OrigData = itemValue.OrigData;
+						//eTemNodeHomologation.DestData = itemValue.DestData;
+//
+						//if(!eTemNodeHomologation.IsInitial())
+						//{
+							//var CreateItem = CreateHead.DataHomologation.Create(eTemNodeHomologation);
+						//}
+					//}
+					//if(CreateHead.IsSet())
+					//{
+						//raise msg.Create("I", "Datos enviados a la vista de Homologacion " + CreateHead.HomologationID.RemoveLeadingZeros());
+					//}else
+					//{
+						//raise msg.Create("E", "No se pudo realizar el cargue de Homologación");
+					//}
+				//}
+				//eTemHomologation.Clear();
+			//}
+		//}
+		//case "02" 
+		//{
+			//var TempBOConfigReportData : elementsof BusinessObject::BOConfigurationReportsData;
+			//var ItemFilterStructure : elementsof  BusinessObject::BOConfigurationReportsData.Filters;
+			//var ItemSelectStructure : elementsof  BusinessObject::BOConfigurationReportsData.Select;
+			//var CreateHead;
+			//
+			//foreach(var itemReportConfing in this.ConfigurationReportData)
+			//{
+				//TempBOConfigReportData.ServiceID= itemReportConfing.ServiceID;
+				//TempBOConfigReportData.Description = itemReportConfing.Description;
+				//TempBOConfigReportData.ReportID = itemReportConfing.ReportID;
+				//if(!TempBOConfigReportData.IsInitial()){
+					//CreateHead =  BOConfigurationReportsData.Create(TempBOConfigReportData);
+					//foreach(var itemFilter in itemReportConfing.ConfigurationReportDataFilter)
+					//{
+						//ItemFilterStructure.FiltersVariableID = itemFilter.FiltersVariableID;
+						//ItemFilterStructure.FiltersDescription = itemFilter.FiltersDescription;
+						//ItemFilterStructure.DataType = itemFilter.DataType;
+						//if(!ItemFilterStructure.IsInitial()){
+							//var CreateItem = CreateHead.Filters.Create(ItemFilterStructure);
+						//}
+					//}
+				//
+					//foreach(var itemSelect in itemReportConfing.ConfigurationReportDataSelect)
+					//{
+						//ItemSelectStructure.selectVariableID = itemSelect.selectVariableID;
+						//ItemSelectStructure.SelectDescription = itemSelect.Description;
+						//if(!ItemSelectStructure.IsInitial()){
+							//var CreateItem = CreateHead.Select.Create(ItemSelectStructure);
+						//}
+					//}
+					//if(CreateHead.IsSet())
+					//{
+						//raise msg.Create("I", "Datos enviados a la vista de Configuration Report Data " +CreateHead.ConfRepoDataID.RemoveLeadingZeros());
+					//}else
+					//{
+						//raise msg.Create("E", "No se pudo hacer el cargue de Configuration Report");
+					//}
+				//}
+				//TempBOConfigReportData.Clear();
+//
+			//}
+		//}
+		//
+		//case "03"
+		//{
+//
+			//var TempBOReportData : elementsof BusinessObject::BOConfigurationReports;
+			//var ItemValueStructure : elementsof  BusinessObject::BOConfigurationReports.Values;
+			//
+			//var CreateHead;
+			//
+			//foreach(var itemReport in this.ConfigurationReports)
+			//{
+				//TempBOReportData.Separator = itemReport.zSeparator;
+				//TempBOReportData.vIDContent = itemReport.zIDReport;
+				//if(!TempBOReportData.IsInitial())
+				//{
+					//CreateHead =  BOConfigurationReports.Create(TempBOReportData);
+					//foreach(var itemValue in itemReport.ValueConfigs)
+					//{
+						//ItemValueStructure.TechnicalID  = itemValue.TechnicalID;
+						//ItemValueStructure.IsConstant = itemValue.IsConstant;
+						//ItemValueStructure.Constant = itemValue.Constant;
+						////ItemValueStructure.BasicLogic = itemValue.BasicLogic;
+						//ItemValueStructure.zBasicLogic = itemValue.zBasicLogic;
+						//ItemValueStructure.zDependent = itemValue.zDependent;
+						//ItemValueStructure.zValueDependent = itemValue.zValueDependent;
+						//ItemValueStructure.IsHomologation = itemValue.IsHomologation;
+						//ItemValueStructure.HomologationDesc = itemValue.HomologationDesc;
+//
+						//if(!ItemValueStructure.IsInitial()){
+							//var CreateItem = CreateHead.Values.Create(ItemValueStructure);
+						//}
+					//}
+					//if(CreateHead.IsSet())
+					//{
+						//raise msg.Create("I", "Datos enviados a la vista de Configuration Report Data " + CreateHead.vIDContent.RemoveLeadingZeros() );
+					//}else
+					//{
+						//raise msg.Create("E", "No se pudo realizar el cargue de Configuration Report Data");
+					//}
+				//}
+				//TempBOReportData.Clear();
+			//}
+		//}
+//
+//
+		//case "04"
+		//{
+			//var eTemFilter   	: elementsof BusinessObject::BOFilters;
+			//var CreateHead;
+			//
+			//foreach(var itemHeaderFilter in this.FilterParameter)
+			//{
+				//eTemFilter.FiltersDesc = itemHeaderFilter.vDescriptionFilt;
+				//eTemFilter.Company = itemHeaderFilter.iCompany;
+				//eTemFilter.COSelctionP = itemHeaderFilter.SEParameter;
+				//eTemFilter.COTechnicalId = itemHeaderFilter.SETecnicalID;
+				//eTemFilter.AccountingSystem = itemHeaderFilter.iAcountSystem;
+				//eTemFilter.ASSelctionP = itemHeaderFilter.SEParameter;
+				//eTemFilter.ASTechnicalId = itemHeaderFilter.SETecnicalID;
+				//eTemFilter.Period = itemHeaderFilter.iPeriod;
+				//eTemFilter.PESelctionP = itemHeaderFilter.PEEParameter;
+				//eTemFilter.PETechnicalId = itemHeaderFilter.PETecnicalID;
+				//eTemFilter.Date = itemHeaderFilter.iDate;
+				//eTemFilter.DASelctionP = itemHeaderFilter.DAEParameter;
+				//eTemFilter.DATechnicalId = itemHeaderFilter.DATecnicalID;
+				//eTemFilter.COTechnicalId = itemHeaderFilter.SETecnicalID;
+				//eTemFilter.AccountGL = itemHeaderFilter.iGLAccount;
+				//eTemFilter.GLSelctionP = itemHeaderFilter.GLParameter;
+				//eTemFilter.GLCompany = itemHeaderFilter.GLCompany;
+				//eTemFilter.GLSetOfBooks.content = itemHeaderFilter.GLSetOfBKS;
+				//eTemFilter.GLDescriptionSetBKS = itemHeaderFilter.GLParameterChart;
+				//
+				//if(!eTemFilter.IsInitial())
+				//{
+					//CreateHead =  BOFilters.Create(eTemFilter);
+				//
+					//if(CreateHead.IsSet())
+					//{
+						//raise msg.Create("I", "Datos enviados a la vista de Filtros " + CreateHead.BOFiltersID.RemoveLeadingZeros());
+					//}else
+					//{
+						//raise msg.Create("E", "No se pudo realizar el cargue de Filtros");
+					//}
+				//}
+				//eTemFilter.Clear();
+			//}
+		//
+		//
+		//}
+//
+	//}
+//
+//break;
+//}
+//
+//

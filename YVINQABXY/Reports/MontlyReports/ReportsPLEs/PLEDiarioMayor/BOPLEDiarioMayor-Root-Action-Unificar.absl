@@ -1,0 +1,121 @@
+﻿import ABSL as absl;
+import AP.Common.GDT as apCommonGDT;
+import BASIS.Global as basis;
+import AP.FinancialAccounting.Global as APFinancialAccountingGlobal;
+import AP.FO.TaxArrangement.Global;
+
+var StrlinePle1 = "";
+var StrlinePle2 = "";
+var NamePle1 = "";
+var NamePle2 = "";
+var vDocumentName	:LANGUAGEINDEPENDENT_LONG_Name;
+var vDocumentType	:DocumentTypeCode;
+var vDocumentDesc	:Description;
+var vBinary	:basis:BinaryObject;
+if(!this.ReportType.IsInitial()){
+	if(this.ReportType == CLDiaroMayorCode.CO_1){
+		var FirstReg;
+		if(this.Details.Count() > 0){
+			FirstReg = this.Details.GetFirst();
+			var DataFirst = BOReportPLEs.Retrieve(FirstReg.IDReg);
+			if(DataFirst.IsSet()){
+				var vAnio = DataFirst.DateInitial.GetYear();
+				var vPeriodo = DataFirst.DateInitial.GetMonth();
+				var vNit = "";
+				var qCompanyTax = CompanyTaxArrangement.QueryByElements;
+				var pCompanyTax = qCompanyTax.CreateSelectionParams();
+					pCompanyTax.Add(qCompanyTax.CompanyID,"I","EQ",DataFirst.CompanyID.RemoveLeadingZeros());
+				var insCompanyTax = qCompanyTax.Execute(pCompanyTax).GetFirst();
+				if(insCompanyTax.IsSet()){
+					if(insCompanyTax.TaxIdentificationNumber.Count() > 0){
+						vNit = insCompanyTax.TaxIdentificationNumber.GetFirst().PartyTaxID.content;
+					}
+				}
+				NamePle1 = "LE" + vNit +  vAnio + vPeriodo + "00" + "050100" + "00" + "1111" + ".TXT";
+				NamePle2 = "LE" + vNit +  vAnio + vPeriodo + "00" + "050300" + "00" + "1111" + ".TXT";
+				var DataGeneral;
+				foreach(DataGeneral in this.Details){
+					var Reg = BOReportPLEs.Retrieve(DataGeneral.IDReg);
+					if(Reg.IsSet()){
+						var MyAttachPle1 = Reg.ReportsAttachments.DocumentList.Where(n=>n.Name == NamePle1).GetFirst();
+						var MyAttachPle2 = Reg.ReportsAttachments.DocumentList.Where(n=>n.Name == NamePle2).GetFirst();
+						if (MyAttachPle1.IsSet()){
+							if (MyAttachPle1.MIMECode == "text/plain"){
+								var FileCont = MyAttachPle1.FileContent;
+								StrlinePle1 = StrlinePle1 + FileCont.BinaryObject.content.ToString();
+							}
+						}
+						if (MyAttachPle2.IsSet()){
+							if (MyAttachPle2.MIMECode == "text/plain"){
+								var FileCont = MyAttachPle2.FileContent;
+								StrlinePle2 = StrlinePle2 + FileCont.BinaryObject.content.ToString();
+							}
+						}
+					}
+				}
+			}
+		}
+		vDocumentName = NamePle1;
+		vDocumentType.content = "10001";
+		vDocumentType.listID = "10296";
+		vBinary.mimeCode = "text/plain";
+		vBinary.content = Binary.ParseFromString(StrlinePle1);
+		this.ReportsAttachments.CreateFile(vDocumentType,vDocumentName,vDocumentName,vDocumentDesc,vBinary);
+
+
+		vDocumentName = NamePle2;
+		vDocumentType.content = "10001";
+		vDocumentType.listID = "10296";
+		vBinary.mimeCode = "text/plain";
+		vBinary.content = Binary.ParseFromString(StrlinePle2);
+		this.ReportsAttachments.CreateFile(vDocumentType,vDocumentName,vDocumentName,vDocumentDesc,vBinary);
+	}else{
+		if(this.ReportType == CLDiaroMayorCode.CO_2){
+			var FirstReg;
+			if(this.Details.Count() > 0){
+				FirstReg = this.Details.GetFirst();
+				var DataFirst = BOReportPLEs.Retrieve(FirstReg.IDReg);
+				if(DataFirst.IsSet()){
+					var vAnio = DataFirst.DateInitial.GetYear();
+					var vPeriodo = DataFirst.DateInitial.GetMonth();
+					var vNit = "";
+					var qCompanyTax = CompanyTaxArrangement.QueryByElements;
+					var pCompanyTax = qCompanyTax.CreateSelectionParams();
+						pCompanyTax.Add(qCompanyTax.CompanyID,"I","EQ",DataFirst.CompanyID.RemoveLeadingZeros());
+					var insCompanyTax = qCompanyTax.Execute(pCompanyTax).GetFirst();
+					if(insCompanyTax.IsSet()){
+						if(insCompanyTax.TaxIdentificationNumber.Count() > 0){
+							vNit = insCompanyTax.TaxIdentificationNumber.GetFirst().PartyTaxID.content;
+						}
+					}
+					NamePle1 = "LE" + vNit +  vAnio + vPeriodo + "00" + "060100" + "00" + "1111" + ".TXT";
+					var DataGeneral;
+					foreach(DataGeneral in this.Details){
+						var Reg = BOReportPLEs.Retrieve(DataGeneral.IDReg);
+						if(Reg.IsSet()){
+							var MyAttachPle1 = Reg.ReportsAttachments.DocumentList.Where(n=>n.Name == NamePle1).GetFirst();
+							if (MyAttachPle1.IsSet()){
+								if (MyAttachPle1.MIMECode == "text/plain"){
+									var FileCont = MyAttachPle1.FileContent;
+									StrlinePle1 = StrlinePle1 + FileCont.BinaryObject.content.ToString();
+								}
+							}
+						}
+					}
+				}
+			}
+			vDocumentName = NamePle1;
+			vDocumentType.content = "10001";
+			vDocumentType.listID = "10296";
+			vBinary.mimeCode = "text/plain";
+			vBinary.content = Binary.ParseFromString(StrlinePle1);
+			this.ReportsAttachments.CreateFile(vDocumentType,vDocumentName,vDocumentName,vDocumentDesc,vBinary);
+		}
+	}
+}
+
+
+
+
+
+

@@ -1,0 +1,17 @@
+﻿///*
+	//Add your SAP Business ByDesign scripting language implementation for:
+		//Business Object: BOFilters
+		//Node: Root
+		//Action: aDelete 
+		//
+	//Note: 
+	  //- To access the elements of the business object node, 
+	    //use path expressions, for example, this.<element name>. 
+	  //- To use code completion, press CTRL+J. 
+	   //
+//*/
+//
+//import ABSL;
+//
+//this.Delete();
+//

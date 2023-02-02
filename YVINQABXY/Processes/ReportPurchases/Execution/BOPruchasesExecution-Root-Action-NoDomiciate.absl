@@ -1,0 +1,709 @@
+﻿import ABSL;
+import AP.Common.GDT as apCommonGDT;
+import BASIS.Global as basis;
+import AP.FO.BusinessPartner.Global;
+
+//var insCompanyConfig;
+//var strLine = "";
+//
+////Messages definition
+//var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+//var msgCompany = "Por favor ingresar Empresa.";
+//var msgSetBook = "Por favor ingresar Set of Book";
+//var msgLimitDate = "Por favor ingresar la Fecha Inicial";
+//var msgDateInitial = "Por favor ingresar fecha inicial";
+//var msgNotConfig = "No hay datos de configuraci�n de esta empresa para el informe.";
+//var msgNotData = "La consulta no arroj� datos v�ldos para este informe.";
+//
+//if (LanguageCode != "ES") {
+//msgCompany = "Please enter the Company.";
+//msgSetBook = "Please enter the Set of Book";
+//msgLimitDate = "Please enter Limit Date.";
+//msgDateInitial = "Please enter Date Initial";
+//msgNotConfig = "No configuration data for the company fro the report.";
+//msgNotData = "The query not returns valid data for this report.";
+//}
+//
+////Company Validation
+//
+//
+//
+//
+this.State = true;
+while (true)
+{
+	var txtstring = "";
+	if (this.IDPurchConfig.IsInitial()) { break; }
+	var query = BOPurchasesConfiguration.QueryByElements;
+	// 2. Selection
+	var selectionParams = query.CreateSelectionParams();
+	selectionParams.Add(query.ID, "I", "EQ", this.IDPurchConfig);
+
+	var resultData = query.Execute(selectionParams).GetFirst();
+	if (!resultData.IsSet()) { break; }
+
+	if (this.ReportsAttachments.DocumentList.Count() > 0)
+	{
+		this.ReportsAttachments.DocumentList.Delete();
+	}
+	
+	var serviceID = "";  
+	var parameter : NameAndValue;
+	var parameters : collectionof NameAndValue;  
+
+
+	var FechaIn = this.EDateInitial.GetYear();
+	var GearNum = ABSL:Numeric.ParseFromString(FechaIn);
+
+
+	//FechaInicial
+	var TemDateToM = this.EDateInitial.GetMonth();
+	switch (TemDateToM)
+	{
+		case "01" { TemDateToM = "1"; }
+		case "02" { TemDateToM = "2"; }
+		case "03" { TemDateToM = "3"; }
+		case "04" { TemDateToM = "4"; }
+		case "05" { TemDateToM = "5"; }
+		case "06" { TemDateToM = "6"; }
+		case "07" { TemDateToM = "7"; }
+		case "08" { TemDateToM = "8"; }
+		case "09" { TemDateToM = "9"; }
+	}
+	
+	//FILTRO DINAMICO 
+	var MonthDateTo = ABSL:Numeric.ParseFromString(TemDateToM);
+	//var YearDateTo = ABSL:Numeric.ParseFromString(TemDateToM);
+	var StringValue = "CBUYER eq '" + resultData.CompanyID + "'and CFISCALYEARPERIO eq " + TemDateToM + this.EDateInitial.GetYear() +" and CSETOFBKS eq '" + resultData.SetOfBooksID.content + "'";
+
+	//Campos Consumo MashupCACC_DOC_ITEM_ID
+	serviceID = "PW00029";  
+	parameter.Name = "$select";  
+	parameter.Value = "TSELLER,CFISCALYEARPERIO,CCLOSESTEP,CACC_DOC_UUID,CDOC_DATE,CFULL_PAY_EDATE,CSELLER,CSELLER_COUNTRY,COEDPARTNER,CTAX_TYPE,CTAX_ID_NR,CPRODTAXCHARCODE,KCAMTTRA,CCURRTRA,KCAMTCOMP,CFRMTD_PSTL_ADDR,KCRC_GROSS_AMOUNT,CINVOICE_UUID,CNOTE_HD,";
+	parameter.Value = parameter.Value + "KCYADF2JMOY_9E2018D91D,KCZ0COUNT,KCRC_NET_AMOUNT";
+	parameters.Add(parameter);   
+	parameter.Name = "$filter";
+	parameter.Value = StringValue;
+	parameters.Add(parameter);  
+	
+	
+	
+	var ws_result = WebServiceUtilities.ExecuteWebService(serviceID, parameters);
+	var Content = ws_result.ResponseContent;  
+	var returnCode = ws_result.ReturnCode;  
+	var strData = "";
+	var sCurrency = "";
+	var sLocalCurrency = "";
+	var decAmount : DataType::DecimalValue;
+	var otherAmount : DataType::apCommonGDT:Amount;
+	
+	var xname : LANGUAGEINDEPENDENT_LONG_Name;
+	var xtype : DocumentTypeCode;
+	var xdesc : Description;
+	var xbinary : basis:BinaryObject;
+	
+	//xname = "Resultado ";
+	//xtype.content = "10001";
+	//xtype.listID = "10296";
+	//xbinary.mimeCode = "text/plain";
+	//xbinary.content = Binary.ParseFromString(Content);
+	//this.ReportsAttachments.CreateFile(xtype, xname, xname, xdesc, xbinary);
+	
+	//
+	//
+	var xmlResult;
+	//var FechaAno = this.EDateInitial.GetYear();
+	//var FechaMes = this.EDateInitial.GetMonth();
+	//
+	xmlResult = Library::RLStrings.XMLToArray(Content);
+	
+	if (xmlResult.Count() == 0) { break; }
+	
+	var NumeroCuent = "";
+	foreach (var RegistroCompras in xmlResult)
+	{
+
+		var Campo1 = "";//FISCALYEARPERIO	Long: 8
+		var Campo2 = "";//CACC_DOC_UUID		Long: Hasta 40
+		var Campo3 = "";//CCLOSESTEP		Long: 2 hasta 10
+		var Campo4 = "";//CDOC_DATE			Long: 10
+		var Campo5 = "";//CFULL_PAY_EDATE	Long: 10		
+		var Campo6 = "";//COEDPARTNER		Long: 2
+		var Campo7 = "";
+		var Campo8 = "";//CFISCYEAR			Long: 4
+		var Campo9 = "";
+		var Campo10 = "";
+		var Campo11 = "";//CTAX_TYPE		Long: 1
+		var Campo12 = "";
+		var Campo13 = "";
+		var Campo14 = "";
+		var Campo15 = "";
+		var Campo16 = "";
+		var Campo17 = "";
+		var Campo18 = "";
+		var Campo19 = "";
+		var Campo20 = "";
+		var Campo21 = "";
+		var Campo22 = "";
+		var Campo23 = "";//KCAMTTRA
+		var Campo24 = "";//CCURRTRA
+		var Campo25 = "";
+		var Campo26 = "";
+		var Campo27 = "";
+		var Campo28 = "";
+		var Campo29 = "";
+		var Campo30 = "";
+		var Campo31 = "";
+		var Campo32 = "";
+		var Campo33 = "";
+		var Campo34 = "";
+		var Campo35 = "";
+		var Campo36 = "";
+		var Campo37 = "";
+		var Campo38 = "";
+		var Campo39 = "";
+		var Campo40 = "";
+		var Campo41 = "";
+
+		var YearPerioFisc = Library::RLStrings.GetElementByName(RegistroCompras.String, "CFISCALYEARPERIO").Trim();
+		if(!YearPerioFisc.IsInitial()){
+			var Cont = YearPerioFisc.Length();
+			if(Cont < 6){
+				YearPerioFisc = "0" + YearPerioFisc;
+			}
+		}
+		var FiscalYear = YearPerioFisc.Substring(2, 4);
+		var FiscalMonth = YearPerioFisc.Substring(0, 2);
+		if (FiscalMonth.Length() == 1) { FiscalMonth = "0" + FiscalMonth; }
+		Campo1 = FiscalYear + FiscalMonth + "00";
+		Campo2 = Library::RLStrings.GetElementByName(RegistroCompras.String, "CACC_DOC_UUID").Trim();
+		var Primer = Campo2.Substring(0,1);
+		if(Primer == "2"){
+			var CloseStep = Library::RLStrings.GetElementByName(RegistroCompras.String, "CCLOSESTEP").Trim();
+			switch (CloseStep)
+			{
+				case "01" { Campo3 = "A"; }
+				case "010", "015", "020" { Campo3 = "M"; }
+				case "080", "990", "991" { Campo3 = "C"; }
+			}
+			var ConCate3sub1 =  "1";//Library::RLStrings.GetElementByName(RegistroCompras.String, "CACC_DOC_IT_UUID").Trim();
+			var ConCate3sub2 = "";//Library::RLStrings.GetElementByName(RegistroCompras.String, "CACC_DOC_ITEM_ID").Trim();    
+			//Campo3 = Campo3 + ConCate3sub1;
+			Campo4 = Library::RLStrings.GetElementByName(RegistroCompras.String, "CDOC_DATE").Trim();
+			var DateYear = Campo4.Substring(0,4);
+			var DateMonth = Campo4.Substring(5,2);
+			if(Campo4.Length()>10){
+				Campo4 = Campo4.Substring(0,10);
+				Campo4 = Campo4.Substring(8,2) + "/"+ Campo4.Substring(5,2)+"/"+Campo4.Substring(0,4);
+			}
+		
+			var Comprobante = Library::RLStrings.GetElementByName(RegistroCompras.String, "COEDPARTNER").Trim();
+			Campo5 = Comprobante.Substring(0, 2);
+			var Numer888 = Comprobante.Substring(0, 3);
+			var ValidationTypeDocument = Campo5.Substring(0,1);
+			Campo11 = Library::RLStrings.GetElementByName(RegistroCompras.String, "CTAX_TYPE").Trim();
+			if((Campo11 != "1" && Campo11 != "2" && Numer888 !="888") && (ValidationTypeDocument == "0" || ValidationTypeDocument == "1" || ValidationTypeDocument == "2" || ValidationTypeDocument == "3" || ValidationTypeDocument == "4" || ValidationTypeDocument == "5" || ValidationTypeDocument == "6" || ValidationTypeDocument == "7" || ValidationTypeDocument == "8" || ValidationTypeDocument == "9" )){
+				var ContCompro = Comprobante.Length();
+				var ContFirstGui = Comprobante.Find("-");
+				var String = Comprobante.Substring((ContFirstGui+1), (ContCompro - ContFirstGui-1));
+				var ContSecondGui = String.Find("-");
+				var ContFinal = String.Length();
+				var String2= String.Substring(0, (ContSecondGui));
+				Campo6 = String2;
+				Campo7 = String.Substring((ContSecondGui+1), (ContFinal - ContSecondGui-1));
+				Campo8 = Library::RLStrings.GetElementByName(RegistroCompras.String, "KCAMTTRA").Trim();
+				var Nuber8 = ABSL:Numeric.ParseFromString(Campo8);
+				Campo8 = Nuber8.RoundToString(0,true);
+				Campo8 = Campo8.Replace(",",".");
+				Campo9 = "0.00";
+				Campo10 = "";
+				
+				//Tipo de identificacion fiscal
+				var vIdentificacion = "";
+				if(Campo11 == "2"){
+					Campo10 = "1";
+				}else{
+					if(Campo11 == "5"){
+						Campo10 = "4";
+					}else{
+						if(Campo11 == "1"){
+							Campo10 = "6";
+						}
+					}
+				}
+				Campo10=Campo8;
+				Campo11="";
+				Campo12="";
+				Campo13="0";
+				Campo14="";
+				Campo15="";
+				Campo16 = Library::RLStrings.GetElementByName(RegistroCompras.String, "CCURRTRA").Trim();
+				//var Number24 = ABSL:Numeric.ParseFromString(Campo24);
+				//Campo24 = Number24.RoundToString(2,true);
+				 var AMKcom;
+				if(Campo16 != "PEN"){
+					var Amtra = ABSL:Numeric.ParseFromString(Campo8);
+					AMKcom = Library::RLStrings.GetElementByName(RegistroCompras.String, "KCAMTCOMP").Trim(); 
+					var Amco =  ABSL:Numeric.ParseFromString(AMKcom);
+					var Caluclo17 = (Amco/Amtra).RoundToString(3,true);
+					var Value17 = (Amco/Amtra);
+					Campo17 = Caluclo17.Replace(",",".");
+					
+					Campo8 = (Amtra * Value17).RoundToString(2,true);
+					Campo8 = Campo8.Replace(",",".");
+					Campo10 = Campo8;
+				
+				
+				}
+				Campo18=Library::RLStrings.GetElementByName(RegistroCompras.String, "CSELLER_COUNTRY").Trim();
+				var QryCountry = BOCountryConfiguration.QueryByElements;
+				var ParamsCountry = QryCountry.CreateSelectionParams();
+					ParamsCountry.Add(QryCountry.CountrySAP, "I", "EQ", Campo18);
+				var ResultCountry = QryCountry.Execute(ParamsCountry).GetFirst();
+				if(ResultCountry.IsSet()){
+					Campo18 = ResultCountry.CountrySUNAT;
+				}
+				//Falta Logica de Homologacion
+				//Campo19 =Library::RLStrings.GetElementByName(RegistroCompras.String, "CSELLER").Trim();
+				//var querySup = Supplier.QueryByIdentification;
+				//// 2. Selection
+				//var selectionParamsSup = querySup.CreateSelectionParams();
+				//selectionParamsSup.Add(querySup.InternalID, "I", "EQ", "10000269");//RowData.ToAdminDetra.SupplierID);
+				//// Result
+				//var resultDataSup = querySup.Execute(selectionParamsSup).GetFirst();
+				//if(resultDataSup.IsSet()){
+					//if(resultDataSup.AddressSnapshot.IsSet()){
+						//if(resultDataSup.AddressSnapshot.Name.Count()>0){
+							//if(!resultDataSup.AddressSnapshot.Name.GetFirst().Name.FirstLineName.IsInitial()){
+								//Campo19 =resultDataSup.AddressSnapshot.Name.GetFirst().Name.FirstLineName;
+							//}
+						//}
+					//}
+				//}
+				Campo19 = Library::RLStrings.GetElementByName(RegistroCompras.String, "TSELLER").Trim();
+				Campo20 =Library::RLStrings.GetElementByName(RegistroCompras.String, "CFRMTD_PSTL_ADDR").Trim();
+				Campo21 = Library::RLStrings.GetElementByName(RegistroCompras.String, "CTAX_ID_NR").Trim();
+				Campo22 = "";
+				Campo23 = "";
+				Campo24 = "";
+				Campo25 = "";
+				Campo26 = Library::RLStrings.GetElementByName(RegistroCompras.String, "KCRC_GROSS_AMOUNT").Trim();
+				var Nuber26 = ABSL:Numeric.ParseFromString(Campo26);
+				Campo26 = Nuber26.RoundToString(2,true); // Bruto
+				var Procentaje1  = Library::RLStrings.GetElementByName(RegistroCompras.String, "KCYADF2JMOY_9E2018D91D").Trim();
+				var Porcentaje2 = Library::RLStrings.GetElementByName(RegistroCompras.String, "KCZ0COUNT").Trim();
+				var Numer1 =ABSL:Numeric.ParseFromString(Procentaje1);
+				var Number2 = ABSL:Numeric.ParseFromString(Porcentaje2);
+				var Procent = (Numer1 /Number2);
+				var Number30 = ((Nuber26 * Procent)/100);
+				Campo30 = ((Nuber26 * Procent)/100).RoundToString(0,true);
+				//Retenion 
+				if(Number30 > 0){
+					Campo26 = (Nuber26 - Number30).RoundToString(2,true);
+					var numericCampo28 = Library::RLStrings.GetElementByName(RegistroCompras.String, "KCRC_NET_AMOUNT").Trim();
+					var Num28 = ABSL:Numeric.ParseFromString(numericCampo28);
+					var Nuer = (Num28 - Number30);
+					Campo28 = Nuer.RoundToString(2,true);
+				}else{
+					Campo26 = "0";
+					Campo30 = "0";
+					Campo28 = "0";
+				}
+				//falta
+				
+				
+				
+				Campo27 = "0.00";
+				//Campo28 = "0.00";
+				var Fact = Library::RLStrings.GetElementByName(RegistroCompras.String, "CINVOICE_UUID").Trim();
+				Campo3 = "M" + Fact;
+				
+				var StringValue3="CCOMPANIDROOT393E96E7737D2A29 eq '" + resultData.CompanyID + "' and CINVOICE_UUID eq '" + Fact + "'"; 
+			
+				var serviceID3 = "";
+				var parameter3 : NameAndValue;
+				var parameters3 : collectionof NameAndValue;  
+				serviceID3 = "PW00041";  
+				parameter3.Name = "$select";  
+				parameter3.Value = "KCDETRAANTROOT768F0181E9D1ACC5,CDETRAANTROOTA3144F0538AEEF62";
+				parameters3.Add(parameter3);   
+				parameter3.Name = "$filter";
+				parameter3.Value = StringValue3;
+				parameters3.Add(parameter3);  
+				var ws_result3 = WebServiceUtilities.ExecuteWebService(serviceID3, parameters3);
+				var Content3 = ws_result3.ResponseContent;  
+				var returnCode3 = ws_result3.ReturnCode; 
+				var xmlResult3;
+				
+				xmlResult3 = Library::RLStrings.XMLToArray(Content3);
+
+				foreach(var RegistroDetra in xmlResult3){
+					var DatMoneda = Library::RLStrings.GetElementByName(RegistroDetra.String, "CDETRAANTROOTA3144F0538AEEF62").Trim();
+					if(DatMoneda.IsInitial()){
+						var DataValue = Library::RLStrings.GetElementByName(RegistroDetra.String, "KCDETRAANTROOT768F0181E9D1ACC5").Trim();
+						var Numeric = ABSL:Numeric.ParseFromString(AMKcom);
+						if(!Campo17.IsInitial()){
+							var Var17 =  ABSL:Numeric.ParseFromString(Campo17);
+							var Data29 = Numeric*Var17;
+							Campo29 = Data29.RoundToString(2,true);
+						}else{
+							Campo29 = Numeric.RoundToString(2,true);
+						}
+					}
+				}
+				var Numeric29 ;
+				if(ABSL:Numeric.IsNumeric(Campo29)){
+					Numeric29 =ABSL:Numeric.ParseFromString(Campo29);
+				}else{
+					Numeric29 = 0;
+				}
+				var Numeric26 ;
+				if(ABSL:Numeric.IsNumeric(Campo26)){
+					Numeric26 =ABSL:Numeric.ParseFromString(Campo26);
+				}else{
+					Numeric26 = 0;
+				}
+				var Data29 = Numeric26 -Numeric29;
+				
+				Campo30 = "0.00";
+				Campo31 = "00";
+				Campo32 = "";
+				Campo33="00";
+				var StringValue4="CBUYER eq '" + resultData.CompanyID + "' and CINVOICE_UUID eq '" + Fact + "'";
+				var serviceID4 = "";
+				var parameter4 : NameAndValue;
+				var parameters4 : collectionof NameAndValue;  
+				serviceID4 = "PW00065";  
+				parameter4.Name = "$select";  
+				parameter4.Value = "CPRODUCT_TYPE,KCAMTRA";
+				parameters4.Add(parameter4);   
+				parameter4.Name = "$filter";
+				parameter4.Value = StringValue4;
+				parameters4.Add(parameter4);  
+				var ws_result4 = WebServiceUtilities.ExecuteWebService(serviceID4, parameters4);
+				var Content4 = ws_result4.ResponseContent;  
+				var returnCode4 = ws_result4.ReturnCode; 
+				var xmlResult4;
+				
+				xmlResult4 = Library::RLStrings.XMLToArray(Content4);
+				var Data = 0;
+				var SumMaterial = 0;
+				var SumServ = 0;
+				foreach(var DataItemCompras in xmlResult4){
+					var CPRODUCT_TYPE = Library::RLStrings.GetElementByName(DataItemCompras.String, "CPRODUCT_TYPE").Trim();
+					var DataAmtra = Library::RLStrings.GetElementByName(DataItemCompras.String, "KCAMTRA").Trim();
+					var Numeric = ABSL:Numeric.ParseFromString(DataAmtra);
+					if(CPRODUCT_TYPE == "1"){
+						SumMaterial = SumMaterial + Numeric;
+					}else{
+						SumServ = SumServ + Numeric;
+					}
+				}
+				if(SumMaterial > SumServ){
+					Campo34 = "1";
+				}else{
+					Campo34 = "2";
+				}
+				Campo35 = "";
+				Campo36 = "0";
+				Campo37=Library::RLStrings.GetElementByName(RegistroCompras.String, "CNOTE_HD").Trim();
+				//Reporte campos 22 23 24
+				var StringValue2="CCOMPANY_UUID eq '" + resultData.CompanyID + "' and CIM_B_BTD_ID eq '" + Fact + "' and CACCDOCTYPE eq '00097'"; 
+				var serviceID2 = "";
+				var parameter2 : NameAndValue;
+				var parameters2 : collectionof NameAndValue;  
+				serviceID2 = "PW00014";  
+				parameter2.Name = "$select";  
+				parameter2.Value = "CCOMPANY_UUID,CTAX_ID_NR,CCOUNTRY_CODE,TBUS_PART_UUID";
+				parameters2.Add(parameter2);   
+				parameter2.Name = "$filter";
+				parameter2.Value = StringValue2;
+				parameters2.Add(parameter2);  
+				var ws_result2 = WebServiceUtilities.ExecuteWebService(serviceID2, parameters2);
+				var Content2 = ws_result2.ResponseContent;  
+				var returnCode2 = ws_result2.ReturnCode; 
+				var xmlResult2;
+				
+				xmlResult2 = Library::RLStrings.XMLToArray(Content2).GetFirst();
+				if(!xmlResult2.IsInitial()){
+					Campo22 = Library::RLStrings.GetElementByName(xmlResult2.String, "CTAX_ID_NR").Trim();
+					Campo24 = Library::RLStrings.GetElementByName(xmlResult2.String, "CCOUNTRY_CODE").Trim();
+					var QryCountrySAP = BOCountryConfiguration.QueryByElements;
+					var ParamsCountrySAP = QryCountrySAP.CreateSelectionParams();
+						ParamsCountrySAP.Add(QryCountrySAP.CountrySAP, "I", "EQ", Campo24);
+					var ResultCountrySAP = QryCountrySAP.Execute(ParamsCountrySAP).GetFirst();
+					if(ResultCountrySAP.IsSet()){
+						Campo24 = ResultCountrySAP.CountrySUNAT;
+					}
+					Campo23 =  Library::RLStrings.GetElementByName(xmlResult2.String, "TBUS_PART_UUID").Trim();
+					
+		
+				}
+		
+				
+			
+			
+				if(NumeroCuent != Campo2){
+					txtstring =  txtstring + Campo1+ "|" +Campo2+"|" +Campo3+"|" +Campo4+"|" +Campo5+"|" +Campo6+"|" +Campo7+"|" +Campo8+"|" +Campo9+"|" +Campo10+"|" +Campo11+"|" +Campo12+"|" +Campo13+"|" +Campo14
+									+"|" +Campo15+"|" +Campo16+"|" +Campo17+"|" +Campo18+"|" +Campo19+"|" +Campo20+"|" +Campo21+"|" +Campo22+"|" +Campo23+"|" +Campo24+"|" +Campo25+"|" +Campo26+"|" +Campo27+"|" +Campo28
+									+"|" +Campo29+"|" +Campo30+"|" +Campo31+"|" +Campo32+"|" +Campo33+"|" +Campo34+"|" +Campo35+"|" +Campo36+"|" + Campo37 + "|"+"\r\n";
+
+				}
+				NumeroCuent = Campo2;
+			
+			}
+		}
+	}
+	
+	//
+	//
+	//var Periodo = "FISCALYEARPERIO";//1
+	//var AsientoContable= "ACC_DOC_ID";//2
+	//var EtapaCierre = "CLOSESTEP";//3
+	//var FechaDocumento = "DOC_DATE";//4
+	//var FechaVencimiento = "FULL_PAY_EDATE";//5
+	//var TipoComproantePago="OEDPARTNER";//6
+	//var SerieComprobantePago = "OEDPARTNER";//7
+	//var YearEmision = "";//8
+	//var NumroComprobantePago = "OEDPARTNER";//9
+	//var CreditoFiscal="";//10
+	//var TipoDocProveedor= "TAX_NUMBER_TYPE";//11
+	//var NumeroDocProveedor = "TAX_NUMBER";//12
+	//var SocioComercial = "SELLER";//13
+	//var BaseAdquisicionesGravadas = "NET_AMOUNT";//14
+	//var MontoImpuestoFinalGravado = "GROSS_AMOUNT - NET_AMOUNT";//15
+	//var BaseImponibleNoGravadas = "NET_AMOUNT";//16
+	//var MontoImpuestoNoGravado ="GROSS_AMOUNT - NET_AMOUNT";//17
+	//var BaseImponibleExportacionGravada = "NET_AMOUNT";//18
+	//var MontoImpuestosExportGravadas = "GROSS_AMOUNT - NET_AMOUNT";//19
+	//var ValorAdquicisionesNoGravadas="NET_AMOUNT";//20
+	//var MontoImpuestoSelectivo="";//21 Harco
+	//var OtrosConceptos ="";//22Harco
+	//var ImporteTotalAdquicicion="";//23Harco
+	//var CodigoMoneda="";//24CURRTRA
+	//var TipoCambio="RC_GROSS_AMOUNT / GROSS_AMOUNT siempre y cuando sea diferente allllllll moneda de mk cual es la moneda de peru";//25
+	//var fechaEmision = "OEDPARTNER";//26 
+	//var TipoComprobantePago = "OEDPARTNER";//27
+	//var NumeroSerieComprobantePago = "OEDPARTNER";//28
+	//var CodigoDUA="CampoExtendido";//29
+	//var NumeroComprobantePago="";//30Harco
+	//var FechaEmisionDeposito = "";//31Falta Definir
+	//var Numeroconstancia = "";//32falta definir
+	//var marcadecompdepago ="";//33falta definir
+	//var ClasificacionBienes="";//34 Tabla 30
+	//var IdentificacionContratoProyecto = "PROJ_TASK_UUID";//35 Crear un Indicator "Sociedades iregulares si esta check"
+	//var ErrorTipo1TipoCambio = "";//36 Tabla10
+	//var ErrorTipo2InconsistenciaProveedores = ""; //37 Tabla10
+	//var ErrorTipo3InconsistenciaProveeExonera = "";//38 Tabla10
+	//var ErrorTipo4InconsisteciaDNI = "";//39 Tabla10
+	//var IndicadorComproPago = ""; //40Pendiente Kathe
+	//var EstadoAjusteOportunidad = "PROJ_TASK_UUID";//41
+	//
+	//var CodImpuesto;//CITEM_TAX_CHAR
+	//
+	//
+	//var QrybOSUB = BOBookDiarie_Configuration.QueryByElements;
+	//var ParameBoSub = QrybOSUB.CreateSelectionParams();
+	//ParameBoSub.Add(QrybOSUB.SetOfBooksID.content, "I", "EQ", this.SetOfBooks.content);
+	//ParameBoSub.Add(QrybOSUB.CompanyID, "I", "EQ", this.ECompany);
+	//var Resultado = QrybOSUB.Execute(ParameBoSub);
+	//if(Resultado.Count() > 0){
+	//////foreach( var RespObt in Resultado){
+	//foreach (var xmlRow in xmlResult) {
+	//
+	//
+	//
+	//TipoComproantePago=Library::RLStrings.GetElementByName(xmlRow.String,"OEDPARTNER").Trim();//6
+	//TipoComproantePago=TipoComproantePago.Substring(0,2);//6
+	//if(TipoComproantePago != "91" || TipoComproantePago != "97" || TipoComproantePago != "98" ){
+	//
+	//Periodo = Library::RLStrings.GetElementByName(xmlRow.String, "FISCALYEARPERIO").Trim();//1
+	//AsientoContable= Library::RLStrings.GetElementByName(xmlRow.String,"ACC_DOC_ID").Trim();//2
+	//EtapaCierre = Library::RLStrings.GetElementByName(xmlRow.String,"CLOSESTEP").Trim();//3
+	//FechaDocumento =Library::RLStrings.GetElementByName(xmlRow.String, "DOC_DATE").Trim();//4
+	//FechaVencimiento =Library::RLStrings.GetElementByName(xmlRow.String, "FULL_PAY_EDATE").Trim();//5
+	//
+	//SerieComprobantePago = Library::RLStrings.GetElementByName(xmlRow.String,"OEDPARTNER").Trim();//7
+	//YearEmision = "";//8
+	//NumroComprobantePago = Library::RLStrings.GetElementByName(xmlRow.String,"OEDPARTNER").Trim();//9
+	//CreditoFiscal="";//10
+	//TipoDocProveedor= Library::RLStrings.GetElementByName(xmlRow.String,"TAX_NUMBER_TYPE").Trim();//11
+	//NumeroDocProveedor = Library::RLStrings.GetElementByName(xmlRow.String,"TAX_NUMBER").Trim();//12
+	//SocioComercial = Library::RLStrings.GetElementByName(xmlRow.String,"SELLER").Trim();//13
+	//CodImpuesto = Library::RLStrings.GetElementByName(xmlRow.String,"CITEM_TAX_CHAR").Trim();//13;//CITEM_TAX_CHAR
+	//BaseAdquisicionesGravadas = "NET_AMOUNT";//14
+	//MontoImpuestoFinalGravado = "GROSS_AMOUNT - NET_AMOUNT";//15
+	//BaseImponibleNoGravadas = "NET_AMOUNT";//16
+	//MontoImpuestoNoGravado ="GROSS_AMOUNT - NET_AMOUNT";//17
+	//BaseImponibleExportacionGravada = "NET_AMOUNT";//18
+	//MontoImpuestosExportGravadas = "GROSS_AMOUNT - NET_AMOUNT";//19
+	//ValorAdquicisionesNoGravadas="NET_AMOUNT";//20
+	//MontoImpuestoSelectivo="";//21 Harco
+	//OtrosConceptos ="";//22Harco
+	//ImporteTotalAdquicicion="";//23Harco
+	//CodigoMoneda= Library::RLStrings.GetElementByName(xmlRow.String,"CURRTRA").Trim(); //24CURRTRA
+	//TipoCambio="RC_GROSS_AMOUNT / GROSS_AMOUNT siempre y cuando sea diferente allllllll moneda de mk cual es la moneda de peru";//25
+	//fechaEmision = Library::RLStrings.GetElementByName(xmlRow.String,"OEDPARTNER").Trim();//26 
+	//TipoComprobantePago = Library::RLStrings.GetElementByName(xmlRow.String,"OEDPARTNER").Trim();//27
+	//NumeroSerieComprobantePago = Library::RLStrings.GetElementByName(xmlRow.String,"OEDPARTNER").Trim();//28
+	//CodigoDUA="CampoExtendido";//29
+	//NumeroComprobantePago="";//30Harco
+	//FechaEmisionDeposito = "";//31Falta Definir
+	//Numeroconstancia = "";//32falta definir
+	//marcadecompdepago ="";//33falta definir
+	//ClasificacionBienes="";//34 Tabla 30
+	//IdentificacionContratoProyecto = Library::RLStrings.GetElementByName(xmlRow.String,"PROJ_TASK_UUID").Trim();//35 Crear un Indicator "Sociedades iregulares si esta check"
+	//ErrorTipo1TipoCambio = "";//36 Tabla10
+	//ErrorTipo2InconsistenciaProveedores = ""; //37 Tabla10
+	//ErrorTipo3InconsistenciaProveeExonera = "";//38 Tabla10
+	//ErrorTipo4InconsisteciaDNI = "";//39 Tabla10
+	//IndicadorComproPago = ""; //40Pendiente Kathe
+	//EstadoAjusteOportunidad = Library::RLStrings.GetElementByName(xmlRow.String,"PROJ_TASK_UUID").Trim();//41	
+	//
+	//
+	//
+	//
+	//
+	//
+	//Periodo = Periodo.Substring(0,4)+Periodo.Substring(5,2)+"00";//1
+	//AsientoContable=AsientoContable ;//2
+	//if(EtapaCierre == "001"){
+	//EtapaCierre = "A";//3
+	//}else{
+	//if(EtapaCierre == "010" || EtapaCierre == "015" || EtapaCierre == "020"){
+	//EtapaCierre = "M";//3
+	//}else{
+	//EtapaCierre = "C";
+	//}
+	//}
+	//FechaDocumento = FechaDocumento.Substring(0,10);//4
+	//FechaVencimiento = FechaVencimiento.Substring(0,10);//5
+	//
+	//SerieComprobantePago = SerieComprobantePago.Substring(3,5);//7
+	//if(TipoComproantePago == "50" || TipoComproantePago == "52"){
+	//YearEmision = FechaDocumento;//8
+	//}
+	//NumroComprobantePago = NumroComprobantePago.Substring(8,7);//9
+	//CreditoFiscal="0.00";//10
+	//if(TipoDocProveedor == "1"){
+	//TipoDocProveedor= "6";//11
+	//}else{
+	//if(TipoDocProveedor == "2"){
+	//TipoDocProveedor= "1";//11
+	//}else{
+	//if(TipoDocProveedor == "3"){
+	//TipoDocProveedor= "7";//11
+	//}else{
+	//if(TipoDocProveedor == "4"){
+	//TipoDocProveedor= "A";//11
+	//}else{
+	//if(TipoDocProveedor == "5"){
+	//TipoDocProveedor= "4";//11
+	//}else{
+	//TipoDocProveedor= "0";//11
+	//}
+	//}
+	//}
+	//}
+	//}
+	//if(TipoComproantePago == "01"){
+	//NumeroDocProveedor = NumeroDocProveedor;//12
+	//SocioComercial = SocioComercial;//13
+	//}else{
+	//NumeroDocProveedor ="";
+	//SocioComercial="";
+	//}
+	//var NumerBaseAdquisicionesGravadas;
+	//var Gross ;
+	//var NumericGross;
+	//var NumerBaseImponibleNoGravadas;
+	//var NumerBaseImponibleExportacionGravada;
+	//if(CodImpuesto == "010"){
+	//BaseAdquisicionesGravadas = Library::RLStrings.GetElementByName(xmlRow.String,"NET_AMOUNT").Trim();
+	//NumerBaseAdquisicionesGravadas = ABSL:Numeric.ParseFromString(BaseAdquisicionesGravadas);
+	//Gross = Library::RLStrings.GetElementByName(xmlRow.String,"GROSS_AMOUNT").Trim();
+	//NumericGross = ABSL:Numeric.ParseFromString(Gross);
+	//MontoImpuestoFinalGravado = (NumericGross - NumerBaseAdquisicionesGravadas).RoundToString(0, true);
+	//}else{
+	//BaseAdquisicionesGravadas = "";
+	//MontoImpuestoFinalGravado = "";
+	//}
+	//var Sum  = NumerBaseAdquisicionesGravadas +NumericGross;
+	//ValorAdquicisionesNoGravadas ="";
+	//if(CodImpuesto == "001"){
+	//BaseImponibleNoGravadas = Library::RLStrings.GetElementByName(xmlRow.String,"NET_AMOUNT").Trim();
+	//NumerBaseImponibleNoGravadas = ABSL:Numeric.ParseFromString(BaseAdquisicionesGravadas);
+	//Gross = Library::RLStrings.GetElementByName(xmlRow.String,"GROSS_AMOUNT").Trim();
+	//NumericGross = ABSL:Numeric.ParseFromString(Gross);
+	//MontoImpuestoNoGravado = (NumericGross - NumerBaseImponibleNoGravadas).RoundToString(0, true);
+	//ValorAdquicisionesNoGravadas = BaseImponibleNoGravadas;
+	//}else{
+	//BaseImponibleNoGravadas = "";
+	//MontoImpuestoNoGravado = "";
+	//}
+	//Sum = Sum + NumerBaseImponibleNoGravadas+NumericGross;
+	//if(CodImpuesto == "011"){
+	//BaseImponibleExportacionGravada = Library::RLStrings.GetElementByName(xmlRow.String,"NET_AMOUNT").Trim();
+	//NumerBaseImponibleExportacionGravada = ABSL:Numeric.ParseFromString(BaseAdquisicionesGravadas);
+	//Gross = Library::RLStrings.GetElementByName(xmlRow.String,"GROSS_AMOUNT").Trim();
+	//NumericGross = ABSL:Numeric.ParseFromString(Gross);
+	//MontoImpuestosExportGravadas = (NumericGross - NumerBaseImponibleExportacionGravada).RoundToString(0, true);
+	//ValorAdquicisionesNoGravadas = BaseImponibleExportacionGravada;
+	//}else{
+	//BaseImponibleExportacionGravada = "";
+	//MontoImpuestosExportGravadas = "";
+	//} 
+	//Sum = Sum +NumerBaseImponibleExportacionGravada+NumericGross;
+	//MontoImpuestoSelectivo="";//21 Harco
+	//OtrosConceptos ="";//22Harco
+	//ImporteTotalAdquicicion= Sum.RoundToString(0,true) ;//23Harco
+	//CodigoMoneda=CodigoMoneda;//24
+	//if(CodigoMoneda != "PEN"){
+	//var Grosss = Library::RLStrings.GetElementByName(xmlRow.String,"RC_GROSS_AMOUNT").Trim();
+	//var GrosssAmmount = Library::RLStrings.GetElementByName(xmlRow.String,"GROSS_AMOUNT").Trim();
+	//var Numer= ABSL:Numeric.ParseFromString(Grosss);
+	//var NumerGrosAmou = ABSL:Numeric.ParseFromString(GrosssAmmount);
+	//TipoCambio= (Numer / NumerGrosAmou).RoundToString(0,true);//25
+	//} 
+	//fechaEmision = "OEDPARTNER";//26
+	//TipoComprobantePago = "OEDPARTNER";//27
+	//NumeroSerieComprobantePago = "OEDPARTNER";//28
+	//CodigoDUA="CampoExtendido";//29
+	//NumeroComprobantePago="";//30Harco
+	//FechaEmisionDeposito = "";//31Falta Definir
+	//Numeroconstancia = "";//32falta definir
+	//marcadecompdepago ="";//33falta definir
+	//ClasificacionBienes="";//34 Tabla 30
+	//IdentificacionContratoProyecto = "PROJ_TASK_UUID";//35 Crear un Indicator "Sociedades iregulares si esta check"
+	//ErrorTipo1TipoCambio = "";//36 Tabla10
+	//ErrorTipo2InconsistenciaProveedores = ""; //37 Tabla10
+	//ErrorTipo3InconsistenciaProveeExonera = "";//38 Tabla10
+	//ErrorTipo4InconsisteciaDNI = "";//39 Tabla10
+	//IndicadorComproPago = ""; //40Pendiente Kathe
+	//EstadoAjusteOportunidad = "PROJ_TASK_UUID";//41
+	//
+	//
+	//
+	//}	
+	//
+	//}	
+	//}
+	//
+	
+	var NameReport = "LE"+ this.Companyto.RUC + this.EDateInitial.GetYear() + this.EDateInitial.GetMonth() + "00" + "080200" +
+					"00" + "1";
+	if(txtstring.Length()>0){
+		NameReport =  NameReport + "1";
+	}else{
+		NameReport = NameReport + "0";
+	}	
+	NameReport = NameReport + "1" + "1";
+	xname = NameReport + ".txt";
+		xtype.content = "10001";
+		xtype.listID = "10296";
+		xbinary.mimeCode = "text/plain";
+		xbinary.content = Binary.ParseFromString(txtstring);
+		this.ReportsAttachments.CreateFile(xtype, xname, xname, xdesc, xbinary);
+	break;
+	this.State = true;
+}

@@ -1,0 +1,15 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+[WithAdministrativeData]businessobject BOAssignResponsabilities raises msj {
+
+        message msj text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+        [AlternativeKey] [Label("Customer ID")]			element CustomerID				: BusinessPartnerInternalID;
+		[Label("Customer Description")]					element Customerdescription		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+		node Codes [1,n] raises msgCode{
+			message msgCode text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Responsibility Code")]		element CustomerResponsabilitiesID		: ID;
+			[Label("Responsibility Desc")]		element CustomerResponsabilitiesDesc	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		}
+
+}

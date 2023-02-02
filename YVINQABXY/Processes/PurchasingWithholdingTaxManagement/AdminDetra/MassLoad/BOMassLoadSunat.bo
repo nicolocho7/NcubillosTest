@@ -1,0 +1,20 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FinancialAccounting.Global;
+import AP.FO.MOM.Global;
+
+
+[WithAdministrativeData]businessobject BOMassLoadSunat raises msj {
+    
+	
+    message msj text "&":LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[AlternativeKey][Label("ID")]		element ID:ID;
+	[Label("Date")]						element fecha: Date;
+	[Label("Load")]						element cargado: Indicator;
+
+	[DependentObject(AttachmentFolder)] node Attachment;
+	element isConsistent : Indicator;
+	
+	action Load;
+	action DeleteInstance;
+
+}

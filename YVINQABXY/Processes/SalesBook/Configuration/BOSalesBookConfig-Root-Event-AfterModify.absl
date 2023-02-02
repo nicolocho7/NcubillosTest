@@ -1,0 +1,37 @@
+﻿import ABSL;
+import AP.FO.MOM.Global;
+import AP.Common.GDT;
+import AP.FinancialAccounting.Global;
+
+if(!this.CompanyID.IsInitial()){
+	var qCompany = Company.QueryByIDAndName;
+	var pCompany = qCompany.CreateSelectionParams();
+
+	pCompany.Add(qCompany.ID,"I","EQ",this.CompanyID);
+	var insCompany = qCompany.Execute(pCompany).GetFirst(); 
+
+	if(insCompany.IsSet()){
+		this.CompanyID = insCompany.ID;
+	}else{
+	this.ToCompany.Reset();
+	}
+
+}
+
+
+//Get description BookAccount
+if(!this.SetOfBooksID.content.IsInitial()){
+	var qBook = SetOfBooks.QueryByIDAndDescription;
+	var pBook = qBook.CreateSelectionParams();
+		pBook.Add(qBook.ID.content,"I","EQ",this.SetOfBooksID.content);
+	var insBook = qBook.Execute(pBook).GetFirst();
+	if(insBook.IsSet()){
+
+		
+		//this.PlanCuenta = insBook.ChartOfAccountsCode;
+		//this.ECompanyDescription = insBook.Description.GetFirst().Description.content;
+		this.SetOfBooksID.content = insBook.ID.content;
+	}else{
+		//this.ToSBookShop1.Reset();
+	}
+}

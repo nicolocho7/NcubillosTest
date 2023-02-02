@@ -1,0 +1,52 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BODocumentStructures
+		Node: Root
+		Validation: OnSave 
+
+		Script file signature
+		----------------------------
+		Returns: Boolean
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script before an instance of the business object is saved to the data base.
+		It can have a return value of either true or false, which determines whether the instance of the business object is saved or not.
+		All fields in this business object are read-only and cannot be changed.
+*/
+
+import ABSL;
+
+var vIsConsistent = true;
+var msgFunctionalUnit = "Falto ingresar unidad de facturación";
+var msgDocumentType = "Falto ingresar tipo de documento";
+var msgDocumentPrefix = "Falto ingresar prefijo de documento";
+var msgStructureDescription = "Falto ingresar descripción";
+
+if(this.FunctionalUnitID.IsInitial()){
+	raise msg.Create("E",msgFunctionalUnit);
+	vIsConsistent = false;
+}
+
+if(this.DocumentType.IsInitial()){
+	raise msg.Create("E",msgDocumentType);
+	vIsConsistent = false;
+}
+
+if(this.DocumentPrefix.IsInitial()){
+	raise msg.Create("E",msgDocumentPrefix);
+	vIsConsistent = false;
+}
+
+foreach(var itemStructure in this.Structures){
+	if(itemStructure.StructuresDesc.IsInitial()){
+		raise msg.Create("E", "Posición de Estructura " + itemStructure.StructuresID.RemoveLeadingZeros() + ": " + msgStructureDescription);
+		vIsConsistent = false;
+	}
+
+	var vContItem = 1;
+}
+
+return vIsConsistent;

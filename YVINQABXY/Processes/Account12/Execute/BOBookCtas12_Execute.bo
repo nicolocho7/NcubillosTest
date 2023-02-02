@@ -1,0 +1,37 @@
+﻿
+import AP.Common.GDT as apCommonGDT;
+import AP.FinancialAccounting.Global;
+
+[DeploymentUnit(Financials)][WithAdministrativeData] businessobject BOBookCtas12_Execute  raises msg {
+
+      	message msg text "&1"	: LANGUAGEINDEPENDENT_EXTENDED_Text;  
+
+    [Label("ID")]								element EID	: BusinessPartnerInternalID;
+	[Label("Set Of Books")]						element EConfigBooKDialy	: SetOfBooksID;
+	[Label("OVS")]								element EOvs				: ID;
+	element EConfigBooKDialyDescription	: LANGUAGEINDEPENDENT_EXTENDED_Name;
+	element EConfigCompany				: LANGUAGEINDEPENDENT_EXTENDED_Name;
+	association ToBookConfi to BOBookCtas12; 
+	[Label("Company")]							element ECompany			: OrganisationalCentreID;
+	[Label("Cuenta")]							element ECuentas			: CLAccountLedgerCodeCode;
+	[Label("Year")]								element EYear				: Year;
+	[Label("Mounth")]							element EMounth				: Month;
+	[Label("Year")]								element EYears				: CLYearCode;
+	[Label("Mounth")]							element EMonths				: CLMonthCode;
+	[Transient]									element IsConsistent		: Indicator; 
+	[Label("View Data")]						element EView				: Indicator ;
+	[Label("Executed")]							element Executed			: Indicator = false;
+	[Label("Date")]								element EDate				: Date;
+		
+		[DependentObject(AttachmentFolder)] node ReportsAttachments;
+
+
+		node Details [1,n]{
+			[Label("Company")]							element Company				: LANGUAGEINDEPENDENT_EXTENDED_Name;
+			[Label("Sistema Contable")]					element SistemaContable		: LANGUAGEINDEPENDENT_EXTENDED_Name;
+			[Label("Cuenta de Mayor")]					element CuentaMayor			: LANGUAGEINDEPENDENT_EXTENDED_Name;
+		}
+
+	action Execute1;
+
+}

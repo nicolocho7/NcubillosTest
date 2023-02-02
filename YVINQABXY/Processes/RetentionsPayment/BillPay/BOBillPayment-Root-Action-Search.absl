@@ -1,0 +1,66 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BOBillPayment
+		Node: Root
+		Action: Search 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+
+import ABSL;
+
+var newBillPayment_Result : elementsof BOBillPayment.Results;
+
+if(this.Results.Count() > 0){
+	this.Results.Delete();
+}
+
+var qryBillsRetentions = BOBillsRetentions.QueryByElements;
+var prmBillsRetentions = qryBillsRetentions.CreateSelectionParams();
+	prmBillsRetentions.Add(qryBillsRetentions.CompanyID.content , "I", "EQ",  this.CompanyID.content.RemoveLeadingZeros());
+	prmBillsRetentions.Add(qryBillsRetentions.SupplierID.content, "I", "EQ",  this.SupplierID.content.RemoveLeadingZeros());
+	prmBillsRetentions.Add(qryBillsRetentions.AccountingDate, "I", "BT",  this.StartDate, this.EndDate);
+	prmBillsRetentions.Add(qryBillsRetentions.SupplierID.content, "I", "EQ", "1");
+	prmBillsRetentions.Add(qryBillsRetentions.RetentionType, "I", "EQ", this.RetentionType);
+var insBillsRetentions = qryBillsRetentions.Execute(prmBillsRetentions);
+
+var insBill;
+foreach(insBill in insBillsRetentions){
+	while(true){
+		if(insBill.BillStatus == "2" || insBill.BillStatus == "4"){break;}
+		newBillPayment_Result.Clear();
+		newBillPayment_Result.AccountingDate = insBill.AccountingDate;
+		newBillPayment_Result.BillID = insBill.BillID.RemoveLeadingZeros();
+		newBillPayment_Result.BillUUID.content = insBill.BillUUID.content;
+		newBillPayment_Result.CompanyIDResult.content = insBill.CompanyID.content.RemoveLeadingZeros();
+		newBillPayment_Result.SupplierIDResult.content = insBill.SupplierID.content.RemoveLeadingZeros();
+		newBillPayment_Result.DocumentDate = insBill.DocumentDate;
+		newBillPayment_Result.ExternalReferenceID = insBill.ExternalReferenceID.RemoveLeadingZeros();
+		newBillPayment_Result.Currency = insBill.Currency;
+		newBillPayment_Result.BillStatus = insBill.BillStatus;
+		newBillPayment_Result.RetentionType = insBill.RetentionType;
+		newBillPayment_Result.GrossAmount = insBill.GrossAmount;
+		newBillPayment_Result.NetAmount = insBill.NetAmount;
+		newBillPayment_Result.NetAmountCompanyCurrency = insBill.NetAmountCompanyCurrency;
+		newBillPayment_Result.GrossAmountCompanyCurrency = insBill.GrossAmountCompanyCurrency;
+		newBillPayment_Result.PaymentAmount = insBill.PaymentAmount;
+			//Lógica para asignar Importes con la moneda de la empresa
+		if(insBill.NetAmount.currencyCode == "PEN"){
+			newBillPayment_Result.GrossAmountCompanyCurrency = insBill.GrossAmount;
+			newBillPayment_Result.NetAmountCompanyCurrency = insBill.NetAmount;
+		}else{
+			newBillPayment_Result.GrossAmountCompanyCurrency = insBill.GrossAmount.ConvertCurrencywithDate("PEN", this.ExecuteDate);
+			newBillPayment_Result.NetAmountCompanyCurrency = insBill.NetAmount.ConvertCurrencywithDate("PEN", this.ExecuteDate);
+		}
+		insBill.NetAmountCompanyCurrency =newBillPayment_Result.NetAmountCompanyCurrency;
+		insBill.GrossAmountCompanyCurrency = newBillPayment_Result.GrossAmountCompanyCurrency;
+		newBillPayment_Result.PaymentAmount = newBillPayment_Result.GrossAmountCompanyCurrency;
+		var insResult = this.Results.Create(newBillPayment_Result);
+		var a = 1;
+		break;
+	}
+}

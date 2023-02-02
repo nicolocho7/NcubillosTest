@@ -1,0 +1,418 @@
+﻿import ABSL;
+import AP.Common.GDT as apCommonGDT;
+import BASIS.Global as basis;
+import AP.FO.BusinessPartner.Global;
+import AP.FO.TaxArrangement.Global;
+
+var insCompanyConfig;
+var strLine = "";
+
+//Messages definition
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+var msgCompany = "Por favor ingresar Empresa.";
+var msgSetBook = "Por favor ingresar Set of Book";
+var msgLimitDate = "Por favor ingresar la Fecha Inicial";
+var msgDateInitial = "Por favor ingresar fecha inicial";
+var msgNotConfig = "No hay datos de configuraci?n de esta empresa para el informe.";
+var msgNotData = "La consulta no arroj? datos v?ldos para este informe.";
+
+if (LanguageCode != "ES") {
+msgCompany = "Please enter the Company.";
+msgSetBook = "Please enter the Set of Book";
+msgLimitDate = "Please enter Limit Date.";
+msgDateInitial = "Please enter Date Initial";
+msgNotConfig = "No configuration data for the company fro the report.";
+msgNotData = "The query not returns valid data for this report.";
+}
+
+var xmlResult;
+var txtstring="";
+while(true){
+	if (this.CompanyID.IsInitial()) {break;}
+	if (this.EDateInitial.IsInitial()) {break;}
+	//Caluclar los primeros dias 
+	var TemDateToM = this.EDateInitial.GetMonth();
+	switch (TemDateToM)
+	{
+		case "01" { TemDateToM = "1"; }
+		case "02" { TemDateToM = "2"; }
+		case "03" { TemDateToM = "3"; }
+		case "04" { TemDateToM = "4"; }
+		case "05" { TemDateToM = "5"; }
+		case "06" { TemDateToM = "6"; }
+		case "07" { TemDateToM = "7"; }
+		case "08" { TemDateToM = "8"; }
+		case "09" { TemDateToM = "9"; }
+	}
+	var xname : LANGUAGEINDEPENDENT_LONG_Name;
+	var xtype : DocumentTypeCode;
+	var xdesc : Description;
+	var xbinary : basis:BinaryObject;
+	
+	var qryIdSolution = BOConfigurationIDSolution.QueryByElements;
+	var QryParamsSolution = qryIdSolution.CreateSelectionParams();
+		//QryParamsSolution.Add(qryIdSolution.Inactive,"I", "EQ", "false");
+	var ResultSoluton = qryIdSolution.Execute(QryParamsSolution).GetFirst();
+	var IDSolution;
+	if(ResultSoluton.IsSet()){
+		IDSolution = ResultSoluton.IDSolution.Trim();
+	}
+	//=================================Variables para WebService ======================\\
+	var ComunicationScenario = "CS_ReportActivosFijos";
+	var ServiceName = "EWSI_ActivosFijos";
+	var HttpMetod = "GET";
+	var ContentType = "";
+	var Body = "";
+	var ResourceName = "ana_businessanalytics_analytics.svc/RP"+IDSolution+"_393CB366565A34QueryResults?";
+	    ResourceName = "";
+	var parameter : NameAndValue;
+	var parameters : collectionof NameAndValue;
+	var HeaderParameter : collectionof NameAndValue;
+	//=================================================================================\\
+	//FILTRO DINAMICO 
+	var NameReport;
+	//var YearDateTo = ABSL:Numeric.ParseFromString(TemDateToM);
+	var StringValue = "CGLACCT_TC eq 'ASSET' and CGLMOVEMENTTYPE eq '100' and CCOMPANY eq '" + this.CompanyID + 
+					"' and CSETOFBKS00 eq '" + this.SetOfBooksID.content + "' and CFISCYEAR eq " + this.EDateInitial.GetYear() + " and CVALVIEW_ID eq '1'";//+ this.FixedValuation + "'";
+	
+	var QryObject = BOTableConfigLeasing.QueryByElements;
+	var ParamsObject = QryObject.CreateSelectionParams();
+		ParamsObject.Add(QryObject.CompanyID,"I","EQ", this.CompanyID);
+		ParamsObject.Add(QryObject.SetOfBooksID.content,"I","EQ", this.SetOfBooksID.content);//this.SetOfBooksID.content);
+	var ResultObject = QryObject.Execute(ParamsObject);
+	var DataObject = 0;
+	if(ResultObject.Count() > 0){
+		foreach(var Data in ResultObject){
+			StringValue = StringValue + " and CASSETCLASS eq '" + Data.FixedAssetClass + "'";
+		}
+	
+	}
+	
+	parameter.Name = "$select";  
+	parameter.Value = "CFISCYEAR,CACC_DOC_UUID,CCLOSESTEP,CGLACCT_TC,CGLMOVEMENTTYPE,CCURRTRA,CACC_DOC_IT_UUID,CFIX_ASSET_UUID,C"+IDSolution+"_85B1CA40AF,C"+IDSolution+"_236915CE94,C"+IDSolution+"_D9B8D8E2DE,C"+IDSolution+"_D9D6382733,C"+IDSolution+"_40857DE63D";
+	parameters.Add(parameter); 
+	parameter.Name = "$filter";
+	parameter.Value = StringValue;
+	parameters.Add(parameter);  
+	parameter.Name = "$top";
+	parameter.Value = "99999";
+	parameters.Add(parameter);
+	var ws_result = WebServiceUtilities.ExecuteRESTService(ComunicationScenario,ServiceName,HttpMetod,ResourceName,parameters,HeaderParameter,ContentType,Body);
+	var Content = ws_result.Content; 
+	var strData = "";
+	var sCurrency = "";
+	var sLocalCurrency = "";
+	var decAmount : DataType::DecimalValue;
+	var otherAmount : DataType::apCommonGDT:Amount;
+	xname = "Resultado.txt";
+	xtype.content = "10001";
+	xtype.listID = "10296";
+	xbinary.mimeCode = "text/plain";
+	xbinary.content = Binary.ParseFromString(Content + "\n\n"+ ws_result.RequestURL);
+	this.ReportsAttachments.CreateFile(xtype, xname, xname, xdesc, xbinary);
+	xmlResult = Library::RLStrings.XMLToArray(Content);
+	var Contador = 1;
+	var qCompanyTax = CompanyTaxArrangement.QueryByElements;
+	var pCompanyTax = qCompanyTax.CreateSelectionParams();
+		pCompanyTax.Add(qCompanyTax.CompanyID,"I","EQ",this.CompanyID.RemoveLeadingZeros());
+	var insCompanyTax = qCompanyTax.Execute(pCompanyTax).GetFirst();
+	var vNit="";
+	if(insCompanyTax.IsSet()){
+		if(insCompanyTax.TaxIdentificationNumber.Count() > 0){
+			vNit = insCompanyTax.TaxIdentificationNumber.GetFirst().PartyTaxID.content;
+		}
+	}
+	
+	
+	if (xmlResult.Count() == 0) { 
+		NameReport = "LE"+ vNit + this.EDateInitial.GetYear()+ "00"+ "00070400001011";
+		xname = NameReport + ".txt";
+		xtype.content = "10001";
+		xtype.listID = "10296";
+		xbinary.mimeCode = "text/plain";
+		xbinary.content = Binary.ParseFromString(txtstring);
+		this.ReportsAttachments.CreateFile(xtype, xname, xname, xdesc, xbinary);
+		break; 
+	}
+	var NumeroCuent = "";
+	var Materialid="";
+	var SumCantidad = 0.00;
+	var SumValor = 0.00;
+	var Campo1="";
+	var Campo2="";
+	var Campo3="";
+	var Campo4="";
+	var Campo5="";
+	var Campo6="";
+	var Campo7="";
+	var Campo8="";
+	var Campo9="";
+	var Campo10="";
+	var Campo11="";
+	var CampoValidacion;
+	foreach (var RegistroCompras in xmlResult){
+		 Campo1="";
+		 Campo2="";
+		 Campo3="";
+		 Campo4="";
+		 Campo5="";
+		 Campo6="";
+		 Campo7="";
+		 Campo8="";
+		 Campo9="";
+		 Campo10="";
+		 Campo11="";
+		 CampoValidacion="";
+		 CampoValidacion = Library::RLStrings.GetElementByName(RegistroCompras.String, "CCURRTRA").Trim();
+		 if(!CampoValidacion.IsInitial() || CampoValidacion != ""){
+			Campo1 = Library::RLStrings.GetElementByName(RegistroCompras.String, "CFISCYEAR").Trim();
+			Campo1 = Campo1 + "0000";
+			Campo2 = Library::RLStrings.GetElementByName(RegistroCompras.String, "CACC_DOC_UUID").Trim();
+			Campo3 = Library::RLStrings.GetElementByName(RegistroCompras.String, "CCLOSESTEP").Trim();
+			switch (Campo3)
+			{
+				case "01","001" { Campo3 = "A"; }
+				case "010", "015", "020" { Campo3 = "M"; }
+				case "080", "990", "991" { Campo3 = "C"; }
+			}
+			var SubCampo3 = Library::RLStrings.GetElementByName(RegistroCompras.String, "CACC_DOC_IT_UUID").Trim();
+			Campo3=Campo3+SubCampo3;
+			Campo4 = "9";
+			Campo5 = Library::RLStrings.GetElementByName(RegistroCompras.String, "C"+IDSolution+"_85B1CA40AF").Trim();
+			Campo6 = Library::RLStrings.GetElementByName(RegistroCompras.String, "C"+IDSolution+"_40857DE63D").Trim();
+			Campo6 = Campo6.Substring(8, 2) +"/"+ Campo6.Substring(5, 2) +"/"+ Campo6.Substring(0, 4);
+			Campo7 = Library::RLStrings.GetElementByName(RegistroCompras.String, "CFIX_ASSET_UUID").Trim();
+			Campo8 = Library::RLStrings.GetElementByName(RegistroCompras.String, "C"+IDSolution+"_D9D6382733").Trim();
+			Campo8 = Campo8.Substring(8, 2) +"/"+ Campo8.Substring(5, 2) +"/"+ Campo8.Substring(0, 4);
+			Campo9 = Library::RLStrings.GetElementByName(RegistroCompras.String, "C"+IDSolution+"_236915CE94").Trim();
+			Campo10 = Library::RLStrings.GetElementByName(RegistroCompras.String, "C"+IDSolution+"_D9B8D8E2DE").Trim();
+			Campo11 = "1";
+			txtstring = txtstring + Campo1+ "|" +Campo2+"|" +Campo3+"|" +Campo4+"|" +Campo5+"|" +Campo6+"|" 
+						+Campo7+"|" +Campo8+"|" +Campo9+"|" + Campo10+"|" +Campo11+"|" +"\r\n";
+		 }
+	}
+	
+	if(!txtstring.IsInitial()){
+		NameReport = "LE"+ vNit + this.EDateInitial.GetYear()+ "00"+ "00070400001111";
+	}else{
+		NameReport = "LE"+ vNit + this.EDateInitial.GetYear()+ "00"+ "00070400001011";
+	}
+	xname = NameReport + ".txt";
+	xtype.content = "10001";
+	xtype.listID = "10296";
+	xbinary.mimeCode = "text/plain";
+	xbinary.content = Binary.ParseFromString(txtstring);
+	this.ReportsAttachments.CreateFile(xtype, xname, xname, xdesc, xbinary);
+	break;
+}
+
+
+
+
+//Company Validation
+//
+//var xmlResult;
+//
+//
+//while (true)
+//{
+//
+	//var NameParSet;
+	//if(this.SetOfBooksID.content == "IFSO"){
+		//NameParSet="1";
+	//}else{
+		//NameParSet = "2";
+	//}
+//
+	//var txtstring = "";
+	//if (this.CompanyID.IsInitial()) { break; }
+	//if (this.EDateInitial.IsInitial()) { break; }
+	//
+	//
+	//var serviceID = "";  
+	//var parameter : NameAndValue;
+	//var parameters : collectionof NameAndValue;
+	////Caluclar los primeros dias 
+	//
+	//var TemDateToM = this.EDateInitial.GetMonth();
+	//switch (TemDateToM)
+	//{
+		//case "01" { TemDateToM = "1"; }
+		//case "02" { TemDateToM = "2"; }
+		//case "03" { TemDateToM = "3"; }
+		//case "04" { TemDateToM = "4"; }
+		//case "05" { TemDateToM = "5"; }
+		//case "06" { TemDateToM = "6"; }
+		//case "07" { TemDateToM = "7"; }
+		//case "08" { TemDateToM = "8"; }
+		//case "09" { TemDateToM = "9"; }
+	//}
+	//var xname : LANGUAGEINDEPENDENT_LONG_Name;
+	//var xtype : DocumentTypeCode;
+	//var xdesc : Description;
+	//var xbinary : basis:BinaryObject;
+	////FILTRO DINAMICO 
+	//var NameReport;
+	////var YearDateTo = ABSL:Numeric.ParseFromString(TemDateToM);
+	//var StringValue = "PARA_COMPANY eq '" + this.CompanyID + "' and C1POSTDATsYEAR_ID eq '"+ this.EDateInitial.GetYear()
+						//+"' and PARA_SETOFBKS eq '"+ this.SetOfBooksID.content
+						//+"'" + " and PARA_VALVIEW eq '"+ "1'";
+						////this.FixedValuation + "'";
+//
+//var QryObject = BOTableConfigLeasing.QueryByElements;
+//var ParamsObject = QryObject.CreateSelectionParams();
+	//ParamsObject.Add(QryObject.CompanyID,"I","EQ", this.CompanyID);
+	//ParamsObject.Add(QryObject.SetOfBooksID.content,"I","EQ", "IFUS");//this.SetOfBooksID.content);
+//var ResultObject = QryObject.Execute(ParamsObject);
+//var DataObject = 0;
+//if(ResultObject.Count() > 0){
+	//foreach(var Data in ResultObject){
+		//StringValue = StringValue + " and PARA_FXA_CLASS eq '" + Data.FixedAssetClass + "'";
+	//}
+	//
+//}else{
+	//DataObject = 1;
+//}
+//
+//var ContMont = this.EDateInitial.GetMonth().Length();
+//var Mes;
+//if(ContMont<2){
+	//Mes = "0" + this.EDateInitial.GetMonth();
+//}else{
+	//Mes = this.EDateInitial.GetMonth();
+//}
+//
+//if(DataObject <= 0){
+//
+//
+			//serviceID = "PW00053";  
+			//parameter.Name = "$select";  
+			//parameter.Value = "CACCDOCUUID,C1ACCDOCUUIDsCLOSESTEP,CINVENTORY_ID,CFXA_MASTER_ID,CFIRST_ACQ_DATE,C1FXA_ADDTL_PARsULIFE_PERS,C1FXA_ADDTL_PARsULIFE_FYRS,KCAMTCOMP_ACQ";
+			//parameters.Add(parameter);   
+			//parameter.Name = "$filter";
+			//parameter.Value = StringValue;
+			//parameters.Add(parameter);  
+	//
+	//
+	//
+			//var ws_result = WebServiceUtilities.ExecuteWebService(serviceID, parameters);
+			//var Content = ws_result.ResponseContent;  
+			//var returnCode = ws_result.ReturnCode;  
+			//var strData = "";
+			//var sCurrency = "";
+			//var sLocalCurrency = "";
+			//var decAmount : DataType::DecimalValue;
+			//var otherAmount : DataType::apCommonGDT:Amount;
+	//
+			//
+	//
+			//xname = "Resultado.txt ";
+			//xtype.content = "10001";
+			//xtype.listID = "10296";
+			//xbinary.mimeCode = "text/plain";
+			//xbinary.content = Binary.ParseFromString(Content);
+			//this.ReportsAttachments.CreateFile(xtype, xname, xname, xdesc, xbinary);
+	//
+			//////
+			//////
+			////var xmlResult;
+			//////var FechaAno = this.EDateInitial.GetYear();
+			//////var FechaMes = this.EDateInitial.GetMonth();
+			//////
+			//xmlResult = Library::RLStrings.XMLToArray(Content);
+			//var Contador = 1;
+			//if (xmlResult.Count() == 0) { break; }
+	//
+			//var NumeroCuent = "";
+			//var Materialid="";
+			//var SumCantidad = 0.00;
+			//var SumValor = 0.00;
+			//foreach (var RegistroCompras in xmlResult){
+				////Declaracion de variables campos
+				//var Campo1 = "";
+				//var Campo2 = "";
+				//var Campo3 = "";
+				//var Campo4 = "";
+				//var Campo5 = "";
+				//var Campo6 = "";
+				//var Campo7 = "";
+				//var Campo8 = "";
+				//var Campo9 = "";
+				//var Campo10 = "";
+				//var Campo11 = "";
+				//var Campo12 = "";
+	//
+//
+//
+				////asignacion de campos del Data Source y Logica
+				//Campo1 = this.EDateInitial.GetYear();
+				//Mes = this.EDateInitial.GetMonth();
+				//if(Mes.Length() < 2){
+					//Campo1 = Campo1+"0" + this.EDateInitial.GetMonth() ;
+				//}else{
+					//Campo1 = Campo1+this.EDateInitial.GetMonth();
+				//}
+				//Campo1 = this.EDateInitial.GetYear() +"0000";
+				//Campo2 = Library::RLStrings.GetElementByName(RegistroCompras.String, "CACCDOCUUID").Trim();
+				//Campo3 = Library::RLStrings.GetElementByName(RegistroCompras.String, "C1ACCDOCUUIDsCLOSESTEP").Trim();
+				//switch (Campo3)
+				//{
+					//case "01" { Campo3 = "A"; }
+					//case "010", "015", "020" { Campo3 = "M"; }
+					//case "080", "990", "991" { Campo3 = "C"; }
+				//}
+				//Campo3= Campo3+"1";
+				//Campo4 ="9";
+				//Campo5 =  Library::RLStrings.GetElementByName(RegistroCompras.String, "CINVENTORY_ID").Trim();
+				//Campo6 = Library::RLStrings.GetElementByName(RegistroCompras.String, "CFIRST_ACQ_DATE ").Trim();
+				//Campo6 = Campo6.Substring(8,2) +"/"+ Campo6.Substring(5,2) +"/"+Campo6.Substring(0,4);
+				//Campo7 = Library::RLStrings.GetElementByName(RegistroCompras.String, "CFXA_MASTER_ID").Trim();
+				//Campo8 = Library::RLStrings.GetElementByName(RegistroCompras.String, "CFIRST_ACQ_DATE").Trim();
+				//Campo8 = Campo8.Substring(8,2) +"/"+ Campo8.Substring(5,2) +"/"+Campo8.Substring(0,4);
+				//Campo6 = Campo8;
+				//Campo9= Library::RLStrings.GetElementByName(RegistroCompras.String, "C1FXA_ADDTL_PARsULIFE_PERS").Trim();
+				//var NumForField9 = ABSL:Numeric.ParseFromString(Campo9);
+				//var Campo92 = Library::RLStrings.GetElementByName(RegistroCompras.String, "C1FXA_ADDTL_PARsULIFE_FYRS").Trim();
+				//var NumForFiel92 = ABSL:Numeric.ParseFromString(Campo9);
+				//Campo9 = (NumForField9 + (NumForFiel92 * 12)).RoundToString(0, true);
+				//Campo10 = Library::RLStrings.GetElementByName(RegistroCompras.String, "KCAMTCOMP_ACQ").Trim();
+				//var NumForFiel0 = ABSL:Numeric.ParseFromString(Campo10);
+				//Campo10 = NumForFiel0.RoundToString(2,true);
+				//Campo11 = "1";
+	//
+		//
+		//
+		//
+		//
+		//
+				//txtstring =  txtstring + Campo1+ "|" +Campo2+"|" +Campo3+"|" +Campo4+"|" +Campo5+"|" +Campo6+"|" 
+				//+Campo7+"|" +Campo8+"|" +Campo9+"|" + Campo10+"|" +Campo11+"|" +"\r\n";
+		//
+		//
+//
+//
+//
+//
+//
+				//Materialid=Campo7;
+				//}
+				//if(xmlResult.Count()>0){
+					//NameReport = "LE"+ this.Companyto.RUC + this.EDateInitial.GetYear()+ "00"+ "000704000011"+NameParSet+"1";
+				//}else{
+					//NameReport = "LE"+ this.Companyto.RUC + this.EDateInitial.GetYear()+ "00"+ "000704000010" +NameParSet+"1";
+				//}
+				//
+//
+		//}else{
+			//NameReport = "LE"+ this.Companyto.RUC + this.EDateInitial.GetYear()+ "00"+ "000704000010" +NameParSet+"1";
+		//
+		//}
+//
+			//xname = NameReport + ".txt";
+			//xtype.content = "10001";
+			//xtype.listID = "10296";
+			//xbinary.mimeCode = "text/plain";
+			//xbinary.content = Binary.ParseFromString(txtstring);
+			//this.ReportsAttachments.CreateFile(xtype, xname, xname, xdesc, xbinary);
+			//break;
+//}

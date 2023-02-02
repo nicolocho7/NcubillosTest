@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sadl:definition xmlns:ass="http://sap.com/sap.nw.f.sadl/association" date="20180910" time="084121" uuid="CA133D0494A24C17B563BCD4E290E5A8" xmlns:sadl="http://sap.com/sap.nw.f.sadl">
+  <sadl:conversions>
+    <sadl:conversion type="ALPHA" />
+  </sadl:conversions>
+  <sadl:modes>
+    <sadl:mode type="QUERY" />
+  </sadl:modes>
+  <sadl:dataSource name="DS" binding="YVINQABXY_BOTAB74293865A29DBAC/ass:SELECTF933BA6E05AE371C" type="BusinessObjectNode" d2p1:mdrsBinding="BOConfigurationReportsData.Select" xmlns:d2p1="http://sap.com/xi/AP/PDI" />
+  <sadl:resultSet>
+    <sadl:structure name="YVINQABXY_BOTAB74293865A29DBAC" dataSource="DS" d3p1:mdrsName="BOConfigurationReportsData.Select" xmlns:d3p1="http://sap.com/xi/AP/PDI">
+      <sadl:attribute name="YVINQABXY_SECT85ABBE29EBF26979" binding="SELECTBLEIDA6775219761AE992" d3p1:mdrsName="selectVariableID" />
+      <sadl:attribute name="YVINQABXY_SECTE70BB40EAE4095E6" binding="SELECTPTION2026B70771CC0318" d3p1:mdrsName="SelectDescription" />
+      <sadl:structure name="YVINQABXY_TOCT54364F67D2B57FF4" binding="ass:TO_PARENT" d3p1:mdrsName="ToParent">
+        <sadl:attribute name="YVINQABXY_COCT573AA1997B94D709" binding="CONFREATAIDE6FE2B8D60C8001C" d3p1:mdrsName="ConfRepoDataID" />
+        <sadl:attribute name="YVINQABXY_SECT7AD36D10C7D85347" binding="SERVICEID72E586B7D3F09348" d3p1:mdrsName="ServiceID" />
+        <sadl:attribute name="YVINQABXY_DECTB8C27626647468B3" binding="DESCRIPTIONCA703A683EA9E244" d3p1:mdrsName="Description" />
+        <sadl:attribute name="YVINQABXY_RECTEF269CE41BB9E794" binding="REPORTID7DD1CF2EE5B56034" d3p1:mdrsName="ReportID" />
+        <sadl:attribute name="YVINQABXY_SACT3B466214B644545C" binding="SAP_SYEDATAAF54AFE70C7CAE6F-CREATION_DATE_TIME" d3p1:mdrsName="SAP_SystemAdministrativeData/CreationDateTime" />
+        <sadl:attribute name="YVINQABXY_SACT51431EC05970D1C7" binding="SAP_SYEDATAAF54AFE70C7CAE6F-CREATION_IDENTITY_UUID-CONTENT" d3p1:mdrsName="SAP_SystemAdministrativeData/CreationIdentityUUID/content" />
+        <sadl:attribute name="YVINQABXY_SACT025D0F742A569345" binding="SAP_SYEDATAAF54AFE70C7CAE6F-LAST_CHANGE_DATE_TIME" d3p1:mdrsName="SAP_SystemAdministrativeData/LastChangeDateTime" />
+        <sadl:attribute name="YVINQABXY_SACTF90A2861AAA781D2" binding="SAP_SYEDATAAF54AFE70C7CAE6F-LAST_CHANGE_IDENTITY_UUID-CONTENT" d3p1:mdrsName="SAP_SystemAdministrativeData/LastChangeIdentityUUID/content" />
+      </sadl:structure>
+    </sadl:structure>
+  </sadl:resultSet>
+  <sadl:query bo="YVINQABXY_BOTAB74293865A29DBAC" name="QUERY_BY_ELEMENTS" node="QUERYCELECT9A9D557B5396060C" type="ESI_QUERY">
+    <sadl:inputStructure>
+      <sadl:inputParameter name="SELECTELECT7E3A105865B1BAA3">
+        <sadl:attribute binding="YVINQABXY_SECT85ABBE29EBF26979" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="SELECTELECT31D2F0A5D6220AB6">
+        <sadl:attribute binding="YVINQABXY_SECTE70BB40EAE4095E6" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="CONFREELECT8856A607A8085F38">
+        <sadl:attribute binding="YVINQABXY_COCT573AA1997B94D709" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="SERVICELECT4572A70B9F2A0AC4">
+        <sadl:attribute binding="YVINQABXY_SECT7AD36D10C7D85347" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="DESCRIELECT440B60B1D282B200">
+        <sadl:attribute binding="YVINQABXY_DECTB8C27626647468B3" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="REPORTELECT3398C6DAE24D530C">
+        <sadl:attribute binding="YVINQABXY_RECTEF269CE41BB9E794" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="SAPSYELECT68D6B820BE449D7E">
+        <sadl:attribute binding="YVINQABXY_SACT3B466214B644545C" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="SAPSYELECTE93AC08FC1283830-CONTENT">
+        <sadl:attribute binding="YVINQABXY_SACT51431EC05970D1C7" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="SAPSYELECT2051327262646B1D">
+        <sadl:attribute binding="YVINQABXY_SACT025D0F742A569345" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="SAPSYELECTBEF60A067B151E41-CONTENT">
+        <sadl:attribute binding="YVINQABXY_SACTF90A2861AAA781D2" />
+      </sadl:inputParameter>
+    </sadl:inputStructure>
+    <sadl:outputStructure>
+      <sadl:attribute name="SELECTELECT7E3A105865B1BAA3" binding="YVINQABXY_SECT85ABBE29EBF26979" />
+      <sadl:attribute name="SELECTELECT31D2F0A5D6220AB6" binding="YVINQABXY_SECTE70BB40EAE4095E6" />
+      <sadl:attribute name="CONFREELECT8856A607A8085F38" binding="YVINQABXY_COCT573AA1997B94D709" />
+      <sadl:attribute name="SERVICELECT4572A70B9F2A0AC4" binding="YVINQABXY_SECT7AD36D10C7D85347" />
+      <sadl:attribute name="DESCRIELECT440B60B1D282B200" binding="YVINQABXY_DECTB8C27626647468B3" />
+      <sadl:attribute name="REPORTELECT3398C6DAE24D530C" binding="YVINQABXY_RECTEF269CE41BB9E794" />
+      <sadl:attribute name="SAPSYELECT68D6B820BE449D7E" binding="YVINQABXY_SACT3B466214B644545C" />
+      <sadl:attribute name="SAPSYELECTE93AC08FC1283830-CONTENT" binding="YVINQABXY_SACT51431EC05970D1C7" />
+      <sadl:attribute name="SAPSYELECT2051327262646B1D" binding="YVINQABXY_SACT025D0F742A569345" />
+      <sadl:attribute name="SAPSYELECTBEF60A067B151E41-CONTENT" binding="YVINQABXY_SACTF90A2861AAA781D2" />
+    </sadl:outputStructure>
+  </sadl:query>
+</sadl:definition>

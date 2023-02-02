@@ -1,0 +1,324 @@
+﻿ import ABSL;
+import AP.FO.BusinessPartner.Global;
+import AP.FO.MOM.Global;
+import AP.FO.Product.Global;
+import AP.SupplierInvoicing.Global;
+import AP.FO.Party.Global;
+import Common.DataTypes;
+import AP.Purchasing.Global;
+import AP.FO.BankDirectoryEntry.Global;
+import AP.FO.TaxArrangement.Global;
+import AP.Common.GDT as apCommonGDT;
+import BASIS.Global as basis;
+
+
+var Res;
+var strLine = "";
+var msgTotal = "Falta calcular el total.";
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+if (LanguageCode != "ES"){
+	msgTotal = "Obligatory calculate the total.";	
+}
+if (this.Total.IsInitial()){
+	raise msg.Create("E", msgTotal);
+}
+//Datos de Cabecera
+var Indicator= "*";
+var RUC; //Numero de identificacion
+var RazonSocial;//Razon social nombre
+var NoLote;//Consecutivo y año
+var ImporteTotal;//ImporteTotal
+//Datos del Detalle
+var Consecutive;
+var StringConse = "";
+var Date = Context.GetCurrentSystemDate();
+var Year = Date.GetYear();
+var YearString = Year.Substring(2,2);
+
+if (this.ID.IsInitial()){
+	var Code = "BOADMINDETRAEXTRA";
+		var InsBOBuildIDV2 = BOBuildIDV2.Retrieve(Code);
+		if(InsBOBuildIDV2.IsSet())
+		{
+			InsBOBuildIDV2.Increase();		
+		}else
+		{
+			var StructureBOBuildIDV2 : elementsof BOBuildIDV2;
+			StructureBOBuildIDV2.ID = Code;
+			StructureBOBuildIDV2.description = "Administrator";
+			StructureBOBuildIDV2.UUID.content = ABSL:UUID.Generate();
+			InsBOBuildIDV2 = BOBuildIDV2.Create(StructureBOBuildIDV2);
+			InsBOBuildIDV2.Increase();
+		}
+
+		this.ID = InsBOBuildIDV2.consecutive;
+
+		Consecutive = InsBOBuildIDV2.consecutive;
+}else{
+	Consecutive = ABSL:Numeric.ParseFromString(this.ID);
+}
+var query = CompanyTaxArrangement.QueryByElements;
+// 2. Selection
+var selectionParams = query.CreateSelectionParams();
+	selectionParams.Add(query.CompanyID, "I", "EQ", this.CompanyID);
+// Result
+var resultData = query.Execute(selectionParams).GetFirst();
+if(resultData.IsSet()){
+	if(resultData.TaxIdentificationNumber.Count() > 0){
+		RUC = resultData.TaxIdentificationNumber.GetFirst().PartyTaxID.content;
+	}
+}
+
+var queryCompany = Company.QueryByIDAndName;
+var paramCompany = queryCompany.CreateSelectionParams();
+	paramCompany.Add(queryCompany.ID, "I", "EQ", this.CompanyID);
+var insCompany = queryCompany.Execute(paramCompany).GetFirst();
+if (insCompany.NameByValidity.Count() > 0){
+	RazonSocial = insCompany.NameByValidity.GetFirst().Name.content;	
+}
+
+
+
+
+StringConse = Consecutive.ToString();
+var x = StringConse.Length();
+if(x > 4){
+	StringConse = StringConse.Substring(0,4);
+}else{
+	while(x < 4){
+		StringConse = "0" + StringConse;
+		x = x +1;
+	} 
+}
+x = RUC.Length();
+if(x > 11){
+	RUC = RUC.Substring(0,11);
+}else{
+	while(x < 11){
+		RUC = "0" + RUC;
+		x = x +1;
+	} 
+}
+
+
+
+NoLote = YearString + StringConse;
+x = RazonSocial.Length();
+if(x > 35){
+	RazonSocial = RazonSocial.Substring(0,35);
+}else{
+	while(x < 35){
+		RazonSocial = RazonSocial + " " ;
+		x = x +1;
+	} 
+}
+ImporteTotal = this.Total.content.RoundToString(0,true);
+var StringValue = "";
+StringValue = ImporteTotal;
+x = StringValue.Length();
+if(x > 13){
+	StringValue = StringValue.Substring(0,13);
+}else{
+	while(x < 13){
+		StringValue = "0" + StringValue;
+		x = x +1;
+	} 
+}
+StringValue=StringValue+"00";
+strLine = strLine + Indicator + RUC + RazonSocial+ NoLote + StringValue + "\r\n";
+//para el detalle
+
+var TipoDocumentoProveedor = "6";// 1
+var RucProveedor=""; // 11
+var RazonSocialProveedor=""; //35
+var NoProforma = "000000000"; //9  000000001 se cambio a -> 000000000 el dia 6/12/18
+var CodServicio=""; //nose 3
+var NumeroCuenta="";//Proveediro 11
+var ImporteDeposito=""; //15
+var CodOperacion="";//2
+var PeriodoTributario=""; // 06
+var TipoComprobante=""; // 02
+var SerieComprobante=""; //4
+var CorrelativoComprobante="";//8
+
+var RowData;
+foreach(RowData in this.NodoTB2.Where(n=>n.ISCheck == true)){
+	NumeroCuenta = "";
+	RucProveedor= RowData.ToAdminDetra.SupTaxNumber;
+	RazonSocialProveedor = RowData.ToAdminDetra.SupName;
+	CodServicio = RowData.ToAdminDetra.WithHoldingCode.RemoveLeadingZeros();
+	var querySup = Supplier.QueryByIdentification;
+	// 2. Selection
+	var selectionParamsSup = querySup.CreateSelectionParams();
+	selectionParamsSup.Add(querySup.InternalID, "I", "EQ", RowData.ToAdminDetra.SupID);
+	// Result
+	var resultDataSup = querySup.Execute(selectionParamsSup).GetFirst();
+	var insBankDirector;
+	var insNationalBankIden;
+	if(resultData.IsSet()){
+		if(resultDataSup.BankDetails.Count()>0){
+			var Bank;
+			NumeroCuenta = "0";
+			foreach(Bank in resultDataSup.BankDetails){
+				if(Bank.BankDirectoryEntry.IsSet()){
+					insBankDirector = Bank.BankDirectoryEntry;
+					if(insBankDirector.NationalBankIdentification.GetFirst().IsSet()){
+						insNationalBankIden = insBankDirector.NationalBankIdentification.GetFirst();
+						if(insNationalBankIden.BankRoutingID == "18"){
+							NumeroCuenta = Bank.BankAccountID.Trim();
+						}
+					}
+				}
+			}
+		}
+	}
+	ImporteDeposito= RowData.ToAdminDetra.DetraAmount.content.RoundToString(0,true); //15
+	CodOperacion="01";//2
+	var DateDet = Context.GetCurrentSystemDate();
+	var Month = RowData.ToAdminDetra.Period.Substring(4,2);//DateDet.GetMonth();
+	var YearDetal = RowData.ToAdminDetra.Period.Substring(0,4);//.GetYear();
+	PeriodoTributario = YearDetal + Month;
+	TipoComprobante = RowData.ToAdminDetra.Type;
+	SerieComprobante = RowData.ToAdminDetra.Series;
+	CorrelativoComprobante = RowData.ToAdminDetra.Number;
+
+	var y = TipoDocumentoProveedor.Length();
+	if(y > 1){
+		TipoDocumentoProveedor = TipoDocumentoProveedor.Substring(0,1);
+	}else{
+		while(y < 1){
+			TipoDocumentoProveedor = "0" + TipoDocumentoProveedor;
+			y = y +1;
+		} 
+	}
+	y = RucProveedor.Length();
+	if(y > 11){
+		RucProveedor = RucProveedor.Substring(0,11);
+	}else{
+		while(y < 11){
+			RucProveedor = "0" + RucProveedor;
+			y = y +1;
+		} 
+	}
+	RazonSocialProveedor = "";
+	y = RazonSocialProveedor.Length();
+	if(y > 35){
+		RazonSocialProveedor = RazonSocialProveedor.Substring(0,35);
+	}else{
+		while(y < 35){
+			RazonSocialProveedor =  RazonSocialProveedor + " ";
+			y = y +1;
+		} 
+	}
+	y = NoProforma.Length();
+	if(y > 9){
+		NoProforma = NoProforma.Substring(0,9);
+	}else{
+		while(y < 9){
+			NoProforma = "0" + NoProforma;
+			y = y +1;
+		} 
+	}
+	y = CodServicio.Length();
+	if(y > 3){
+		CodServicio = CodServicio.Substring(0,3);
+	}else{
+		while(y < 3){
+			CodServicio = "0" + CodServicio;
+			y = y +1;
+		} 
+	}
+	y = NumeroCuenta.Length();
+	if(y > 11){
+		NumeroCuenta = NumeroCuenta.Substring(0,11);
+	}else{
+		while(y < 11){
+			NumeroCuenta = " " + NumeroCuenta;
+			y = y +1;
+		} 
+	}
+	y = ImporteDeposito.Length();
+	if(y > 13){
+		ImporteDeposito = ImporteDeposito.Substring(0,13);
+	}else{
+		while(y < 13){
+			ImporteDeposito = "0" + ImporteDeposito;
+			y = y +1;
+		} 
+	}
+	ImporteDeposito=ImporteDeposito+"00";
+	y = CodOperacion.Length();
+	if(y > 2){
+		CodOperacion = CodOperacion.Substring(0,2);
+	}else{
+		while(y < 2){
+			CodOperacion = "0" + CodOperacion;
+			y = y +1;
+		} 
+	}
+	y = PeriodoTributario.Length();
+	if(y > 6){
+		PeriodoTributario = PeriodoTributario.Substring(0,6);
+	}else{
+		while(y < 6){
+			PeriodoTributario = "0" + PeriodoTributario;
+			y = y +1;
+		} 
+	}
+	y = TipoComprobante.Length();
+	if(y > 2){
+		TipoComprobante = TipoComprobante.Substring(0,2);
+	}else{
+		while(y < 2){
+			TipoComprobante = "0" + TipoComprobante;
+			y = y +1;
+		} 
+	}
+	y = SerieComprobante.Length();
+	if(y > 4){
+		SerieComprobante = SerieComprobante.Substring(0,4);
+	}else{
+		while(y < 4){
+			SerieComprobante = "0" + SerieComprobante;
+			y = y +1;
+		} 
+	}
+	y = CorrelativoComprobante.Length();
+	if(y > 8){
+		CorrelativoComprobante = CorrelativoComprobante.Substring(0,8);
+	}else{
+		while(y < 8){
+			CorrelativoComprobante = "0" + CorrelativoComprobante;
+			y = y +1;
+		} 
+	}
+
+	strLine = strLine + TipoDocumentoProveedor +
+			RucProveedor + RazonSocialProveedor +
+			NoProforma + CodServicio +
+			NumeroCuenta + ImporteDeposito +
+			CodOperacion + PeriodoTributario +
+			TipoComprobante + SerieComprobante  + 
+			CorrelativoComprobante + "\r\n";; //4
+
+}
+		
+	
+
+
+
+
+		
+var name	:LANGUAGEINDEPENDENT_EXTENDED_Name;
+var type	:DocumentTypeCode;
+var desc	:Description;
+var binary	:basis:BinaryObject;
+
+//Creation TXT
+name = "D" + RUC + NoLote +".txt";
+type.content = "10001";
+type.listID = "10296";
+binary.mimeCode = "text/plain";
+binary.content = Binary.ParseFromString(strLine);
+
+this.Attachment.CreateFile(type,name,name,desc,binary);	

@@ -1,0 +1,35 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject JobProfile raises msg {
+
+	message msg text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+	[AlternativeKey] [Label("Job id")] element jobID: ID;
+				     [Label("Title")] element title: LONG_Description;
+				     [Label("Posting date")] element postingDate: Date;
+				     [Label("Work area")] element domain: DomainCode;
+				     [Label("Employment type")] element empType: EmploymentTypeCode;
+				     [Label("Hiring manager id")] element hireMgrID: EmployeeID;
+				     [Label("Hiring manager name")] element hireMgrName: LANGUAGEINDEPENDENT_LONG_Name;
+				     [Label("Country")] element jobLocation: CountryCode;
+				     [Label("End date")] element jobEndDate: Date;
+				     [Label("Status")] element status: JobStatusCode;
+				     [Label("Created on")] element creationDate: Date;
+				     [Label("Created by")] element createdBy: LANGUAGEINDEPENDENT_LONG_Name;
+				     [Label("Changed on")] element chgdOn: Date;
+				     [Label("Changed by")] element chgdBy: LANGUAGEINDEPENDENT_LONG_Name;
+
+	action publishJob;
+	action Obselete;
+	action Close;
+	action CallWebService;
+
+	[DependentObject(TextCollection)] node TextColletion;
+
+	node candidatesApplied [0, n] {
+		[Label("Employee id")] element empID: EmployeeID;
+		[Label("Offer status")] element offerStatus: OfferStatusCode;
+
+		action sendMail;
+	}
+}

@@ -1,0 +1,20 @@
+﻿import ABSL;
+import AP.Common.GDT;
+import AP.PC.IdentityManagement.Global;
+import AP.FO.BusinessPartner.Global;
+
+//Codigo para identificar el usuario logeado e idengtificar el nombre
+var result : DataType::LANGUAGEINDEPENDENT_LONG_Name;
+var identityUUID = IdentityUUID; // Parametro importado el configurado en la funcion.
+var iden : Identity;
+var qryIden = iden.QueryByElements;
+var selParam = qryIden.CreateSelectionParams();
+selParam.Add(qryIden.UUID.content, "I", "EQ", identityUUID.content);
+var idenResult = qryIden.Execute(selParam);
+var idenResulFinal = idenResult.GetFirst();
+
+if(idenResulFinal.IsSet())
+{
+ result = idenResulFinal.FormattedName;
+}
+return result;

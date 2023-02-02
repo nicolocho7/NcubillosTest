@@ -1,0 +1,44 @@
+﻿//import ABSL;
+//import AP.FO.MOM.Global;
+//import AP.FinancialAccounting.Global;
+//
+//var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+//var MsgCompany = "No se encuentra la empresa.";
+//var MsgAccountingSystem = "No se encuentra el sistema contable";
+//
+//if (LanguageCode != "ES")
+//{
+	//MsgCompany = "The company is not found.";
+	//MsgAccountingSystem = "The set of book is not found.";
+//}
+//
+//if(this.Status.IsInitial())
+//{
+	//this.Status = "2";
+//}
+//
+//if (!this.CompanyID.IsInitial()){ 
+	//var insCompany = Company.Retrieve(this.CompanyID);
+	//if (insCompany.IsSet()){ 
+		//this.ToCompany = insCompany;
+	//}else{
+		//this.ToCompany.Reset();
+		//raise msg.Create ("E",MsgCompany); 
+	//}
+//}
+//
+//if (!this.SetOfBooksID.IsInitial()){ 
+	//var insSetOfBook = SetOfBooks.Retrieve(this.SetOfBooksID);
+	//if (insSetOfBook.IsSet()){ 
+		//this.ToSetOfBooks = insSetOfBook;
+		//if(insSetOfBook.Description.Count() > 0){
+			//this.SetOfBooksDesc = insSetOfBook.Description.GetFirst().Description.content;
+		//}
+		//this.ChartOfAccountsCode = insSetOfBook.ChartOfAccountsCode;
+	//}else{
+		//this.ToSetOfBooks.Reset();
+		//this.SetOfBooksDesc.Clear();
+		//this.ChartOfAccountsCode.Clear();
+		//raise msg.Create ("E",MsgAccountingSystem); 
+	//}
+//}

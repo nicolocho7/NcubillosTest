@@ -1,0 +1,62 @@
+﻿import ABSL;
+
+var vIsConsistent = true;
+
+if(this.Description.IsInitial()){
+	raise msg.Create("E", "Falto ingresar descripción");
+	vIsConsistent = false;
+}
+
+if(this.CompanyID.IsInitial()){
+	raise msg.Create("E", "Falto ingresar empresa");
+	vIsConsistent = false;
+}
+
+if(this.SetOfBookID.content.IsInitial()){
+	raise msg.Create("E", "Falto ingresar sistema contable");
+	vIsConsistent = false;
+}
+
+if(this.TypeReport.IsInitial()){
+	raise msg.Create("E", "Falto ingresar tipo de reporte");
+	vIsConsistent = false;
+}
+
+if(this.DateInitial.IsInitial()){
+	raise msg.Create("E", "Falto ingresar fecha de inicio");
+	vIsConsistent = false;
+}
+
+if(this.DateEnd.IsInitial()){
+	raise msg.Create("E", "Falto ingresar fecha de fin");
+	vIsConsistent = false;
+}
+
+//if(this.DateInitial.GreaterEquals(this.DateEnd)){
+	//raise msg.Create("E", "Fecha de inicio no debe ser mayor a fecha de fin");
+	//vIsConsistent = false;
+//}
+//
+if(vIsConsistent){
+	switch(this.TypeReport){
+		case CLReportPLEsCode.CO_PLE1 {this.PLE1();}
+		case CLReportPLEsCode.CO_PLE2 {this.PLE2();}
+		case CLReportPLEsCode.CO_PLE3 {this.PLE3();}
+		case CLReportPLEsCode.CO_PLE4 {this.PLE4();}
+		case CLReportPLEsCode.CO_PLE5 {this.PLE5();}
+		//case CLReportPLEsCode.CO_PLE5 {this.PlesPrueba();}
+		case CLReportPLEsCode.CO_PLE6 {this.PLES6();}
+		case CLReportPLEsCode.CO_PLE7 {this.PLES7();}
+		case CLReportPLEsCode.CO_PLE8 {this.PLES8();}
+		case CLReportPLEsCode.CO_PLE9 {this.PLES9();}
+		case CLReportPLEsCode.CO_PLE10 {this.PLES10();}
+		case CLReportPLEsCode.CO_PLE11 {this.PLES11();}
+		case CLReportPLEsCode.CO_PLE12 {this.PLES12();}
+		case CLReportPLEsCode.CO_PLE13 {this.PLES13();}
+		case CLReportPLEsCode.CO_PLE14 {this.PLES14();}
+		case CLReportPLEsCode.CO_PLE15 {this.PLES15();}
+		case CLReportPLEsCode.CO_PLE16 {this.PLES16();}
+		case CLReportPLEsCode.CO_PLE17 {this.PLES17();}
+		case CLReportPLEsCode.CO_PLE18 {this.PLES18();} 
+	}
+}

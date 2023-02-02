@@ -1,0 +1,21 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.Product.Global;
+import AP.FinancialAccounting.Global;
+import AP.FO.BankDirectoryEntry.Global;
+
+[WithAdministrativeData] businessobject BOAccountBank raises msj {
+		
+		message msj text "&":LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[AlternativeKey] element ID:ID;
+		element CompanyUUID:UUID;
+		element UUID:UUID;
+		[Transient] element IsConsistent:Indicator;
+
+		[Label("Company")]element CompanyID:ID;
+		[Label("Company")]element CompanyDesc:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		//[Label("Bank")]element BankID:ID;
+			//association ToBank to BankDirectoryEntry;
+		[Label("Principal Account")]element Account:ChartOfAccountsItemCode;
+		[Label("Bank")]		 element BankType:CLTypeBankPaymentCode;
+
+}

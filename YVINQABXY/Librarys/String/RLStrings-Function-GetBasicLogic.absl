@@ -1,0 +1,5 @@
+import ABSL;
+import AP.Common.GDT;
+
+var result : DataType::LANGUAGEINDEPENDENT_Name;
+return result;

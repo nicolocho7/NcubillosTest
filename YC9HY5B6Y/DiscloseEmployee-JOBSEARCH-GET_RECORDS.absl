@@ -1,0 +1,30 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Enhancement Option: DataDisclosureofCustomEntities
+		Operation: GET_RECORDS
+
+		Script file signature
+		----------------------------
+		Parameter: InputData of type DataDiscloseBAdIDestroyCustomDataInputStructure
+		Returns: DataDiscloseBAdIDestroyCustomDataChangingStructure
+
+	Note: 
+	  - To use code completion, press CTRL+J.
+*/
+import AP.PC.InformationLifeCycleManagement.Global;
+import AP.FO.BusinessPartner.Global;
+var result : DataDiscloseBAdIDestroyCustomDataChangingStructure;
+var emproot;
+var bpid;
+var empquery;
+var selparam;
+var selresult;
+var empUUID = InputData.EmployeeUUID;
+emproot = Employee.Retrieve(empUUID);
+bpid = emproot.Identification.GetFirst().BusinessPartnerID;
+empquery = JobApplications.QueryByElements;
+selparam = empquery.CreateSelectionParams();
+selparam.Add(empquery.candidateID.content, "I", "EQ",bpid);
+selresult = empquery.ExecuteDataOnly(selparam);
+result.RecordsCountValue = selresult.Count();
+return result;

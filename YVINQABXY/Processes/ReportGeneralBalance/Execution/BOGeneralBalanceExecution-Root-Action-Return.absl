@@ -1,0 +1,28 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BOGeneralBalanceExecution
+		Node: Root
+		Action: Return 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+
+import ABSL;
+
+if(this.vExecute){
+	
+	if(this.ReportsAttachments.IsSet()){
+		if(this.ReportsAttachments.DocumentList.Count() > 0){
+			this.ReportsAttachments.DocumentList.Delete();
+		}
+	}
+
+	if(this.Details.Count() > 0){
+		this.Details.Delete();
+	}
+	this.vExecute = false;
+}

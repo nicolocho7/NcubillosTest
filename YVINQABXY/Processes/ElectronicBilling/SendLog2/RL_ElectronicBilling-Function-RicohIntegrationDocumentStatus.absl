@@ -1,0 +1,53 @@
+﻿import ABSL;
+
+var Correlativo = Parameter::Correlativo;
+var RUC = Parameter::Ruc;
+var Serie = Parameter::Serie;
+var Type = Parameter::Tipo;
+
+var result : collectionof elementsof BusinessObject::BOListOfFields;
+var Elementsof : elementsof BusinessObject::BOListOfFields;
+var request : Library::EWSI_Ricoh.EstadoDocumento.Request; //request structure
+var response : Library::EWSI_Ricoh.EstadoDocumento.Response; //response structure
+var scenario = "CSIntegrationRicoh"; //scenario
+
+request.parameters.RequestEstado.correlativo = Correlativo;
+request.parameters.RequestEstado.ruc = RUC;
+request.parameters.RequestEstado.serie = Serie;
+request.parameters.RequestEstado.tipo = Type;
+//________________________Send Parameters
+response = Library::EWSI_Ricoh.EstadoDocumento(request,"",scenario);
+if (response.IsInitial()){
+	Elementsof.Clear();
+	Elementsof.ListOfFieldID = "E";
+	Elementsof.ListOfFieldDesc = "WS: Response vacio";
+	result.Add(Elementsof);
+}
+//fault messages
+var faultItems = response.CommunicationFault.Item;
+if (faultItems.Count() > 0){
+	Elementsof.Clear();
+	Elementsof.ListOfFieldID = "E";
+	Elementsof.ListOfFieldDesc = "WS:" + faultItems.GetLast().Note;
+	result.Add(Elementsof);
+}
+var Respuesta = response;
+if(!Respuesta.IsInitial()){
+	Elementsof.Clear();
+	Elementsof.ListOfFieldID	= "Menssage";
+	Elementsof.ListOfFieldDesc	= Respuesta.parameters.return.mensajeError;
+	result.Add(Elementsof);
+	Elementsof.Clear();
+	Elementsof.ListOfFieldID	= "PDF";
+	Elementsof.ListOfFieldDesc	= Respuesta.parameters.return.pdfImpresion;
+	result.Add(Elementsof);
+	Elementsof.Clear();
+	Elementsof.ListOfFieldID	= "Code";
+	Elementsof.ListOfFieldDesc	= Respuesta.parameters.return.codigoError;
+	result.Add(Elementsof);
+	Elementsof.Clear();
+	Elementsof.ListOfFieldID	= "Status";
+	Elementsof.ListOfFieldDesc	= Respuesta.parameters.return.estado;
+	result.Add(Elementsof);
+}
+return result;

@@ -1,0 +1,72 @@
+﻿import ABSL;
+import AP.FO.MOM.Global;
+import AP.FinancialAccounting.Global;
+import AP.FO.TaxArrangement.Global;
+
+switch(this.ReportType){
+	case CLReportBalanceCode.CO_2{
+		
+		if(!this.CompanyID.IsInitial()){
+			var queryCompany = Company.QueryByIDAndName;
+			var paramcompany = queryCompany.CreateSelectionParams();
+			paramcompany.Add(queryCompany.ID, "I", "EQ", this.CompanyID.RemoveLeadingZeros());
+			var resultCompany = queryCompany.Execute(paramcompany).GetFirst();
+			if (resultCompany.IsSet()){
+				this.ToCompany = resultCompany;
+		
+				var qCompanyTax = CompanyTaxArrangement.QueryByElements;
+				var pCompanyTax = qCompanyTax.CreateSelectionParams();
+					pCompanyTax.Add(qCompanyTax.CompanyID,"I","EQ",this.CompanyID.RemoveLeadingZeros());
+				var insCompanyTax = qCompanyTax.Execute(pCompanyTax).GetFirst();
+				if(insCompanyTax.IsSet()){
+					if(insCompanyTax.TaxIdentificationNumber.Count() > 0){
+						this.CompanyRuc = insCompanyTax.TaxIdentificationNumber.GetFirst().PartyTaxID.content.Trim();
+					}
+				}
+			}
+			else{
+				this.ToCompany.Reset();
+			}
+		}
+
+		if(!this.SetOfBooksID.IsInitial()){
+			var qrySetOfBooks = SetOfBooks.QueryByIDAndDescription;
+			var paramSetOfBooks = qrySetOfBooks.CreateSelectionParams();
+				paramSetOfBooks.Add(qrySetOfBooks.ID.content, "I", "EQ", this.SetOfBooksID.content.Trim());
+			var objSetOfBooks = qrySetOfBooks.Execute(paramSetOfBooks).GetFirst();
+			if(objSetOfBooks.IsSet()){
+				this.ToSetofBooks = objSetOfBooks;
+				this.ChartOfAccountsCode = objSetOfBooks.ChartOfAccountsCode;
+			}
+			else{
+				this.ToSetofBooks.Reset();
+				this.ChartOfAccountsCode.Clear();
+			}
+		}
+	}
+	
+	case CLReportBalanceCode.CO_1{
+		if(!this.EstructuraID.IsInitial()){
+			var qPyGConfig = BOPyGConfiguration.QueryByElements;
+			var pPyGConfig = qPyGConfig.CreateSelectionParams();
+			pPyGConfig.Add(qPyGConfig.ID, "I", "EQ", this.EstructuraID.RemoveLeadingZeros());
+			var rPyGConfig = qPyGConfig.Execute(pPyGConfig).GetFirst();
+			if (rPyGConfig.IsSet()){
+				this.CompanyID = rPyGConfig.CompanyID;
+				this.ToCompany = rPyGConfig.ToCompany;
+				this.CompanyRuc = rPyGConfig.CompanyRuc;
+				this.SetOfBooksID = rPyGConfig.SetOfBooksID;
+				this.ToSetofBooks = rPyGConfig.ToSetofBooks;
+				this.ChartOfAccountsCode = rPyGConfig.ChartOfAccountsCode;
+			}
+			else{
+				this.CompanyID.Clear();
+				this.ToCompany.Reset();
+				this.CompanyRuc.Clear();
+				this.SetOfBooksID.Clear();
+				this.ToSetofBooks.Reset();
+				this.ChartOfAccountsCode.Clear();
+			}
+		}
+	}
+}

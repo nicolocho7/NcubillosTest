@@ -1,0 +1,167 @@
+import ABSL;
+import AP.FO.BusinessPartner.Global;
+import AP.FO.MOM.Global;
+import AP.FO.Product.Global;
+import AP.CustomerInvoicing.Global;
+import AP.FO.Party.Global;
+import AP.FO.ProductDataMaintenance.Global;
+import AP.Common.GDT;
+import AP.CRM.Global;
+var QueryConfiguration = BOConfigurationSolution.QueryByElements;
+var ExecuteQueryConfiguration = QueryConfiguration.Execute();
+var Validation = false;
+if(ExecuteQueryConfiguration.Count()>0){
+	if(ExecuteQueryConfiguration.GetFirst().IsSet()){
+		if(ExecuteQueryConfiguration.GetFirst().Status== CLStatusSolutionCode.CO_01){
+			Validation = true;
+		}
+	}
+}
+if(ExecuteQueryConfiguration.Count()<=0 || Validation == true){
+	if(this.BuyerParty.IsSet()){
+		if(!this.BuyerParty.PartyKey.IsInitial()){
+			if(!this.BuyerParty.PartyKey.PartyID.IsInitial()){
+				var vBuyerParty = this.BuyerParty.PartyKey.PartyID.content;
+				var qryCustomer = Customer.QueryByIdentification;
+				var prmCustomer = qryCustomer.CreateSelectionParams();
+					prmCustomer.Add(qryCustomer.InternalID, "I", "EQ", vBuyerParty);
+				var InsCustomer = qryCustomer.Execute(prmCustomer).GetFirst();
+				if(InsCustomer.IsSet()){
+					if (!InsCustomer.CurrentCommon.ZCodigoImpuestoCustomer.IsInitial() && this.TipoImpuestoPropuesto == false){
+						this.ZCodigoImpuesto = InsCustomer.CurrentCommon.ZCodigoImpuestoCustomer;
+						this.TipoImpuestoPropuesto = true;
+					}
+				}
+			}
+		}
+	}
+	if(this.ZCodigoImpuesto == CLCodigoImpuestoCode.CO_Z01){
+		this.zGratuita = true;
+	}else{
+		this.zGratuita = false;
+	}
+	foreach(var item in this.Item){
+		item.zItemGratuita = this.zGratuita;
+		if(item.zItemGratuita == true){
+			if(item.zProposedValueInd == false){
+				if(item.PriceAndTaxCalculationItem.IsSet()){
+					if(item.PriceAndTaxCalculationItem.ItemMainPrice.IsSet()){
+						item.zCostoTrnsferGratuita.content = item.PriceAndTaxCalculationItem.ItemMainPrice.Rate.DecimalValue;
+						item.zCostoTrnsferGratuita.currencyCode = item.PriceAndTaxCalculationItem.ItemMainPrice.Rate.CurrencyCode;
+						if(this.TotalNetAmount.currencyCode != item.zCostoTrnsferGratuita.currencyCode){
+							var Fecha;
+							if(!this.ProposedDeviatingPostingDate.IsInitial()){
+								Fecha = this.ProposedDeviatingPostingDate;
+							}
+							item.zCostoTrnsferGratuita = item.zCostoTrnsferGratuita.ConvertCurrencywithDate(this.TotalNetAmount.currencyCode.Trim(), Fecha);
+							item.zCostoTrnsferGratuita.currencyCode = this.TotalNetAmount.currencyCode;
+						}
+						if((!item.zCostoTrnsferGratuita.content.IsInitial()) && (!item.zCostoTrnsferGratuita.currencyCode.IsInitial()) ){
+							item.zProposedValueInd = true;
+						}
+					}
+				}
+			}
+		}else{
+			item.zProposedValueInd = false;
+			item.zCostoTrnsferGratuita.Clear();
+		}
+	}
+	//if(this.ZCodigoImpuesto.IsInitial()){
+		//this.ZCodigoImpuesto = CLCodigoImpuestoCode.CO_310;
+	//}
+	if (!this.ZCodigoImpuesto.IsInitial()){
+		var item;
+		if(this.Item.Count()>0){
+			foreach (item in this.Item){
+				if (item.PriceAndTaxCalculationItem.IsSet()){
+					item.PriceAndTaxCalculationItem.TaxationCharacteristicsCode.content = this.ZCodigoImpuesto.Trim();
+				}
+			}
+		}
+	}
+	if(this.ZDocumentType.IsInitial()){
+		var Qry = BODocumentType.QueryByElements;
+		var PramasQry = Qry.CreateSelectionParams();
+		var ResultExecuteType = Qry.Execute(PramasQry);
+		var Items;
+		foreach(Items in ResultExecuteType){
+			if(Items.DefaultValue == true){
+				this.ZDocumentType = Items.DocumentTypeID;
+			}
+		}
+		//if (this.ZDocumentType.RemoveLeadingZeros() =="4"){
+			//this.ZBoleta = true;
+		//}else{
+			//this.ZBoleta = false;
+		//}
+
+	}
+	if(!this.ZDocumentType.IsInitial()){
+		var QryDocument = BODocumentType.Retrieve(this.ZDocumentType);
+		if(QryDocument.IsSet()){
+			this.ZDocumentTypeDescription = QryDocument.DocumentTypeDescription;
+			this.ZBoleta = QryDocument.BoletaIndicator;
+		}else{
+			this.ZDocumentTypeDescription.Clear();
+		}
+	}else{
+		this.ZDocumentTypeDescription.Clear();
+	}
+
+	if(!this.zBienOServicioCode.IsInitial()){
+		var qryGoodsNCodes = ServicesAndGoodsCodes.QueryByElements;
+		var prmGoodsNCodes = qryGoodsNCodes.CreateSelectionParams();
+			prmGoodsNCodes.Add(qryGoodsNCodes.CompanyID, "I","EQ", this.SellerParty.PartyKey.PartyID.content);
+		var insGoodsNCodes = qryGoodsNCodes.Execute(prmGoodsNCodes).GetFirst();
+		if(insGoodsNCodes.IsSet()){
+			if(insGoodsNCodes.Codes.Count() > 0){
+				var insCode = insGoodsNCodes.Codes.Where(n=>n.CodeID == this.zBienOServicioCode).GetFirst();
+				if(insCode.IsSet()){
+					this.zBienOServicioDesc = insCode.CodeDesc;
+					this.zBienOServicioCodes = insCode.Code_ID;
+				}else{
+					this.zBienOServicioCode.Clear();
+					this.zBienOServicioCodes.Clear();
+					this.zBienOServicioDesc.Clear();	
+				}
+			}
+		}else{
+			this.zBienOServicioCode.Clear();
+			this.zBienOServicioCodes.Clear();
+			this.zBienOServicioDesc.Clear();	
+		}
+	}else{
+		if(this.SellerParty.IsSet()){
+			if(!this.SellerParty.PartyKey.IsInitial()){
+				var PartyKey = this.SellerParty.PartyKey;
+				if(!PartyKey.PartyID.IsInitial()){
+					var PartyId = PartyKey.PartyID;
+					if(!PartyId.content.IsInitial()){
+						var qryGoodsNCodes = ServicesAndGoodsCodes.QueryByElements;
+						var prmGoodsNCodes = qryGoodsNCodes.CreateSelectionParams();
+							prmGoodsNCodes.Add(qryGoodsNCodes.CompanyID, "I","EQ", this.SellerParty.PartyKey.PartyID.content);
+						var insGoodsNCodes = qryGoodsNCodes.Execute(prmGoodsNCodes).GetFirst();
+						if(insGoodsNCodes.IsSet()){
+							if(insGoodsNCodes.Codes.Count() > 0){
+								var insCode = insGoodsNCodes.Codes.GetFirst();
+								if(insCode.IsSet()){
+									this.zBienOServicioDesc = insCode.CodeDesc;
+									this.zBienOServicioCodes = insCode.Code_ID;
+									this.zBienOServicioCode = insCode.CodeID;
+								}else{
+									this.zBienOServicioCode.Clear();
+									this.zBienOServicioDesc.Clear();
+									this.zBienOServicioCodes.Clear();
+								}
+							}
+						}
+				
+					}
+				}
+			}
+		}
+	}
+}
+	
+

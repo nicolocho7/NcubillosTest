@@ -1,0 +1,44 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.Product.Global;
+
+[WithAdministrativeData] businessobject BOWithholdingCodeConf raises msj {
+		
+		message msj text "&":LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[AlternativeKey] element ID:ID;
+		element UUID:UUID;
+		[Transient] element IsConsistent:Indicator;
+
+		//All withholding
+		[Label("Company Tax Status Code")]element ConditionCompayID:ID;
+		association ToConditionCompany to BOConditionCompanyPurchase;
+		
+		[Label("Supplier Tax Status Code")]element ConditionSupplierID:ID;
+		association ToConditionSupplier to BOConditionSupplier;
+        [Label("Withholding Minimun Amount ID")]element AmountMinimun:ID;
+		association ToMinimumWithholdingAmounPurchases to BOMinimumWithholdingAmounPurchases;
+		[Label("Country")]						element Country:CountryCode;	
+		[Label("Type Withholding Tax")]		element TypeWithholding:CLTypeWithholdingPurchaseCode;//1:NET 2:IVA 3:ICA 4:EST
+		[Label("Withholding Code")]			element WithHoldingCode:ID;
+		[Label("Withholding Description")]	element WithHoldingDesc:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Determination Accounts")]	element DeterAccounts:GeneralLedgerAccountAliasCode;
+
+		//Net
+		[Label("Withholding Percent")]element PercentNet:Percent;
+		//ICA, IVA and EST
+		[Label("Products Percent")]			element PercentBienes:Percent;
+		[Label("Service Percent")]			element PercentServices:Percent;
+		//ICA and EST
+		//[Label("City")]element CityID:ID;
+		//association ToCity to BOCity;
+		//ICA and NET
+		[Label("Category Product")] element CategoryID:ID;
+		association ToCategoryProduct to ProductCategoryHierarchy.ProductCategory;	
+		//EST
+		[Label("Withholding Maximum Amount")]element AmountMaximum:Amount;
+	
+		[Label("Disabled")]element Disabled:Indicator;
+
+		action DisabledInstance;
+		action EnabledInstance;
+		action DeleteInstance;
+}

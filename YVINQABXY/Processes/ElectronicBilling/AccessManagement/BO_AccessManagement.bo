@@ -1,0 +1,22 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FO.Product.Global;
+import AP.FO.ProductDataMaintenance.Global;
+
+[DeploymentUnit(SupplierInvoicing)] businessobject BO_AccessManagement raises msg {
+
+		message msg text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+		element ID:ID;
+		element UUID:UUID;  
+		[Label("no usar")]				element CompanyID				: ID;
+		
+		[Label("Company Id")]          [AlternativeKey]   element Company     : ID ;
+		association ToCompany to Company;	
+		[Label("no usar")] element companyDesc : LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("No usar")]				   element Nit         : ID ;
+		[Label("User")]				   element User        : LANGUAGEINDEPENDENT_EXTENDED_Text ;
+		[Label("Email")]			   element Email       : LANGUAGEINDEPENDENT_EXTENDED_Text ;
+		[Label("PassWord")]			   element Password    : LANGUAGEINDEPENDENT_EXTENDED_Text ;
+
+		                               element inconsistent: Indicator;
+}

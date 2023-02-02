@@ -1,0 +1,77 @@
+﻿import ABSL;
+import AP.Common.GDT as apCommonGDT;
+import BASIS.Global as basis;
+
+
+var msgCompanyCondition = "Falto ingresar la compañia.";
+var MsgDate="La fecha Final no puede ser menor a la fecha inicial";
+
+
+var QryConfig ;
+var ParameAdmin;
+var ResAdminDetra;
+QryConfig = BOAdminDetra.QueryByElements;
+if (!this.CompanyID.IsInitial())
+{
+	ParameAdmin = QryConfig.CreateSelectionParams();
+	ParameAdmin.Add(QryConfig.CompanyID, "I", "EQ", this.CompanyID);
+	if (!this.InvoiceID.IsInitial()){
+	   ParameAdmin.Add(QryConfig.InvoiceID, "I", "EQ", this.InvoiceID);
+	}
+	if (!this.SupplierID.IsInitial()){
+	   ParameAdmin.Add(QryConfig.SupplierID, "I", "EQ", this.SupplierID);
+	}
+	if(!this.InitialDate.IsInitial() && !this.EndDate.IsInitial()){
+		if(this.EndDate > this.InitialDate){
+			ParameAdmin.Add(QryConfig.PostingDate, "I", "BT", this.InitialDate, this.EndDate);
+		}
+	}
+	ParameAdmin.Add(QryConfig.StatusDocument, "I", "EQ", "1");
+	ResAdminDetra = QryConfig.Execute(ParameAdmin);
+}else{
+	raise msg.Create("E", msgCompanyCondition);	
+}
+//Set file Structure	
+var SI_nodo : elementsof this.NodoTB2;
+var strLine = "";
+this.NodoTB2.Delete();
+if(ResAdminDetra.Count()>0){
+	this.Total.Clear();
+	//Head
+	foreach(var Row in ResAdminDetra){   
+		var NodoTB2Data = this.NodoTB2.Create();
+			NodoTB2Data.ToAdminDetra = 	Row;	
+	}
+}
+
+	//------------Get Batch--------//
+
+//var vl_conBatch = "";	
+//if (this.ID.IsInitial())
+//{
+	//var queryBuildID = BOBuildID.QueryByElements;
+	//var paramBuildID = queryBuildID.CreateSelectionParams();
+	//paramBuildID.Add(queryBuildID.ID, "I", "EQ", "BOADMINDETRAEXTRA");
+	//var resultBuildID = queryBuildID.Execute(paramBuildID).GetFirst();
+	//if (resultBuildID.IsSet())
+	//{   
+		//resultBuildID.consecutive = resultBuildID.consecutive + 1;
+		//this.ID = resultBuildID.consecutive.ToString();
+	//}
+	//else
+	//{
+		//this.ID = "1";
+		////-- create new register
+		//var insBuildID = BOBuildID.Create();
+		//if (insBuildID.IsSet())
+		//{
+			//insBuildID.consecutive = 1;
+			//insBuildID.description = "BOADMINDETRAEXTRA";
+			//insBuildID.ID = "BOADMINDETRAEXTRA";
+			//insBuildID.UUID.content = Library::UUID.Generate();
+		//}
+	//}
+//}
+//
+//this.Batch = this.Period.Substring(0,4) + vl_conBatch;
+//

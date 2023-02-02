@@ -1,0 +1,366 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BOMassLoadRelCusCom
+		Node: Root
+		Action: Load 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+import ABSL;
+import AP.Common.GDT as apCommonGDT;
+import AP.FinancialAccounting.Global;
+import AP.FO.BusinessPartner.Global;
+
+var insData : elementsof BORelationCustomerCompany;
+
+var separador = ";";
+var string = "";
+var subString = "";
+var indiceFind = 0;
+var indiceLast;
+var i = 0;
+var subIndiceLast = 0;
+var subIndiceFind = 0;
+var subStringAux = "";
+var j = 0;
+var contador = 0;
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+
+var msgpercentage = ": campo porcentaje no es valido ";
+var msgSave = "Grabar para guardar los cambios";
+var msgposition = "Posición";
+var msgretention = ": debe ingresar 1 por percepción ";
+var msgporcentage = ": campo porcentaje no es valido ";
+var msgErrorRecord = ": error al grabar";
+var msgLoaded = "Se cargaron ";
+var msgpositions = " posiciones";
+var msgattach = "Solo debe adjuntar un archivo";
+var msgCountryCode = ": El campo País no es válido máximo dos letras";
+var msgminimumAmount = ": campo monto minimo no es valido ";
+var msgMiniumWithh = ": no coinciden los datos del campo monto minimo con el tipo de retencion";
+var msgCity = ": El Campo Ciudad no es valido";
+var msgquerynotfound = "datos de ID no encontrados";
+var msgActualizado = ": Se ha actualizado";
+var msgidnotfound = "No fue encontrado, verificar si existe el ID";
+
+if (LanguageCode != "ES"){
+	msgSave = "Save to save the changes";
+	msgposition = "Position";
+	msgpercentage = ": percentage field is not valid ";
+	msgretention = ": You must enter 1 for perception";
+	msgporcentage= ": field percentage is not valid "; 
+	msgErrorRecord= ": error record";
+	msgLoaded= "They were charged";
+	msgpositions = "positions";
+	msgattach = "You only need to attach a file";
+	msgCountryCode = ": Country field is not valid maximum two letters";
+	msgminimumAmount = ": minimum amount field is invalid ";
+	msgMiniumWithh = ": Minimum field data does not match Withholding type";
+	msgCity = ": The city field is invalid";
+	msgquerynotfound = "id's datas not found";
+	msgActualizado = ": they update";
+	msgidnotfound = "Not found, please check if ID's does exist";
+}
+
+if(this.Codelist == "1"){
+	if (this.Attachment.IsSet() && this.Attachment.DocumentList.Count() == 1)
+	{
+	
+		var MyAtt = this.Attachment.DocumentList;
+		//if(MyAtt.GetFirst().MIMECode == "text/plain"){
+		
+		var FileCont = MyAtt.GetFirst().FileContent;
+		string = FileCont.BinaryObject.content.ToString();
+
+	
+			raise msj.Create("I", msgSave); 
+	
+
+		while (indiceFind != -1)
+		{
+			subIndiceLast = 0;
+			subIndiceFind = 0;
+			subStringAux = "";
+			j = 0;
+			i = i + 1;
+			indiceLast = string.Length() - 1;
+			indiceFind = string.Find("\n");
+			if (indiceFind != -1)
+			{
+				insData.Clear();
+				var insIsConsistent = true;
+
+				subString = string.Substring(0, indiceFind);
+				string = string.Substring(indiceFind + 1, indiceLast - indiceFind);
+				//Detalle
+				while (subIndiceFind != -1)
+				{
+					j = j + 1;
+					subIndiceLast = subString.Length() - 1;
+					subIndiceFind = subString.Find(";");
+					subStringAux = subString.Substring(0, subIndiceFind);
+					subString = subString.Substring(subIndiceFind + 1, subIndiceLast - subIndiceFind);
+
+					if (j == 1){//company tax status code
+						insData.ConditionCompanyID = subStringAux.Trim(); 
+					}
+					else if(j == 2){//customer tax status code
+						insData.ConditionCustomerID = subStringAux.Trim(); 
+					}
+					else if (j == 3){//porcentaje percepcion
+						if (Numeric.IsNumeric(subStringAux.Trim())){
+							insData.Percent = Numeric.ParseFromString(subStringAux.Trim());
+						}
+						else{
+							insIsConsistent = false;
+							raise msj.Create("I", msgposition + i.ToString().Trim() + msgpercentage); 
+						}
+					}
+					else if(j == 4){//withholding minium amount
+						if(subStringAux.IsInitial()){
+							insIsConsistent = false;
+							raise msj.Create("I", msgposition + i.ToString().Trim() + msgminimumAmount); 
+						}
+						else{
+							if (Numeric.IsNumeric(subStringAux.Trim())){
+							insData.AmountMinimun = Numeric.ParseFromString(subStringAux.Trim()); 
+							}
+							else{
+								insIsConsistent = false;
+								raise msj.Create("I", msgposition + i.ToString().Trim() + msgporcentage); 
+							}
+						}
+					}			
+					else if (j == 5){//id de cuenta de banco
+						insData.BankAccountID = subStringAux.Trim(); 
+					}
+					else if (j == 6){//country code 
+						insData.Country = subStringAux.Trim(); 
+						if(insData.Country.Length() >2){
+							insIsConsistent = false;
+							raise msj.Create("E", msgposition + i.ToString().Trim() + msgCountryCode); 
+						}
+					}
+					else if (j == 7){//per = 1 
+						if (subStringAux.Trim() == "1"){
+							insData.TypeWithholding = CLTypeWithholdingSalesCode.CO_PER; 
+						}
+						else{
+							insIsConsistent = false;
+							raise msj.Create("E", msgposition + i.ToString().Trim() + msgretention); 
+						}
+
+						if(!insData.TypeWithholding.IsInitial()){
+							var qryMinimumWit;
+							var selMinimumWitOrder;
+							var objMinimumWitOrder;	
+							var vAmountMinimunT = insData.AmountMinimun.Trim();
+							insData.AmountMinimun = vAmountMinimunT;
+
+							qryMinimumWit = BOMinimumWithholdingAmountSales.QueryByElements; 
+							selMinimumWitOrder = qryMinimumWit.CreateSelectionParams();
+							selMinimumWitOrder.Add(qryMinimumWit.ID , "I", "EQ", insData.AmountMinimun.AddLeadingZeros());
+							selMinimumWitOrder.Add(qryMinimumWit.TypeWithholding , "I", "EQ", insData.TypeWithholding);
+							objMinimumWitOrder = qryMinimumWit.Execute(selMinimumWitOrder).GetFirst();
+							if(!objMinimumWitOrder.IsSet()){
+								insIsConsistent = false;
+								raise msj.Create("E", msgposition + i.ToString().Trim() + msgMiniumWithh); 
+							}
+						}
+
+					}
+					else if (j == 8){//codigo de retenici�n
+						insData.WithHoldingCode = subStringAux.Trim(); 
+					}
+					else if (j == 9){//descripci�n de retenici�n
+						insData.WithHoldingDesc = subStringAux.Trim(); 
+					} else {
+
+						subString = subString.Replace("\r", "");
+						subString = subString.Replace(" ", "");
+						
+						if(!subString.IsInitial()){//12 Category product
+							insData.CategoryID = subString.Trim();
+						}
+						
+						var insLoad = BORelationCustomerCompany.Create(insData);
+						if (!insLoad.IsSet()){
+							raise msj.Create("E", msgposition+ i.ToString().Trim() + msgErrorRecord); 
+						}
+						else{
+							contador = contador + 1;
+							this.cargado = true;
+						}
+						
+						subIndiceFind = -1;
+					}
+				}//fin while(subIndiceFind != -1){ 					
+			}//fin if(indiceFind != -1){
+		}//fin while(indiceFind != -1){
+		raise msj.Create("I", msgLoaded + contador.ToString().Trim() + msgpositions); 
+	
+	}
+	else{
+		this.isConsistent = false;
+		raise msj.Create("E", msgattach);
+	
+	}	
+}
+if(this.Codelist == "2"){
+	if (this.Attachment.IsSet() && this.Attachment.DocumentList.Count() == 1)
+	{
+		 while(true){
+			var MyAtt = this.Attachment.DocumentList;
+			var FileCont = MyAtt.GetFirst().FileContent;
+			string = FileCont.BinaryObject.content.ToString();	
+			raise msj.Create("I", msgSave);
+			var query;
+			var selectParams;
+			var resultData; 
+
+			while (indiceFind != -1)
+			{
+				subIndiceLast = 0;
+				subIndiceFind = 0;
+				subStringAux = "";
+				j = 0;
+				i = i + 1;
+				indiceLast = string.Length() - 1;
+				indiceFind = string.Find("\n");
+				if (indiceFind != -1)
+				{
+					insData.Clear();
+					var insIsConsistent = true;
+
+					subString = string.Substring(0, indiceFind);
+					string = string.Substring(indiceFind + 1, indiceLast - indiceFind);
+					//Detalle
+					while (subIndiceFind != -1)
+					{
+						j = j + 1;
+						subIndiceLast = subString.Length() - 1;
+						subIndiceFind = subString.Find(";");
+						subStringAux = subString.Substring(0, subIndiceFind);
+						subString = subString.Substring(subIndiceFind + 1, subIndiceLast - subIndiceFind);
+
+						if (j==1){//id
+						  if(!subStringAux.IsInitial()){
+							insData.ID=subStringAux.Trim();}	
+								query = BORelationCustomerCompany.QueryByElements;
+								selectParams= query.CreateSelectionParams();
+								selectParams.Add(query.ID,"I","EQ",insData.ID);
+								resultData = query.Execute(selectParams).GetFirst();
+								if(!resultData.IsSet()){raise msj.Create("E","ID "+insData.ID+": "+msgidnotfound);break;}
+							}
+						else if (j == 2){//company tax status code
+							  if(!subStringAux.IsInitial()){insData.ConditionCompanyID = subStringAux.Trim();} 
+						}
+						else if(j == 3){//customer tax status code
+							  if(!subStringAux.IsInitial()){insData.ConditionCustomerID = subStringAux.Trim();} 
+						}
+						else if (j == 4){//porcentaje retenci�n
+							if (Numeric.IsNumeric(subStringAux.Trim())){
+								insData.Percent = Numeric.ParseFromString(subStringAux.Trim());
+							}
+							else{
+								insIsConsistent = false;
+								raise msj.Create("I", msgposition + i.ToString().Trim() + msgpercentage); 
+							}
+						}
+						else if(j == 5){//withholding minium amount
+							if(subStringAux.IsInitial()){
+								insIsConsistent = false;
+								raise msj.Create("I", msgposition + i.ToString().Trim() + msgminimumAmount); 
+							}
+							else{
+								if (Numeric.IsNumeric(subStringAux.Trim())){
+								insData.AmountMinimun = Numeric.ParseFromString(subStringAux.Trim()); 
+								}
+								else{
+									insIsConsistent = false;
+									raise msj.Create("I", msgposition + i.ToString().Trim() + msgporcentage); 
+								}
+							}
+						}			
+						else if (j == 6){//id de cuenta de banco
+							  if(!subStringAux.IsInitial()){insData.BankAccountID = subStringAux.Trim();} 
+						}
+						else if (j == 7){//country code 
+							  if(!subStringAux.IsInitial()){insData.Country = subStringAux.Trim();} 
+							if(insData.Country.Length() >2){
+								insIsConsistent = false;
+								raise msj.Create("E", msgposition + i.ToString().Trim() + msgCountryCode); 
+							}
+						}
+						else if (j == 8){//net = 1 iva =2 ica = 3
+							if (subStringAux.Trim() == "1"){
+								insData.TypeWithholding = CLTypeWithholdingSalesCode.CO_PER;
+							}
+							else{
+								insIsConsistent = false;
+								raise msj.Create("E", msgposition + i.ToString().Trim() + msgretention); 
+							}
+
+							if(!insData.TypeWithholding.IsInitial()){
+								var qryMinimumWit;
+								var selMinimumWitOrder;
+								var objMinimumWitOrder;	
+								var vAmountMinimunT = insData.AmountMinimun.Trim();
+								insData.AmountMinimun = vAmountMinimunT;
+
+								qryMinimumWit = BOMinimumWithholdingAmountSales.QueryByElements; 
+								selMinimumWitOrder = qryMinimumWit.CreateSelectionParams();
+								selMinimumWitOrder.Add(qryMinimumWit.ID , "I", "EQ", insData.AmountMinimun.AddLeadingZeros());
+								selMinimumWitOrder.Add(qryMinimumWit.TypeWithholding , "I", "EQ", insData.TypeWithholding);
+								objMinimumWitOrder = qryMinimumWit.Execute(selMinimumWitOrder).GetFirst();
+								if(!objMinimumWitOrder.IsSet()){
+									insIsConsistent = false;
+									raise msj.Create("E", msgposition + i.ToString().Trim() + msgMiniumWithh); 
+								}
+							}
+
+						}
+						else if (j == 9){//codigo de retenici�n
+							  if(!subStringAux.IsInitial()){insData.WithHoldingCode = subStringAux.Trim();} 
+						}
+						else if (j == 10){//descripci�n de retenici�n
+							  if(!subStringAux.IsInitial()){insData.WithHoldingDesc = subStringAux.Trim();} 
+						} else {
+
+							subString = subString.Replace("\r", "");
+							subString = subString.Replace(" ", "");
+						
+							if(!subString.IsInitial()){//12 Category product
+								insData.CategoryID = subString.Trim();
+							}
+						
+							resultData.Delete();
+							var insLoad = BORelationCustomerCompany.Create(insData);
+
+							if (!insLoad.IsSet()){
+								raise msj.Create("E", msgposition+ i.ToString().Trim() + msgErrorRecord); 
+							}
+							else{
+								contador = contador + 1;
+								this.cargado = true;
+								raise msj.Create("I","ID "+insData.ID+" "+msgActualizado);
+							}
+						
+							subIndiceFind = -1;
+						}
+					}//fin while(subIndiceFind != -1){ 					
+				}//fin if(indiceFind != -1){
+			}//fin while(indiceFind != -1){
+			raise msj.Create("I", msgLoaded + contador.ToString().Trim() + msgpositions); 
+		 break;}
+	}
+	else{
+		this.isConsistent = false;
+		raise msj.Create("E", msgattach);
+	
+	}	
+}

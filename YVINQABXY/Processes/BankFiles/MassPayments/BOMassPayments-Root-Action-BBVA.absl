@@ -1,0 +1,433 @@
+﻿/*-----------------------------------------------------------------------------------------------------
+										Historial de Modificaciones                                               
+-----------------------------------------------------------------------------------------------------
+ Funcional Responsable.....: Katherin Gonzalez                                        
+ Modificado por............: Carolina Posada                           
+ Marca.....................: 
+ Fecha.....................: 11.12.2018                                    
+ Descripción...............: Versión Inicial                              
+-----------------------------------------------------------------------------------------------------
+ Funcional Responsable.....:                                        
+ Modificado por............:                            
+ Marca.....................: 
+ Fecha.....................:                                     
+ Descripción...............: 
+-----------------------------------------------------------------------------------------------------*/
+
+import ABSL;
+import DocumentServices.Global;
+import BASIS.Global as basis;
+import AP.Common.GDT as common;
+import AP.FO.PaymentControl.Global;
+import AP.FO.BankDirectoryEntry.Global;
+import AP.SupplierInvoicing.Global;
+import AP.FO.BusinessPartner.Global;
+import AP.Payment.Global;
+import AP.FO.TaxArrangement.Global;
+
+// - - - - - - - - - - - - - - - Definiciones para el armado del TXT - - - - - - - - - - - - - - -//
+var type  :  DocumentTypeCode;
+var binary  : BinaryObject;
+var name  : LANGUAGEINDEPENDENT_LONG_Name;
+var desc  :  Description;
+var StringExport="";
+var AmmountAcumu = 0;
+	
+var vStringCab = "";
+var vStringDetalle = "";
+var isStringCab = false;
+var vCount = 0;
+
+
+//Detalle
+var vD01 = ""; //Tipo RUC
+var vD02 = "";	//RUC del proveedor
+var vD03 = "";	//Razon social
+var vD04 = "0011";	//Banco
+var vD05 = "";	//Cuenta del beneficiario
+var vD06 = "";	//Teléfono del beneficiario 
+var vD07 = "";	//Domicilio del beneficiario 
+var vD08 = "";	//Correo electrónico del beneficiario 
+var vD09 = "N";	//Indicador de Confirmación a PROVEEDOR 
+var vD10 = "P";	//Forma de Pago 
+var vD11 = "";	//Concepto 1 (Referencia de pago )  
+var vD12 = "                                   ";	//Concepto 2 (35) 
+var vD13 = "                                   ";	//Concepto 3 (35) 
+var vD14 = "                                   ";	//Concepto 4 (35)
+var vD15 = "00";  //Tipo de Cuenta 
+var vD16 = ""; //Importe de Pago ( Parte entera)  
+var vD17 = "";  //Importe de pago ( Parte decimal)  
+var vD18 = "";  //Nro total de documentos (*)  
+var vD19 = "";  //Importe entero de total de documentos (*) 
+var vD20 = "";  //Importe decimal de total de detalles documentos (*)  
+var vD21 = "1";  //Tipo de documento (*) 
+var vD22 = "";  //Fecha del documento (*) 
+var vD23 = "";  //Nro del documento (*) 
+var vD24 = "";  //Descripción de documento (*) 
+var vD25 = "1";  //Tipo de Cuenta  
+
+// - - - - - - - - - - - - - - - Foreach a los items - - - - - - - - - - - - - - -//
+var vCorrelativo = 0;
+var vIsCabecera = false;
+var vSumaTotal = 0;
+
+foreach(var itemDetail in this.Details){ 
+
+	var insPaymentOrder = PaymentOrder.Retrieve(itemDetail.PaymentOrderUUID);
+	if(insPaymentOrder.IsSet()){
+	    
+		vD22 = insPaymentOrder.AccountingTransactionDate.GetDay() + insPaymentOrder.AccountingTransactionDate.GetMonth() +insPaymentOrder.AccountingTransactionDate.GetYear();
+		vD23 = insPaymentOrder.ID.content.RemoveLeadingZeros();
+		vD24 = insPaymentOrder.PaymentOrderDescription;
+		if(insPaymentOrder.BusinessPartner.IsSet()){	
+			var insSupplier = Supplier.Retrieve(insPaymentOrder.BusinessPartner.InternalID.RemoveLeadingZeros());
+			if(insSupplier.IsSet()){
+				
+				if(insSupplier.TaxNumber.Count() > 0){
+					var insSupplierTaxNumber = insSupplier.TaxNumber.GetFirst();
+					vD02 = insSupplierTaxNumber.PartyTaxID.content;
+					switch(insSupplierTaxNumber.TaxIdentificationNumberTypeCode.content){
+						case "1"{vD01 = "R";}//RUC Number
+						case "2"{vD01 = "L";}//National Identification Document
+						case "3"{vD01 = "P";}//Passport
+						//case "4"{vD01 = "I";}//Fiscal ID for Individuals
+						case "5"{vD01 = "E";}//Foreigner ID
+						//case "6"{vD01 = "O";}//Other Type of Documents
+					}
+				}
+
+				if(insSupplier.CurrentCommon.IsSet()){
+					vD03 = insSupplier.CurrentCommon.BusinessPartnerFormattedName;
+				}
+			}//if(insSupplier.IsSet()){
+			if(insPaymentOrder.BusinessPartner.BankDetails.Count()>0){
+				vD05 = itemDetail.BankAccountID.Trim(); //insPaymentOrder.BusinessPartner.BankDetails.GetFirst().BankAccountID;
+			}
+			if(insPaymentOrder.BusinessPartner.AddressSnapshot.IsSet()){
+				if(insPaymentOrder.BusinessPartner.AddressSnapshot.Telephone.Count()>0){
+				vD06 = insPaymentOrder.BusinessPartner.AddressSnapshot.Telephone.GetFirst().NormalisedNumberDescription.Trim();
+				}
+				if(insPaymentOrder.BusinessPartner.AddressSnapshot.FormattedAddress.Count()>0){
+					if(insPaymentOrder.BusinessPartner.AddressSnapshot.FormattedAddress.GetFirst().FormattedPostalAddress.IsInitial()){
+						vD07 = insPaymentOrder.BusinessPartner.AddressSnapshot.FormattedAddress.GetFirst().FormattedPostalAddress.FirstLineDescription;
+					}
+				}
+				if(insPaymentOrder.BusinessPartner.AddressSnapshot.DefaultEMail.IsSet()){
+					vD08 = insPaymentOrder.BusinessPartner.AddressSnapshot.DefaultEMail.URI.content;	
+				}
+			}//if(insPaymentOrder.BusinessPartner.AddressSnapshot.IsSet()){
+		}//if(insPaymentOrder.BusinessPartner.IsSet()){	
+		if(!insPaymentOrder.PaymentAmount.IsInitial()){
+			if(insPaymentOrder.PaymentAmount.content < 0){ 
+				var val = insPaymentOrder.PaymentAmount.content * - 1; 
+				vD16 = val.ToString().Replace(",",".");
+				var LengtTaman = vD16.Find(".");
+				if(LengtTaman > 0){
+					vD16 = vD16.Substring(0,LengtTaman);
+				}
+			}
+			else{ //vD16 = insPaymentOrder.PaymentAmount.content.RoundToString(0); 
+				vD16 = insPaymentOrder.PaymentAmount.content.ToString().Replace(",",".");
+				var LengtTaman = vD16.Find(".");
+				if(LengtTaman > 0){
+					vD16 = vD16.Substring(0,LengtTaman);
+				}
+			}
+			var Tem = insPaymentOrder.PaymentAmount.content.RoundToString(2);
+			vD17 = Tem.Substring(Tem.Length() - 2, 2);
+		}
+		if(insPaymentOrder.PaymentExplanation.IsSet()){
+			if(insPaymentOrder.PaymentExplanation.Item.Count() >0){
+				vD18 = insPaymentOrder.PaymentExplanation.Item.Count().ToString().Trim();
+				var total = 0;
+				vD11 = "";
+				foreach(var item in insPaymentOrder.PaymentExplanation.Item){
+					total =  total + item.NetAmount.content; 
+					vD11 = vD11 + item.ExternalInvoiceReference.ID.content + "/";
+				}
+				if( total < 0 ){
+					var val = total * -1 ;
+					//vD19 = val.RoundToString(0);
+					vD19 = val.ToString().Replace(",",".");
+					var LengtTaman = vD19.Find(".");
+					if(LengtTaman > 0){
+						vD19 = vD19.Substring(0,LengtTaman);
+					}
+				}
+				else { 
+					//vD19 = total.RoundToString(0); 
+					vD19 = total.ToString().Replace(",",".");
+					var LengtTaman = vD19.Find(".");
+					if(LengtTaman > 0){
+						vD19 = vD19.Substring(0,LengtTaman);
+					}
+				
+				} 
+				var amountString = total.RoundToString(2);
+				vD20 = amountString.Substring(amountString.Length() - 2, 2);
+			}//if(insPaymentOrder.PaymentExplanation.Item.Count() >0){
+		}//if(insPaymentOrder.PaymentExplanation.IsSet()){
+
+		//formato de campos
+		var x = vD01.Length();
+		if(x == 0)
+		{ 
+			vD01 = " ";
+		}else if(x>1){
+			vD01 = vD01.Substring(0,1);
+		}
+
+		x = vD02.Length();
+		if(x == 0)
+		{ 
+			vD02 = "            ";
+		}else if(x>12){
+			vD02 = vD02.Substring(0,12);
+		}
+		else{
+			while(x<12){
+				vD02 = vD02 + " "; x = x + 1;
+			}
+		}
+
+		x = vD03.Length();
+		if(x == 0)
+		{ 
+			vD03 = "                                   ";
+		}else if(x>35){
+			vD03 = vD03.Substring(0,35);
+		}
+		else{
+			while(x<35){
+				vD03 = vD03+" " ; x = x+1;
+			}
+		}
+
+		x = vD05.Length();
+		if(x == 0)
+		{ 
+			vD05 = "                    ";
+		}else if(x>20){
+			vD05 = vD05.Substring(0,20);
+		}
+		else{
+			while(x<20){
+				vD05 =  vD05+" "; x = x+1;
+			}
+		}
+
+		x = vD06.Length();
+		if(x == 0)
+		{ 
+			vD06 = "            ";
+		}else if(x>12){
+			vD06 = vD06.Substring(0,12);
+		}
+		else{
+			while(x<12){
+				vD06 = vD06+" "; x = x+1;
+			}
+		}
+
+		x = vD07.Length();
+		if(x == 0)
+		{ 
+			vD07 = "                                   ";
+		}else if(x == 0)
+		{ 
+			vD07 = "                                   ";
+		}else if(x>35){
+			vD07 = vD07.Substring(0,35);
+		}
+		else{
+			while(x<35){
+				vD07 = vD07+" "; x = x+1;
+			}
+		}
+
+		x = vD08.Length();
+		if(x == 0)
+		{ 
+			vD08 = "                                                            ";
+		}else if(x>60){
+			vD08 = vD08.Substring(0,60);
+		}
+		else{
+			while(x<60){
+				vD08 = vD08+" "; x = x+1;
+			}
+		}
+
+		x = vD11.Length();
+		if(x == 0)
+		{ 
+			vD11 = "                                   ";
+		}else if(x>35){
+			vD11 = vD11.Substring(0,35);
+		}
+		else{
+			while(x<35){
+				vD11 = vD11+" "; x = x+1;
+			}
+		}
+
+
+		x = vD16.Length();
+		if(x == 0)
+		{ 
+			vD16 = "000000000000";
+		}else if(x>12){
+			vD16 = vD16.Substring(0,12);
+		}
+		else{
+			while(x<12){
+				vD16 = "0" + vD16; x = x+1;
+			}
+		}
+
+		x = vD17.Length();
+		if(x == 0)
+		{ 
+			vD17 = "00";
+		}else if(x>2){
+			vD17 = vD17.Substring(0,2);
+		}
+		else{
+			while(x<2){
+				vD17 = "0"+vD17; x = x+1;
+			}
+		}
+
+
+		x = vD18.Length();
+		if(x == 0)
+		{ 
+			vD18 = "   0";
+		}else if(x>4){
+			vD18 = vD18.Substring(0,4);
+		}
+		else{
+			while(x<4){
+				vD18 = " " + vD18; x = x+1;
+			}
+		}
+
+
+		x = vD19.Length();
+		if(x == 0)
+		{ 
+			vD19 = "000000000000";
+		}else if(x>12){
+			vD19 = vD19.Substring(0,12);
+		}
+		else{
+			while(x<12){
+				vD19 = "0"+vD19; x = x+1;
+			}
+		}
+
+
+		x = vD20.Length();
+		if(x == 0)
+		{ 
+			vD20 = "00";
+		}else if(x>2){
+			vD20 = vD20.Substring(0,2);
+		}
+		else{
+			while(x<2){
+				vD20 = "0"+vD20; x = x+1;
+			}
+		}
+
+
+		x = vD22.Length();
+		if(x == 0)
+		{ 
+			vD22 = "        ";
+		}else if(x>8){
+			vD22 = vD22.Substring(0,8);
+		}
+		else{
+			while(x<8){
+				vD22 = vD22+" "; x = x+1;
+			}
+		}
+
+
+		x = vD23.Length();
+		if(x == 0)
+		{ 
+			vD23 = "            ";
+		}else if(x>12){
+			vD23 = vD23.Substring(0,12);
+		}
+		else{
+			while(x<12){
+				vD23 =  vD23+" "; x = x+1;
+			}
+		}
+
+
+		x = vD24.Length();
+		if(x == 0)
+		{ 
+			vD24 = "                         ";
+		}else if(x>25){
+			vD24 = vD24.Substring(0,25);
+		}
+		else{
+			while(x<25){
+				vD24 = vD24 +" "; x = x+1;
+			}
+		}
+
+		vStringDetalle = vStringDetalle 
+						 + vD01 + vD02 + vD03 + vD04 + vD05
+						 + vD06 + vD07 + vD08 + vD09 + vD10 
+						 + vD11 + vD12 + vD13 + vD14 + vD15
+						 + vD16 + vD17 + vD18 + vD19 + vD20
+						 + vD21 + vD22 + vD23 + vD24 + vD25
+						 + vD16 + vD17 + "\r\n";
+
+	}// fin if(insPaymentOrder.IsSet() )
+	vD01.Clear();
+	vD02.Clear();
+	vD03.Clear();
+	//vD04.Clear();
+	vD05.Clear();
+	vD06.Clear();
+	vD07.Clear();
+	vD08.Clear();
+	//vD09.Clear();
+	//vD10.Clear();
+	vD11.Clear();
+	//vD12.Clear();
+	//vD13.Clear();
+	//vD14.Clear();
+	//vD15.Clear();
+	vD16.Clear();
+	vD17.Clear();
+	vD18.Clear();
+	vD19.Clear();
+	vD20.Clear();
+	//vD21.Clear();
+	vD22.Clear();
+	vD23.Clear();
+	vD24.Clear();
+	//vD25.Clear();
+}
+
+StringExport = vStringDetalle;
+
+name = "Banco BBVA";
+type.content = "10001";
+type.listID = "10296";
+binary.mimeCode = "text/plain";
+binary.content = Binary.ParseFromString(StringExport);
+name = name + ".txt";
+	
+
+this.myAttachments.CreateFile(type,name,name,desc,binary);
+
+

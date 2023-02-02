@@ -1,0 +1,13 @@
+﻿import AP.Common.GDT;
+import AP.Purchasing.Global;
+
+[Extension] businessobject AP.Purchasing.Global:GoodsAndServiceAcknowledgement {
+ 
+		[Label("(OLD) Mercancía en consignación")]			element flag							: Indicator;
+
+    
+   		node Item {
+   	    } 
+     
+  
+}

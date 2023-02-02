@@ -1,0 +1,6 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+[DeploymentUnit(CustomerInvoicing)] businessobject ReceiveDirectSales {
+			
+		[AlternativeKey]	element RInvoiceUUID : UUID;
+}

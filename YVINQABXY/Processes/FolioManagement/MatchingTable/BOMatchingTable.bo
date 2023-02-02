@@ -1,0 +1,26 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FO.Product.Global;
+import AP.FO.ProductDataMaintenance.Global;
+
+businessobject BOMatchingTable raises msj{
+
+		message msj text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+	
+		[AlternativeKey][Label("ID")]element MatchingTableID:ID;
+		[Label("Company")]element CompanyID:ID;
+		[Label("Document Type ID")]element DocumentTypeID:ID;
+		[Label("Document Type Description")] element DocumentTypeDescription: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Value X")] element ValueX:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Value X Length")] element LengthX:NumberValue;
+		[Label("Billing Unit")] element BillingUnit:ID;
+		[Label("Billing Unit Text")] element BillingUnitText:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Serie")] element Serie:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Serie Length")] element SerieLength:NumberValue;
+		[Label("Consecutive")] element Consecutive:NumberValue;
+		[Label("Consecutive Length")] element ConsecutiveLength:NumberValue;
+		[Label("Inactive")] element Inactive:Indicator;
+		association ToCompany to Company;
+        action DeleteRow;
+
+}

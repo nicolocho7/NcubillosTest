@@ -1,0 +1,12 @@
+﻿import AP.Common.GDT;
+import AP.Purchasing.Global;
+
+[Extension] businessobject AP.Purchasing.Global:PurchaseOrder {
+ 
+	[Scenario(PurchaseOrderEXT)] [Label("Job id")] element jobId: ID;
+
+	element showNotes: Indicator;
+	
+   	node Item {
+   	}
+}

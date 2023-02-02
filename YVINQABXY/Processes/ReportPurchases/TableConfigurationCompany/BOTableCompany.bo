@@ -1,0 +1,13 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BOTableCompany  raises msj {
+
+	message msj text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+		[AlternativeKey] element ID:ID;
+		element UUID : UUID;
+		[Label("Descripcion Company")]element Company:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("RUC")]	element RUC:LANGUAGEINDEPENDENT_EXTENDED_Text;
+       
+
+}

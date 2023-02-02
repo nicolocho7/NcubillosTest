@@ -1,0 +1,64 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+
+[WithAdministrativeData]businessobject BOAdminDetra raises msg {
+
+	message msg text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+	
+	[AlternativeKey] element ID:ID;
+	[Label("Manual")]element Manual:Indicator;
+	[Label("Invoice")]	element InvoiceID:ID;
+	[Label("External Document ID")]	element ExternalDocumentID:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Invoice UUID")]element InvoiceUUID:UUID;
+	[Label("Company")]	element CompanyID:ID;
+	[Label("Company")]	element CompanyDes:LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("Supplier")]  element SupplierID:ID;								
+	[Label("Supplier Name")]  element SupName:LANGUAGEINDEPENDENT_EXTENDED_Text;						
+	[Label("Tax Number Type")]  element SupTaxNumberType:LANGUAGEINDEPENDENT_EXTENDED_Text;						
+	[Label("Tax Number")]  element SupTaxNumber:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("External Document ID")]  element ExtDocID:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Posting Date")]		element PostingDate:Date;
+	[Label("Period")]	element Period:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Country")]	element Country:CountryCode;
+	[Label("Total Net Amount")]element TotalNetAmount:Amount;
+	
+	//Datos detracicón
+	[Label("Withholding Code")]			element WithHoldingCode:ID;
+	[Label("Determination Accounts")]	element DeterAccounts:GeneralLedgerAccountAliasCode;
+	[Label("Amount of detractions")]element DetraAmount:Amount;
+	[Label("% DET")]element DetraPercent:DecimalValue;
+	//Datos folio
+	[Label("Type")]	element Type:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Series")]	element Series:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Number")]	element Number:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	//datos de sunat
+	[Label("No. PROF")]  element Prof:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Batch")]		element batch:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	//datos de control
+	[Label("Status")]element StatusDocument:CLStatusDetraccionCode;
+	[Label("Credit Nemo UUID")]element CreditNemoUUID:UUID;
+
+	[DependentObject(AttachmentFolder)] node Attachment;
+
+
+
+	//No se usa
+	[Label("No se usa")]	element WithHoldingDesc:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("No se usa")]element Amount:Amount;
+	[Label("No se usa")]element UUID:UUID;
+	[Label("No se usa")]  element SupID:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("No se usa")]  element DesStatus:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	association ToConditionCompany to BOConditionCompanyPurchase;
+	
+	[Label("No se usa")]element Account:LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("No se usa")]element OperaType:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("No se usa")]element IsConsistent: Indicator;
+	[Label("No se usa")]element ISCheck: Indicator;
+	
+	
+	action Search;	
+	action GenerateDocument;
+	action DeleteInstance;		
+		
+}

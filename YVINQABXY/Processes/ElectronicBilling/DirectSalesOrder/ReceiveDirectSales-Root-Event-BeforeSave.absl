@@ -1,0 +1,603 @@
+﻿import ABSL;
+import AP.FO.BusinessPartner.Global;
+import AP.FO.MOM.Global;
+import AP.FO.Product.Global;
+import AP.CustomerInvoicing.Global;
+import AP.FO.Party.Global;
+import AP.FO.ProductDataMaintenance.Global;
+import AP.Payment.Global;
+import AP.Common.GDT;
+import BASIS.Global as basis;
+import AP.PC.IdentityManagement.Global;
+import Common.DataTypes as CommonDataTypes;
+import AP.Purchasing.Global;
+import AP.FO.BankDirectoryEntry.Global;
+// - - - - - - - - - - - - - - - - P E R C E P C I Ó N  - - - - - - - - - - - - - - - - //
+while(true){
+	var QueryCustomerInvoice = CustomerInvoice.Retrieve(this.RInvoiceUUID);
+	if (QueryCustomerInvoice.IsSet()){
+		if ((QueryCustomerInvoice.ID.content !="##1" || !QueryCustomerInvoice.ID.content.Trim().IsInitial())){
+				var ValidacionVentaDirecta = QueryCustomerInvoice.Item.ItemBusinessTransactionDocumentReference.Where(n=>n.BusinessTransactionDocumentReference.TypeCode == "29").GetFirst();
+				if(QueryCustomerInvoice.Status.ReleaseStatusCode != "3"){break;} //Solo en liberado
+				if(QueryCustomerInvoice.zCancelNoteCI) {break;} //Solo ingresa en false
+				//Busca las retenciones calculadas y las asigna en ventas para generar el cobro respectivo
+				var LsitTemporal : collectionof BOPostedCI;
+				var totalPer1 = 0;
+				var isPer1 = false;
+				var insTemporal;
+				foreach (var items in QueryCustomerInvoice.Item){
+			
+					isPer1 = false;
+			
+					foreach (var itemTemp in LsitTemporal){
+						if(items.zPer1AmountCI.content >= 1){
+							if(items.zPer1BankCI.RemoveLeadingZeros() == itemTemp.Bank.Trim() && itemTemp.AdviceID == "PER1"){
+								itemTemp.PaymentAmount.content = itemTemp.PaymentAmount.content + items.zPer1AmountCI.content;
+								isPer1 = true;		
+							}
+						}
+					}
+			
+					if(!isPer1){
+						if(items.zPer1AmountCI.content >= 1){
+							insTemporal = BOPostedCI.Create();
+							switch (QueryCustomerInvoice.ProcessingTypeCode){
+								case "CI"{
+									//Si es factura el tipo de pago es entrada de efectivo
+									insTemporal.PaymentType = "09";
+									insTemporal.DebitIndicator = false;
+									insTemporal.PaymentOriginReference = QueryCustomerInvoice.ID.content.RemoveLeadingZeros();
+								}
+								case "CCM"{
+									insTemporal.PaymentType = "04";
+									insTemporal.DebitIndicator = true;
+									insTemporal.PaymentOriginReference = QueryCustomerInvoice.ReferenceBusinessTransactionDocumentID.content.RemoveLeadingZeros();
+								}
+							}
+							insTemporal.AdviceID = "PER1";
+							insTemporal.PostingDate = QueryCustomerInvoice.Date;
+							insTemporal.CustomerID = QueryCustomerInvoice.BuyerParty.PartyKey.PartyID.content.RemoveLeadingZeros();
+							insTemporal.PaymentReference = QueryCustomerInvoice.ID.content.RemoveLeadingZeros();
+							insTemporal.Bank = items.zPer1BankCI.RemoveLeadingZeros();
+							insTemporal.PaymentAmount.content = items.zPer1AmountCI.content;
+							insTemporal.PaymentAmount.currencyCode = QueryCustomerInvoice.zTPercepcionCI.currencyCode;
+							insTemporal.CompanyID = QueryCustomerInvoice.SellerParty.PartyKey.PartyID.content.RemoveLeadingZeros();
+							insTemporal.WithholdingStatus = "1";
+							insTemporal.PaymentTypeCode = QueryCustomerInvoice.ProcessingTypeCode;
+							LsitTemporal.Add(insTemporal);
+						}
+					}
+				}// fin foreach
+
+				//-----------------------Busqueda de datos----------------------
+				if(!QueryCustomerInvoice.SellerParty.IsSet()){break;}
+				if(!QueryCustomerInvoice.BuyerParty.IsSet()){break;}
+
+				var vSellerID = "";
+					vSellerID = QueryCustomerInvoice.SellerParty.PartyKey.PartyID.content.AddLeadingZeros();
+				var vCountry;
+				var queryCompany = Company.QueryByIDAndName;
+				var paramCompany = queryCompany.CreateSelectionParams();
+					paramCompany.Add(queryCompany.ID, "I", "EQ", vSellerID);
+				var insCompany = queryCompany.Execute(paramCompany).GetFirst();
+				if (insCompany.IsSet()){
+					if (insCompany.CompanyAttributes.Count() > 0){
+						vCountry = insCompany.CompanyAttributes.GetFirst().CountryOfRegistration;
+					}
+				}
+
+				var vBuyerParty = QueryCustomerInvoice.BuyerParty.PartyKey.PartyID.content;
+				var qryCustomer = Customer.QueryByIdentification;
+				var prmCustomer = qryCustomer.CreateSelectionParams();
+					prmCustomer.Add(qryCustomer.InternalID, "I", "EQ", vBuyerParty);
+				var insCustomer = qryCustomer.Execute(prmCustomer).GetFirst();
+				if(!insCustomer.IsSet()){break;}
+
+				//-----------------------Creación ----------------------
+				var insAdminDetraCust : elementsof AdminDetraCust;
+	
+				insAdminDetraCust.CompanyID = insCompany.ID;
+				if (insCompany.NameByValidity.Count() > 0){
+					insAdminDetraCust.CompanyDes = insCompany.NameByValidity.GetFirst().Name.content;
+				}
+				insAdminDetraCust.CustomerID = insCustomer.InternalID.RemoveLeadingZeros();
+				if (insCustomer.CurrentCommon.IsSet()){
+					insAdminDetraCust.CustomerName = insCustomer.CurrentCommon.SortingFormattedName;
+				}
+
+				insAdminDetraCust.PostingDate = QueryCustomerInvoice.Date;
+				insAdminDetraCust.InvoiceID = QueryCustomerInvoice.ID.content;
+				insAdminDetraCust.CodServicio = QueryCustomerInvoice.zBienOServicioCodes;
+				insAdminDetraCust.StatusDocument = CLStatusDetraccionCode.CO_1;	
+	
+				insAdminDetraCust.Prof = "0";
+				//insAdminDetraCust.WithHoldingCode = this.zCabCodeDETRA;
+
+				if(QueryCustomerInvoice.zTPercepcionCI.currencyCode =="PEN"){					
+					insAdminDetraCust.TotalNetAmount = QueryCustomerInvoice.zTPercepcionCI;
+				}else{
+					insAdminDetraCust.TotalNetAmount = QueryCustomerInvoice.zTPercepcionCI.ConvertCurrencywithDate("PEN",QueryCustomerInvoice.Date);
+				}
+
+				insAdminDetraCust.Period = insAdminDetraCust.PostingDate.GetYear() + insAdminDetraCust.PostingDate.GetMonth(); 
+				foreach (var insCust in insCustomer.TaxNumber){
+					insAdminDetraCust.CustTaxNumber = insCust.PartyTaxID.content;
+					insAdminDetraCust.CustTaxNumberType = insCust.TaxIdentificationNumberTypeCode.content;																	
+				}
+
+				//External Document	
+				//foreach (var insInvoi in this.BusinessTransactionDocumentReference){
+    				//if(insInvoi.BusinessTransactionDocumentReference.TypeCode  == "28" ){
+						//insAdminDetraCust.ExternalDocumentID = insInvoi.BusinessTransactionDocumentReference.ID.content;
+					//}
+				//}
+				insAdminDetraCust.ExternalDocumentID = QueryCustomerInvoice.ZExternalID;//.BusinessTransactionDocumentReference.ID.content;
+
+				var Cont = insAdminDetraCust.ExternalDocumentID.Length() - 8;
+				insAdminDetraCust.Country = vCountry;
+				insAdminDetraCust.Type = insAdminDetraCust.ExternalDocumentID.Substring(0,2);
+				insAdminDetraCust.Series = insAdminDetraCust.ExternalDocumentID.Substring(3,4);
+				insAdminDetraCust.Number = insAdminDetraCust.ExternalDocumentID.Substring(8,Cont);
+				AdminDetraCust.Create(insAdminDetraCust);
+				//----------------------- Fin Busqueda de datos----------------------
+				if (LsitTemporal.Count() > 0){
+					QueryCustomerInvoice.zCancelNoteCI = true;
+				}
+			}
+	}
+		break;
+}	
+	
+// - - - - - - - - - - - - - - - - F I N - P E R C E P C I Ó N  - - - - - - - - - - - - - - - - //
+// - - - - - - - - - - - - - - - - Facturación electronica v2 Dinamic - - - - - - - - - - - - - - - - //
+//while(true){
+	//var Serie		="";
+	//var Correlativo	="";
+	//var Tipo		="";
+	//var QueryCustomerInvoice = CustomerInvoice.Retrieve(this.RInvoiceUUID);
+	//if (QueryCustomerInvoice.IsSet()){
+		//if ((QueryCustomerInvoice.ID.content !="##1" || !QueryCustomerInvoice.ID.content.Trim().IsInitial())){
+			//if(QueryCustomerInvoice.Status.ReleaseStatusCode != "3"){break;} //Solo en liberado
+	//
+			//if(QueryCustomerInvoice.TypeCode != "28"){break;}//28 = Invoice 
+//
+			////Tipo de Documento
+			//var vTypeCode;
+			//switch (QueryCustomerInvoice.ProcessingTypeCode){
+				//case "CI"{
+					//vTypeCode = CLDocumentTypeEICode.CO_CI;
+					//if(QueryCustomerInvoice.ZBoleta){vTypeCode = CLDocumentTypeEICode.CO_BO;}
+					////if(this.zMandato){vTypeCode = CLDocumentTypeEICode.CO_CM;}
+					////if(this.zExportacion){vTypeCode = CLDocumentTypeEICode.CO_CE;}
+				//}
+				//case "CCM"{vTypeCode = CLDocumentTypeEICode.CO_CN;}
+				//default {break;}
+			//}
+//
+			////Unidad de Ventas
+			//if(!QueryCustomerInvoice.BillFromParty.IsSet()){ break;}
+			//var vBillFromParty = QueryCustomerInvoice.BillFromParty;
+			//if(vBillFromParty.PartyKey.IsInitial()){break;}
+			//var vBillFromPartyPartyKey = vBillFromParty.PartyKey;
+			//if(vBillFromPartyPartyKey.PartyID.content.IsInitial()){break;}
+	//
+			////Company
+			//if(!QueryCustomerInvoice.SellerParty.IsSet()){break;}
+			//var vSellerParty = QueryCustomerInvoice.SellerParty;
+			//if(vSellerParty.PartyUUID.IsInitial()){break;} 
+			//var vCompanyUUID = vSellerParty.PartyUUID;
+			//if(vSellerParty.PartyKey.IsInitial()){break;}
+			//var VPartyKey = vSellerParty.PartyKey;
+			//if(VPartyKey.PartyID.IsInitial()){break;}
+			//var VCompanyID = vSellerParty.PartyKey.PartyID.content.RemoveLeadingZeros();
+	//
+			////Customer
+			//if(!QueryCustomerInvoice.BuyerParty.IsSet()){break;}
+			//var vBuyerParty = QueryCustomerInvoice.BuyerParty;
+			//if(vBuyerParty.PartyUUID.IsInitial()){break;}
+			//var vCustomerUUID = vBuyerParty.PartyUUID;
+//
+			////Invoice
+			//if(QueryCustomerInvoice.UUID.IsInitial()){break;}
+			//var vInvoiceUUID = QueryCustomerInvoice.UUID;
+//
+			////Consular si existe configuración para FE - BODocumentStructures			
+			//var QryDocumentStructures = BODocumentStructures.QueryByElements;
+			//var ParamsDocumentStructures = QryDocumentStructures.CreateSelectionParams();
+				//ParamsDocumentStructures.Add(QryDocumentStructures.FunctionalUnitID, "I", "EQ", vBillFromPartyPartyKey.PartyID.content.RemoveLeadingZeros());
+				//if(QueryCustomerInvoice.ZDocumentUniquePosition == true){
+					//if(vTypeCode == CLDocumentTypeEICode.CO_CN){
+						//ParamsDocumentStructures.Add(QryDocumentStructures.DocumentType, "I", "EQ", CLDocumentTypeEICode.CO_CNU);
+					//}else{
+						//ParamsDocumentStructures.Add(QryDocumentStructures.DocumentType, "I", "EQ", CLDocumentTypeEICode.CO_CIU);
+					//}
+				//}else{
+					//ParamsDocumentStructures.Add(QryDocumentStructures.DocumentType, "I", "EQ", vTypeCode);
+				//}
+			//var ResultDocumentStructures = QryDocumentStructures.Execute(ParamsDocumentStructures).GetFirst();
+			//if(!ResultDocumentStructures.IsSet()){break;}
+//
+			//if(ResultDocumentStructures.Structures.Count() <= 0) {break;}
+//
+			////Llenado de variables desde la Libreria
+			//var LBCompany = Library::RL_ElectronicBilling.Company_Function(vCompanyUUID);
+			//var LBCustomer = Library::RL_ElectronicBilling.Customer_Function(vCustomerUUID);
+			//var LBInvoiceHeader = Library::RL_ElectronicBilling.HeadCustumerInvoice_Function(vInvoiceUUID);
+	//
+			////Ciclo para La estructura inicio de cada cadena
+			//var vIsConsistent = true;
+			//var vStructure;
+			//var vItemStructure;
+			//var STRLine = "";
+			//var vFieldCollection : elementsof BusinessObject::BOListOfFields.ListField;
+			//var vField = "";
+	//
+			//var vItemsDocumentStructuresFalse = ResultDocumentStructures.Structures.Where(n=>n.IsItem == false).OrderBy(n=>n.PositionID);
+			//foreach(vStructure in vItemsDocumentStructuresFalse){
+				//if(vStructure.IsSubStructure){// Para casos de SubStructura
+			//
+					//var vListSubStructure ;//collectionof Contabilizador; //var LsitTemporal : collectionof Contabilizador;
+					//foreach(vItemStructure in vStructure.ItemStructure.OrderBy(n=>n.ItemStructurePosition)){
+						//if(vItemStructure.FieldID.RemoveLeadingZeros() == "CU018"){//CU018 - responsabilidades cliente
+							//vListSubStructure = LBCustomer.Where(n=> n.ListFieldID == vItemStructure.FieldID);
+							//break;
+						//}
+						//if(vItemStructure.FieldID.RemoveLeadingZeros() == "CO021"){//CO021 - responsabilidades compañia
+							//vListSubStructure = LBCompany.Where(n=> n.ListFieldID == vItemStructure.FieldID);
+							//break;
+						//}
+					//}
+//
+					//if(vListSubStructure.Count() > 0){
+						//foreach(var vItemListSubStructure in vListSubStructure){
+					//
+							//STRLine = STRLine + vStructure.StructuresDesc.Trim();
+							//foreach(vItemStructure in vStructure.ItemStructure.OrderBy(n=>n.ItemStructurePosition)){
+								//vFieldCollection.Clear();
+								//vField.Clear();
+								//if(vItemStructure.FieldID == "CU018" || vItemStructure.FieldID == "CO021"){
+									//vField = vItemListSubStructure.ListFieldDesc.Trim();
+								//}
+								//else{
+									//if(!vItemStructure.IsConstant){
+										//switch (vItemStructure.ListOfFieldID){
+											//case "C01"{//Customer
+												//vFieldCollection = LBCustomer.Where(n=> n.ListFieldID == vItemStructure.FieldID).GetFirst();}
+											//case "C02"{//Company
+												//vFieldCollection = LBCompany.Where(n=> n.ListFieldID == vItemStructure.FieldID).GetFirst();}
+											//case "C03"{//Header ITEM
+												//vFieldCollection = LBInvoiceHeader.Where(n=> n.ListFieldID == vItemStructure.FieldID).GetFirst();}
+										//}
+										//if(vItemStructure.IsMandatory){
+											//if(vFieldCollection.IsInitial()){
+												////raise msj.Create("E","Falto ingresar campo " + vItemStructure.FieldDesc.Trim());
+												//vIsConsistent = false;  break;
+											//}
+										//}
+										//vField = vFieldCollection.ListFieldDesc.Trim() + vFieldCollection.ListFieldRoute.Trim();
+					//
+										//if(vItemStructure.IsHomologation){
+											//var vHomologation = BO2Homologation.Retrieve(vItemStructure.HomologationID.RemoveLeadingZeros());
+											//if(vHomologation.IsSet()){
+												//if(vHomologation.Values.Count() > 0){
+													//var vValuesHomologation = vHomologation.Values;
+													//var vInsHomologation = vValuesHomologation.Where(n=>n.InitialValue == vField.Trim()).GetFirst();
+													//if(vInsHomologation.IsSet()){
+														//vField = vInsHomologation.FinalValue.Trim();
+													//}
+												//}
+											//}
+										//}
+									//}else{
+										//if(vItemStructure.TextCollection.IsSet()){
+											//var vTextColeccion = vItemStructure.TextCollection;
+											//if(vTextColeccion.Text.Count()>0){
+												//var vText = vTextColeccion.Text.GetFirst();
+												//if(vText.TextContent.IsSet()){
+													//var vColectionText = vText.TextContent;
+													//if(!vColectionText.Text.IsInitial()){
+														//vField = vColectionText.Text.content;
+													//}
+												//}
+											//}
+										//}
+									//}
+								//}
+								//STRLine = STRLine + vStructure.Separator.Trim() + vField;
+							//}// fin foreach vItemStructure
+							//STRLine = STRLine + "\r\n";
+						//}
+					//}
+				//}
+				//else{ //Si no es subStructure
+					//STRLine = STRLine + vStructure.StructuresDesc.Trim();
+					//foreach(vItemStructure in vStructure.ItemStructure.OrderBy(n=>n.ItemStructurePosition)){
+						//vFieldCollection.Clear();
+						//vField.Clear();
+						//if(!vItemStructure.IsConstant){
+							//switch (vItemStructure.ListOfFieldID){
+								//case "C01"{//Customer
+									//vFieldCollection = LBCustomer.Where(n=> n.ListFieldID == vItemStructure.FieldID).GetFirst();}
+								//case "C02"{//Company
+									//vFieldCollection = LBCompany.Where(n=> n.ListFieldID == vItemStructure.FieldID).GetFirst();}
+								//case "C03"{//Header ITEM
+									//vFieldCollection = LBInvoiceHeader.Where(n=> n.ListFieldID == vItemStructure.FieldID).GetFirst();}
+							//}
+							//if(vItemStructure.IsMandatory){
+								//if(vFieldCollection.IsInitial()){
+									////raise msj.Create("E","Falto ingresar campo " + vItemStructure.FieldDesc.Trim());
+									//vIsConsistent = false;  break;
+								//}
+							//}
+							//vField = vFieldCollection.ListFieldDesc.Trim() + vFieldCollection.ListFieldRoute.Trim();
+					//
+							//if(vItemStructure.IsHomologation){
+								//var vHomologation = BO2Homologation.Retrieve(vItemStructure.HomologationID.RemoveLeadingZeros());
+								//if(vHomologation.IsSet()){
+									//if(vHomologation.Values.Count() > 0){
+										//var vValuesHomologation = vHomologation.Values;
+										//var vInsHomologation = vValuesHomologation.Where(n=>n.InitialValue == vField.Trim()).GetFirst();
+										//if(vInsHomologation.IsSet()){
+											//vField = vInsHomologation.FinalValue.Trim();
+										//}
+									//}
+								//}
+							//}
+						//}else{
+							//if(vItemStructure.TextCollection.IsSet()){
+								//var vTextColeccion = vItemStructure.TextCollection;
+								//if(vTextColeccion.Text.Count()>0){
+									//var vText = vTextColeccion.Text.GetFirst();
+									//if(vText.TextContent.IsSet()){
+										//var vColectionText = vText.TextContent;
+										//if(!vColectionText.Text.IsInitial()){
+											//vField = vColectionText.Text.content;
+										//}
+									//}
+								//}
+							//}
+						//}
+						//STRLine = STRLine + vStructure.Separator.Trim() + vField;
+					//}// fin foreach vItemStructure
+					//STRLine = STRLine + "\r\n";
+				//}//Fin if(IsSubStructure)
+			//}
+//
+			//var vItem;
+			//var vSTRLineItem = "";
+			//var vItemsDocumentStructuresTrue = ResultDocumentStructures.Structures.Where(n=>n.IsItem == true).OrderBy(n=>n.PositionID);
+			//var vQuantityStructure = vItemsDocumentStructuresTrue.Count();
+			//var vCounterStructure = 0;
+			//var vQuantityItem = QueryCustomerInvoice.Item.Count();
+			//var vCounterItem = 0;
+//
+			//foreach(vItem in QueryCustomerInvoice.Item.OrderBy(n=>n.ID)){ //si es items, genera una linea por cada item
+				//vCounterItem = vCounterItem + 1;
+				//vCounterStructure = 0;
+				//foreach(vStructure in vItemsDocumentStructuresTrue){
+					//var LBInvoiceItem = Library::RL_ElectronicBilling.ItemCustomerInvoice_Function(vItem.ID,vInvoiceUUID);
+					//vSTRLineItem = vSTRLineItem + vStructure.StructuresDesc.Trim();
+					//vCounterStructure = vCounterStructure + 1;
+					//foreach(vItemStructure in vStructure.ItemStructure.OrderBy(n=>n.ItemStructurePosition)){
+						//vFieldCollection.Clear();
+						//vField.Clear();
+						//if(!vItemStructure.IsConstant){
+							//switch (vItemStructure.ListOfFieldID){
+								//case "C02"{//Company
+									//vFieldCollection = LBCompany.Where(n=> n.ListFieldID == vItemStructure.FieldID).GetFirst();}
+								//case "C01"{//Customer
+									//vFieldCollection = LBCustomer.Where(n=> n.ListFieldID == vItemStructure.FieldID).GetFirst();}
+								//case "C03"{//Header Invoice
+									//vFieldCollection = LBInvoiceHeader.Where(n=> n.ListFieldID == vItemStructure.FieldID).GetFirst();}
+								//case "C04"{//Item Invoice
+									//vFieldCollection = LBInvoiceItem.Where(n=> n.ListFieldID == vItemStructure.FieldID).GetFirst();}
+							//}
+							//if(vItemStructure.IsMandatory){
+								//if(vFieldCollection.IsInitial()){
+									////raise msj.Create("E","Posición " + vItem.ID.RemoveLeadingZeros() + ": Falto ingresar campo " + vItemStructure.FieldDesc.Trim());
+									//vIsConsistent = false;  break;
+								//}
+							//}
+							//vField = vFieldCollection.ListFieldDesc.Trim() + vFieldCollection.ListFieldRoute.Trim();
+						//
+							//if(vItemStructure.IsHomologation){
+								//var vHomologation = BO2Homologation.Retrieve(vItemStructure.HomologationID.RemoveLeadingZeros());
+								//if(vHomologation.IsSet()){
+									//if(vHomologation.Values.Count() > 0){
+										//var vValuesHomologation = vHomologation.Values;
+										//var vInsHomologation = vValuesHomologation.Where(n=>n.InitialValue == vField.Trim()).GetFirst();
+										//if(vInsHomologation.IsSet()){
+											//vField = vInsHomologation.FinalValue.Trim();
+										//}
+									//}
+								//}
+							//}
+						//}else{
+							//if(vItemStructure.TextCollection.IsSet()){
+								//var vTextColeccion = vItemStructure.TextCollection;
+								//if(vTextColeccion.Text.Count()>0){
+									//var vText = vTextColeccion.Text.GetFirst();
+									//if(vText.TextContent.IsSet()){
+										//var vColectionText = vText.TextContent;
+										//if(!vColectionText.Text.IsInitial()){
+											//vField = vColectionText.Text.content;
+										//}
+									//}
+								//}
+							//}
+						//}
+						//vSTRLineItem = vSTRLineItem + vStructure.Separator.Trim() + vField;
+					//}
+					//if(vCounterItem == vQuantityItem){
+						//if(vCounterStructure != vQuantityStructure){
+							//vSTRLineItem = vSTRLineItem + "\r\n";
+						//}
+					//}
+					//else{
+						//vSTRLineItem = vSTRLineItem + "\r\n";
+					//}
+				//}//foreach(vStructure in vItemsDocumentStructuresTrue)
+			//}//foreach(vItem in this.Item.OrderBy(n=>n.ID)
+	//
+			////Agrupar los datos de Cabecera e item
+			//vSTRLineItem = vSTRLineItem.Replace("ItemAutonumeric|","");  
+			//STRLine = STRLine + vSTRLineItem;
+//
+			//if(vIsConsistent){
+		//
+				//// - - - - - - Crear BO LOG - - - - //
+				//var vNewSendLog : elementsof BO2SendLog;
+					//vNewSendLog.LogID = QueryCustomerInvoice.ID.content.RemoveLeadingZeros();
+					//vNewSendLog.DocumentStatus = CLStatusDocFECode.CO_1;
+					//vNewSendLog.TrafficLigths = CLTrafficLightCode.CO_2;
+					//vNewSendLog.DocumentPrefix	= ResultDocumentStructures.DocumentPrefix;
+					//vNewSendLog.CustomerID = vBuyerParty.PartyKey.PartyID.content.RemoveLeadingZeros();
+					////vNewSendLog.CustomerDesc		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+					//vNewSendLog.CompanyID = VCompanyID.Trim();
+					////vNewSendLog.CompanyDesc		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				//var vInsSendLog = BO2SendLog.Create(vNewSendLog);
+				//if(!vInsSendLog.IsSet()){ break;}
+//
+				//var insAction : elementsof BO2SendLog.Actions;
+					//insAction.ActionDate = Context.GetCurrentUserDate();
+					//insAction.ActionHour = Context.GetCurrentUserDateTime().ToString();
+					//var insIdentity = Identity.Retrieve(Context.GetCurrentIdentityUUID());
+					//if(insIdentity.IsSet()){
+						//insAction.ActionUser = insIdentity.ID.content.Trim() + " - " + insIdentity.FormattedName.Trim();
+					//}
+					//insAction.ActionDesc = "CREATE";
+					//insAction.ActionText = "Ceación de documento";
+				//vInsSendLog.Actions.Create(insAction);
+				//vInsSendLog.ToInvoice = QueryCustomerInvoice;
+		//
+				//var name	: CommonDataTypes:LANGUAGEINDEPENDENT_LONG_Name;
+				//var type	:DocumentTypeCode;
+				//var desc	:Description;
+				//var binary	:basis:BinaryObject;
+					//name = "Documento "  + QueryCustomerInvoice.ID.content.RemoveLeadingZeros()+".txt";
+					//type.content = "10001";
+					//type.listID = "10296";
+					//binary.mimeCode = "text/plain";
+					//binary.content = Binary.ParseFromString(STRLine);
+				//var vInsMyAtt = vInsSendLog.MYATTACH.Create();
+				//if(vInsMyAtt.IsSet()){
+					//vInsMyAtt.CreateFile(type, name, name, desc, binary);
+				//}
+//
+				//// - - - - - - Consumo del servicio - - - - - - - //
+				//var QAuthenticationData = BOAuthenticationData.QueryByElements;
+				//var PQueryAD = QAuthenticationData.CreateSelectionParams();
+					//PQueryAD.Add(QAuthenticationData.CompanyID,"I","EQ",VCompanyID);
+				//var Result = QAuthenticationData.Execute(PQueryAD).GetFirst();
+				//if(!Result.IsSet()){break;}
+				//var ZAuthentication;
+				//var LBICCompanyID;
+				//var LBICAccountID;
+				//foreach(ZAuthentication in Result.Authenticated){
+					//if(ZAuthentication.ID == "LBICCOMPANYID"){
+						//LBICCompanyID = ZAuthentication.Description;
+					//}
+					//if(ZAuthentication.ID == "LBICACCOUNTID"){
+						//LBICAccountID = ZAuthentication.Description;
+					//}
+				//}
+				//if(LBICAccountID.IsInitial() || LBICCompanyID.IsInitial()){
+					//insAction.Clear();
+					//insAction.ActionDate = Context.GetCurrentUserDate();
+					//insAction.ActionHour = Context.GetCurrentUserDateTime().ToString();
+					//insIdentity = Identity.Retrieve(Context.GetCurrentIdentityUUID());
+					//if(insIdentity.IsSet()){
+						//insAction.ActionUser = insIdentity.ID.content.Trim() + " - " + insIdentity.FormattedName.Trim();
+					//}
+					//insAction.ActionDesc = "UPLOADDOCUMENT";
+					//insAction.ActionText = "Falta configuración de servicio web";
+					//vInsSendLog.Actions.Create(insAction);
+					//break;
+				//}
+		//
+				//if(!QueryCustomerInvoice.ZExternalID.IsInitial())
+				//{
+					//var zfindGuion = QueryCustomerInvoice.ZExternalID.Find("-");
+					//var zLenghtExternalID= QueryCustomerInvoice.ZExternalID.Length();
+					//var counter = 1;
+					//var EXT = QueryCustomerInvoice.ZExternalID;
+					//while(zfindGuion != -1)
+					//{			
+						//var SubStringAux = EXT.Substring(0,zfindGuion);
+						//EXT = EXT.Substring(zfindGuion+1,zLenghtExternalID-(zfindGuion+1));
+						//zfindGuion = EXT.Find("-");
+						//zLenghtExternalID = EXT.Length();
+						//if(counter == 1)
+						//Tipo = SubStringAux;
+						//if(counter == 2)
+						//Serie = SubStringAux;
+						//if(zfindGuion == -1)
+						//{
+							//Correlativo = EXT;
+						//}
+						//counter = counter+ 1;
+					//}
+				//}
+		 //
+				//var LBIntegrationRicoh = Library::RL_ElectronicBilling.RicohIntegrationSend_Function(LBICCompanyID,Correlativo,Serie,Tipo,STRLine);
+				//if(LBIntegrationRicoh.Count()>0){
+					//var response = LBIntegrationRicoh.GetFirst();
+					//if(response.ListOfFieldID == "E"){
+						////raise msj.Create("E",response.ListOfFieldDesc);
+					//}else{
+						//vInsSendLog.InterfaceResponseCuIn = response.ListOfFieldDesc;
+						//vInsSendLog.TrackingIDCuIn= response.ListOfFieldID.RemoveLeadingZeros();
+						//vInsSendLog.DocumentStatus = CLStatusDocFECode.CO_2;				
+						//insAction.Clear();
+						//insAction.ActionDate = Context.GetCurrentUserDate();
+						//insAction.ActionHour = Context.GetCurrentUserDateTime().ToString();
+						//insIdentity = Identity.Retrieve(Context.GetCurrentIdentityUUID());
+						//if(insIdentity.IsSet()){
+							//insAction.ActionUser = insIdentity.ID.content.Trim() + " - " + insIdentity.FormattedName.Trim();
+						//}
+						//insAction.ActionDesc = "UPLOADDOCUMENT";
+						//insAction.ActionText = "Documento enviado al proveedor";
+						//vInsSendLog.Actions.Create(insAction);
+					//}
+				//}
+				//var vGetDocument = false;
+				//var LBIntegrationRicoh1 = Library::RL_ElectronicBilling.RicohIntegrationDocumentStatus(Serie,LBICAccountID,Correlativo,Tipo);
+				//if(LBIntegrationRicoh1.Count()>0){
+						//insAction.ActionDate = Context.GetCurrentUserDate();
+						//insAction.ActionHour = Context.GetCurrentUserDateTime().ToString();
+						//if(insIdentity.IsSet()){
+							//insAction.ActionUser = insIdentity.ID.content.Trim() + " - " + insIdentity.FormattedName.Trim();
+						//}
+						//insAction.ActionDesc = "QUERYSTATUS";
+						//foreach(var insResp in LBIntegrationRicoh1){
+							//switch(insResp.ListOfFieldID){
+								//case "Code"{ insAction.ActionText = insAction.ActionText+ " " + insResp.ListOfFieldDesc;}
+								//case "Menssage"{ insAction.ActionText = insResp.ListOfFieldDesc;}
+								//case "Status"{ insAction.ProcessStatus  = insResp.ListOfFieldDesc;}
+								////case "E"{raise msj.Create("E",insResp.ListOfFieldDesc);}
+								//case "PDF"{ 
+										//if(!insResp.ListOfFieldDesc.IsInitial()){
+											//var DownloadData = insResp.ListOfFieldDesc;
+											//name = "Documento "  + vInsSendLog.LogID.RemoveLeadingZeros()+".pdf";
+											//type.content = "10001";
+											//type.listID = "10296";
+											//binary.mimeCode = "text/plain";
+											//binary.content = Binary.ParseFromString(DownloadData);
+											//vInsSendLog.MYATTACH.CreateFile(type,name,name,desc,binary);				
+											//vInsSendLog.IsPDF = true;
+										//}
+									//}
+								//}
+							//}
+							//break;
+						//}
+			//}
+			//else{ 
+				////this.Z_valida = false;//para el caso de campos mandatory de FE
+			//}
+		//}
+	//}
+	//break;
+//}
+
+// - - - - - - - - - - - - - - - - fin: Facturación electronica  - - - - - - - - - - - - - - - - //

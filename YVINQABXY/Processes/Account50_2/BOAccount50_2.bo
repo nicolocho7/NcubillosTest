@@ -1,0 +1,19 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BOAccount50_2 raises msgRoot{
+	message msgRoot text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+	//================================ Data Configuration ============================
+	[Label("Company")]								element CompanyID								: OrganisationalCentreID;
+	[Label("Company")]								element CompanyDesc								: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Initial Date")]							element InitialDate								: Date;
+	[Label("End Date")]								element EndDate									: Date;
+	//================================== Data Shareholder ==================================	
+	[Label("Shareholder Number ID")]				element IDnumber								: NumberValue;//No borrar
+	[Label("Shareholder Number ID")]				element IDnumberV1								: LANGUAGEINDEPENDENT_EXTENDED_Text;	
+	[Label("Number Of Actions")]					element actionsNumber							: NumberValue;
+	[Label("Participation Total Percentage")]		element ParticipationTotalpercentage			: Percent;
+	[Label("Surname And Shareholder's Names")]		element Surnameshareholdersnames				: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Shareholder Identity Document Type")]	element TypeofShareholderIdentityDocument		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Actions Types Code")]					element ActionsTypesCode						: LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+}

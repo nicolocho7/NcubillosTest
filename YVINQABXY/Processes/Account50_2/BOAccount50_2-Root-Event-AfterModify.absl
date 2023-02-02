@@ -1,0 +1,12 @@
+﻿import ABSL;
+import AP.FO.MOM.Global;
+
+if(!this.CompanyID.IsInitial()){
+	var qryCompany = Company.QueryByIDAndName;
+	var prmCompany = qryCompany.CreateSelectionParams();
+		prmCompany.Add(qryCompany.ID, "I", "EQ", this.CompanyID);
+	var insCompany = qryCompany.Execute(prmCompany).GetFirst();
+	if(insCompany.IsSet()){
+		this.CompanyDesc = insCompany.CurrentName.GetFirst().Name.content;
+	}
+}

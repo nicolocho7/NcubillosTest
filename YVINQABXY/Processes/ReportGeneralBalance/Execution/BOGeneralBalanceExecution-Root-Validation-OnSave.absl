@@ -1,0 +1,58 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BOGeneralBalanceExecution
+		Node: Root
+		Validation: OnSave 
+
+		Script file signature
+		----------------------------
+		Returns: Boolean
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script before an instance of the business object is saved to the data base.
+		It can have a return value of either true or false, which determines whether the instance of the business object is saved or not.
+		All fields in this business object are read-only and cannot be changed.
+*/
+import ABSL;
+
+var vIsConsistent = true;
+
+//if(this.ID.IsInitial()){
+	//vIsConsistent = false;
+	//raise msj.Create("E","Falto ingresar ID");
+//}
+//
+//switch(this.ReportType){
+	//case CLReportBalanceCode.CO_1{
+		//if(this.EstructuraID.IsInitial()){
+			//vIsConsistent = false;
+			//raise msj.Create("E","Falto ingresar Estructura del reporte");
+		//}
+	//}
+//}
+//
+//if(this.CompanyID.IsInitial()){
+	//vIsConsistent = false;
+	//raise msj.Create("E","Falto ingresar empresa");
+//}
+//
+//if(this.CompanyRuc.IsInitial()){
+	//vIsConsistent = false;
+	//raise msj.Create("E","Falto ingresar RUC de empresa");
+//}
+//
+//if(this.SetOfBooksID.content.IsInitial()){
+	//vIsConsistent = false;
+	//raise msj.Create("E","Falto ingresar Sistema Contable");
+//}
+//
+//if(this.DateInitial.IsInitial()){
+	//vIsConsistent = false;
+	//raise msj.Create("E","Falto ingresar fecha/periodo del reporte");
+//}
+
+
+return true;

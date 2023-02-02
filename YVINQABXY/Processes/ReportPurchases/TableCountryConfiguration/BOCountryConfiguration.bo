@@ -1,0 +1,15 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BOCountryConfiguration raises msj {
+
+	message msj text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+		[AlternativeKey] element ID:ID;
+		element UUID : UUID;
+		[Label("Country SAP")]element CountrySAP:CountryCode;
+		[Label("Country SUNAT")]element CountrySUNAT: LANGUAGEINDEPENDENT_EXTENDED_Name;
+		[Label("Country PDT617 BEPS")]element CountryPDT617: LANGUAGEINDEPENDENT_EXTENDED_Name;
+		[Label("Country PDT617 Nacionalidad")]element CountryPDT617Nacionaldiad: LANGUAGEINDEPENDENT_EXTENDED_Name;
+
+
+}

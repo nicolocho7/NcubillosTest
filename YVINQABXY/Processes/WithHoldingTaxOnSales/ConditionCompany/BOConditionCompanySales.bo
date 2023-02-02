@@ -1,0 +1,14 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+[WithAdministrativeData] businessobject BOConditionCompanySales raises msj {
+	
+	message msj text "&":LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[AlternativeKey] element ID:ID;
+	element CompanyUUID:UUID;
+	element UUID:UUID;
+	[Transient]element IsConsistent:Indicator;
+
+	[Label("Business Partner Tax Status")]	element ConditionCompany:LANGUAGEINDEPENDENT_LONG_Description;
+	[Label("Country")]						element Country:CountryCode;
+
+}

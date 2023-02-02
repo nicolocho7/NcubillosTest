@@ -1,0 +1,22 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FinancialAccounting.Global;
+
+businessobject BOTableConfigLeasing raises msj{
+
+		message msj text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+        
+		[Label("ID")][AlternativeKey]	element ID	: ID;
+		element UUID :UUID;
+		[Label("Company")]		element CompanyID	: OrganisationalCentreID;
+		association ToCompany	to Company;
+		[Label("Set Of Books")]		element SetOfBooksID	: SetOfBooksID;
+		[Label("Fixed Asset Class")]		element FixedAssetClass	: FixedAssetClassCode;
+
+
+		action del;
+
+
+		
+
+}

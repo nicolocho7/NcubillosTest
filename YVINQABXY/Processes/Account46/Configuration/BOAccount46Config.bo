@@ -1,0 +1,20 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FinancialAccounting.Global;
+
+[DeploymentUnit(Financials)][WithAdministrativeData] businessobject BOAccount46Config raises msg {
+	
+	 message msg text "&1"	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+       
+	 [Label("ID")]						 element ID							: BusinessPartnerInternalID;
+	 [Label("Company")]					 element CompanyID					: OrganisationalCentreID;
+	 [Label("RUC Company")]				 element RucCompany					: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	 [Label("Set Of Books")]			 element SetOfBooksID				: SetOfBooksID;
+	 [Label("Account Ledger")]			 element Cuenta						: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	 element EBooKDialyDescription											: LANGUAGEINDEPENDENT_EXTENDED_Name;
+	 element ECompanyDescription											: LANGUAGEINDEPENDENT_EXTENDED_Name;
+	 element UUID:UUID;
+	 association ToCompany to BOAccount16Configuration;
+	 association ToSetofBooks to SetOfBooks  using ID;
+	 [Label("Book Dialy Descripcion")]	 element BookDiarieDescripcionID	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	 [Transient]						 element IsConsistent				: Indicator; //Is consistente;
+}

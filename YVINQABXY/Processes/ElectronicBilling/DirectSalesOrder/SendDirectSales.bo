@@ -1,0 +1,7 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject SendDirectSales {
+	
+			[AlternativeKey]	element SInvoiceUUID : UUID;
+
+}

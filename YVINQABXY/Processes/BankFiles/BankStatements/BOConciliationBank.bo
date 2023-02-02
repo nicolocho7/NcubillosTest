@@ -1,0 +1,21 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+[WithAdministrativeData] businessobject BOConciliationBank raises msj {
+		
+		message msj text "&":LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[AlternativeKey] element ID:ID;
+		element UUID:UUID;
+		
+		[Label("Type format")] element TypeFormat:CLTypeBankPaymentCode	;
+		[Label("Type format")] element TypeFormatConciliation:CLTypeBankConciliationCode;
+		[Label("Description")] element Description:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Date")] element Date:	Date;
+		[Label("Foreign Currency")] element ForeignCurrency:	Indicator;
+		[Label("Currency Type")] element CurrencyType: CurrencyCode;
+		[Transient] element IsConsistent	:	Indicator;
+
+		action ConvertirFormato;
+		action ClearInstance;
+	
+				[DependentObject(AttachmentFolder)] node myAttachments;
+}

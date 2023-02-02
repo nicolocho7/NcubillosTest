@@ -1,0 +1,439 @@
+﻿import ABSL;
+import AP.FO.BusinessPartner.Global;
+import AP.FO.MOM.Global;
+import AP.FO.Product.Global;
+import AP.SupplierInvoicing.Global;
+import AP.FO.Party.Global;
+import AP.Common.GDT;
+var QueryConfiguration = BOConfigurationSolution.QueryByElements;
+var ExecuteQueryConfiguration = QueryConfiguration.Execute();
+if(ExecuteQueryConfiguration.Count()>0){
+	if(ExecuteQueryConfiguration.GetFirst().IsSet()){
+		if(ExecuteQueryConfiguration.GetFirst().Status== CLStatusSolutionCode.CO_01){
+			//- - - - - - - - - - - - - - Withholding Tax - - - - - - - - - - - - -//
+			var vCleanLabels = false;
+			while(true){
+
+			if(this.Status.SupplierInvoiceLifeCycleStatusCode != "1" && 
+				this.Status.SupplierInvoiceLifeCycleStatusCode != "2" &&
+				this.Status.SupplierInvoiceLifeCycleStatusCode != "3" &&
+				this.Status.SupplierInvoiceLifeCycleStatusCode != "5"){break;}//un-posted
+
+				var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+				var msgWithholdingDET = "El monto de retencion es menor al monto base por eso no aplica la retencion (DET).";
+				var msgSave = "Guarde la factura del proveedor antes de enviar";
+
+				if (LanguageCode != "ES"){
+					msgWithholdingDET = "The net amount doesn't apply for Withholding (DET).";
+					msgSave = "Save the supplier invoice before send to post";
+				}
+
+	
+				if(this.zExonerationW){vCleanLabels = true; break;}
+
+				if(!this.SellerParty.IsSet()){break;}
+
+				if(this.SellerParty.PartyKey.IsInitial()){break;}
+	
+				if(!this.BuyerParty.IsSet()){break;}
+
+				if(this.BuyerParty.PartyKey.IsInitial()){break;}
+
+				if (this.Item.Count() < 1){break;}//exist items
+
+				if((this.TypeCode != "004")){break;}//004 = supplier invoice
+
+
+				//- - - - - - - - - - Totals  - - - - - - - - -//	
+				this.zTDETRA.currencyCode = this.GrossAmount.currencyCode;
+				this.zTDETRA.content.Clear();
+				this.zCabPercentDETRA.Clear();
+				this.zCabCodeDETRA.Clear();
+				this.zCabDeteAccountDETRA.Clear();
+				this.zCabAmountMinimunDETRA.Clear();
+
+				//- - - - - - - - - - find Condition company  - - - - - - - - -//
+				var vConditionCompany = "";
+				var vBauyerID = "";
+					vBauyerID = this.BuyerParty.PartyKey.PartyID.content.AddLeadingZeros();
+	
+				var queryBuyer = BOMaintenanceCompanyPurchase.QueryByElements;
+				var paramsBuyer = queryBuyer.CreateSelectionParams();
+					paramsBuyer.Add(queryBuyer.CompanyID, "I", "EQ", vBauyerID);
+				var resultBuyer = queryBuyer.Execute(paramsBuyer).GetFirst();
+				if (resultBuyer.IsSet()){
+					vConditionCompany = resultBuyer.ConditionCompayID;
+				}
+				else{
+					break;
+				}
+
+				//- - - - - - - - - - find supplier  - - - - - - - - -//	
+				var querySupplier = Supplier.QueryByIdentification;
+				var paramsSupplier = querySupplier.CreateSelectionParams();
+					paramsSupplier.Add(querySupplier.InternalID, "I", "EQ", this.SellerParty.PartyKey.PartyID.content);
+				var insSupplier = querySupplier.Execute(paramsSupplier).GetFirst();
+				if(!insSupplier.IsSet()){break;}
+				var vCountrySupplier ;
+				if(insSupplier.IsSet()){
+					if(insSupplier.CurrentDefaultAddressInformation.IsSet()){
+						if(insSupplier.CurrentDefaultAddressInformation.AddressSnapshot.IsSet()){
+							if(insSupplier.CurrentDefaultAddressInformation.AddressSnapshot.PostalAddress.Count()>0){
+								if(!insSupplier.CurrentDefaultAddressInformation.AddressSnapshot.PostalAddress.GetFirst().CountryCode.IsInitial()){
+									vCountrySupplier = insSupplier.CurrentDefaultAddressInformation.AddressSnapshot.PostalAddress.GetFirst().CountryCode;
+								}
+							}
+						}
+					}
+				}
+	
+	
+				if(!insSupplier.CurrentCommon.IsSet()){break;}
+	
+				if(insSupplier.CurrentCommon.zExonerationSupplier){vCleanLabels = true; break;}
+	
+				//var insAdminDetra : elementsof BOAdminDetra;	
+				//foreach (var itemTax in insSupplier.TaxNumber){
+					//if(itemTax.CountryCode == "PE"){	
+						//insAdminDetra.SupTaxNumber = itemTax.PartyTaxID.content;
+						//insAdminDetra.SupTaxNumberType = itemTax.TaxIdentificationNumberTypeCode.content;
+						//break;
+					//}
+				//}
+
+				//- - - - - - - - - - find country of company  - - - - - - - - -//
+				var vConditionSupplier = insSupplier.CurrentCommon.zConditionSupplier;
+				var vLanguageEnglish = Library::LanguageCode.ParseFromString("EN");
+				var vCountry = "";
+	
+				var queryCompany = Company.QueryByIDAndName;
+				var paramsCompany = queryCompany.CreateSelectionParams();
+					paramsCompany.Add(queryCompany.ID, "I", "EQ", vBauyerID);
+				var insCompany = queryCompany.Execute(paramsCompany).GetFirst();
+				if (insCompany.IsSet()){
+					if (insCompany.CompanyAttributes.Count() > 0){
+						vCountry = insCompany.CompanyAttributes.GetFirst().CountryOfRegistration;
+					}
+				}
+
+				//- - - - - - - - - -AuxIDWithHolding - - - - - - - - -//
+				var insAuxIDWithHolding;
+				insAuxIDWithHolding = BOAuxIDWithHolding.Retrieve(this.UUID);
+				if (insAuxIDWithHolding.IsSet()){
+					insAuxIDWithHolding.Delete();
+				}
+
+				insAuxIDWithHolding = BOAuxIDWithHolding.Create();
+				insAuxIDWithHolding.UUID.content = this.UUID.content;
+
+	
+				//- - - - - - - - - - foreach items: 1 - - - - Asignación de base minima- - - - -//									
+	
+				var isWithHoldingCalculationItem = true;
+				var vCategoryID : ID;
+				var vTax = 0;
+				var vPercent = 0;
+	
+				foreach (var itemSP in this.Item){
+		
+					if(itemSP.ID.Find(".") == -1 && itemSP.ID.Find("DP") == -1){
+	
+						if(isWithHoldingCalculationItem){
+							var vIsExecution = true;
+							if(this.zReteDomiciliado){
+								if(vCountrySupplier == "PE"){
+									vIsExecution = false;
+								}
+							}
+				
+							if(vIsExecution){
+								vCategoryID.Clear();
+								vTax = 0;
+								vPercent = 0;
+					
+								// - - - - - - - - - - Category ID - - - - - - - - - -//
+								if (itemSP.ItemProduct.IsSet()){
+									vCategoryID = itemSP.ItemProduct.ProductCategoryIDKey.ProductCategoryInternalID.AddLeadingZeros();
+								}
+
+								//- - - - - - - - - - - Asign Withholding  PE_DETRA - - - - - - - - - -//
+					
+								var queryRelationDET = BOWithholdingCodeConf.QueryByElements;
+								var paramRelationDET = queryRelationDET.CreateSelectionParams();
+					
+									paramRelationDET.Add(queryRelationDET.ConditionSupplierID, "I", "EQ", vConditionSupplier);
+									if(this.zReteDomiciliado){
+										paramRelationDET.Add(queryRelationDET.TypeWithholding, "I", "EQ", CLTypeWithholdingPurchaseCode.CO_PE_REDO);
+									}
+									else{
+										paramRelationDET.Add(queryRelationDET.TypeWithholding, "I", "EQ", CLTypeWithholdingPurchaseCode.CO_PE_DETRA);
+										paramRelationDET.Add(queryRelationDET.Country, "I", "EQ", vCountry);
+									}
+									paramRelationDET.Add(queryRelationDET.ConditionCompayID, "I", "EQ", vConditionCompany);
+									paramRelationDET.Add(queryRelationDET.CategoryID, "I", "EQ", vCategoryID.AddLeadingZeros());
+									paramRelationDET.Add(queryRelationDET.Disabled, "I", "EQ", false);
+				
+								var insRelationDET = queryRelationDET.Execute(paramRelationDET).GetFirst();
+								if (insRelationDET.IsSet()){
+												
+									var queryMinimum = BOMinimumWithholdingAmounPurchases.QueryByElements;
+									var paramMinimum = queryMinimum.CreateSelectionParams();
+										paramMinimum.Add(queryMinimum.ID, "I", "EQ", insRelationDET.AmountMinimun);
+									var insMinimunBasePurchase = queryMinimum.Execute(paramMinimum).GetFirst();
+									if(insMinimunBasePurchase.IsSet()){
+						
+										var vBaseMinimun = insMinimunBasePurchase.Base;
+										var vCurrency = insMinimunBasePurchase.Coin;
+										var vNetAmount = itemSP.NetAmount;
+
+										if (this.GrossAmount.currencyCode != vCurrency){
+											vNetAmount = itemSP.NetAmount.ConvertCurrencywithDate(vCurrency, this.Date);
+										}
+
+										var isAuxIDWithHolding = true;
+										foreach (var insWithHolding in insAuxIDWithHolding.items.Where(n => n.ID == insRelationDET.AmountMinimun)){
+											insWithHolding.SumAmount.content = insWithHolding.SumAmount.content + vNetAmount.content;
+											isAuxIDWithHolding = false;
+											if (insWithHolding.SumAmount.content >= vBaseMinimun){
+												insWithHolding.State = true;
+												//se guarda el de mayor %
+												if(this.zCabPercentDETRA < insRelationDET.PercentServices){
+													this.zCabPercentDETRA = insRelationDET.PercentServices;
+													this.zCabCodeDETRA = insRelationDET.WithHoldingCode;
+													this.zCabDeteAccountDETRA = insRelationDET.DeterAccounts.content;
+													this.zCabAmountMinimunDETRA = insRelationDET.AmountMinimun;
+													if(this.zReteDomiciliado){
+														this.zTDETRA.content = ((this.GrossAmount.content * this.zCabPercentDETRA)/100);
+													}else{
+														if(this.GrossAmount.currencyCode == "PEN"){//Si es igual a PEN, redondea la cabecera
+															this.zTDETRA.content = ((this.GrossAmount.content * this.zCabPercentDETRA)/100).RoundToString(0,true);
+														}else{
+															this.zTDETRA.content = ((this.GrossAmount.content * this.zCabPercentDETRA)/100);
+														}
+														//this.zTDETRA.content = ((this.GrossAmount.content * this.zCabPercentDETRA)/100).RoundToString(0,true);
+													}
+												}
+												break;
+											}
+										}
+
+										if (isAuxIDWithHolding){
+											var vItemIAWithHoldings = insAuxIDWithHolding.items.Create();
+											if (vNetAmount.content >= vBaseMinimun){
+												vItemIAWithHoldings.State = true;
+												//se guarda el de mayor %
+												if(this.zCabPercentDETRA < insRelationDET.PercentServices){
+													this.zCabPercentDETRA = insRelationDET.PercentServices;
+													this.zCabCodeDETRA = insRelationDET.WithHoldingCode;
+													this.zCabDeteAccountDETRA = insRelationDET.DeterAccounts.content;
+													this.zCabAmountMinimunDETRA = insRelationDET.AmountMinimun;
+													if(this.zReteDomiciliado){
+														this.zTDETRA.content = ((this.GrossAmount.content * this.zCabPercentDETRA)/100);
+													}else{
+														if(this.GrossAmount.currencyCode == "PEN"){//Si es igual a PEN, redondea la cabecera
+															this.zTDETRA.content = ((this.GrossAmount.content * this.zCabPercentDETRA)/100).RoundToString(0,true);
+														}else{
+															this.zTDETRA.content = ((this.GrossAmount.content * this.zCabPercentDETRA)/100);
+														}
+														//this.zTDETRA.content = ((this.GrossAmount.content * this.zCabPercentDETRA)/100).RoundToString(0,true);
+													}
+												}
+											}
+											else{
+												vItemIAWithHoldings.State = false;
+											}
+											vItemIAWithHoldings.ID = insRelationDET.AmountMinimun;
+											vItemIAWithHoldings.SumAmount.content = vNetAmount.content;
+										}
+									}
+								}
+							}
+							else{
+								itemSP.zCodeDET.Clear();
+								itemSP.zPercentDET.Clear();
+								itemSP.zAmountDET.Clear();
+								itemSP.zAmountMinimunDET.Clear();	
+							}
+							//- - - - - - - - - - - fin: Asign Withholding  PE_DETRA - - - - - - - - - -//
+						}
+						else{	
+							itemSP.zCodeDET.Clear();
+							itemSP.zPercentDET.Clear();
+							itemSP.zAmountDET.Clear();
+							itemSP.zAmountMinimunDET.Clear();					
+						}
+					}
+				}// foreach (var itemSP in this.Item)
+
+	
+				//- - - - - - - - - - foreach items: 2 - - - - - - - - -//
+				foreach (var itemSP in this.Item){
+		
+					if(itemSP.ID.Find(".") == -1 && itemSP.ID.Find("DP") == -1){
+
+						var vIsExecution = true;
+						if(this.zReteDomiciliado){
+							if(vCountrySupplier == "PE"){
+								vIsExecution = false;
+							}
+						}
+				
+						if(vIsExecution){
+
+							vCategoryID.Clear();
+							vTax = 0;
+							vPercent = 0;
+
+							// - - - - - - - - - - Category ID - - - - - - - - - -//
+							if (itemSP.ItemProduct.IsSet()){
+								vCategoryID = itemSP.ItemProduct.ProductCategoryIDKey.ProductCategoryInternalID.AddLeadingZeros();
+							}
+
+							if (!vCategoryID.IsInitial()){
+															
+								var vTaxDetails = itemSP.TaxCalculationItem.ItemProductTaxDetails;
+								if (vTaxDetails.Count() > 0){
+									vPercent = vTaxDetails.GetFirst().ProductTax.Percent;
+									//vTax = itemSP.NetAmount.content * (vPercent / 100);
+								}
+								else{
+									vPercent = 0;
+								}
+
+								//- - - - - - - - - - - Asign Withholding DET - - - - - - - - - -//
+								var queryRelationDET = BOWithholdingCodeConf.QueryByElements;
+								var paramRelationDET = queryRelationDET.CreateSelectionParams();
+				
+									paramRelationDET.Add(queryRelationDET.ConditionSupplierID, "I", "EQ", vConditionSupplier);
+									if(this.zReteDomiciliado){
+										paramRelationDET.Add(queryRelationDET.TypeWithholding, "I", "EQ", CLTypeWithholdingPurchaseCode.CO_PE_REDO);
+										paramRelationDET.Add(queryRelationDET.Country, "I", "EQ", vCountrySupplier);
+									}
+									else{
+										paramRelationDET.Add(queryRelationDET.TypeWithholding, "I", "EQ", CLTypeWithholdingPurchaseCode.CO_PE_DETRA);
+										paramRelationDET.Add(queryRelationDET.Country, "I", "EQ", vCountry);
+									}
+									paramRelationDET.Add(queryRelationDET.CategoryID, "I", "EQ", vCategoryID.AddLeadingZeros());
+									paramRelationDET.Add(queryRelationDET.ConditionCompayID, "I", "EQ", vConditionCompany);
+				
+									paramRelationDET.Add(queryRelationDET.Disabled, "I", "EQ", false);
+								var insRelationDET = queryRelationDET.Execute(paramRelationDET).GetFirst();
+								if (insRelationDET.IsSet()){
+															
+									var vNetAmount = itemSP.NetAmount;
+																														
+									foreach (var insWithHolding in insAuxIDWithHolding.items.Where(n => n.ID == insRelationDET.AmountMinimun)){
+										var vProductTypeCode = itemSP.ItemProduct.ProductKey.ProductTypeCode;
+										if (vProductTypeCode == "1"){//Material
+											if (insWithHolding.State){
+												var TempzPercentDETR = insRelationDET.PercentBienes.RoundToString(2);
+												TempzPercentDETR = TempzPercentDETR.Replace(",", ".");
+												itemSP.zPercentDET = Numeric.ParseFromString(TempzPercentDETR);
+												itemSP.zCodeDET = insRelationDET.WithHoldingCode;
+												itemSP.zAmountMinimunDET = insRelationDET.AmountMinimun;
+												//var TempzAmountDETR = (vTax * (insRelationDET.PercentBienes / 100)).RoundToString(2);
+												//var TempzAmountDETR = (itemSP.NetAmount.content * (insRelationDET.PercentBienes / 100)).RoundToString(2);
+												//TempzAmountDETR = TempzAmountDETR.Replace(",", ".");
+												//itemSP.zAmountDET.content = Numeric.ParseFromString(TempzAmountDETR);
+												//itemSP.zAmountDET.currencyCode = this.GrossAmount.currencyCode;
+												//this.zTDETRA.content = this.zTDETRA.content + itemSP.zAmountDET.content;
+												//this.zTDETRA.currencyCode = this.GrossAmount.currencyCode;
+											}
+											else{
+												itemSP.zCodeDET.Clear();
+												itemSP.zPercentDET.Clear();
+												itemSP.zAmountDET.Clear();
+												itemSP.zAmountMinimunDET.Clear(); 
+												raise msj.Create("W", msgWithholdingDET);
+											}
+										}
+										else if (vProductTypeCode == "2"){//Service
+											if (insWithHolding.State){
+												var TempzPercentDETR = insRelationDET.PercentServices.RoundToString(2);
+												TempzPercentDETR = TempzPercentDETR.Replace(",", ".");
+												itemSP.zPercentDET = Numeric.ParseFromString(TempzPercentDETR);
+												itemSP.zCodeDET = insRelationDET.WithHoldingCode;
+												itemSP.zAmountMinimunDET = insRelationDET.AmountMinimun;
+												//var TempzAmountDET = (itemSP.NetAmount.content * (insRelationDET.PercentServices / 100)).RoundToString(2);
+												//TempzAmountDET = TempzAmountDET.Replace(",", ".");
+												//itemSP.zAmountDET.content = Numeric.ParseFromString(TempzAmountDET);
+												//itemSP.zAmountDET.currencyCode = this.GrossAmount.currencyCode;
+												//this.zTDETRA.content = this.zTDETRA.content + itemSP.zAmountDET.content;
+												//this.zTDETRA.currencyCode = this.GrossAmount.currencyCode;
+											}
+											else{
+												itemSP.zCodeDET.Clear();
+												itemSP.zPercentDET.Clear();
+												itemSP.zAmountDET.Clear();
+												itemSP.zAmountMinimunDET.Clear(); 
+												raise msj.Create("W", msgWithholdingDET);
+											}													
+										}
+									}//if(QueryResultsAuxIDWithHolding.IsSet())
+								}//(insRelationDET.IsSet())
+								else{
+									itemSP.zCodeDET.Clear();
+									itemSP.zPercentDET.Clear();
+									itemSP.zAmountDET.Clear();
+									itemSP.zAmountMinimunDET.Clear(); 
+								}
+							}
+							else{
+								itemSP.zCodeDET.Clear();
+								itemSP.zPercentDET.Clear();
+								itemSP.zAmountDET.Clear();
+								itemSP.zAmountMinimunDET.Clear(); 
+							}
+						//- - - - - - - - - - - fin: Asign withholding DET - - - - - - - - - - - -//
+						}//vCategoryID.IsInitial
+			
+					}//- - - - - - - - - - fin: if insItemSP.ID.Find(".") == -1 - - - - - - - - -//	
+				}//- - - - - - - - - - -  fin: Foreach items - - - - - - - - - -//				
+
+				if(vCleanLabels){
+					if (this.Item.Count() > 0){	
+						foreach (var item in this.Item){
+							item.zCodeDET.Clear();
+							item.zPercentDET.Clear();
+							item.zAmountDET.Clear();
+							item.zAmountMinimunDET.Clear();
+						}
+					}
+				}
+
+				break;
+
+			}
+
+			// - - - - - - - - - - - - - Fin Withholding tax - - - - - - - - - - - - -//
+
+			if(vCleanLabels){
+				if (this.Item.Count() > 0){	
+					foreach (var item in this.Item){
+						item.zCodeDET.Clear();
+						item.zPercentDET.Clear();
+						item.zAmountDET.Clear();
+						item.zAmountMinimunDET.Clear();
+					}
+				}
+				this.zTDETRA.Clear(); 
+				this.zCabCodeDETRA.Clear(); 
+				this.zCabDeteAccountDETRA.Clear(); 
+				this.zCabPercentDETRA.Clear(); 
+				this.zCabAmountMinimunDETRA.Clear(); 
+
+
+			}
+			if(!this.zFechaDocumentoRelacionado.IsInitial())
+			{
+				foreach(var Recorrer in this.Item)
+				Recorrer.zFechaDocumentoRelacionadoItem = this.zFechaDocumentoRelacionado;
+			}
+			if(!this.zIDDocumentoRelacionado.IsInitial())
+			{
+				foreach(var Recorrer in this.Item)
+				Recorrer.zFechaDocumentoRelacionadoItem = this.zFechaDocumentoRelacionado;
+			}
+		}
+	}
+}

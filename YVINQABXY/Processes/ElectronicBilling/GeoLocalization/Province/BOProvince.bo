@@ -1,0 +1,21 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BOProvince raises Msj {
+
+   //   
+	message Msj text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+	[Label("Cod Provincia")]					                 		element		ProvinceCod			:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Cod Provincia")]					[AlternativeKey]		element		ProoCod			    :   BusinessPartnerID;
+	[Label("Descripcion Provincia")]									element		ProvinceDesc			:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Cod Distrito")]											element		ProvinceDistrict		:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Cod Distrito")]											element		ProvinceDistrict2		:	BusinessPartnerID;
+	[Label("Descripcion District")]									element		ProvinceDistrictDesc	:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Cod Departamento")]										element		ProvinceDepartament	:	ID;
+	[Label("Cod Departamento")]										element		ProvinceDepartament2	:	RegionCode;
+	//[Label("Cod Pais")]												element		BarrioPais			:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+	//[Label("Cod Pais")]											    element		BarrioPais2			:	CountryCode;
+	[Label("IsConsistent")]											element		ProvinceIsConsistent	:	Indicator;
+	action DeleteRow;
+
+}

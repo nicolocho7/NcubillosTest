@@ -1,0 +1,53 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: CustomerInvoiceRequest
+		Node: Item
+		Event: AfterModify 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script if:
+		- the value of any field in the node in which this script is contained is modified.
+		- the node itself is modified by another business object within the same solution.
+*/
+
+import ABSL;
+var QueryConfiguration = BOConfigurationSolution.QueryByElements;
+var ExecuteQueryConfiguration = QueryConfiguration.Execute();
+var Validation = false;
+if(ExecuteQueryConfiguration.Count()>0){
+	if(ExecuteQueryConfiguration.GetFirst().IsSet()){
+		if(ExecuteQueryConfiguration.GetFirst().Status== CLStatusSolutionCode.CO_01){
+			Validation = true;
+		}
+	}
+}
+if(ExecuteQueryConfiguration.Count()<=0 || Validation == true){
+	if(this.ToRoot.zGratuita == true){
+		this.zItemGratuita = true;
+		if(this.zProposedValueInd == false){
+			if(this.PriceAndTaxCalculationItem.IsSet()){
+				if(this.PriceAndTaxCalculationItem.ItemMainPrice.IsSet()){
+					this.zCostoTrnsferGratuita.content = this.PriceAndTaxCalculationItem.ItemMainPrice.Rate.DecimalValue;
+					this.zCostoTrnsferGratuita.currencyCode = this.PriceAndTaxCalculationItem.ItemMainPrice.Rate.CurrencyCode;
+					if((!this.zCostoTrnsferGratuita.content.IsInitial()) && (!this.zCostoTrnsferGratuita.currencyCode.IsInitial()) ){
+						this.zProposedValueInd = true;
+					}
+					if(this.ToRoot.TotalNetAmount.currencyCode != this.zCostoTrnsferGratuita.currencyCode){
+						this.zCostoTrnsferGratuita =this.zCostoTrnsferGratuita.ConvertCurrencywithDate(this.ToRoot.TotalNetAmount.currencyCode.Trim(), this.ToRoot.ProposedDeviatingPostingDate);
+						this.zCostoTrnsferGratuita.currencyCode = this.ToRoot.TotalNetAmount.currencyCode;
+					}
+				}
+			}
+		}
+	}else{
+		this.zItemGratuita = false;
+	}
+	if (!this.ToRoot.ZCodigoImpuesto.IsInitial()){
+		if(this.PriceAndTaxCalculationItem.IsSet()){
+			this.PriceAndTaxCalculationItem.TaxationCharacteristicsCode.content=this.ToRoot.ZCodigoImpuesto;
+		}
+	}
+}

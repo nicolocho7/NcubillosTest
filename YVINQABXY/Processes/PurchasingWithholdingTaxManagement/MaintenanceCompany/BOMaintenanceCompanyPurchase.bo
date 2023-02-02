@@ -1,0 +1,32 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FO.Product.Global;
+import AP.FO.ProductDataMaintenance.Global;
+
+
+
+
+[WithAdministrativeData] businessobject BOMaintenanceCompanyPurchase raises msj {
+		
+		message msj text "&":LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[AlternativeKey] element ID:ID;
+	
+		element UUID:UUID;
+		[Transient] element IsConsistent:Indicator;
+
+		[Label("Company")]element CompanyID:ID;
+		association ToCompany to Company;
+
+		[Label("Company Status Tax Code")]element ConditionCompayID:ID;
+		association ToConditionCompany to BOConditionCompanyPurchase;
+
+	    [Label("Category Product")] element CategoryID:ID;
+		association ToCategoryProduct to ProductCategoryHierarchy.ProductCategory;	
+//
+		[Label("Product")] element ProductD:ID;
+	    [Label("Product Description")]element ProductDesc:LANGUAGEINDEPENDENT_EXTENDED_Text;
+//
+	    association ToMaterial to Material;	
+
+
+}

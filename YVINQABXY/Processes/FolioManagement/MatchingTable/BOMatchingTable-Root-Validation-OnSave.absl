@@ -1,0 +1,72 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BOMatchingTable
+		Node: Root
+		Validation: OnSave 
+
+		Script file signature
+		----------------------------
+		Returns: Boolean
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script before an instance of the business object is saved to the data base.
+		It can have a return value of either true or false, which determines whether the instance of the business object is saved or not.
+		All fields in this business object are read-only and cannot be changed.
+*/
+
+import ABSL;
+
+var IsConsistent = true;
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+
+var msCompany = "Falta ingresar Compañia";
+var msjDocumentType = "Falto ingresar Tipo de Documento.";
+var msjSerie = "Falta ingresar Serie.";
+var msjValueX = "Falta ingresar Valor X";
+var msjXLength = "Falta longitud Para Valor X";
+var msjSerieLeght = "Falta Longitud Para la Serie";
+var msjConsecutive = "Falta ingresar Consecutivo";
+
+
+if (LanguageCode != "ES"){
+	msCompany = "Missing Company";
+	msjDocumentType = "Missing folio document type.";
+	msjSerie = "Missing Serie";
+	msjValueX = "Missing Value X";
+	msjXLength = "Missing Value Length 'X'";
+	msjSerieLeght = "Missing Serie Length";
+	msjConsecutive = "Missing Consecutive"; 
+}	
+
+if(this.CompanyID.IsInitial()){
+	IsConsistent = false;
+	raise msj.Create("E", msCompany);
+}
+if(this.DocumentTypeID.IsInitial()){
+	IsConsistent = false;
+	raise msj.Create("E", msjDocumentType);
+}
+if(this.Serie.IsInitial()){
+	IsConsistent = false;
+	raise msj.Create("E", msjSerie);
+}
+if(this.ValueX.IsInitial()){
+	IsConsistent = false;
+	raise msj.Create("E", msjValueX);
+}
+if(this.LengthX.IsInitial()){
+	IsConsistent = false;
+	raise msj.Create("E", msjXLength);
+}
+if(this.SerieLength.IsInitial()){
+	IsConsistent = false;
+	raise msj.Create("E", msjSerieLeght);
+}
+if(this.Consecutive.IsInitial()){
+	IsConsistent = false;
+	raise msj.Create ("E", msjConsecutive);
+}
+return IsConsistent;

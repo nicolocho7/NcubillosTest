@@ -1,0 +1,19 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject JobApplications {
+	[AlternativeKey] [Label("Application id")]	  element id			: ID;
+					 [Label("Job id")]			  element jobID			: ID;
+					 [Label("Job title")]		  element title			: LONG_Description;
+					 [Label("Country")]			  element jobLocation	: CountryCode;
+					 [Label("Work area")]		  element domain		: DomainCode;
+					 [Label("Employment type")]	  element empType		: EmploymentTypeCode;
+					 [Label("Hiring manager id")] element hireMgrID		: EmployeeID;
+					 [Label("Hiring manager")]	  element hireMgrName	: LANGUAGEINDEPENDENT_LONG_Name;
+					 [Label("Applied on")]		  element appDate		: Date;
+					 [Label("Candidate id")]	  element candidateID	: EmployeeID;
+					 [Label("Candidate name")]	  element candidateName	: LANGUAGEINDEPENDENT_LONG_Name;
+					 [Label("Email id")]		  element emailID		: EmailURI;
+
+	action accept;
+	action reject;
+}

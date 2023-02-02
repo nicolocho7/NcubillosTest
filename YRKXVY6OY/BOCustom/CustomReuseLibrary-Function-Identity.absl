@@ -1,0 +1,19 @@
+﻿import ABSL;
+import AP.Common.GDT;
+import AP.PC.IdentityManagement.Global;
+import AP.FO.BusinessPartner.Global;
+
+var result : DataType::LANGUAGEINDEPENDENT_LONG_Name;
+var identityUUID = IdentityUUID;
+var iden : Identity;
+var qryIden = iden.QueryByElements;
+var selParam = qryIden.CreateSelectionParams();
+selParam.Add(qryIden.UUID.content,"I", "EQ", identityUUID.content);
+var idenResult = qryIden.Execute(selParam).GetFirst();
+
+if(idenResult.IsSet()) {
+	result = idenResult.FormattedName;
+}
+
+
+return result;

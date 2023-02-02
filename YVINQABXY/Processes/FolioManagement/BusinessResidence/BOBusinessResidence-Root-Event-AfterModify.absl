@@ -1,0 +1,19 @@
+﻿import AP.FO.MOM.Global;
+import AP.FO.Product.Global;
+import AP.FO.ProductDataMaintenance.Global;
+
+if (!this.CompanyID.IsInitial())
+{
+	var queryCompany = Company.QueryByIDAndName;
+	var paramcompany = queryCompany.CreateSelectionParams();
+	paramcompany.Add(queryCompany.ID, "I", "EQ", this.CompanyID.RemoveLeadingZeros());
+	var resultCompany = queryCompany.Execute(paramcompany).GetFirst();
+	if (resultCompany.IsSet())
+	{
+		this.ToCompany = resultCompany;
+	}
+	else
+	{
+		this.ToCompany.Reset();
+	}
+}

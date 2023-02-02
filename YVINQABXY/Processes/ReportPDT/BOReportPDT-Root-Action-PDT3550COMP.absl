@@ -1,0 +1,230 @@
+/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BOReportPDT
+		Node: Root
+		Action: PDT3550COMP 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+
+import ABSL;
+import AP.Common.GDT as apCommonGDT;
+import BASIS.Global as basis;
+import AP.FO.TaxArrangement.Global;
+import AP.FO.ProductDataMaintenance.Global;
+import AP.FinancialAccounting.Global;
+import AP.FO.BankDirectoryEntry.Global;
+
+var insCompanyConfig;
+var strLine = "";
+//Messages definition
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+var msgNotConfig = "No hay datos de configuraci�n de esta empresa para el informe.";
+if (LanguageCode != "ES"){
+	msgNotConfig = "No configuration data for the company fro the report.";
+}
+
+while(true){
+	if (this.CompanyID.IsInitial()) { break; }
+	if (this.EDateInitial.IsInitial()) { break; }
+	if (this.EDateEnd.IsInitial()) { break; }
+
+	//var qryProductConfiguration = BOProductConfiguration.QueryByElements;
+	//var prmProductConfiguration = qryProductConfiguration.CreateSelectionParams();
+		//prmProductConfiguration.Add(qryProductConfiguration.CompanyID, "I", "EQ", this.CompanyID.RemoveLeadingZeros());
+	//var insProductConfiguration = qryProductConfiguration.Execute(prmProductConfiguration).GetFirst();
+//
+	//if(!insProductConfiguration.IsSet()){raise msj.Create("E",msgNotConfig);} //break;}
+
+	var serviceID = "";
+	var parameter : NameAndValue;
+	var parameters : collectionof NameAndValue;  
+	var StringValue = "";
+
+	//Adicion de Campos a seleccionar
+	serviceID = "PW00121";  
+	parameter.Name = "$select";  
+	parameter.Value = "CTAX_NUMBER_TYPE,CTAX_NUMBER,CINVOICE_YEAR,KCRC_GROSS_AMOUNT,TSELLER";
+	parameters.Add(parameter);    
+	
+	//Filtros
+	var DateInitialString = this.EDateInitial.ToString().Replace("/","-"); 
+	var DateFinalString = this.EDateEnd.ToString().Replace("/","-");
+	StringValue = "CBUYER eq '" + this.CompanyID + "'"
+				+ " and (CTRANSACT_DATE ge datetime'"+DateInitialString+"T00:00:00' and CTRANSACT_DATE le datetime'"+DateFinalString+"T00:00:00')";
+
+	//if(insProductConfiguration.Products.Count() > 0){
+		//var insExoneratedProducts = insProductConfiguration.Products;
+		//var vInstance;
+		//foreach(vInstance in insExoneratedProducts){
+			//StringValue = StringValue + " and CPRODUCT ne '"+vInstance.ProductInternalID+"'";
+		//}
+	//}
+	//var insExoneratedProducts;
+	//if(insProductConfiguration.Products.Count() > 0){
+		 //insExoneratedProducts = insProductConfiguration.Products;
+	//}
+
+	parameter.Name = "$filter";
+	parameter.Value = StringValue;
+	parameters.Add(parameter);
+
+	var ws_result = WebServiceUtilities.ExecuteWebService(serviceID, parameters);
+	var Content = ws_result.ResponseContent;  
+	var returnCode = ws_result.ReturnCode;  
+	
+	var xmlResult;
+	
+	xmlResult = Library::RLStrings.XMLToArray(Content);
+
+	//Campos para asignar
+	var vCampo1;//Correlativo
+	var vCampo2;//Tipo Doc
+	var vCampo3;//Numero
+	var vCampo4;//Periodo
+	var vCampo5;//Tipo Persona
+	var vCampo6;//Tipo Doc
+	var vCampo7;//Numero
+	var vCampo8;//Importe
+	var vCampo9;//Apellido Paterno
+	var vCampo10;//Apellido Materno
+	var vCampo11;//Nombre 1
+	var vCampo12;//Nombre 1
+	var vCampo13;//Razon social (si es empresa)
+	var xmlRow;
+
+	var Correlativo = 0;
+	foreach (xmlRow in xmlResult){
+		while(true){
+			//Lógica para excluir los productos configurados
+			//var Product = Library::RLStrings.GetElementByName(xmlRow.String, "CPRODUCT").Trim();
+			//if(insExoneratedProducts.Count() > 0){
+				//var vExists = insExoneratedProducts.Where(n=>n.ProductInternalID == Product).GetFirst();
+				//if(vExists.IsSet()){
+					//break;
+				//}
+			//}
+			Correlativo = Correlativo + 1;
+			vCampo1 = Correlativo.RoundToString(0,true);
+			vCampo2 = "6";
+			
+			//Logica Campo 2 y Campo 6 - Dependen del Tax Type
+			var AuxCampo2 = Library::RLStrings.GetElementByName(xmlRow.String, "CTAX_NUMBER_TYPE").Trim();
+			
+			if(AuxCampo2 == "2"){ vCampo6 = "1";}
+			if(AuxCampo2 == "5"){vCampo6 = "4";}
+			if(AuxCampo2 == "1"){vCampo6 = "6";}
+			if(AuxCampo2 == "3"){vCampo6 = "7";}
+
+			var qryCompanyTax = CompanyTaxArrangement.QueryByElements;
+			var prmCompanyTax = qryCompanyTax.CreateSelectionParams();
+				prmCompanyTax.Add(qryCompanyTax.CompanyID, "I", "EQ", this.CompanyID.RemoveLeadingZeros());
+			var insCompanyTax = qryCompanyTax.Execute(prmCompanyTax).GetFirst();
+
+			if(insCompanyTax.IsSet()){
+				if(insCompanyTax.TaxIdentificationNumber.Count() > 0){
+					vCampo3 = insCompanyTax.TaxIdentificationNumber.GetFirst().PartyTaxID.content;
+				}
+			}
+
+			vCampo4 = Library::RLStrings.GetElementByName(xmlRow.String, "CINVOICE_YEAR").Trim();
+		
+			//Logica Campo 5
+			if(AuxCampo2 == "1"){
+				vCampo5 = "01";
+			}else{
+				vCampo5 = "02";
+			}
+
+			vCampo7 = Library::RLStrings.GetElementByName(xmlRow.String, "CTAX_NUMBER").Trim();
+
+			var AuxCampo8 = Library::RLStrings.GetElementByName(xmlRow.String, "KCRC_GROSS_AMOUNT").Trim();
+			vCampo8 = ABSL:Numeric.ParseFromString(AuxCampo8).RoundToString(0,true);
+
+			if(AuxCampo2 == "1"){
+				vCampo9 = "";
+				vCampo10 = "";
+				vCampo11 = "";
+				vCampo12 = "";
+				vCampo13 = Library::RLStrings.GetElementByName(xmlRow.String, "TSELLER").Trim();
+			}else{
+				var CampoSeller = Library::RLStrings.GetElementByName(xmlRow.String, "TSELLER").Trim();
+				var CampoComa = CampoSeller.Find(",");
+				if(CampoComa > 0){
+					var Total = CampoSeller.Length();
+					var ConcatenateCampo = CampoSeller.Substring(0,CampoComa);
+					var Nombres = CampoSeller.Substring(CampoComa+2,Total-CampoComa-2);
+					var Space = ConcatenateCampo.Find(" ");
+					var SpaceTotal = ConcatenateCampo.Length();
+					if(Space <= 0){
+						vCampo9 = ConcatenateCampo;
+					}else{
+						vCampo10 = ConcatenateCampo.Substring(0,Space);
+						vCampo11 =  ConcatenateCampo.Substring(Space + 1, SpaceTotal - Space-1);
+					}
+					vCampo12 =  Nombres;
+					vCampo13 = "";
+				}else{
+					var CampoTotal = CampoSeller.Length();
+					var FirstSpace = CampoSeller.Find(" ");
+					vCampo9=CampoSeller.Substring(0, FirstSpace);
+					var RestString = CampoSeller.Substring(FirstSpace + 1, CampoTotal -FirstSpace-1);
+					var CampoTotal1 = RestString.Length();
+					var FirstSpace1 = RestString.Find(" ");
+					vCampo10 = RestString.Substring(0,FirstSpace1);
+					var RestString2 = RestString.Substring(FirstSpace1+1,CampoTotal1-FirstSpace1-1);
+					vCampo11 = RestString2;
+					vCampo13 = "";
+				}
+			}
+
+			strLine = strLine + vCampo1 + "|" +
+								vCampo2 + "|" + 
+								vCampo3 + "|" +
+								vCampo4 + "|" +
+								vCampo5 + "|" +
+								vCampo6 + "|" +
+								vCampo7 + "|" +
+								vCampo8 + "|" + 
+								vCampo9 + "|" + 
+								vCampo10 + "|" + 
+								vCampo11 + "|" + 
+								vCampo12 + "|" + 
+								vCampo13 + "|" + "\r\n";
+			break;
+		}
+		
+	}
+	var xname : LANGUAGEINDEPENDENT_LONG_Name;
+	var xtype : DocumentTypeCode;
+	var xdesc : Description;
+	var xbinary : basis:BinaryObject;
+	var vNit;
+
+	var ContMont = this.EDateInitial.GetMonth().Length();
+	var Mes;
+	if(ContMont<2){
+		Mes = "0" + this.EDateInitial.GetMonth();
+	}else{
+		Mes = this.EDateInitial.GetMonth();
+	}
+	var NameReport = "Compras";
+
+	xname = NameReport + ".txt";
+	xtype.content = "10001";
+	xtype.listID = "10296";
+	xbinary.mimeCode = "text/plain";
+	xbinary.content = Binary.ParseFromString(strLine);
+	this.ReportsAttachments.Delete();
+	var vInsMyAtt = this.ReportsAttachments.Create();
+	if(vInsMyAtt.IsSet()){
+		vInsMyAtt.CreateFile(xtype, xname, xname, xdesc, xbinary);
+	}
+
+	break;
+}
+

@@ -1,0 +1,44 @@
+﻿import ABSL;
+import AP.PC.IdentityManagement.Global;
+
+var identityUUID = Context.GetCurrentIdentityUUID();
+var qryIdentity = Identity.QueryByElements;
+var selParam = qryIdentity.CreateSelectionParams();
+selParam.Add(qryIdentity.UUID.content, "I", "EQ", identityUUID.content);
+var idenResult = qryIdentity.Execute(selParam).GetFirst();
+
+if (idenResult.IsSet()){
+	if(!this.createdBy.IsInitial()) {
+		this.chgdBy = idenResult.FormattedName;
+	}
+	if(this.createdBy.IsInitial()) {
+		this.createdBy = idenResult.FormattedName;
+	}
+}
+
+if(!this.creationDate.IsInitial()) {
+	this.chgdOn = Context.GetCurrentUserDate();
+}
+
+if (this.creationDate.IsInitial()) {
+	this.creationDate = Context.GetCurrentUserDate();
+}
+
+if (this.status.IsInitial()) {
+	this.status = JobStatusCode.CO_01;
+}
+
+var JobIDString: DataType::ID;
+var JobNumber = NumberRange.DrawNumber("RECORD"); 
+JobIDString = JobNumber.ToString();
+
+if(this.jobID.IsInitial()){
+	var numberBCO: NUMBERDERIVATIONJOBID;
+	var qryBCO = numberBCO.QueryByElements;
+	var selParamBCO = qryBCO.CreateSelectionParams();
+	selParamBCO.Add(qryBCO.EMPTYPE, "I", "EQ", this.empType);
+	var resulBCO = qryBCO.Execute(selParamBCO);
+	var jobPrefix = resulBCO.GetFirst().PREFIX;
+	var jobSeparator = resulBCO.GetFirst().SEPERATOR;
+	this.jobID = jobPrefix.Concatenate(jobSeparator).Concatenate(JobIDString);
+}

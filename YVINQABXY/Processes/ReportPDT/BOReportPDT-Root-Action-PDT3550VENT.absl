@@ -1,0 +1,169 @@
+/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BOReportPDT
+		Node: Root
+		Action: PDT3550COMP 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+
+import ABSL;
+import AP.Common.GDT as apCommonGDT;
+import BASIS.Global as basis;
+import AP.FO.TaxArrangement.Global;
+import AP.FO.ProductDataMaintenance.Global;
+import AP.FinancialAccounting.Global;
+import AP.FO.BankDirectoryEntry.Global;
+
+var insCompanyConfig;
+var strLine = "";
+//Messages definition
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+var msgNotConfig = "No hay datos de configuraci?n de esta empresa para el informe.";
+if (LanguageCode != "ES"){
+	msgNotConfig = "No configuration data for the company fro the report.";
+}
+
+while(true){
+	if (this.CompanyID.IsInitial()) { break; }
+	if (this.EDateInitial.IsInitial()) { break; }
+	if (this.EDateEnd.IsInitial()) { break; }
+
+	//var qryProductConfiguration = BOProductConfiguration.QueryByElements;
+	//var prmProductConfiguration = qryProductConfiguration.CreateSelectionParams();
+		//prmProductConfiguration.Add(qryProductConfiguration.CompanyID, "I", "EQ", this.Company.RemoveLeadingZeros());
+	//var insProductConfiguration = qryProductConfiguration.Execute(prmProductConfiguration).GetFirst();
+//
+	//if(!insProductConfiguration.IsSet()){raise msj.Create("E",msgNotConfig); //break;}
+
+	var serviceID = "";
+	var parameter : NameAndValue;
+	var parameters : collectionof NameAndValue;  
+	var StringValue = "";
+
+	var qryIdSolution = BOConfigurationIDSolution.QueryByElements;
+	var QryParamsSolution = qryIdSolution.CreateSelectionParams();
+		//QryParamsSolution.Add(qryIdSolution.Inactive,"I", "EQ", "false");
+	var ResultSoluton = qryIdSolution.Execute(QryParamsSolution).GetFirst();
+	var IDSolution;
+	if(ResultSoluton.IsSet()){
+		IDSolution = ResultSoluton.IDSolution.Trim();
+	}
+	
+	//Adicion de Campos a seleccionar
+	serviceID = "PW00125";  
+	parameter.Name = "$select";  
+	parameter.Value = "C"+IDSolution+"_69DB93D72A,CDOC_YEAR_MONTH,KCITM_GR_AM_RC,KCITM_NET_AM_RC";
+	parameters.Add(parameter);    
+	
+	//Filtros
+	var DateInitialString = this.EDateInitial.ToString().Replace("/","-"); 
+	var DateFinalString = this.EDateEnd.ToString().Replace("/","-");
+	StringValue = "CDPY_SELLER_UUID eq '" + this.CompanyID + "'"
+				+ " and (CDOC_INV_DATE ge datetime'"+DateInitialString+"T00:00:00' and CDOC_INV_DATE le datetime'"+DateFinalString+"T00:00:00')";
+
+	//if(insProductConfiguration.Products.Count() > 0){
+		//var insExoneratedProducts = insProductConfiguration.Products;
+		//var vInstance;
+		//foreach(vInstance in insExoneratedProducts){
+			//StringValue = StringValue + " and CIPR_PROD_UUID ne '"+vInstance.ProductInternalID+"'";
+		//}
+	//}
+
+	parameter.Name = "$filter";
+	parameter.Value = StringValue;
+	parameters.Add(parameter);
+
+	var ws_result = WebServiceUtilities.ExecuteWebService(serviceID, parameters);
+	var Content = ws_result.ResponseContent;  
+	var returnCode = ws_result.ReturnCode;  
+	
+	var xmlResult;
+	
+	xmlResult = Library::RLStrings.XMLToArray(Content);
+	var xmlRow;
+
+	var Correlativo = 0;
+	foreach (xmlRow in xmlResult){
+		var TipoDocument = "";
+		var Serie = "";
+		var MesEjecucion = "";
+		var MontoTotal = "";
+		var MontoGrabado = "";
+		
+		var ExternalID = Library::RLStrings.GetElementByName(xmlRow.String, "C"+IDSolution+"_69DB93D72A").Trim();
+		if(!ExternalID.IsInitial()){
+			TipoDocument = ExternalID.Substring(0,2);
+			Serie = ExternalID.Substring(3,4);
+		}
+		var Fecha = Library::RLStrings.GetElementByName(xmlRow.String, "CDOC_YEAR_MONTH").Trim();
+		MesEjecucion = Fecha.Substring(0,2);
+		MontoTotal =Library::RLStrings.GetElementByName(xmlRow.String, "KCITM_GR_AM_RC").Trim();
+		MontoGrabado =Library::RLStrings.GetElementByName(xmlRow.String, "KCITM_NET_AM_RC").Trim();
+		var Data = this.Details.Where(n=>n.TipoDocumento == TipoDocument && n.Serie == Serie && n.Periodo == MesEjecucion).GetFirst();
+		if(Data.IsSet()){
+			Data.VentasTotales.content = Data.VentasTotales.content + ABSL:Numeric.ParseFromString(MontoTotal);
+			Data.VentasGrabadas.content = Data.VentasGrabadas.content + ABSL:Numeric.ParseFromString(MontoGrabado);	
+		}else{
+			var ElementoCreate = this.Details.Create();
+			ElementoCreate.VentasTotales.content =	ABSL:Numeric.ParseFromString(MontoTotal);
+			ElementoCreate.VentasGrabadas.content =	ABSL:Numeric.ParseFromString(MontoGrabado);
+			ElementoCreate.TipoDocumento =TipoDocument;
+			ElementoCreate.Serie =Serie;
+			ElementoCreate.Periodo =MesEjecucion;
+		}
+	}
+	if(this.Details.Count() > 0){
+		var Recor;
+		foreach(Recor in this.Details){
+			strLine = strLine	+ Recor.TipoDocumento + "|"
+								+ Recor.Serie + "|"
+								+ Recor.Periodo + "|"
+								+ Recor.VentasTotales.content.RoundToString(0,true).Replace(",",".") + "|"
+								+ Recor.VentasGrabadas.content.RoundToString(0,true).Replace(",",".")+ "|" + "\r\n";
+			
+			
+		}
+	}
+	var xname : LANGUAGEINDEPENDENT_LONG_Name;
+	var xtype : DocumentTypeCode;
+	var xdesc : Description;
+	var xbinary : basis:BinaryObject;
+	var vNit;
+	var qryCompanyTax = CompanyTaxArrangement.QueryByElements;
+	var prmCompanyTax = qryCompanyTax.CreateSelectionParams();
+		prmCompanyTax.Add(qryCompanyTax.CompanyID, "I", "EQ", this.CompanyID.RemoveLeadingZeros());
+	var insCompanyTax = qryCompanyTax.Execute(prmCompanyTax).GetFirst();
+
+	if(insCompanyTax.IsSet()){
+		if(insCompanyTax.TaxIdentificationNumber.Count() > 0){
+			vNit = insCompanyTax.TaxIdentificationNumber.GetFirst().PartyTaxID.content;
+		}
+	}
+	var ContMont = this.EDateInitial.GetMonth().Length();
+	var Mes;
+	if(ContMont<2){
+		Mes = "0" + this.EDateInitial.GetMonth();
+	}else{
+		Mes = this.EDateInitial.GetMonth();
+	}
+	var NameReport = "3550" + vNit + this.EDateEnd.GetYear();
+
+	xname = NameReport + ".txt";
+	xtype.content = "10001";
+	xtype.listID = "10296";
+	xbinary.mimeCode = "text/plain";
+	xbinary.content = Binary.ParseFromString(strLine);
+	this.ReportsAttachments.Delete();
+	var vInsMyAtt = this.ReportsAttachments.Create();
+	if(vInsMyAtt.IsSet()){
+		vInsMyAtt.CreateFile(xtype, xname, xname, xdesc, xbinary);
+	}
+
+	break;
+}
+

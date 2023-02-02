@@ -1,0 +1,225 @@
+﻿<?xml version="1.0"?>
+<UXComponent xmlns:base="http://www.sap.com/a1s/cd/oberon/base-1.0" xmlns:uxv="http://www.sap.com/a1s/cd/oberon/uxview-1.0" xmlns:uxc="http://www.sap.com/a1s/cd/oberon/uxcontroller-1.0" id="xsBIZF6adawEuZmsETwdz0" name="OVSInboundDelivery" componentType="ovs" AuthorizationClassificationCode="ReuseComponent"
+             useUIController="true" helpId="e434e7db-dc5c-4d79-a52b-19ceec390a14" designtimeVersion="25.0.344.1837" modelVersion="1.0" xmlns="http://www.sap.com/a1s/cd/oberon/uxcomponent-1.0" enableBackendOperationsClubbing="true">
+  <uxc:Interface id="XaPQwGmJX4ov_1KILX$eWW">
+    <uxc:InPorts id="3ZgZov6DLq2$33mntvLVum">
+      <uxc:InPort id="0MQuv8BSx42pjlx4eo3Z20" name="OVSValueSelectorInPort" portTypeReference="OVSValueSelectorInPort" portTypePackage="com.sap.a1s.oberon" default="true">
+        <uxc:Parameter id="iDs$lfEP4K2Fqa33BX2vQW" name="SearchText" bind="/Root/SearchText" />
+        <uxc:Parameter id="WdfE4VagnqcvuNAQb_TleW" name="ParentComponent" bind="/Root/ParentComponent" />
+        <uxc:Parameter id="ww8PFEQEiagVrmMwgryfrW" name="ParentPath" bind="/Root/ParentPath" />
+        <uxc:Parameter id="nAvEBV5BZacCqrTUQedMrW" name="ParentNodeId" bind="/Root/ParentNodeId" />
+        <uxc:Parameter id="YDIgwKizdqM2kJSEmHBemm" name="PreventQueryExecution" bind="/Root/PreventQueryExecution" />
+        <uxc:Parameter id="1JM$M8eYHa2AGaFV49FEwm" name="OVSWindowTitle" bind="/Root/OVSWindowTitle" />
+      </uxc:InPort>
+    </uxc:InPorts>
+    <uxc:OutPorts id="_jEXVWx3aqkky$goIRegxW">
+      <uxc:OutPort id="0H_poW0AX4AYZz9ql0F6t0" name="OVSValueSelectorOutPort" portTypeReference="OVSValueSelectorResultPort" portTypePackage="com.sap.a1s.oberon">
+        <uxc:Parameter id="nzlqaPU8HKYiRMZONu13fW" name="ObjectId" bind="/Root/Items/ObjectId" />
+        <uxc:Parameter id="Wq4XZ7cIwaQtlFc1AHgFP0" name="ObjectName" bind="/Root/Items/ObjectName" />
+      </uxc:OutPort>
+    </uxc:OutPorts>
+    <uxc:Configuration id="Ia9pt_9EZKQwH$kkBb83um" />
+  </uxc:Interface>
+  <uxc:Implementation id="9uVabAzRZqQVAWkNzCfge0">
+    <uxc:DataModel id="WlHQavRVoagbuohvib0k$G" name="Root">
+      <base:PropertyBag id="6JVwgKAXRqEqNZFjMb$_im">
+        <base:Property id="XZIp5vnUca22iZZtobMSGm" name="USERCHANGEDNAME" value="True" />
+        <base:Property id="EBUAXepzKaAm$hGEWERZg0" name="BINDINGSTATUS" value="ToBind" />
+      </base:PropertyBag>
+      <uxc:DataField id="NgNW$jbMXKwD6hVW0vcRtm" name="SearchText" type="string">
+        <base:PropertyBag id="k7xqoKErTqQklrNSCJ_FhW">
+          <base:Property id="4_YPh6kGdagjWJP1PMM6hG" name="USERCHANGEDNAME" value="True" />
+          <base:Property id="iIemouyICKcJmPo03vJ4p0" name="BINDINGSTATUS" value="ToBind" />
+        </base:PropertyBag>
+      </uxc:DataField>
+      <uxc:DataField id="38jDBkzcraIP8wWF0gQ8lW" name="ParentComponent" type="string">
+        <base:PropertyBag id="WuZRb925LKUlydfxYzsn9G">
+          <base:Property id="5m4KkmKzLaUyzhNSu_$rIW" name="USERCHANGEDNAME" value="True" />
+          <base:Property id="0qs6oPnMAqwuum3iyhu6n0" name="BINDINGSTATUS" value="ToBind" />
+        </base:PropertyBag>
+      </uxc:DataField>
+      <uxc:DataField id="n4Fki_6eG4I3ygiwcBOAFG" name="ParentPath" type="string">
+        <base:PropertyBag id="W_uoFLbo5qU6YYutMx4Qgm">
+          <base:Property id="M_prfeN3$KMHm1hy4RM0em" name="USERCHANGEDNAME" value="True" />
+          <base:Property id="xJ0hj5BK5q6Vs8M5viMiI0" name="BINDINGSTATUS" value="ToBind" />
+        </base:PropertyBag>
+      </uxc:DataField>
+      <uxc:DataField id="m7Z783DkUq6YH_sqMrRT3m" name="ParentNodeId" type="string">
+        <base:PropertyBag id="_Bu$Z3Jj9qQxrX4BoQE0DW">
+          <base:Property id="w2zXsozE5akvy9lSyofC9m" name="USERCHANGEDNAME" value="True" />
+          <base:Property id="QM02bkjKa4M2XeLfdc1iym" name="BINDINGSTATUS" value="ToBind" />
+        </base:PropertyBag>
+      </uxc:DataField>
+      <uxc:DataField id="uCeBMndzDKczGqmrKfauaG" name="OVSWindowTitle" type="string">
+        <base:PropertyBag id="FAUfl_FQw4kaMnLWUuLVgW">
+          <base:Property id="Wsr2PE1MWasql1wIcHV450" name="USERCHANGEDNAME" value="True" />
+          <base:Property id="q4lbV3dozKYRmJ920K7AWW" name="BINDINGSTATUS" value="ToBind" />
+        </base:PropertyBag>
+      </uxc:DataField>
+      <uxc:DataField id="Sm9Rr13QWq6igq4QLgl0KG" name="PreventQueryExecution" type="boolean">
+        <base:PropertyBag id="6MncsuOonK6JRVfPg808BW">
+          <base:Property id="xqpACB0uQqIh5Ra3SyHuEG" name="BINDINGSTATUS" value="Internal" />
+          <base:Property id="CcH58BBNPKEjxDaVUb7NBW" name="USERCHANGEDNAME" value="True" />
+        </base:PropertyBag>
+      </uxc:DataField>
+      <uxc:List id="3P$aPum7Y4g_VeUzBuiuW0" name="Items" onCommitSelection="SelectionChangedHandler">
+        <base:PropertyBag id="0QfxQcAz9a_HB8RRlo6Jvm">
+          <base:Property id="aY1NwQhoBasSQTGtNVEdKW" name="USERCHANGEDNAME" value="True" />
+          <base:Property id="wteWFJ9juq6ZRUbWxhtz_0" name="BINDINGSTATUS" value="ToBind" />
+        </base:PropertyBag>
+        <uxc:DataField id="ZhlDan7Pdaks$AELH28pxG" name="ObjectId" type="string">
+          <base:PropertyBag id="IjmZMk0J0qc2RdEnZsu62m">
+            <base:Property id="06K7rNQUNqwUJlE_2J9x7m" name="USERCHANGEDNAME" value="True" />
+            <base:Property id="n_YkEZzssKofmk8XGUIYq0" name="BINDINGSTATUS" value="ToBind" />
+          </base:PropertyBag>
+        </uxc:DataField>
+        <uxc:DataField id="cLgxWFqMPKcZCIq8Ph13kW" name="ObjectName" type="string">
+          <base:PropertyBag id="SgPIvocheqo_ItBdAaNLDG">
+            <base:Property id="i3u8J_1MEaotjAGr1gl$GW" name="USERCHANGEDNAME" value="True" />
+            <base:Property id="Rxqb2W9I0qcma_A15stpaW" name="BINDINGSTATUS" value="ToBind" />
+          </base:PropertyBag>
+        </uxc:DataField>
+        <uxc:DataField id="teMoINKIWa2zIM44AZ86LG" name="@HasLeadSelection" type="boolean">
+          <base:PropertyBag id="9Icx5af5_akVdN617NGxk0">
+            <base:Property id="P_WUCm7qm4Yueutxs7cKnW" name="BINDINGSTATUS" value="Internal" />
+          </base:PropertyBag>
+        </uxc:DataField>
+        <uxc:DataField id="fe5o97LS$4MI5Yzyd$lf4W" name="@LeadSelectedIndex" type="integer">
+          <base:PropertyBag id="9ct2Dp9dZ4EghZ8AKin14m">
+            <base:Property id="xJtJBVdDTao1etT7wgluBG" name="BINDINGSTATUS" value="Internal" />
+          </base:PropertyBag>
+        </uxc:DataField>
+        <uxc:DataField id="F87jvAoleaEa3hn7kHuQ$m" name="@RowCount" type="integer">
+          <base:PropertyBag id="3jP0umXDTq_jbvQVH44Omm">
+            <base:Property id="2hXmWnjj74AsvQVLgIDaX0" name="BINDINGSTATUS" value="Internal" />
+          </base:PropertyBag>
+        </uxc:DataField>
+      </uxc:List>
+      <uxc:DataField id="7$yKYfDSFKEveg6g_CZAtW" name="@ErrorOccured" type="boolean">
+        <base:PropertyBag id="h7RK$3EP44sYArhtZk$YTW">
+          <base:Property id="JDJSWguh8q_VUFBDrFgdK0" name="BINDINGSTATUS" value="Internal" />
+        </base:PropertyBag>
+      </uxc:DataField>
+      <uxc:Structure id="cu7Ay3TAOqAmUicfG4qNfG" name="$System">
+        <base:PropertyBag id="_dy7rDbYeKUsSBZj1pggtW">
+          <base:Property id="rSQmvNKhHKARlKRHngS9_m" name="BINDINGSTATUS" value="Internal" />
+        </base:PropertyBag>
+        <uxc:DataField id="GiLLO5gvJKcfCwPW0BP73m" name="SessionUrl" type="string">
+          <base:PropertyBag id="w0qbNoquJKAiHxD7$ZovMW">
+            <base:Property id="$I961UDiZa66gHX6WU5rX0" name="BINDINGSTATUS" value="Internal" />
+          </base:PropertyBag>
+        </uxc:DataField>
+        <uxc:DataField id="C6y5e6X0FaMzToN_iwjkEW" name="Saved" type="boolean">
+          <base:PropertyBag id="lscInRWbZKc2MZXyRJg800">
+            <base:Property id="Oo8_3HD6qKkKXhEVTaLCLG" name="BINDINGSTATUS" value="Internal" />
+          </base:PropertyBag>
+        </uxc:DataField>
+        <uxc:DataField id="4yBWMH3Mj42czccLGRGMC0" name="IsPersistent" type="boolean">
+          <base:PropertyBag id="7REOXINvXKA3SftpyEHuJm">
+            <base:Property id="wqr_o3clf4IyzsnFIZii3G" name="BINDINGSTATUS" value="Internal" />
+          </base:PropertyBag>
+        </uxc:DataField>
+      </uxc:Structure>
+    </uxc:DataModel>
+    <uxc:EventHandlers id="4ZSFxAc124k6Z6fqVRJCOW">
+      <uxc:EventHandler id="Zr39K9s6fKADXRQHk2o3xm" name="CloseWindow">
+        <uxc:WindowAction id="3JA$8TQdeqsHFR86lQnQhG" name="CloseAction" action="Close" />
+      </uxc:EventHandler>
+      <uxc:EventHandler id="KbIrbElhp4_VwVdh6B0DNW" name="GetValueHelpHandler">
+        <uxc:ValueHelpOperation id="rGdYjE8aUKEc9_dexO0otG" name="GetValueHelpOperation" proxyName="" esrNamespace="" queryName="ValueHelpQuery" operation="Get" parentComponentID="/Root/ParentComponent" parentInstanceBinding="/Root/ParentPath" />
+      </uxc:EventHandler>
+      <uxc:EventHandler id="vKKcSuymTak9fHKFvTwQs0" name="RetrieveValueHelpHandler">
+        <uxc:BoOperation id="d0Gn$kkiAqUNYuvwsTa1fG" name="Operation" proxyName="" operation="ValueHelp" queryName="ValueHelpQuery" useQuery="true">
+          <uxc:BoOperationParameter id="oCVHRipPo42Tr$Cu9NEb30" name="NodeId" bind="/Root/ParentNodeId" type="nodeId" />
+          <uxc:BoOperationParameter id="V$ITI_2IkKIXoxeqXhvNIW" name="Component" bind="/Root/ParentComponent" />
+          <uxc:BoOperationParameter id="ji$vv3d6V4I9QofRqiqD$G" name="Path" bind="/Root/ParentPath" />
+        </uxc:BoOperation>
+      </uxc:EventHandler>
+      <uxc:EventHandler id="VpiHxTE6casjTyABrRc2sm" name="SelectionChangedHandler">
+        <uxc:FireEventHandler id="oiy5sGPRBqcqwNAjSFkJiW" name="SetValueHelpOperation" eventHandler="SetValueHelpHandler" />
+        <uxc:WindowAction id="iSqy_MS5V46KY5TEzrlvEW" name="CloseOperation" action="Close" />
+      </uxc:EventHandler>
+      <uxc:EventHandler id="X2VTVUudhKUEeYXgIeaEqG" name="SetValueHelpHandler">
+        <uxc:ValueHelpOperation id="2pS7hj7Mv4wW5usl336HB0" name="SetValueHelpOperation" proxyName="" esrNamespace="" queryName="ValueHelpQuery" operation="Set" parentComponentID="/Root/ParentComponent" parentInstanceBinding="/Root/ParentPath" />
+      </uxc:EventHandler>
+    </uxc:EventHandlers>
+    <uxc:Queries id="SHy1eOso2aAUIi2nwaOCxG">
+      <uxc:Query id="rqzQgCboFa2ynDdtdRYnRG" name="ValueHelpQuery" proxyName="" queryPath="" resultListBinding="/Root/Items" />
+    </uxc:Queries>
+    <uxc:DefaultSets id="EDucxACikaAkI$nvcPyD1G">
+      <uxc:DefaultSet id="X6dMJ8WngqMcHDbpb28lxm" name="DefaultSet" queryName="ValueHelpQuery" onSelect="GetValueHelpHandler">
+        <uxc:Title id="pMFFQUaj5KsbysFTnNj89W" textPoolId="7b325d9fe18d495383a3959c5f73ff59" />
+      </uxc:DefaultSet>
+    </uxc:DefaultSets>
+    <uxc:ModelChanges />
+  </uxc:Implementation>
+  <uxc:Navigation id="jWPE1vGiNKwcPL11pzL28W" />
+  <uxc:EmbeddedComponents id="hOBbzoncFKgWbkckXYxiSW" />
+  <UXView id="SkpXtZfLsqYK5DZZjiQ75m" patternType="ovs">
+    <uxv:IdentificationRegion id="SqZSJRL9pakUWMCbMi$fGm">
+      <uxv:Title id="3J6gkv3HmqcngMaL2L3r$m" textPoolId="227E61738E99406b99575A4BE127EB1E" />
+    </uxv:IdentificationRegion>
+    <uxv:ContextualNavigationRegion id="aG$TE6N7GqgQeJms_NnCBm">
+      <uxv:FunctionBar id="WVUz8ZRs5K6pZrJrnfk1wm">
+        <uxv:ButtonGroup id="ifQHtMnki4Yy0qhSUB$hrW" name="ActionButtons">
+          <uxv:Button id="FA6RoXuCuaIjcTyHIqWRm0" name="btnCancel" onClick="CloseWindow" style="Cancel">
+            <uxv:Text id="_WXd42cTKK2z834FveY2TW" textPoolId="7b325d9fe18d495383a3959c5f73ff58" />
+          </uxv:Button>
+        </uxv:ButtonGroup>
+      </uxv:FunctionBar>
+    </uxv:ContextualNavigationRegion>
+    <uxv:ViewContainerRegion id="bq5teeSyyKkMz_V7npcq1G">
+      <uxv:View id="M4YJrUKrH4kxDyZxy$n1gm" columns="1" rows="1">
+        <uxv:PaneContainer id="cNbNM4jPxqQkE9WW_SfJxW" column="0" row="0" colSpan="1" rowSpan="1">
+          <uxv:AdvancedListPane id="mlbp0$aMoa6XlFxgy1kx$W" defaultDefaultSet="DefaultSet">
+            <base:PropertyBag id="sufekoaqjawbPCx8Hr$Swm">
+              <base:Property id="pTMGJJTes4on5nm0nusFWm" name="Type" value="ListPane" />
+            </base:PropertyBag>
+            <uxv:FindFormPane id="FindFormPane_ID" name="FindFormPane" searchTextBinding="/Root/SearchText">
+              <base:PropertyBag id="KuMIWGmzUa6wRlLGMiC9GW">
+                <base:Property id="E5Od_m7Rxa62DNTwG20HrG" name="Name" value="FindFormPane" />
+              </base:PropertyBag>
+            </uxv:FindFormPane>
+            <uxv:PaneVariant id="gtnhDY8eZaMh5U_47xdUmW" name="ListPaneVariant">
+              <uxv:ListDefintion id="oNHI9gQjBq6rOK2P1W7QGm" visibleRows="5" selectOption="singleSelect" gridMode="both" showFooter="false" tableDesign="standard" showHeaderRow="true" showGroupCount="false" showRowCreator="true">
+                <uxv:Binding id="R6$gT0X7p4ww82ppscG3om" bindingExpression="/Root/Items" />
+                <uxv:ReadOnly id="E8Iwf1Wy$4MEcFfgUfng80" fallbackValue="False" fallbackValueType="boolean" />
+                <uxv:EnableGrouping id="1k0U3ajIDaEkSLq01ypORW" fallbackValue="false" fallbackValueType="boolean" />
+                <uxv:Column id="CjprN7IFAqwxB51zgaDy9W" headerTextWrap="true" contentTextWrap="true" showPopupTrigger="false">
+                  <base:PropertyBag id="MipnEr1$EqovpSDunJNXa0">
+                    <base:Property id="GRBT5pMsHKcMYL4XUm$Iom" name="Name" value="Column" />
+                  </base:PropertyBag>
+                  <uxv:Label id="R76WpxQa3ac8netCFf5iI0" textPoolId="9799a0ff6dc642d89b4c8bed1f9c4c5e" />
+                  <uxv:StaticText id="OvD$PvKnOqEG$Vqbc8_xnW" name="Column" cctsType="none">
+                    <uxv:Text id="$l2w__ghQagSq96P9Q1VyG" bindingExpression="./ObjectId" />
+                  </uxv:StaticText>
+                </uxv:Column>
+                <uxv:Column id="$Nvk7J0SBaADawr0ZhSRmG" headerTextWrap="true" contentTextWrap="true" showPopupTrigger="false">
+                  <base:PropertyBag id="FFI$BazgdqkPWqogZRNV0W">
+                    <base:Property id="HfTDMMc3kKMFRUdUKQ_F10" name="Name" value="Column1" />
+                  </base:PropertyBag>
+                  <uxv:Label id="OCJk4TzUpq6RooY$jVf02m" textPoolId="3a8cc7f79e96451691f09ba33ade297a" />
+                  <uxv:StaticText id="kTM2TKvLPqQ0_rgrJ8aeiW" name="Column1" cctsType="none">
+                    <uxv:Text id="SfrpkLqN1K_Ho8tvc0JiM0" bindingExpression="./ObjectName" />
+                  </uxv:StaticText>
+                </uxv:Column>
+              </uxv:ListDefintion>
+            </uxv:PaneVariant>
+            <uxv:DefaultSet id="Nv5mIgxJfKAlQ8X$yIYe0W" variantName="ListPaneVariant" defaultSetName="DefaultSet" onExecute="" findFormPaneRef="FindFormPane_ID" />
+          </uxv:AdvancedListPane>
+        </uxv:PaneContainer>
+      </uxv:View>
+    </uxv:ViewContainerRegion>
+    <uxv:ActionForms />
+    <uxv:ModalDialogs id="ZCxV$wE4qqkwtMKsnDwoZ0" />
+  </UXView>
+  <TextPool>
+    <base:TextBlock language="EN" masterLanguage="true" currentLanguage="true">
+      <base:TextPoolEntry id="W$jossCoWaYKyXQFQZkm20" textUuid="9799a0ff6dc642d89b4c8bed1f9c4c5e" text="ObjectId" textCategory="XCOL" />
+      <base:TextPoolEntry id="zYybpNiqJK6xb9Bhd_8ZnG" textUuid="3a8cc7f79e96451691f09ba33ade297a" text="ObjectName" textCategory="XCOL" />
+      <base:TextPoolEntry id="d2L7S8ApeaMXspQgVvfrbG" textUuid="227E61738E99406b99575A4BE127EB1E" text="Title" textCategory="XTIT" />
+      <base:TextPoolEntry id="skrcvNzRHK6LRu$BdBxmbW" textUuid="7b325d9fe18d495383a3959c5f73ff58" text="Cancel" textCategory="XBUT" />
+      <base:TextPoolEntry id="eQhRlLaS5a_j0th3_tem3G" textUuid="7b325d9fe18d495383a3959c5f73ff59" text="DefaultSet" textCategory="XLST" />
+    </base:TextBlock>
+  </TextPool>
+</UXComponent>

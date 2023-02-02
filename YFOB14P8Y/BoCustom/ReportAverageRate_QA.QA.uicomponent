@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UXComponent xmlns:base="http://www.sap.com/a1s/cd/oberon/base-1.0" xmlns:uxv="http://www.sap.com/a1s/cd/oberon/uxview-1.0" xmlns:uxc="http://www.sap.com/a1s/cd/oberon/uxcontroller-1.0" id="UTG$i1cupqIvyNqkKOyD6W" enableBackendOperationsClubbing="true" name="ReportAverageRate_QA" AuthorizationClassificationCode="Application" taskRegionDisabled="true" useUIController="true" helpId="vTBc1UOgAaY$C00LDI_0Q0" designtimeVersion="5.10.0.289" modelVersion="0.9" xmlns="http://www.sap.com/a1s/cd/oberon/uxcomponent-1.0">
+ <uxc:Interface id="9OaLoYmj54okgvnPVkzY70">
+  <uxc:InPorts id="hubHZFkDbqcnVKMG3c8iqG">
+   <uxc:InPort id="UmWgR57r14MpJLnEcmmc6m" name="OBNInportCreate" portTypeReference="To_ReportAverageRate_create" portTypePackage="/YFOB14P8Y_MAIN/SRC/BoCustom/ReportAverageRate_PTP.PTP.uicomponent" default="true" onFire="CreateHandler" navBO="ReportAverageRate" navBONS="http://0004019099-one-off.sap.com/YFOB14P8Y_" navBONode="Root" navOperation="To_ReportAverageRate_create">
+    <base:PropertyBag id="MapfVKEWRa60Jvsz57oHX0">
+     <base:Property id="XIxSz11na4gc9XiHbwzXUm" name="ESIBindingPath" value="Root"/>
+    </base:PropertyBag>
+   </uxc:InPort>
+   <uxc:InPort id="2ifaaP3ON4cvyqYdRX$42m" name="OBNEditInport" portTypeReference="To_ReportAverageRate_edit" portTypePackage="/YFOB14P8Y_MAIN/SRC/BoCustom/ReportAverageRate_PTP.PTP.uicomponent" onFire="EditHandler" navBO="ReportAverageRate" navBONS="http://0004019099-one-off.sap.com/YFOB14P8Y_" navBONode="Root" navOperation="To_ReportAverageRate_edit">
+    <base:PropertyBag id="bTf__Ilpya6fnYy3OFUEMG">
+     <base:Property id="SwSAJCnbeK2Tw29ltdJ2_m" name="ESIBindingPath" value="Root"/>
+    </base:PropertyBag>
+    <uxc:Parameter id="JJ$mPmpcOK_UfsIQT6kYoW" name="Parameter0" bind="/Root/OBN_NAV_KEY"/>
+   </uxc:InPort>
+   <uxc:InPort id="2ifaaP3ON4cvyqYdRX$42n" name="OBNEditInportSysPTP" portTypeReference="OpenByKey" portTypePackage="/SAP_BYD_UI/SystemPortTypes.PTP.uicomponent" onFire="EditHandlerSysPTP" navBO="ReportAverageRate" navBONS="http://0004019099-one-off.sap.com/YFOB14P8Y_" navBONode="Root" navOperation="EditSysPTP">
+    <base:PropertyBag id="bTf__Ilpya6fnYy3OFUEMG">
+     <base:Property id="SwSAJCnbeK2Tw29ltdJ2_m" name="ESIBindingPath" value="Root"/>
+    </base:PropertyBag>
+    <uxc:ListParameter id="Gr6Jc4oTfq2XQicAHr7EVG" name="KeyList" listBinding="Root">
+     <uxc:Parameter id="FcxKSG5Ny4ky1Ie36Q3_XW" name="Key" bind="./OBN_NAV_KEY"/>
+    </uxc:ListParameter>
+   </uxc:InPort>
+  </uxc:InPorts>
+  <uxc:OutPorts id="_U4eJ3HV1K_rxQ35QRBkU0">
+   <uxc:OutPort id="QIavFZouZac4cqJDPAaJnW" name="OBNViewAllOutport" portTypeReference="To_ReportAverageRate_viewAll" portTypePackage="/YFOB14P8Y_MAIN/SRC/BoCustom/ReportAverageRate_PTP.PTP.uicomponent">
+    <uxc:Parameter id="Ku6ENzudP4YdqiR3tvo74W" name="Parameter0" bind="/Root/ReportAverageRate/NodeID"/>
+   </uxc:OutPort>
+  </uxc:OutPorts>
+  <uxc:Configuration/>
+ </uxc:Interface>
+ <uxc:Implementation>
+  <uxc:DataModel id="72a9b94473024b68b4c861c760ff8c0e" name="Root" designtimeMainBOProxyName="ReportAverageRate" designtimeMainBOEsrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_">
+   <base:PropertyBag id="3IA3hRLf9a60oOJIVwI61W">
+    <base:Property id="wsViKBUC64sn1GOTGpQrhm" name="BINDINGSTATUS" value="OK"/>
+   </base:PropertyBag>
+   <uxc:Bind id="fU52JjJw_KYuqR9Gsg6Z_G" proxyName="ReportAverageRate" field="Root" esrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_"/>
+   <uxc:DataField id="Mx$xrCzqQq6Fy1tk9GzVI0" name="@ErrorOccured" type="boolean">
+    <base:PropertyBag id="psQnOuq3L4MQ8fPz$JntqG">
+     <base:Property id="gRSb7JfsF46pFuH4ywBDY0" name="BINDINGSTATUS" value="Internal"/>
+    </base:PropertyBag>
+   </uxc:DataField>
+   <uxc:Structure id="Em$F8IEUSqYHi_Upbv6g60" name="$System">
+    <base:PropertyBag id="GClEsv9vQ42ykEMi3oPS4G">
+     <base:Property id="0vmxWXuJVKAUlFfCgPfxY0" name="BINDINGSTATUS" value="Internal"/>
+    </base:PropertyBag>
+    <uxc:DataField id="Vx8dM7GThKwx5FRQGuBoMG" name="SessionUrl" type="string">
+     <base:PropertyBag id="wAW2bp_$f4IMtyKOrrCXFW">
+      <base:Property id="RAeKiWB$Qqwl48xeW6Le_0" name="BINDINGSTATUS" value="Internal"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+   </uxc:Structure>
+   <uxc:Structure id="lTHP1Q6bhaU$$49iEOZLa0" name="ReportAverageRate">
+    <base:PropertyBag id="L8VVW8xVQqYij71L25e37G">
+     <base:Property id="4RQDgq6974ITk$0TY98zem" name="BINDINGSTATUS" value="OK"/>
+     <base:Property id="7PHAcTCCqqMkE$d08kdL6W" name="USERCHANGEDNAME" value="False"/>
+    </base:PropertyBag>
+    <uxc:Bind id="4G81Zg8VaaAfnw28zG5B0G" proxyName="ReportAverageRate" field="Root" esrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_"/>
+    <uxc:DataField id="PeMThPFwLUiwlbTfeRZIFg" name="id" type="string" cctsType="identifier">
+     <base:PropertyBag id="yvVI_S7t30a9H3vX22H7MQ">
+      <base:Property id="KYd6xLVPzE_eyXWkeX4qsA" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="W93ciA5bB0ST6HTxOP6vXA" name="UITEXTID" value="YFOB14P8Y_567092EF99ACCD10"/>
+      <base:Property id="ZqREffABDk2XxsTJpRMAJg" name="XFLD" value="Report id"/>
+      <base:Property id="_Li__XrLAEyA7cDC6M8otA" name="XCOL" value="Report id"/>
+      <base:Property id="azOtAswjCEG2yflOVSO1Bg" name="XTOL" value="Report id"/>
+     </base:PropertyBag>
+     <uxc:Bind id="W2UsXJGkG0qC9cERTnxv8g" proxyName="ReportAverageRate" field="-~id" esrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_"/>
+    </uxc:DataField>
+    <uxc:DataField id="qHWARz06Xk6K2TYcmaq9KQ" name="company" type="string" cctsType="identifier">
+     <base:PropertyBag id="xwC33uGYSEyfpthl4sP5bQ">
+      <base:Property id="drr6uAAFMkmhZegO9Ayhxw" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="fCAXDGiGOEyETARtMwQ68Q" name="UITEXTID" value="YFOB14P8Y_1E5E42F642A37EA6"/>
+      <base:Property id="pV3axQq6n0iRw4MNSFYySg" name="XFLD" value="Company"/>
+      <base:Property id="11Rbwpdjw0eSrSVrGLG4CA" name="XCOL" value="Company"/>
+      <base:Property id="t3mMdp8Z9kSMzTV8ffAFgA" name="XTOL" value="Company"/>
+     </base:PropertyBag>
+     <uxc:Bind id="dJJI7KcJ2USuykqRdSfULQ" proxyName="ReportAverageRate" field="-~company" esrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_"/>
+    </uxc:DataField>
+    <uxc:DataField id="9T6_Yg9K1k_zD5c4d55O_Q" name="companyName" type="string" cctsType="text">
+     <base:PropertyBag id="3FNZZoQ89UeYuicth0Sskg">
+      <base:Property id="N0N_m0DbxkagiCwJG59unA" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="o1ImvkVTsUyGyNbQmSu6ZA" name="UITEXTID" value="YFOB14P8Y_497BF944C142E76D"/>
+      <base:Property id="1aOtXz_mVUKJK6XjuAsMqg" name="XFLD" value="Company name"/>
+      <base:Property id="DrChYF1pn0egR7bwJeUhrA" name="XCOL" value="Company name"/>
+      <base:Property id="QGlvaCstcEqAFyrxk_wS6Q" name="XTOL" value="Company name"/>
+     </base:PropertyBag>
+     <uxc:Bind id="LSQsCBOKU0OebLTgQqyi3Q" proxyName="ReportAverageRate" field="-~companyName" esrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_"/>
+    </uxc:DataField>
+    <uxc:DataField id="TiM6SSs_30CgmtrupCytQw" name="SystemAcc" type="string" cctsType="identifier">
+     <base:PropertyBag id="e_uMxt8ql0y08YIgeVySZA">
+      <base:Property id="8vTnAOGnSkie2VZD9Uxz2A" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="7UB1dwsxJU2AcjfjZPuWIQ" name="UITEXTID" value="YFOB14P8Y_4CB79887BCBC1BB2"/>
+      <base:Property id="VizmWycb9kWyOAaxM9g6sw" name="XFLD" value="Accounting system"/>
+      <base:Property id="I6jj23z_wEiF6GqGaK6MqQ" name="XCOL" value="Accounting system"/>
+      <base:Property id="I2E_LDLS3EaO6c538MgtQw" name="XTOL" value="Accounting system"/>
+     </base:PropertyBag>
+     <uxc:Bind id="3WYswE0K8EOceBW7D1V2GA" proxyName="ReportAverageRate" field="-~SystemAcc-~content" esrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_"/>
+    </uxc:DataField>
+    <uxc:DataField id="Nq3I4A4pQkOck7sxqAs8Eg" name="fiscalYear" type="string" cctsType="identifier">
+     <base:PropertyBag id="OQky5ipNfk_43mipIy3Z2Q">
+      <base:Property id="XVrzyM_t4UaHUlFg6FCiDw" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="EhIBDQKSAEyRPJ9it0vFjQ" name="UITEXTID" value="YFOB14P8Y_6917968D4E249CAC"/>
+      <base:Property id="Qc7MCVcIbEeqWcSQ_XJGGw" name="XFLD" value="fiscal year"/>
+      <base:Property id="kSsvf32isk61HgxDtGx54Q" name="XCOL" value="fiscal year"/>
+      <base:Property id="2B4JiyDE_E_krtGc7I9Fgw" name="XTOL" value="fiscal year"/>
+     </base:PropertyBag>
+     <uxc:Bind id="QZedxJ4U00e5OJPvhIoIpA" proxyName="ReportAverageRate" field="-~fiscalYear" esrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_"/>
+    </uxc:DataField>
+    <uxc:DataField id="1FPfcz4GGE_NKKI5hrHT5g" name="SystemPer" type="string" cctsType="identifier">
+     <base:PropertyBag id="cA060LLGckW3N5qZHJCClA">
+      <base:Property id="L30MsYAjCEyk5SjsoCqKTQ" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="ixgAha0dk0GjyM9lu39wbw" name="UITEXTID" value="YFOB14P8Y_B860AFF0E48D3D82"/>
+      <base:Property id="f3YmQIjl_0K4rEDnIfEfCQ" name="XFLD" value="Accounting period"/>
+      <base:Property id="fg84gC09a06n690LbBdRpg" name="XCOL" value="Accounting period"/>
+      <base:Property id="G1DgWcvWN0WnGvpM_hSk3w" name="XTOL" value="Accounting period"/>
+     </base:PropertyBag>
+     <uxc:Bind id="7HsT3Bq5oEC5oWFJ8kOhdA" proxyName="ReportAverageRate" field="-~SystemPer" esrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_"/>
+    </uxc:DataField>
+    <uxc:DataField id="YAp5iimD_ky84ij4k2t_sQ" name="fanancialStruc" type="string" cctsType="text">
+     <base:PropertyBag id="_g2LvlovHk6NVsJuSEVWPA">
+      <base:Property id="rvM2tSBCU0SeJ128U0mcLg" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="YKN6thTtFUeIsQJbFVYE3g" name="UITEXTID" value="YFOB14P8Y_CA5781981DD9CB9C"/>
+      <base:Property id="V6PfA0UZc02u8uatAYg2YQ" name="XFLD" value="Financial report structure"/>
+      <base:Property id="vg4zEmHPTkSD483os4HZHg" name="XCOL" value="Financial report structure"/>
+      <base:Property id="OeZK9RF8eE_bCQxQACMkdQ" name="XTOL" value="Financial report structure"/>
+     </base:PropertyBag>
+     <uxc:Bind id="2P1qSxRjqUS1lLmLrMQNDw" proxyName="ReportAverageRate" field="-~fanancialStruc" esrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_"/>
+    </uxc:DataField>
+    <uxc:DataField id="h8DYMXLKsUGcq8DxV3qy1w" name="balanceType" type="string" cctsType="text">
+     <base:PropertyBag id="0N6QJs7VHUmh9gALICgROQ">
+      <base:Property id="hdOZhAtVw02RDrVsc9PCyQ" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="55b19hg7DUC8zrDyAAqntA" name="UITEXTID" value="YFOB14P8Y_036519F2EAC2C795"/>
+      <base:Property id="GBHChOh2r0mG87OwSydvIQ" name="XFLD" value="Balance type"/>
+      <base:Property id="BBUl6hPN4kySD_fSt7WbiA" name="XCOL" value="Balance type"/>
+      <base:Property id="Qu6TtP7IcUm9qseeDnJt_w" name="XTOL" value="Balance type"/>
+     </base:PropertyBag>
+     <uxc:Bind id="o8VDTxiZs068SLoTN_M06g" proxyName="ReportAverageRate" field="-~balanceType" esrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_"/>
+    </uxc:DataField>
+    <uxc:DataField id="Mc2kmWENIUS5u256JwBa2Q" name="date" type="date" cctsType="date">
+     <base:PropertyBag id="kZJ2yy054kSdXniFzCz4DA">
+      <base:Property id="EA6cwaHi8ESoDtjqYNwqEw" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="wu5Dx2l7UEevH1_Z85O6IQ" name="UITEXTID" value="YFOB14P8Y_041116E4FA6A5A6F"/>
+      <base:Property id="gcVci39LXEeCdGUWy7oA6Q" name="XFLD" value="Conversion date"/>
+      <base:Property id="Rpt0PSUSvE_X8AjZx43zkA" name="XCOL" value="Conversion date"/>
+      <base:Property id="iFnoPZQb9U_6kothDlyZ9g" name="XTOL" value="Conversion date"/>
+     </base:PropertyBag>
+     <uxc:Bind id="SEdlB7lWTEuzcm9m6IP3hA" proxyName="ReportAverageRate" field="-~date" esrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_"/>
+    </uxc:DataField>
+    <uxc:DataField id="Ui_5WLuOJq2nAwhJNFr5cm" name="NodeID" type="string">
+     <base:PropertyBag id="WdWWAoo3WaMRItkXql1raW">
+      <base:Property id="a5MX93C2iq6R$L3h4Xagrm" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="1MfCUnAYXqkaLi7B9G4NGm" name="USERCHANGEDNAME" value="True"/>
+     </base:PropertyBag>
+     <uxc:Bind id="evrUaMg3y4oOtk06ZwX7fm" proxyName="ReportAverageRate" field="-~NodeID" esrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_"/>
+    </uxc:DataField>
+   </uxc:Structure>
+   <uxc:DataField id="rRcGGwTplK6ukdAknhP2a0" name="OBN_NAV_KEY" type="string">
+    <base:PropertyBag id="0eFpsQd9SaYTE8GEOiTU9m">
+     <base:Property id="XJP8DdF4qKAnrHJOxWsk_0" name="BINDINGSTATUS" value="ToBind"/>
+     <base:Property id="VvpulYI0r4oZuSukMdtn6m" name="USERCHANGEDNAME" value="True"/>
+    </base:PropertyBag>
+   </uxc:DataField>
+  </uxc:DataModel>
+  <uxc:EventHandlers>
+   <uxc:EventHandler id="2z0UHyfVXa6dSOVtDh5IYm" name="SaveHandler">
+    <uxc:WindowAction id="EcgJtU8UbacVAsBqXc2EIW" name="Save" action="Save"/>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="a2kNyfAoMq2YInIOc8Pz1G" name="CreateHandler" eventType="simple">
+    <uxc:BoOperation id="40_yiE2sH4El8zfDDI2LsW" name="Create" proxyName="ReportAverageRate" esrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_" operation="Create"/>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="Rfo$1QIZ$KEaR$Gc2AJ0C0" name="EditHandler">
+    <uxc:BoOperation id="cC5S_nmc84k5dlYY_QiUCW" name="Operation" proxyName="ReportAverageRate" esrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_" operation="Read">
+     <uxc:BoOperationParameter id="wYBT97L7ea2_Jnkekp1Uh0" name="NavKey" bind="/Root/OBN_NAV_KEY" type="nodeId" path="/Root/ReportAverageRate/NodeID"/>
+    </uxc:BoOperation>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="fGmUQdskE4kHlLCxpY3SMW" name="ViewAllHandler">
+    <uxc:FirePlug id="TX8RhxPW0q6Y8oT1Or5Cmm" name="Operation2" outPlug="OBNViewAllOutport"/>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="Rfo$1QIZ$KEaR$Gc2AJ0C1" name="EditHandlerSysPTP">
+    <uxc:BoOperation id="cC5S_nmc84k5dlYY_QiUCW" name="Operation" proxyName="ReportAverageRate" esrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_" operation="Read">
+     <uxc:BoOperationParameter id="t1EEA56iF4Y$vZX_8Brj0G" name="Parameter" bind="/Root/OBN_NAV_KEY" type="keyNavigation"/>
+    </uxc:BoOperation>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="Kbkm_nDPPqYHSPbCH7dDF0" name="CloseHandler">
+    <uxc:WindowAction id="BUWvY$F_4akZm72C1SQuI0" name="Operation" action="Close"/>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="KXWERlMqOUK3uHBycTfdDw" name="ActionexecuteHandler">
+    <uxc:BoAction id="6dElgaJbuUWPy1AAhcD_Vw" name="Actionexecute" proxyName="ReportAverageRate" esrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_" actionPath="-&gt;execute" instanceBinding="/Root"/>
+   </uxc:EventHandler>
+  </uxc:EventHandlers>
+  <uxc:Queries/>
+  <uxc:DefaultSets/>
+ </uxc:Implementation>
+ <uxc:Navigation id="_sm4v_KjxKMXgUH4mM1_wm">
+  <uxc:OBN id="KkSPppoMP4wRtu63Qfh2HW" outPlug="OBNViewAllOutport" style="inplaceHandover" navBO="ReportAverageRate" navBONS="http://0004019099-one-off.sap.com/YFOB14P8Y_" navBONode="Root" navOperation="To_ReportAverageRate_viewAll">
+   <base:PropertyBag id="7zG4XV8YNKE1kqmrcobIZW">
+    <base:Property id="IuQ$SCK$DqYtAqPM6N3H7G" name="Name" value="OBNViewAll"/>
+   </base:PropertyBag>
+  </uxc:OBN>
+ </uxc:Navigation>
+ <uxc:WorkCenterReferences/>
+ <uxc:RBAMData id="6zs4Ry1pQKs2PdJT_mTkFW" accessCheckMode="PrivilegedExceptAccessControlledBusinessObjects">
+  <uxc:AccessControlledBusinessObject id="E2evFJ$Vm4ARFWTcGCUbkG" BO="ReportAverageRate" BONS="http://0004019099-one-off.sap.com/YFOB14P8Y_" unrestrictedAccess="true"/>
+ </uxc:RBAMData>
+ <uxc:EmbeddedComponents/>
+ <uxc:Description id="jDMFr$U5taUPXCzOMHCY8m" textPoolId="NxN8niTWQKgBIXAV5DNIjG"/>
+ <Tags id="7UGpWxSINKU9cuGqT0IWHG">
+          </Tags>
+ <UXView id="zalKt9g5f4woqOo6d9$LpW" patternType="quickActivity" preferredWidth="1024" preferredHeight="768" checkClassification="Standard" checkMode="Both">
+  <uxv:IdentificationRegion id="lnyDCEBSzq2RB9QgqkeJbm">
+   <uxv:Title id="4C1gbtwYxKoMKctJYurvPm" textPoolId="vEgp7JG82qwNsE$DwbNFvG">
+    <base:PropertyBag id="K73I$tcSKKUgEkB4ifb55m">
+     <base:Property id="$A2Y7uuRp4UKmdMR_V7Zw0" name="Name" value=""/>
+    </base:PropertyBag>
+   </uxv:Title>
+  </uxv:IdentificationRegion>
+  <uxv:ContextualNavigationRegion id="kGf4JXOcgqUR1rQRWwGLCG">
+   <uxv:FunctionBar id="9xu5gkjpfa6EZSz_fCVd4G">
+    <uxv:ButtonGroup id="6VQYu_PQ0qwh0jQviO9BNW" name="ActionButtons">
+     <uxv:Button id="NenTEEusya2GtCW_n_VkPG" name="SaveButton" onClick="SaveHandler" style="Standard">
+      <uxv:Text id="L$jvczsav4MVX7yqOqltp0" textPoolId="637f86765fbf498ba2cc6017dd6696f0">
+       <base:PropertyBag id="Zn1cryQElKoV1qlXfm$Uam">
+        <base:Property id="EqVq6Ht$wqg_noN5TBgoOG" name="Name" value=""/>
+       </base:PropertyBag>
+      </uxv:Text>
+     </uxv:Button>
+     <uxv:Button id="ITNFSY8_z4Ejm2PaYwQLq0" name="Close" onClick="CloseHandler" style="Cancel">
+      <uxv:Text id="USppiwHn9qwi1$d347Bzrm" textPoolId="919e4e3f12f14f069a74f34988fb1659"/>
+     </uxv:Button>
+    </uxv:ButtonGroup>
+    <uxv:ButtonGroup id="_fYeoij524YxoRJO3Cy0Xm" name="ApplicationSpecificButtons">
+     <uxv:Button id="zreXTWiV10WCx3Zc09qVXQ" name="ActionexecuteButton" onClick="ActionexecuteHandler" style="Standard">
+      <uxv:Text id="4K1WhGxRmEmPlk0GK5RZeQ" textPoolId="DvMnPS31JE6VS9bbcIcrZA"/>
+     </uxv:Button>
+    </uxv:ButtonGroup>
+   </uxv:FunctionBar>
+   <uxv:ViewAll id="iNdOLless46UcgKh4lw_hG" name="ViewAll" onClick="ViewAllHandler" style="Standard">
+    <base:PropertyBag id="WjRYff0v04Y4EnT129HRQG">
+     <base:Property id="37lZPjlfb4Ylcnebxn2Qjm" name="NavigationTarget" value="OBN"/>
+    </base:PropertyBag>
+    <uxv:Text id="TmwtlbnEjKwp7kuawgXHnW" textPoolId="ce0df2a204704609a26d6859b1987bfc">
+     <base:PropertyBag id="lTL2qqBEeKQEk0NgAIE1xm">
+      <base:Property id="NvCOkTrrLacFjg0HW5owFm" name="Name" value=""/>
+     </base:PropertyBag>
+    </uxv:Text>
+   </uxv:ViewAll>
+  </uxv:ContextualNavigationRegion>
+  <uxv:ViewContainerRegion id="NhHCykSHiq2t8eVDLHSCO0">
+   <uxv:View id="6d7CfNfhyKgx$E0Uu2ELBW" columns="1" rows="1">
+    <uxv:PaneContainer id="f7_Igch6NKQVO8ewqMGlkG" column="0" row="0">
+     <uxv:FormPane id="Mu4MXNiMh4_I4bn2jLTzt0">
+      <base:PropertyBag id="fkKspNX5PKYsT$V7k2g3hm">
+       <base:Property id="yslJWEX3hKQWSkenC0_ERG" name="Name" value="FormPane"/>
+      </base:PropertyBag>
+      <uxv:SectionGroup id="5_pj9NbfEK65wAwbsj$eMm" column="0" row="0" showGroupName="true">
+       <base:PropertyBag id="b2$4sqaQoqEebecpHMV7o0">
+        <base:Property id="7mxksPre14kzAsyvppF0SG" name="Name" value="FieldGroup"/>
+       </base:PropertyBag>
+       <uxv:SectionGroupName id="HNMFHk$RsawIiwmwLC_SxG" textPoolId="S222eb2ut4oYv8OK4VpJWG">
+        <base:PropertyBag id="pPUyotO4w4UW9F4BHk9fn0">
+         <base:Property id="xwUpPzs3qqIthAtgyKRC_W" name="Name" value="Field"/>
+        </base:PropertyBag>
+       </uxv:SectionGroupName>
+       <uxv:SectionGroupItem id="oAfANBqkfE2khRtJ6NKaAg">
+        <base:PropertyBag id="v5hILPSM5UqWA5NpapD7xg">
+         <base:Property id="KXgm9sdAwUmNhBMZW5tIxQ" name="Name" value="id"/>
+        </base:PropertyBag>
+        <uxv:Label id="AzQr73W88EaV6WNCi4XYTg" textPoolId="41hSgg_J8UmHw55A0yxTDA">
+         <base:PropertyBag id="PwPrGAsPj0ulLdx5Dt_bdg">
+          <base:Property id="iokmi4Jq9kmB0yUDAgLIMw" name="Name" value="id"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:InputField id="tNcqAMbUmUuV7dx_CBqEKg" name="id" cctsType="identifier">
+         <uxv:IdentifierCCTSConfig id="HqZambrrWEm4Z2lqiO6OlQ" interpretAsInteger="false"/>
+         <uxv:Value id="Ac2hJz3kMkySWXVJhvNc9w" bindingExpression="/Root/ReportAverageRate/id">
+          <!-- <base:PropertyBag id="liNqRkvniUybYGrSUPfIeg">
+											<base:Property id="jTYMAPxK6Eala0WhzRfd2w" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="UJygkxIsBESSU2oS6rkmeA">
+        <base:PropertyBag id="RFbKFaq5c0iObAD4FWKdlw">
+         <base:Property id="b2nFOU9JiEStS29ltdfNNw" name="Name" value="company"/>
+        </base:PropertyBag>
+        <uxv:Label id="3Ayc_BV650eW7Yv52NneoQ" textPoolId="jo1uQmV_RUOpGBA4nQoELw">
+         <base:PropertyBag id="Slft2QInDUe53vD2hxTpog">
+          <base:Property id="u7hr46r1x0SSmcUdxvYj7w" name="Name" value="company"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:InputField id="jxCZALFuv0Keb16fFk5AAQ" name="company" cctsType="identifier">
+         <uxv:IdentifierCCTSConfig id="fTEy8sbJ2UqlubMYnBtH4A" interpretAsInteger="false"/>
+         <uxv:Value id="ayK1UQyiske2N1Qnhj3XvQ" bindingExpression="/Root/ReportAverageRate/company">
+          <!-- <base:PropertyBag id="x4oGuGpmA0q0e8gaL8tBTQ">
+											<base:Property id="JcQ1VegQOkSHucgC9WyBYQ" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="cMgnoGtY6k2cIVCjxzsdAQ">
+        <base:PropertyBag id="_rHHTOgH1kmGzwP_1vO20Q">
+         <base:Property id="y7QHFNhTEkeeCKWpP0YYxQ" name="Name" value="companyName"/>
+        </base:PropertyBag>
+        <uxv:Label id="30MZh1aEpke5LwaTPW9yuA" textPoolId="7zFrNB17A0mCBD5YKyv4bg">
+         <base:PropertyBag id="b2DG2NTjY0KcVPwCow0XHg">
+          <base:Property id="QI0XUTppAECJgcJT_csBpw" name="Name" value="companyName"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:InputField id="3VO7WQ4tY0iyCM9TIxYMbw" name="companyName" cctsType="text">
+         <uxv:Value id="GM80bNepg0GQqE4_j4DNvw" bindingExpression="/Root/ReportAverageRate/companyName">
+          <!-- <base:PropertyBag id="b9MA73Q9aEyrff8CXamN4Q">
+											<base:Property id="s6vpKK_3IUSdF5UFzXW95g" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="P2nK4jDed0S8vf03g4RHiQ">
+        <base:PropertyBag id="bLfdZIGNJ0Ghu8TW3cgNyw">
+         <base:Property id="9kb6YgSfjUSq3TUUHb_Kpw" name="Name" value="SystemAcc"/>
+        </base:PropertyBag>
+        <uxv:Label id="RkjDm7JWv0au7TAAgXWk4g" textPoolId="6eS299oeYkOy6NY_w8siJQ">
+         <base:PropertyBag id="YrVIaPRQAESB2Lz2l9ywFg">
+          <base:Property id="LpPMer8UKUaW_E2Z4pCA5w" name="Name" value="SystemAcc"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:InputField id="EhAYCP3O7kawyxS1YAIXxQ" name="SystemAcc" cctsType="identifier">
+         <uxv:IdentifierCCTSConfig id="Dx83R10J6k_zBOGX725vJA" interpretAsInteger="false"/>
+         <uxv:Value id="OnUOFXvpBEaUDX21PYpmvw" bindingExpression="/Root/ReportAverageRate/SystemAcc">
+          <!-- <base:PropertyBag id="JaA03UjDREGUQFR8M3YakA">
+											<base:Property id="fvZA6x_rcEibLWBd2rCPYw" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="0Dcr6Bzig0qLJVXcaV23Cw">
+        <base:PropertyBag id="yaSgHWH830yOTVpfDgOXhQ">
+         <base:Property id="84U9IN3kV06FDljrxPSNIQ" name="Name" value="fiscalYear"/>
+        </base:PropertyBag>
+        <uxv:Label id="ZWgUfdiFlEKKXSkiR4JQAg" textPoolId="Ljyc30AuDUaAzni1rHy9mA">
+         <base:PropertyBag id="3RzdivNce0SbePhSgt06Ew">
+          <base:Property id="wzvLhPUaZU2FkGCFp1SrNA" name="Name" value="fiscalYear"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:InputField id="vbWF7rRG00GR6wYXiIO8zA" name="fiscalYear" cctsType="identifier">
+         <uxv:IdentifierCCTSConfig id="9QQ9HkTtCEm9pwAIMWGOiQ" interpretAsInteger="false"/>
+         <uxv:Value id="dfkvbTlnvEeW3vdJ2cM3_Q" bindingExpression="/Root/ReportAverageRate/fiscalYear">
+          <!-- <base:PropertyBag id="z5BQdAFXWEijIAp2H8RKWA">
+											<base:Property id="w8MMW2iLq0meRFyk_GXU2A" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="OfyMpF9cyUGwIXLTylWTIQ">
+        <base:PropertyBag id="Jx3p3WgwZEud0J2ecuvPNw">
+         <base:Property id="fOFhRlM9O0iQOkREEWrjww" name="Name" value="SystemPer"/>
+        </base:PropertyBag>
+        <uxv:Label id="o3Aa9hYAwEefjoB2uiRCww" textPoolId="BAcYgvQlVESGHf2koD0uBg">
+         <base:PropertyBag id="_L9DAEnMdEiAkWA2k4uDsA">
+          <base:Property id="2mrkNb63S0WMF0C6HrW11Q" name="Name" value="SystemPer"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:InputField id="2t5dqjtYnkK6zVwj7kknLg" name="SystemPer" cctsType="identifier">
+         <uxv:IdentifierCCTSConfig id="LJ60Tt5QGEeaPclZf_edzQ" interpretAsInteger="false"/>
+         <uxv:Value id="ebMH1t4TxU6zVpnCHFtHGg" bindingExpression="/Root/ReportAverageRate/SystemPer">
+          <!-- <base:PropertyBag id="civykSEP70KuvjCCM2E_OQ">
+											<base:Property id="FraZc4G3iEKxsM9gpokxPw" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="YRp01fpUFEGPVBVAfYtg7w">
+        <base:PropertyBag id="j4HRnLQ3vUmk3YlhlcTXTA">
+         <base:Property id="btKjpABpC0GYzaz5usDwAw" name="Name" value="fanancialStruc"/>
+        </base:PropertyBag>
+        <uxv:Label id="lBrDltBjHUat7VmlYRSfIA" textPoolId="rvWdU3JOhkyX2IuRfPE1Xw">
+         <base:PropertyBag id="dWllG2F59UeafAyyA_6wug">
+          <base:Property id="Ok7kqN_n_Eu91EZnBwxc3w" name="Name" value="fanancialStruc"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:InputField id="u_4ULMSIXUSJ_lBsQb8quQ" name="fanancialStruc" cctsType="text">
+         <uxv:Value id="xSTcGrABK0KVSgi3o_r61g" bindingExpression="/Root/ReportAverageRate/fanancialStruc">
+          <!-- <base:PropertyBag id="7ZOqfdtw6EqUUocEVIuxag">
+											<base:Property id="LtzqC7NIek2LgMfuY9_iwg" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="qQH9bIdpLEGnaHajplUBOg">
+        <base:PropertyBag id="hLGjlzbIIUGZJVqyFWCEQw">
+         <base:Property id="xlXWOVY6FEa6EGritr_VFw" name="Name" value="balanceType"/>
+        </base:PropertyBag>
+        <uxv:Label id="yCBRRiA7HUGywHxpRP7Q9Q" textPoolId="IBnzOMd3F0q0VNSjju4wsQ">
+         <base:PropertyBag id="i5nDOIEDlUSScZZVCm87eQ">
+          <base:Property id="u2Ukz3nrpUKIn6B6FCDOcw" name="Name" value="balanceType"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:InputField id="6cquhniAJkahnrrjaWR8JA" name="balanceType" cctsType="text">
+         <uxv:Value id="g7f5g1d_FUOoobYu4bfMdg" bindingExpression="/Root/ReportAverageRate/balanceType">
+          <!-- <base:PropertyBag id="5zRtZrxRskGgeTQUqQ16yA">
+											<base:Property id="oZ2AY5rMs0_1XbGJCDV8mQ" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="HwtkyvuilUSnlBXB1f0qag">
+        <base:PropertyBag id="1sOk2rLuXkisZPGKFhuVKQ">
+         <base:Property id="Ule8lS_v_ESMyeA0LjuIpA" name="Name" value="date"/>
+        </base:PropertyBag>
+        <uxv:Label id="S83ROnOtNEyhp21D8TjnCw" textPoolId="J9vK1rpgT0m79rCjcSfBDg">
+         <base:PropertyBag id="jK0OqJnmA0CbKo6th0WWWw">
+          <base:Property id="cWtlLWA0YEiRcjwLxIpr5g" name="Name" value="date"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:InputField id="AIMZ9rPlhkSL4eif3A1EOw" name="date" cctsType="date">
+         <uxv:DateCCTSConfig id="BiIb5QMZO0OqC9bP2B2T8A"/>
+         <uxv:Value id="KYvtbENSQUeUYeS1rJVsYw" bindingExpression="/Root/ReportAverageRate/date">
+          <!-- <base:PropertyBag id="PciMjV9FXk_PglfV873A9w">
+											<base:Property id="vCV5Es8IMUKt1aXwQXESWg" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+      </uxv:SectionGroup>
+     </uxv:FormPane>
+    </uxv:PaneContainer>
+   </uxv:View>
+  </uxv:ViewContainerRegion>
+  <uxv:ActionForms/>
+ </UXView>
+ <TextPool>
+  <base:TextBlock language="EN" masterLanguage="true" currentLanguage="true">
+   <base:TextPoolEntry id="XL0JqFnI2qEeDu4ZuKZLdG" textUuid="vEgp7JG82qwNsE$DwbNFvG" text="ReportAverageRate : &lt;ID and/or Description&gt;"/>
+   <base:TextPoolEntry id="$wWN0nFF3qstIVVz4CfJi0" textUuid="637f86765fbf498ba2cc6017dd6696f0" text="Save"/>
+   <base:TextPoolEntry id="BSUDa3AMGKElWsHLlt2ca0" textUuid="ce0df2a204704609a26d6859b1987bfc" text="View All"/>
+   <base:TextPoolEntry id="MHDhDDLMRKcz_nDZn1mVc0" textUuid="919e4e3f12f14f069a74f34988fb1659" text="Close"/>
+   <base:TextPoolEntry id="gMgkBicDG4AN$Tqc7cM8G0" textUuid="IYfxI9yemKwe6zQqeNHVyG" text="Print"/>
+   <base:TextPoolEntry id="9Qs5IA8Hmqsq234NGEPaem" textUuid="RIJ71VyRE4cdUmRi5CzIBG" text="Send"/>
+   <base:TextPoolEntry id="uFrNvBoGJ4U25qHQfrhA2W" textUuid="S222eb2ut4oYv8OK4VpJWG" text="Root Node Elements"/>
+   <base:TextPoolEntry id="WpTj$444OaYQbWHJfdn2kW" textUuid="NxN8niTWQKgBIXAV5DNIjG" text="ReportAverageRate_QA" textCategory="YEXP"/>
+   <base:TextPoolEntry id="syAalHTzlkyg4LKguwTZug" textUuid="41hSgg_J8UmHw55A0yxTDA" text="Report id" esrTextId="YFOB14P8Y_567092EF99ACCD10" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="CArmp4MvoEmS84y_Pg8Enw" textUuid="jo1uQmV_RUOpGBA4nQoELw" text="Company" esrTextId="YFOB14P8Y_1E5E42F642A37EA6" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="9gn44sQZJE2wpnx5p5FnSQ" textUuid="7zFrNB17A0mCBD5YKyv4bg" text="Company name" esrTextId="YFOB14P8Y_497BF944C142E76D" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="V2v30jXdBU6hvihoqD43uw" textUuid="6eS299oeYkOy6NY_w8siJQ" text="Accounting system" esrTextId="YFOB14P8Y_4CB79887BCBC1BB2" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="wO6hUeqkek_BkexIUH42nA" textUuid="Ljyc30AuDUaAzni1rHy9mA" text="fiscal year" esrTextId="YFOB14P8Y_6917968D4E249CAC" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="Sp4vNQ_hREq_DhOkYL81zA" textUuid="BAcYgvQlVESGHf2koD0uBg" text="Accounting period" esrTextId="YFOB14P8Y_B860AFF0E48D3D82" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="gx5iB8f0bkOHBv0BWrAHAQ" textUuid="rvWdU3JOhkyX2IuRfPE1Xw" text="Financial report structure" esrTextId="YFOB14P8Y_CA5781981DD9CB9C" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="1I0VoiSK9Eqbwq9dT8KbUQ" textUuid="IBnzOMd3F0q0VNSjju4wsQ" text="Balance type" esrTextId="YFOB14P8Y_036519F2EAC2C795" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="TSoeWJr_GECNorSHFszFSg" textUuid="J9vK1rpgT0m79rCjcSfBDg" text="Conversion date" esrTextId="YFOB14P8Y_041116E4FA6A5A6F" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="FXa9AfA3DkOFs0Ft3K1Ndg" textUuid="DvMnPS31JE6VS9bbcIcrZA" text="execute"/>
+  </base:TextBlock>
+ </TextPool>
+</UXComponent>

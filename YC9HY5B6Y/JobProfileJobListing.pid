@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ProcessIntegration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://sap.com/ByD/PDI/ProcessIntegrationDefinition">
+  <Header>
+    <Name>JobProfileJobListing</Name>
+    <Namespace>http://0004019099-one-off.sap.com/YC9HY5B6Y_</Namespace>
+    <IntegrationTypeCode>1</IntegrationTypeCode>
+    <IntegrationPatternTypeCode>1</IntegrationPatternTypeCode>
+    <IntegrationTriggerTypeCode>1</IntegrationTriggerTypeCode>
+    <ConsistencyStatus>2</ConsistencyStatus>
+  </Header>
+  <InteractionModel name="JobProfileJobListing">
+    <ExecutionModeCode>1</ExecutionModeCode>
+    <TransmissionModeCode>1</TransmissionModeCode>
+    <PreventDataDeletion>true</PreventDataDeletion>
+    <Reconciliation>true</Reconciliation>
+    <Sequencing standard="true" />
+    <InteractionRole type="1" name="OfferingJobProfileJobListing" />
+    <InteractionRole type="2" name="ConsumingJobProfileJobListing" />
+    <Interaction>
+      <InteractionMessage name="Maintain">
+        <Request formattedIdField="id" formattedIdReadOnly="false">
+          <LeadingBusinessObject name="JobListing" namespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_" node="Root" />
+          <Mapping type="sadl" href="JobProfileJobListing-Maintain-In.sadl" uuid="D395F089C5C047F3A65F52845E0520DE" timestamp="20220728091607" />
+        </Request>
+      </InteractionMessage>
+    </Interaction>
+  </InteractionModel>
+  <InteractionActor type="1" roleType="1">
+    <Outbound name="Maintain" conditionTraversalDir="0">
+      <RequestRef>
+        <Mapping type="sadl" href="JobProfileJobListing-Maintain-Out.sadl" uuid="5FD33EC262924F11A18DAE6C74CCD51C" timestamp="20220728091607" />
+      </RequestRef>
+      <BusinessObject name="JobProfile" namespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_">
+        <Node name="Root">
+          <ConditionEvaluation conditionType="ABSL" type="1" href="JobProfileJobListing-JobProfile-Root-Start.absl" timestamp="20220728141849" />
+        </Node>
+      </BusinessObject>
+    </Outbound>
+  </InteractionActor>
+  <InteractionActor type="2" roleType="2">
+    <Inbound name="Maintain">
+      <BusinessObject name="JobListing" namespace="http://0004019099-one-off.sap.com/YC9HY5B6Y_">
+        <Node name="Root" readOnly="false">
+          <AlternativeKey name="id" readOnly="false" />
+        </Node>
+      </BusinessObject>
+      <ErrorHandling />
+    </Inbound>
+  </InteractionActor>
+</ProcessIntegration>

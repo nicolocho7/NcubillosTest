@@ -1,0 +1,44 @@
+﻿import ABSL;
+
+var vIsConsistent = true;
+//var vCount = 1;
+//var itemFilter;
+//var itemSelect;
+//
+//if(this.ReportID.IsInitial() || this.Description.IsInitial() || this.ServiceID.IsInitial()){
+	//raise msg.Create("E", "Please enter the required data (*)");
+	//vIsConsistent = false;
+//}
+//
+//if(this.Filters.Count() >= 1){	
+	//foreach(itemFilter in this.Filters){
+		//if(itemFilter.FiltersVariableID.IsInitial()){
+			//raise msg.Create("E", "Position " + vCount.ToString() + ": Missing Filter VariableID");
+			//vIsConsistent = false;		
+		//}
+		//if(itemFilter.FiltersDescription.IsInitial()){
+			//raise msg.Create("E", "Position " + vCount.ToString() + ": Missing Filter Description");
+			//vIsConsistent = false;
+		//}
+		//if(itemFilter.DataType.IsInitial()){
+			//raise msg.Create("E", "Position " + vCount.ToString() + ": Missing Filter Data Type");
+			//vIsConsistent = false;
+		//}
+		//vCount = vCount + 1;
+	//}	
+//}
+//vCount = 1;
+//if(this.Select.Count() >= 1){	
+	//foreach(itemSelect in this.Select){
+		//if(itemSelect.selectVariableID.IsInitial()){
+			//raise msg.Create("E", "Position " + vCount.ToString() + ": Missing Select VariableID");
+			//vIsConsistent = false;		
+		//}
+		//if(itemSelect.SelectDescription.IsInitial()){
+			//raise msg.Create("E", "Position " + vCount.ToString() + ": Missing Select Description");
+			//vIsConsistent = false;
+		//}
+		//vCount = vCount + 1;
+	//}
+//}
+return vIsConsistent;

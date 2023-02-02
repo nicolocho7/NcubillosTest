@@ -1,0 +1,44 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BOMassLoadProductConfig
+		Node: Root
+		Action: zExecute 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+
+import ABSL;
+
+var qryProductConf = BOProductConfiguration.QueryByElements;
+var prmProductConf = qryProductConf.CreateSelectionParams();
+	prmProductConf.Add(qryProductConf.CompanyID, "I", "EQ", this.CompanyID.RemoveLeadingZeros());
+var insProductConf = qryProductConf.Execute(prmProductConf).GetFirst();
+
+if(insProductConf.IsSet()){
+	var vProduct;
+	foreach(vProduct in this.Products){
+		var vExists = insProductConf.Products.Where(n=>n.ProductID.content == vProduct.ProductInternalID).GetFirst();
+		if(!vExists.IsSet()){
+			var Prod = insProductConf.Products.Create();
+			if(Prod.IsSet()){
+				Prod.ProductID.content = vProduct.ProductInternalID;
+			}
+		}
+	}
+}else{
+	var newProductConf = BOProductConfiguration.Create();
+	if(newProductConf.IsSet()){
+		newProductConf.CompanyID = this.CompanyID.RemoveLeadingZeros();
+		var vProduct;
+		foreach(vProduct in this.Products){
+			var Prod = newProductConf.Products.Create();
+			if(Prod.IsSet()){
+				Prod.ProductID.content = vProduct.ProductInternalID;
+			}
+		}
+	}
+}

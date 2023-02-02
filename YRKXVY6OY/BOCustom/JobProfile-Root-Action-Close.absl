@@ -1,0 +1,13 @@
+﻿import ABSL;
+
+foreach(var jobProfile in this){
+	if(jobProfile.status == JobStatusCode.CO_02){
+		jobProfile.status = JobStatusCode.CO_07;
+
+		var queryJobListing = JobListing.QueryByElements;
+		var selParam = queryJobListing.CreateSelectionParams();
+		selParam.Add(queryJobListing.id, "I", "EQ", jobProfile.jobID);
+		var result = queryJobListing.Execute(selParam);
+		result.Delete();
+	}
+}

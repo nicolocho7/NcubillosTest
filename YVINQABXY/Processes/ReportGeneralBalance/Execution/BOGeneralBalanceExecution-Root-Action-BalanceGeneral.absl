@@ -1,0 +1,207 @@
+﻿/*-----------------------------------------------------------------------------------------------------------------
+										Historial de Modificaciones                                               
+-------------------------------------------------------------------------------------------------------------------
+ Funcional Responsable.....: Jose Romero                                        
+ Creado por................: Joe Gonzales                           
+ Marca.....................: --
+ Fecha.....................: 24.03.2018                                    
+ Descripción...............: Versión Inicial. Contiene el reporte de Balance General 
+		Reporte............: Z1E40E9A5D20DA228AB5ABB
+		Fuente de datos....: FINGLAU11   
+		URL Ejemplo........: my342351.sapbydesign.com/sap/byd/odata/fin_generalledger_analytics.svc/RPZ1E40E9A5D20DA228AB5ABBQueryResults?
+							$select=CFISCALYEARPERIO,CGLACCT,KCBALANCE_CURRCOMP
+							&$filter=PARA_COMPANY eq 'GTH' and PARA_SETOFBKS eq 'IFSO' and PARA_FISCYEARPER eq 022018&$top=100                     
+-------------------------------------------------------------------------------------------------------------------
+ Funcional Responsable.....:                                        
+ Modificado por............:                            
+ Marca.....................: 
+ Fecha.....................:                                     
+ Descripción...............: 
+-------------------------------------------------------------------------------------------------------------------*/
+
+import ABSL;
+import AP.FO.BusinessPartner.Global;
+import AP.Common.GDT as apCommonGDT;
+import BASIS.Global as basis;
+
+
+while(true){
+	
+	var insPYGConfiguration;
+	var vPeriodo = "";
+	var vDia = "";
+	var vPalote = "|";
+
+	var qPyGConfig = BOPyGConfiguration.QueryByElements;
+	var pPyGConfig = qPyGConfig.CreateSelectionParams();
+		pPyGConfig.Add(qPyGConfig.ID, "I", "EQ", this.EstructuraID.RemoveLeadingZeros());
+	var rPyGConfig = qPyGConfig.Execute(pPyGConfig).GetFirst();
+	if (rPyGConfig.IsSet()){
+		insPYGConfiguration = rPyGConfig;
+	}
+	else{
+		break;	
+		raise msj.Create("E","ID de Estructura no valida");
+	}
+
+	vPeriodo = this.DateInitial.GetMonth() + this.DateInitial.GetYear();
+	vDia =  this.DateInitial.GetYear() + this.DateInitial.GetMonth() + this.DateInitial.GetDay();
+	
+	var serviceID = "";  
+	var parameter : NameAndValue;  
+	var parameters : collectionof NameAndValue;
+	serviceID = "PW00052";
+
+	parameter.Name = "$select";  
+	parameter.Value = "CFISCALYEARPERIO,CGLACCT,KCBALANCE_CURRCOMP";
+	parameters.Add(parameter);
+		 
+	parameter.Name = "$filter";  
+	parameter.Value = "PARA_COMPANY eq '" + this.CompanyID.RemoveLeadingZeros() 
+					+ "' and PARA_SETOFBKS eq '" + this.SetOfBooksID.content.Trim() 
+					+ "' and PARA_FISCYEARPER eq " + vPeriodo; // 112016"
+	parameters.Add(parameter);
+
+	parameter.Name = "$top";  
+	parameter.Value = "999999";
+	parameters.Add(parameter); 
+
+	var ws_result = WebServiceUtilities.ExecuteWebService(serviceID, parameters);  
+		
+	var Content = ws_result.ResponseContent;  
+	var returnCode = ws_result.ReturnCode;
+	
+	var vStringExport = "";
+	var xmlResult;
+	xmlResult = Library::RLStrings.XMLToArray(Content);
+	
+
+	foreach(var insPyGConfig in insPYGConfiguration.Details){
+		var insItemDetails = this.Details.Create();
+		if(insItemDetails.IsSet()){
+			insItemDetails.Campo1  = vDia;
+			insItemDetails.Campo2 = "01";
+			insItemDetails.Campo3 = insPyGConfig.CodeEF;
+			//insItemDetails.Campo4 = ; al imprimir se ajusta este valor
+			insItemDetails.Campo5 = "1";
+			insItemDetails.Campo6 = "";
+			insItemDetails.AccountFromNumeric = insPyGConfig.AccountFromNumeric;
+			insItemDetails.AccountToNumeric = insPyGConfig.AccountToNumeric;
+			insItemDetails.Sum.content = 0;
+		}
+
+		//break;
+	}
+	var IsItems = false;
+	foreach(var vItems in xmlResult){
+		
+		var vCuentaText = Library::RLStrings.GetElementByName(vItems.String, "CGLACCT");
+		var vCuentaNum =  0 ;
+		if(ABSL:Numeric.IsNumeric(vCuentaText)){
+			vCuentaNum = ABSL:Numeric.ParseFromString(vCuentaText);
+			//var vLengthValue = vCuentaText.Length();
+			//switch(vLengthValue){
+				//case 3{vCuentaNum = vCuentaNum * 10000000;}
+				//case 4{vCuentaNum = vCuentaNum * 1000000;}
+				//case 5{vCuentaNum = vCuentaNum * 100000;}
+				//case 6{vCuentaNum = vCuentaNum * 10000;}
+				//case 7{vCuentaNum = vCuentaNum * 1000;}
+				//case 8{vCuentaNum = vCuentaNum * 100;}
+			//}
+		}
+
+		var vValueItemText = Library::RLStrings.GetElementByName(vItems.String, "KCBALANCE_CURRCOMP");
+		var vValueItem = 0;
+		if(ABSL:Numeric.IsNumeric(vValueItemText)){
+			vValueItem = ABSL:Numeric.ParseFromString(vValueItemText);
+		}
+
+		//Se recorre la lista para ubicar la cuenta
+		var vIsDetails = false;
+		foreach(var insDetails in this.Details){
+			if(vCuentaNum >= insDetails.AccountFromNumeric && vCuentaNum <= insDetails.AccountToNumeric){
+				insDetails.Sum.content = insDetails.Sum.content + vValueItem;
+				vIsDetails = true;
+				//break;
+			}
+		}
+
+		//Si no esta en la lista incial, se debe crear un registro de detalle
+		//if(!vIsDetails){
+			//
+		//}
+
+		IsItems = true;
+
+	}
+	
+	//- - - - - - - - - - -  Export txt - - - - - - - - - -//
+	var xname : LANGUAGEINDEPENDENT_LONG_Name;
+	var xtype : DocumentTypeCode;
+	var xdesc : Description;
+	var xbinary : basis:BinaryObject;
+
+
+	if(!IsItems){
+		raise msj.Create("E", "No se encontraron datos con los parametros ingresados");
+	}
+	else{
+		this.vExecute = true;
+		var DataItems;
+		foreach(DataItems in this.Details){
+			var CondEF = this.Details_Impr.Where(n=>n.Campo3 == DataItems.Campo3).GetFirst();
+			if(CondEF.IsSet()){
+				CondEF.Sum.content = CondEF.Sum.content + DataItems.Sum.content;
+			}else{
+				var insItemDetails = this.Details_Impr.Create();
+				if(insItemDetails.IsSet()){
+					insItemDetails.Campo1 = DataItems.Campo1;
+					insItemDetails.Campo2 = DataItems.Campo2;
+					insItemDetails.Campo3 = DataItems.Campo3;
+					insItemDetails.Campo4 = DataItems.Campo4;
+					insItemDetails.Campo5 = DataItems.Campo5;
+					insItemDetails.Campo6 = DataItems.Campo6;
+					insItemDetails.Campo7 = DataItems.Campo7;
+					insItemDetails.Campo8 = DataItems.Campo8;
+					insItemDetails.Sum.content = DataItems.Sum.content;
+					insItemDetails.AccountFromNumeric= DataItems.AccountFromNumeric;
+					insItemDetails.AccountToNumeric= DataItems.AccountToNumeric;
+
+				}
+			}
+		}
+
+
+		foreach(var insDetails in this.Details_Impr){
+			
+			var vValueItemText = insDetails.Sum.content.RoundToString(2,true);
+			vValueItemText.Replace(",","");
+			vStringExport = vStringExport + insDetails.Campo1  
+						+ vPalote + insDetails.Campo2
+						+ vPalote + insDetails.Campo3
+						+ vPalote + vValueItemText
+						+ vPalote + insDetails.Campo5
+						+ vPalote + insDetails.Campo6 + "\r\n";
+		}
+
+		// - Archivo Generado
+		xname =  "LE" + this.CompanyRuc + this.DateInitial.GetYear() + this.DateInitial.GetMonth() + this.DateInitial.GetDay() + "030100" + "07" + "1111" + ".TXT";
+		xtype.content = "10001";
+		xtype.listID = "10296";
+		xbinary.mimeCode = "text/plain";
+		xbinary.content = Binary.ParseFromString(vStringExport);
+		this.ReportsAttachments.CreateFile(xtype, xname, xname, xdesc, xbinary);
+	}
+	
+	// - Archivo de lectura
+	xname =  "Reporte leído";
+	xtype.content = "10001";
+	xtype.listID = "10296";
+	xbinary.mimeCode = "text/plain";
+	xbinary.content = Binary.ParseFromString(Content);
+	this.ReportsAttachments.CreateFile(xtype, xname, xname, xdesc, xbinary);
+	
+	break;
+}
+
+

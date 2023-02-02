@@ -1,0 +1,37 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BORetentionConfiguration
+		Node: Root
+		Event: AfterModify 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script if:
+		- the value of any field in the node in which this script is contained is modified.
+		- the node itself is modified by another business object within the same solution.
+*/
+
+import ABSL;
+
+if (this.ConfigurationID.IsInitial()){
+	var qryBuildID = BOBuildID.QueryByElements;
+	var prmBuildID = qryBuildID.CreateSelectionParams();
+		prmBuildID.Add(qryBuildID.ID, "I", "EQ", "BOCONFIGRETENTION");
+	var insBuildID = qryBuildID.Execute(prmBuildID).GetFirst();
+	if (insBuildID.IsSet()){
+		insBuildID.consecutive = insBuildID.consecutive + 1;
+		this.ConfigurationID = insBuildID.consecutive.ToString();
+	}else{
+		this.ConfigurationID = "1";
+		var newBuildID = BOBuildID.Create();
+
+		if (newBuildID.IsSet()){
+			newBuildID.consecutive = 1;
+			newBuildID.description = "Business Residence";
+			newBuildID.ID = "BOCONFIGRETENTION";
+			newBuildID.UUID.content = UUID.Generate();
+		}
+	}
+}

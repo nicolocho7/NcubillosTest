@@ -1,0 +1,39 @@
+﻿import ABSL;
+import AP.FinancialAccounting.Global;
+
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+
+var msgAccountingDocumentUUID = "No se encontró asiento contable.";
+var msgRecord = "No se grabo el UUID.";
+
+if (LanguageCode != "ES")
+{
+	msgAccountingDocumentUUID = "No Ledger transaction found.";
+	msgRecord = "He did not record the UUID.";
+}
+
+
+if (this.StatusCode == CLStatusPaymentMassCode.CO_3)
+{// Conciliation
+	
+	if (!this.AccountingDocumentUUID.content.IsInitial())
+	{
+		var queryAccDocument = AccountingDocument.QueryByElements;
+		var paramAccDocument = queryAccDocument.CreateSelectionParams();
+		paramAccDocument.Add(queryAccDocument.OriginalEntryDocumentReference.UUID.content, "I", "EQ", this.AccountingDocumentUUID.content);
+		var insAccDocument = queryAccDocument.Execute(paramAccDocument).GetFirst();
+		if (insAccDocument.IsSet())
+		{
+			this.AccountingDocumentID = insAccDocument.ID.content;
+			this.StatusCode = CLStatusPaymentMassCode.CO_4;
+		}
+		else
+		{
+			raise msj.Create("I", msgAccountingDocumentUUID);
+		}
+	}
+	else
+	{
+		raise msj.Create("E", msgRecord);
+	}
+}

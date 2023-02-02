@@ -1,0 +1,11 @@
+﻿import AP.Common.GDT;
+import AP.DueItemManagement.Global;
+
+[Extension] businessobject AP.DueItemManagement.Global:TradeReceivablesPayablesAccount {
+ 
+        // You must activate this business object before you can access the extension fields
+        // or messages in script files, forms, and screens.
+
+     
+  
+}

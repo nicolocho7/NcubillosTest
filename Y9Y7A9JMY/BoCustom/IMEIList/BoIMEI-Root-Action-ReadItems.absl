@@ -1,0 +1,19 @@
+﻿import ABSL;
+import AP.LogisticsExecution.Global;
+
+var query = InboundDelivery.QueryByElements;
+var selParam = query.CreateSelectionParams();
+selParam.Add(query.ID.content, "I", "EQ", this.InboundDeliveryId.content);
+var inboundDelivery = query.Execute(selParam).GetFirst();
+
+foreach(var item in inboundDelivery.Item){
+	var imeiItem: elementsof this.IMEIS;
+	imeiItem.ProductID = item.ItemProduct.ProductKey.ProductID;
+	imeiItem.Quantity = item.ItemQuantity.GetFirst().Quantity;
+	var imeiItemCreated = this.IMEIS.Create(imeiItem);
+
+	foreach(var serial in item.ItemProduct.ItemProductSerialNumber){
+		var serialItem = imeiItemCreated.Serial.Create();
+		serialItem.Serial = serial.IndividualProductSerialIDKey.SerialID;				
+	}
+}

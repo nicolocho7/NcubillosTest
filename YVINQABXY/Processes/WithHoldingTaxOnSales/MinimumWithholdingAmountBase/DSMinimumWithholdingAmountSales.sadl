@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sadl:definition xmlns:ass="http://sap.com/sap.nw.f.sadl/association" date="20181008" time="161840" uuid="76771A04E5954362BF5C018E095616A6" xmlns:sadl="http://sap.com/sap.nw.f.sadl">
+  <sadl:conversions>
+    <sadl:conversion type="ALPHA" />
+  </sadl:conversions>
+  <sadl:modes>
+    <sadl:mode type="FSI" />
+  </sadl:modes>
+  <sadl:dataSource name="DS" binding="YVINQABXY_BOES7737DD3528E569CC/ass:ROOT4F903855210031B0" type="BusinessObjectNode" d2p1:mdrsBinding="BOMinimumWithholdingAmountSales.Root" xmlns:d2p1="http://sap.com/xi/AP/PDI" />
+  <sadl:resultSet>
+    <sadl:structure name="YVINQABXY_BOES7737DD3528E569CC" dataSource="DS" d3p1:mdrsName="BOMinimumWithholdingAmountSales.Root" xmlns:d3p1="http://sap.com/xi/AP/PDI">
+      <sadl:attribute name="IDROOT469924C86F9445F3" binding="ID5B6AA03D69E6EFEB" d3p1:mdrsName="ID" />
+      <sadl:attribute name="COMPANIDROOTD0CF19996C042EB0" binding="COMPANYUUID01379ECC08DA1293-CONTENT" d3p1:mdrsName="CompanyUUID/content" />
+      <sadl:attribute name="UUIDCOIDROOT7B468967C758B384" binding="UUID9D5856A83EA6999B-CONTENT" d3p1:mdrsName="UUID/content" />
+      <sadl:attribute name="TYPEWINGROOT3065ABBFB0A36DBE" binding="TYPEWILDINGA2A99753D64AC63A" d3p1:mdrsName="TypeWithholding" />
+      <sadl:attribute name="CONCEPTROOT5D0CEB057D1AAD18" binding="CONCEPTAF389478F11BE8ED" d3p1:mdrsName="Concept" />
+      <sadl:attribute name="VALUEUVTROOTD6B82CAB52788F3B" binding="VALUEUVTA1083E1085D48855-CURRENCY_CODE" d3p1:mdrsName="ValueUVT/currencyCode" />
+      <sadl:attribute name="VALUEUVTROOTA7B054BD3248FC31" binding="VALUEUVTA1083E1085D48855-CONTENT" d3p1:mdrsName="ValueUVT/content" />
+      <sadl:attribute name="UVTBASEROOTCB1B98D891E068A2" binding="UVTBASECAA3B54282DB605C" d3p1:mdrsName="UVTBase" />
+      <sadl:attribute name="BASEROOT292A64E8F6D6E2DB" binding="BASE5CB9053AEBC61970" d3p1:mdrsName="Base" />
+      <sadl:attribute name="COINROOT65944811164B2FB4" binding="COIN65119E8CBF375A0C" d3p1:mdrsName="Coin" />
+      <sadl:attribute name="SAP_SYTAROOTAF1C6EDFD7141562" binding="SAP_SYEDATAAF54AFE70C7CAE6F-CREATION_DATE_TIME" d3p1:mdrsName="SAP_SystemAdministrativeData/CreationDateTime" />
+      <sadl:attribute name="SAP_SYTAROOTA65361C4FEC884AB" binding="SAP_SYEDATAAF54AFE70C7CAE6F-CREATION_IDENTITY_UUID-CONTENT" d3p1:mdrsName="SAP_SystemAdministrativeData/CreationIdentityUUID/content" />
+      <sadl:attribute name="SAP_SYTAROOT541154E99E4531C3" binding="SAP_SYEDATAAF54AFE70C7CAE6F-LAST_CHANGE_DATE_TIME" d3p1:mdrsName="SAP_SystemAdministrativeData/LastChangeDateTime" />
+      <sadl:attribute name="SAP_SYTAROOTCC7603CCCA9F76A9" binding="SAP_SYEDATAAF54AFE70C7CAE6F-LAST_CHANGE_IDENTITY_UUID-CONTENT" d3p1:mdrsName="SAP_SystemAdministrativeData/LastChangeIdentityUUID/content" />
+    </sadl:structure>
+  </sadl:resultSet>
+</sadl:definition>

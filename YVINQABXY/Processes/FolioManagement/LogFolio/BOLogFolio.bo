@@ -1,0 +1,18 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FO.Product.Global;
+import AP.FO.ProductDataMaintenance.Global;
+
+businessobject BOLogFolio raises msj{
+
+		message msj text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+	
+		[AlternativeKey][Label("ID")]element FolioLogID:ID;
+		[Label("Company")]element CompanyID:ID;
+		[Label("Document Number")] element DocumentNumber: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Folio Number")] element FolioNumber:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Supplier Invoice")] element Supplier:Indicator;
+		[Label("Customer Invoice")] element Customer:Indicator;
+		[Label("Outbound Delivery")] element OutboundDelivery:Indicator;
+		association ToCompany to Company;
+}

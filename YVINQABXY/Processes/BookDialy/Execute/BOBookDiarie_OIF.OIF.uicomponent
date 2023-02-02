@@ -1,0 +1,465 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UXComponent xmlns:base="http://www.sap.com/a1s/cd/oberon/base-1.0" xmlns:uxv="http://www.sap.com/a1s/cd/oberon/uxview-1.0" xmlns:uxc="http://www.sap.com/a1s/cd/oberon/uxcontroller-1.0" id="hNtcil5sRK2JUiJJ5ZFbTm" name="BOBookDiarie_OIF" AuthorizationClassificationCode="Application" useUIController="true" taskRegionDisabled="true" helpId="fe4699fa-af75-47bc-b8de-31a41e415177" designtimeVersion="5.20.0.7" modelVersion="1.0" xmlns="http://www.sap.com/a1s/cd/oberon/uxcomponent-1.0">
+ <uxc:Interface id="R0Y9OjxAJKsRqJPyEWlPmm">
+  <uxc:InPorts id="r4hHUhJu_q6Yygo0UOLU60">
+   <uxc:InPort id="Jk2mrd1YY4IdNss9yxgDNW" name="OBN_View_All_Inport" portTypeReference="To_BOBookDiarie_viewAll" portTypePackage="/YVINQABXY_MAIN/SRC/Processes/BookDialy/Execute/BOBookDiarie_PTP.PTP.uicomponent" onFire="ViewAllHandler" navBO="BOBookDiarie" navBONS="http://0004019099-one-off.sap.com/YVINQABXY_" navBONode="Root" navOperation="To_BOBookDiarie_viewAll">
+    <uxc:Parameter id="ZHshY0yjeaAHoFfEENwAG0" name="Parameter0" bind="/Root/OBN_NAV_KEY"/>
+   </uxc:InPort>
+  </uxc:InPorts>
+  <uxc:Configuration id="SSuRNNHmS4YLM1k6mApamW"/>
+ </uxc:Interface>
+ <uxc:Implementation id="fAywusND4qgSN5VYycGl6W">
+  <uxc:DataModel id="rsIxymr7sqYPfvEumF$aIm" name="Root" designtimeMainBOProxyName="BOBookDiarie" designtimeMainBOEsrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_">
+   <base:PropertyBag id="sknewXtbvaoQKFYkMhOXwG">
+    <base:Property id="qh7Nb$1ed4YbIS38wTfTSm" name="BINDINGSTATUS" value="OK"/>
+   </base:PropertyBag>
+   <uxc:Bind id="pkrsKBFfd4onh0GqIBbNQG" proxyName="BOBookDiarie" field="Root" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+   <uxc:DataField id="s$rkJE$6cKAlLuj8_khpGG" name="@ErrorOccured" type="boolean">
+    <base:PropertyBag id="3jIl4VSOvac8cOFXCo9pDG">
+     <base:Property id="OOSl5oaJ4aATwOu7272rtG" name="BINDINGSTATUS" value="Internal"/>
+     <base:Property id="NnpCPMAFsaYhzqi2yY6l0m" name="USERCHANGEDNAME" value="True"/>
+    </base:PropertyBag>
+   </uxc:DataField>
+   <uxc:Structure id="JRTGjEiltqYiRB62F9oXZW" name="UIState">
+    <base:PropertyBag id="7$Yw15WmP4koSY8yTOhF0G">
+     <base:Property id="jJiXLJ7HwKk_3NAh4WQ$VG" name="BINDINGSTATUS" value="Internal"/>
+     <base:Property id="pgOMJpX9vaok6cQTTEIFVW" name="USERCHANGEDNAME" value="True"/>
+    </base:PropertyBag>
+    <uxc:DataField id="u0OE1YOgYasct6govafi20" name="ViewSwitchSelectedItem" type="string">
+     <base:PropertyBag id="fhLU2LnVWa2Yo2JomZ$eWm">
+      <base:Property id="osXB64Pbb4oYHi5tfU$Cem" name="BINDINGSTATUS" value="Internal"/>
+      <base:Property id="$EfWSaIs5Kk95wL6QteCMm" name="USERCHANGEDNAME" value="True"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+   </uxc:Structure>
+   <uxc:Structure id="lTHP1Q6bhaU$$49iEOZLa0" name="BOBookDiarie">
+    <base:PropertyBag id="L8VVW8xVQqYij71L25e37G">
+     <base:Property id="4RQDgq6974ITk$0TY98zem" name="BINDINGSTATUS" value="OK"/>
+     <base:Property id="7PHAcTCCqqMkE$d08kdL6W" name="USERCHANGEDNAME" value="False"/>
+    </base:PropertyBag>
+    <uxc:Bind id="4G81Zg8VaaAfnw28zG5B0G" proxyName="BOBookDiarie" field="Root" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    <uxc:DataField id="6rpenChatUKhYHFhsA3fAQ" name="EID" type="string" cctsType="identifier">
+     <base:PropertyBag id="4Aj0DZJJIkOugdihK7pzlA">
+      <base:Property id="QYFFvbZNFEC7DmtTADpdtA" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="wA1SKX9lJUaMvhHCiqpYwg" name="UITEXTID" value="YVINQABXY_A31E5472F3D04E3A"/>
+      <base:Property id="janrDMSLCkGv_fAC7onXqg" name="XFLD" value="ID"/>
+      <base:Property id="D5oeUmGdoUqvFcuQ155AXw" name="XCOL" value="ID"/>
+      <base:Property id="Oov64ajZE06BYetG8DCWfA" name="XTOL" value="ID"/>
+     </base:PropertyBag>
+     <uxc:Bind id="AhyjT_Vzuk_un6zDR9goNw" proxyName="BOBookDiarie" field="-~EID" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="PTADeQlEUEWKjUAptRHJKQ" name="EConfigBooKDialy" type="string" cctsType="identifier">
+     <base:PropertyBag id="bwf51pQ2E0OAe5PceWtQAg">
+      <base:Property id="AHe6DwW4h06w5G2Av75ZRA" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="RuxLmh64XEiOt93HW79KZA" name="UITEXTID" value="YVINQABXY_683AB691EFDE79EF"/>
+      <base:Property id="raNeIe_8YUiWV4h8JS3SPg" name="XFLD" value="Set Of Books"/>
+      <base:Property id="KqruIaYbmkeuo9ZUPpTcpQ" name="XCOL" value="Set Of Books"/>
+      <base:Property id="AcJVInAgC0GuujGHw1INNw" name="XTOL" value="Set Of Books"/>
+     </base:PropertyBag>
+     <uxc:Bind id="QBp_jmEmQU2BI7WiWppp8Q" proxyName="BOBookDiarie" field="-~EConfigBooKDialy-~content" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="6hOHvc2h6EmRmDjTs_ZwFA" name="EConfigBooKDialyDescription" type="string" cctsType="name">
+     <base:PropertyBag id="cf72aiqvx0KSbdJPiReu_A">
+      <base:Property id="XtyoCSsnekedtGH0Tch6Fw" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="aJNEsOwYsEuNOOJWC2FIjQ" name="UITEXTID" value=""/>
+      <base:Property id="6W8ualkch0SwxMdFj5DNdA" name="XFLD" value=""/>
+      <base:Property id="LUMxYviuAUi6xAaaU8SSvQ" name="XCOL" value=""/>
+      <base:Property id="fsdl1Kjau0CyUhY4swQ8tQ" name="XTOL" value=""/>
+     </base:PropertyBag>
+     <uxc:Bind id="JzdIlvPAOESctJOIOMt_UQ" proxyName="BOBookDiarie" field="-~EConfigBooKDialyDescription" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="rCtuy7ytv0WqSXnNta8AGg" name="EConfigCompany" type="string" cctsType="name">
+     <base:PropertyBag id="t3AcTZynakegrowHJGuuKg">
+      <base:Property id="eaCViNOWKUK7A8ZAyFHG4g" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="v8IA79MA0ECs1peAUk9AwQ" name="UITEXTID" value=""/>
+      <base:Property id="sMt8OYXCA0KGZiqAnfrT3w" name="XFLD" value=""/>
+      <base:Property id="BV2mQvn1A02i01OHObubMw" name="XCOL" value=""/>
+      <base:Property id="hBQiNkPtGESZAGbX5EA0Fg" name="XTOL" value=""/>
+     </base:PropertyBag>
+     <uxc:Bind id="r0UOaKUAcEuZtPAwvJsOrg" proxyName="BOBookDiarie" field="-~EConfigCompany" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="y_MZ8J61K02vbRZgP2CLMw" name="ECompany" type="string" cctsType="identifier">
+     <base:PropertyBag id="ZqTPo29uMkaFHQlP4Txnng">
+      <base:Property id="ssAUUbP4lEGNrEck6vb9Jw" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="RN2d2XjC4kuTF1Z2w_XpGw" name="UITEXTID" value="YVINQABXY_616D539413585710"/>
+      <base:Property id="wYeCjDwSJUuGH4T3HUHE2A" name="XFLD" value="Company"/>
+      <base:Property id="t8vx_4tzAUWTOXt5zOOLmw" name="XCOL" value="Company"/>
+      <base:Property id="fo19JDGpJ0umg8AnDRMRvg" name="XTOL" value="Company"/>
+     </base:PropertyBag>
+     <uxc:Bind id="pGdm3iofX0uYkFqjaAzZSA" proxyName="BOBookDiarie" field="-~ECompany" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="zcW9xMKyz0Gwk5vQ3eAKuw" name="EYears" type="string" cctsType="text">
+     <base:PropertyBag id="kR7o4gusQUCHTIiyMDO3_g">
+      <base:Property id="qSDhb1rzgEebflXx3OO8TQ" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="c_YM2LdHZE68m4gPTsoL6A" name="UITEXTID" value="YVINQABXY_5356CFAF5FBFF10A"/>
+      <base:Property id="UXxJ0pjgz0mrdvk5SqBCFw" name="XFLD" value="Year"/>
+      <base:Property id="v6p9ZQ7br062hMC3VTQxAQ" name="XCOL" value="Year"/>
+      <base:Property id="9wey9HUszECEAF8p2Fyn_Q" name="XTOL" value="Year"/>
+     </base:PropertyBag>
+     <uxc:Bind id="0jevgiIggkqAuWCnOCc70g" proxyName="BOBookDiarie" field="-~EYears" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="jb_xY5D3oUityDRzxY4NOA" name="EMounths" type="string" cctsType="text">
+     <base:PropertyBag id="866iAlaylEyxlvHtLjTQVA">
+      <base:Property id="N2SgmBnkmkCI7eg3XzCYbw" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="DJHJLbRHU06GAl_bczUFCg" name="UITEXTID" value="YVINQABXY_A92985A9B18AD94D"/>
+      <base:Property id="PvfOAb5z30GyqfjIJXhIqw" name="XFLD" value="Mounth"/>
+      <base:Property id="KgScCKiqh0yE4nsPa9d8IQ" name="XCOL" value="Mounth"/>
+      <base:Property id="zwf9CHn9OUmssmNkpIoPNQ" name="XTOL" value="Mounth"/>
+     </base:PropertyBag>
+     <uxc:Bind id="lauzfJxN2UKFBkTW9z7VKw" proxyName="BOBookDiarie" field="-~EMounths" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="EudMENwYy0u6KepMqomeiA" name="IsConsistent" type="boolean" cctsType="indicator">
+     <base:PropertyBag id="b7vfajhH_EamtYIYB6PPhA">
+      <base:Property id="j91J5Jplx06xrUnp8Wq73w" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="X8dcbWNEIEKd1J8a8qbOBg" name="UITEXTID" value=""/>
+      <base:Property id="47C_wVXBD0mEIhURbciz6Q" name="XFLD" value=""/>
+      <base:Property id="OxAlrOek5U6P_eMVZD3qzg" name="XCOL" value=""/>
+      <base:Property id="nWF4b8Ymvki_6091wTYTyQ" name="XTOL" value=""/>
+     </base:PropertyBag>
+     <uxc:Bind id="jVs3uT1kYkqRdpst8ILl2g" proxyName="BOBookDiarie" field="-~IsConsistent" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="tnkdEPV5_U6USlSW5AW13g" name="EView" type="boolean" cctsType="indicator">
+     <base:PropertyBag id="_USYiUZKE0KemOSsiA69sA">
+      <base:Property id="GdO8Und5IUqby0LFTbPRNA" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="d4cOjADheUWygMsPed4Bxw" name="UITEXTID" value="YVINQABXY_228335CA5DF60A91"/>
+      <base:Property id="8T_KLc6nvk_x3QwuP20Dlw" name="XFLD" value="View Data"/>
+      <base:Property id="6qvsKltqZ0CdSta40Y4Ufg" name="XCOL" value="View Data"/>
+      <base:Property id="uPMFlG76RU_sLx2RsV1VLA" name="XTOL" value="View Data"/>
+     </base:PropertyBag>
+     <uxc:Bind id="RUrfQLbPnkaQzLwkScpK8Q" proxyName="BOBookDiarie" field="-~EView" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="JzxAqPF5AkeLA7VCA59Dbg" name="EOvs" type="string" cctsType="identifier">
+     <base:PropertyBag id="58WH_NPKYkKWFaBFKF0H2g">
+      <base:Property id="N3oizRVIdUq1HFbM8EI0_w" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="6rIvAj8b2kSaOWiZ4zBEhw" name="UITEXTID" value="YVINQABXY_EE67B20EE515F3AF"/>
+      <base:Property id="07PVl249A02ztipVVQYv5g" name="XFLD" value="Parameters"/>
+      <base:Property id="n7BJiliwVkGqUSDT6qS6bg" name="XCOL" value="Parameters"/>
+      <base:Property id="eJAZroM3zEmsMcVlfQZu0w" name="XTOL" value="Parameters"/>
+     </base:PropertyBag>
+     <uxc:Bind id="YPjoKCL210eOfNgOs9qYjg" proxyName="BOBookDiarie" field="-~EOvs" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="1NWBOKXSqUqo6uKeBrR8VQ" name="ECalendar" type="date" cctsType="date">
+     <base:PropertyBag id="l4ijzU7pc02zSLg25kc1eQ">
+      <base:Property id="T69XomKunEiccY91WA7DXA" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="AB0NvKlvBUGoRDAFYlfv8A" name="UITEXTID" value="YVINQABXY_80BB7F15502303CB"/>
+      <base:Property id="UmzVX1QFg0_VYSEfBil9gw" name="XFLD" value="Day"/>
+      <base:Property id="gc1pBvAVgEmy3FqAh4lpQQ" name="XCOL" value="Day"/>
+      <base:Property id="XBiMFA5P70GP8EpChrGQZw" name="XTOL" value="Day"/>
+     </base:PropertyBag>
+     <uxc:Bind id="I0q_5rS9bk6jyRgZB9avlg" proxyName="BOBookDiarie" field="-~ECalendar" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="y1BUoGqLgEWo_CL1NhcSlg" name="EDays" type="string" cctsType="text">
+     <base:PropertyBag id="6LA6N5srjEuHlwe8XxPmJw">
+      <base:Property id="HAHVz4uoFEum9Kv5gy0OsQ" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="1NdkHw6sWkm7M9e8WB4BiA" name="UITEXTID" value="YVINQABXY_717E98C4EBE172AE"/>
+      <base:Property id="tGpeLxoibE6q62cLBUQduA" name="XFLD" value="Day"/>
+      <base:Property id="sFr8OObI70K6F6yFACGVOw" name="XCOL" value="Day"/>
+      <base:Property id="wKJaJwzDqEqfcL8ApATueQ" name="XTOL" value="Day"/>
+     </base:PropertyBag>
+     <uxc:Bind id="nV77CQSskUCyLF9dq_n1VQ" proxyName="BOBookDiarie" field="-~EDays" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="Ui_5WLuOJq2nAwhJNFr5cm" name="NodeID" type="string">
+     <base:PropertyBag id="WdWWAoo3WaMRItkXql1raW">
+      <base:Property id="a5MX93C2iq6R$L3h4Xagrm" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="1MfCUnAYXqkaLi7B9G4NGm" name="USERCHANGEDNAME" value="True"/>
+     </base:PropertyBag>
+     <uxc:Bind id="evrUaMg3y4oOtk06ZwX7fm" proxyName="BOBookDiarie" field="-~NodeID" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+   </uxc:Structure>
+   <uxc:DataField id="rRcGGwTplK6ukdAknhP2a0" name="OBN_NAV_KEY" type="string">
+    <base:PropertyBag id="0eFpsQd9SaYTE8GEOiTU9m">
+     <base:Property id="XJP8DdF4qKAnrHJOxWsk_0" name="BINDINGSTATUS" value="ToBind"/>
+     <base:Property id="VvpulYI0r4oZuSukMdtn6m" name="USERCHANGEDNAME" value="True"/>
+    </base:PropertyBag>
+   </uxc:DataField>
+   <uxc:Structure id="uswqsUWT9KgmvWqHfoW1dG" name="$System">
+    <base:PropertyBag id="Q_B8wsIKGqUlHAUWUk69jW">
+     <base:Property id="OlLKCzNu4agptHRHxsIB2G" name="BINDINGSTATUS" value="Internal"/>
+    </base:PropertyBag>
+    <uxc:DataField id="4BtZf3qnDqUD3kcFlwe1am" name="SessionUrl" type="string">
+     <base:PropertyBag id="GrJWgcQh9aowC8VvYXdxDG">
+      <base:Property id="7br86fQ6FKcdG8ruzb4gR0" name="BINDINGSTATUS" value="Internal"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+    <uxc:DataField id="ARIkgJXkK4ckcD$4juWrDW" name="Saved" type="boolean">
+     <base:PropertyBag id="CeESKQCZ$qIdtdujMUCXkG">
+      <base:Property id="cuTg5Ty_JKcp9YuKkf1LiG" name="BINDINGSTATUS" value="Internal"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+    <uxc:DataField id="JN$UpF71cqQPuWE3zRFX5G" name="IsPersistent" type="boolean">
+     <base:PropertyBag id="5Jq8XAmoc4otNSCq9O4V6m">
+      <base:Property id="Yb40q_nY4qkIuTZByosdmG" name="BINDINGSTATUS" value="Internal"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+   </uxc:Structure>
+  </uxc:DataModel>
+  <uxc:EventHandlers id="e0GEm95gTq6TmlbvagGUe0">
+   <uxc:EventHandler id="2z0UHyfVXa6dSOVtDh5IYm" name="SaveHandler">
+    <uxc:WindowAction id="EcgJtU8UbacVAsBqXc2EIW" name="Save" action="Save"/>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="a2kNyfAoMq2YInIOc8Pz1G" name="CreateHandler" eventType="simple">
+    <uxc:BoOperation id="40_yiE2sH4El8zfDDI2LsW" name="Create" proxyName="BOBookDiarie" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_" operation="Create"/>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="PSC6cqReHkKFhD0JSuzH_w" name="ActionDetalleUtilizadoHandler">
+    <uxc:BoAction id="4CqQLdHy3UG61CJIwficAg" name="ActionDetalleUtilizado" proxyName="BOBookDiarie" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_" actionPath="-&gt;DetalleUtilizado" instanceBinding="/Root"/>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="2etWfwjQN0mYFQmJLw0bcw" name="ActionexecuteHandler">
+    <uxc:BoAction id="GTlBf0XLvkmFzxNOK82Xpg" name="Actionexecute" proxyName="BOBookDiarie" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_" actionPath="-&gt;execute" instanceBinding="/Root"/>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="47MddAhYfky5o0Ry6I0O0w" name="ActionLoadHandler">
+    <uxc:BoAction id="cDbFrt1lNEKtNapFnJAcsQ" name="ActionLoad" proxyName="BOBookDiarie" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_" actionPath="-&gt;Load" instanceBinding="/Root"/>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="sICdgFRIoq2Ygm4HxxqCyG" name="ViewAllHandler">
+    <uxc:BoOperation id="6ZMrk3qm0awumsdySc$qkW" name="Operation1" proxyName="BOBookDiarie" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_" operation="Read">
+     <uxc:BoOperationParameter id="txzt52_XLK6E9jLmcX1HRm" name="NavKey" bind="/Root/OBN_NAV_KEY" type="nodeId" path="/Root/BOBookDiarie/NodeID"/>
+    </uxc:BoOperation>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="vAommTVlWKEQiwTg_NxrQm" name="CloseHandler">
+    <uxc:WindowAction id="XgQfW7R1pa6sEXgr_fz_K0" name="Operation" action="Close"/>
+   </uxc:EventHandler>
+  </uxc:EventHandlers>
+  <uxc:ModelChanges/>
+ </uxc:Implementation>
+ <uxc:Navigation id="S$lJhzLTTqQXl_ly4VsLnW"/>
+ <uxc:EmbeddedComponents id="0GA_tdeGNqwVjdI04FCSzW"/>
+ <uxc:RBAMData id="50ecLbjAy4MOrdNhbfYrE0" accessCheckMode="PrivilegedExceptAccessControlledBusinessObjects">
+  <uxc:AccessControlledBusinessObject id="xyFiVTRY_qQOYNGhlRWsWW" BO="BOBookDiarie" BONS="http://0004019099-one-off.sap.com/YVINQABXY_" unrestrictedAccess="true"/>
+ </uxc:RBAMData>
+ <uxc:Description id="zs88KqsAVaMKDL3Z_faRDG" textPoolId="DTIBpVjcgqQbOYm3S4vKjW"/>
+ <Tags id="7UGpWxSINKU9cuGqT0IWHG">
+          </Tags>
+ <UXView id="Bpg7a1BnnK6cGvWTJ228OG" patternType="objectInstance" checkClassification="Standard" checkMode="Both">
+  <uxv:IdentificationRegion id="1GC_8KDui4UOJ9kNi3qAEW">
+   <uxv:Title id="PVPq6vaMIq_VzN5TFnzWtG" textPoolId="cd814d84b1254e01b1b6f092479ed179"/>
+  </uxv:IdentificationRegion>
+  <uxv:ContextualNavigationRegion id="h9yz0FHc4a_lKGh_KxYJeG">
+   <uxv:ViewSwitchNavigation id="z0GdRKlweKM$ZDOh9N4VPW">
+    <uxv:NavigationItem id="vrKkAihq8KcXjwFjX2wm5W" navigationItemId="NavigationItem_jwfa0SEV1KI6_3JN7GyKWm">
+     <base:PropertyBag id="Vw7Yv7kO2a2Cd$XcAgR_40">
+      <base:Property id="tBycSHg6w4kmHGQTb3rTN0" name="NavigationTarget" value=""/>
+     </base:PropertyBag>
+     <uxv:Title id="RSiShoqtXqEvBg16RQGXk0" textPoolId="1c6dbd827ce248b4992fac68439bcf41"/>
+    </uxv:NavigationItem>
+    <uxv:NavigationItem id="C0bo7Qy7zqY_c3JPaEq9Rm" navigationItemId="NavigationItem1_Ue5VkLVxYa2G6mbKghBFXm">
+     <base:PropertyBag id="XgOn58cGu4_Hi7UWHvL090">
+      <base:Property id="NtgWFIevuK2riw3I5RbMvm" name="NavigationTarget" value=""/>
+     </base:PropertyBag>
+     <uxv:Title id="eEpDAsb4R4EwH7iZhVZaFG" textPoolId="8898aff204454a91b0db5f1cbeb219c2"/>
+    </uxv:NavigationItem>
+    <uxv:NavigationItem id="A3q2fObDWKY2CpwEEnQKVW" navigationItemId="NavigationItem2_9lZlohXyV4MHv4jszm8wcG">
+     <base:PropertyBag id="vPdORFa3wqcrJU8oTZp$GG">
+      <base:Property id="NKWkypnLF4UCZztQN9Ykvm" name="NavigationTarget" value=""/>
+     </base:PropertyBag>
+     <uxv:Title id="DLdpbqrkEKw3N1_EGogBLm" textPoolId="72d10059fa2543c280abbe2b092f4e61"/>
+    </uxv:NavigationItem>
+    <uxv:NavigationItem id="D9sfIXiFZKQVBaOO6SMoV0" navigationItemId="NavigationItem3_b2OdjH_iKa6Gjar_bnXPHm">
+     <base:PropertyBag id="cQHP1PoiNqEl9Uie921E_G">
+      <base:Property id="k5nhWNg93KY96cws9aSseG" name="NavigationTarget" value=""/>
+     </base:PropertyBag>
+     <uxv:Title id="y1xWJyAiB4UyCNJVOukuyG" textPoolId="586dc08ebd844fe0a0237cd94ebd353e"/>
+    </uxv:NavigationItem>
+    <uxv:NavigationItem id="jnmtk83HmKUFjoPXrYKgnG" navigationItemId="NavigationItem4_Bdnm29gZ9akaOKfrn0yUUm">
+     <base:PropertyBag id="lRRVkbrz8qQZwUbA5VQPN0">
+      <base:Property id="c$ZCazoBm4kuHayAag6um0" name="NavigationTarget" value=""/>
+     </base:PropertyBag>
+     <uxv:Title id="7585kA_DHKc1pGaExvOnlG" textPoolId="ffde5dd1103f4c8f90abfc1f28ba3e4a"/>
+    </uxv:NavigationItem>
+    <uxv:SelectedNavigationItemId id="57daEC_8_aEhz2$OI0T$$W" bindingExpression="/Root/UIState/ViewSwitchSelectedItem"/>
+   </uxv:ViewSwitchNavigation>
+   <uxv:FunctionBar id="BDlGS_gSwqwEjecUamaX9m">
+    <uxv:ButtonGroup id="H2M9XNn56qogCBNXpM3DTW" name="ActionButtons">
+     <uxv:Button id="_Wv5nG_0RqAXtLfZ9QqrEm" name="Save" onClick="SaveHandler" style="Standard">
+      <uxv:Text id="rTYbk8neR4Mx7vRr1fWO$G" textPoolId="e3bbca08e04245d380a3491fa150ef7b"/>
+     </uxv:Button>
+     <uxv:Button id="wlDzWUDSA4sEnJR0t_W5GW" name="Close" onClick="CloseHandler" style="Cancel">
+      <uxv:Text id="jZo49xtTt4UblNsxNv5PuG" textPoolId="b6d3802bfa274f33a8085780fb212d02"/>
+     </uxv:Button>
+    </uxv:ButtonGroup>
+    <uxv:ButtonGroup id="_fYeoij524YxoRJO3Cy0Xm" name="ApplicationSpecificButtons">
+     <uxv:Button id="aDgzrKoOoEGEA4jgPZ9Ujg" name="ActionDetalleUtilizadoButton" onClick="ActionDetalleUtilizadoHandler" style="Standard">
+      <uxv:Text id="3k_4pzUJqkCfbVU465_9pQ" textPoolId="IiugD3bVukWuZj5mKr0kkA"/>
+     </uxv:Button>
+     <uxv:Button id="b1WYkl3w3UONpGJMP4tybw" name="ActionexecuteButton" onClick="ActionexecuteHandler" style="Standard">
+      <uxv:Text id="ESNZ6eJglUGMHsIE7vykow" textPoolId="ctrahZ19Kkmq6pNbESuERQ"/>
+     </uxv:Button>
+     <uxv:Button id="bggEmO_9aUK6bVfw_Vn2Ag" name="ActionLoadButton" onClick="ActionLoadHandler" style="Standard">
+      <uxv:Text id="AvrAOXPTqEihjxZdDNAqrg" textPoolId="1bhCC7mCbU_ZmgKKqUKmPQ"/>
+     </uxv:Button>
+    </uxv:ButtonGroup>
+   </uxv:FunctionBar>
+  </uxv:ContextualNavigationRegion>
+  <uxv:ViewContainerRegion id="aAf0JbJ6C4o31qapXFaeSm">
+   <uxv:View id="_ErGk7B$iqgdXmAxmkLSc0" columns="2" rows="2" navigationItemId="NavigationItem_jwfa0SEV1KI6_3JN7GyKWm">
+    <uxv:PaneContainer id="_nKO8XXJr4IkWvnTG79G5m" column="0" row="0" colSpan="2" rowSpan="2">
+     <uxv:FormPane id="mkmo1qdNKqo7buT$U0$Zj0">
+      <uxv:SectionGroup id="vSMJXBECX4gXunrJDAVXH0" column="0" row="0" showGroupName="true">
+       <base:PropertyBag id="zy3ylzOgbKw40HAwcX2UdW">
+        <base:Property id="m8HUqhLOJKA0rZlRZaNUmm" name="Navigation" value=""/>
+       </base:PropertyBag>
+       <uxv:SectionGroupName id="xLE0RN6KH4gFrxmYxPavdG" textPoolId="zkONqtbQ7aUwmga20vcEv0"/>
+       <uxv:SectionGroupItem id="tN1a2XSn6UyWyH575EokPA">
+        <uxv:Label id="U7d_v0NPfUKhZhYtD5Xafg" textPoolId="P7xD8FwC2UCDkNeQftUP8A"/>
+        <uxv:InputField id="XxjrttCiS0eXZoSpdM_Low" name="EID" cctsType="identifier">
+         <uxv:IdentifierCCTSConfig id="NR2puFuWSUK21cL7Tvvh1g" interpretAsInteger="false"/>
+         <uxv:Value id="HvKkTGTokUWzDLB9tD9x0w" bindingExpression="/Root/BOBookDiarie/EID">
+          <!-- <base:PropertyBag id="vgSJVZWsB0yU4_NAiE664w">
+											<base:Property id="5123Pfpr40GUfBolu1eHkQ" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="xMADJIyoUEa_VHc2fVUSDA">
+        <uxv:Label id="5HLnqYuzmE27ACW5L1CbqA" textPoolId="iCWpMJfVEE2hQeSZhsBlJA"/>
+        <uxv:InputField id="7ApCyoKsqky3KFAr4AWKZA" name="EConfigBooKDialy" cctsType="identifier">
+         <uxv:IdentifierCCTSConfig id="suzrNRlkBEO4Wgn7TTOvFQ" interpretAsInteger="false"/>
+         <uxv:Value id="CYejT_KqWUSiTjpWbyA1qg" bindingExpression="/Root/BOBookDiarie/EConfigBooKDialy">
+          <!-- <base:PropertyBag id="k7ruDAdhc0WyvnBS4UuUFw">
+											<base:Property id="mpMtxwJKvEaQrzwGoRDDzw" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="AUny0PIwdkqaAxb2RWYpMA">
+        <uxv:Label id="ILH30eVsbk6rvmVnJY5fyw" textPoolId="7wBAwDKcokme97Vihco9Aw"/>
+        <uxv:InputField id="fagv6an9Ck_XryPXHf7goQ" name="EConfigBooKDialyDescription" cctsType="name">
+         <uxv:Value id="pGbAr7aUsU25FoYcu2qTVA" bindingExpression="/Root/BOBookDiarie/EConfigBooKDialyDescription">
+          <!-- <base:PropertyBag id="B6d_ICUwjU_fyTMhGJKU1w">
+											<base:Property id="8XyPYS4nikCacGMsqMuXfA" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="0GXjVLJhh0uVYyNb_DfHtQ">
+        <uxv:Label id="GAXlATd7y06XNeibtjWZsg" textPoolId="60j32JhCyEy5nSJFqrAYGQ"/>
+        <uxv:InputField id="t6V94wCADEetJzEbmLkIuA" name="EConfigCompany" cctsType="name">
+         <uxv:Value id="O0sbNepzAESHjArJC9ucPw" bindingExpression="/Root/BOBookDiarie/EConfigCompany">
+          <!-- <base:PropertyBag id="u2HlA69Td0WhA07A7jrIsw">
+											<base:Property id="700aI3g5P02XbbAYd2LyOw" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="gw3cRiWgR02cYygkESsNPQ">
+        <uxv:Label id="YlgOBomK9kW0Gb9OVA_UMw" textPoolId="FszgH53rVkOnwO6sw8qB8A"/>
+        <uxv:InputField id="jnMNnVAk6UqX2ZONgeK47g" name="ECompany" cctsType="identifier">
+         <uxv:IdentifierCCTSConfig id="d_gGGHTNhkaovL2JGamL_Q" interpretAsInteger="false"/>
+         <uxv:Value id="SLgWrtLNjky_qgm8dWEvgg" bindingExpression="/Root/BOBookDiarie/ECompany">
+          <!-- <base:PropertyBag id="VTB9CBM0i0_weuf9s8VdtQ">
+											<base:Property id="VSJ3Vvbp60qogXOfKmBI0Q" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="fRT2MjiH9U2jhcu8vE1KDg">
+        <uxv:Label id="gTVByZuJUkOjZ_vwWAgn_w" textPoolId="_sg8SESM10mK4BsAv0hePQ"/>
+        <uxv:InputField id="zvDX94jIJECj0YWLgwjG_A" name="EYears" cctsType="text">
+         <uxv:Value id="Rtm2geUokEaYyLOL1aNzAA" bindingExpression="/Root/BOBookDiarie/EYears">
+          <!-- <base:PropertyBag id="jdWu8lsmE0qbc_CmaTh3HQ">
+											<base:Property id="qwwZclOGNU2mbJTtxh0Y0A" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="1usAGqEZAE2HA8eekHy3jw">
+        <uxv:Label id="wcAUA4AKN0OMwOwxCni_Ag" textPoolId="g0X3LGj9qkKY8wnha1MsbQ"/>
+        <uxv:InputField id="HBKuIdwARkWLvyKaIVwgKg" name="EMounths" cctsType="text">
+         <uxv:Value id="u1Y7Rc6rskqI1JNVDS4laA" bindingExpression="/Root/BOBookDiarie/EMounths">
+          <!-- <base:PropertyBag id="Z66UAKs3Lkm66oL2VIdS2A">
+											<base:Property id="5vq_GSRY1ESDRJqWsJj6Zw" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="Ia5iKfJM2kqXwf5IMevjnA">
+        <uxv:Label id="VR7qlSpTJkuORecVBtkd1g" textPoolId="iuU_s_ggdUeEVJQWdVH47w"/>
+        <uxv:CheckBox id="oo6fjYRTRUe27Sx0KtNhCQ" name="IsConsistent" cctsType="indicator">
+         <uxv:Value id="rIIAsOQ3f0GriJ0LA0Ji4Q" bindingExpression="/Root/BOBookDiarie/IsConsistent">
+          <!-- <base:PropertyBag id="9AvewsIFxk_Q8We5ufdbdw">
+											<base:Property id="_S0wVOvZJ0unSJ_rBiIZvg" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:CheckBox>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="pC7VtHq1lkaNjoOfAHnIEQ">
+        <uxv:Label id="hMVsbZtahEqzDAuarU_G5A" textPoolId="WH5l0vAfSEWeqlob3rQ0_w"/>
+        <uxv:CheckBox id="8Q5fcb9lQkuyARfE3zpgTw" name="EView" cctsType="indicator">
+         <uxv:Value id="9xvYNFZGwUSTWXCFuAIhjw" bindingExpression="/Root/BOBookDiarie/EView">
+          <!-- <base:PropertyBag id="Kfol2Qrro0KSjqoxgKdbZg">
+											<base:Property id="LWatYCte2U_bs_qiVxWAsA" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:CheckBox>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="vVVLvouQ5EGMIurbGuFB7A">
+        <uxv:Label id="03rPvrkWDUC67PnIVsOJPg" textPoolId="oZwoHOQDYUWf9QHlLKpatw"/>
+        <uxv:InputField id="__79Q3HUB0iANDYeo9u2jg" name="EOvs" cctsType="identifier">
+         <uxv:IdentifierCCTSConfig id="QMcK0bkXkkylk0zwV56q2w" interpretAsInteger="false"/>
+         <uxv:Value id="lZJ8f5F2y0ayetpdNVpUsQ" bindingExpression="/Root/BOBookDiarie/EOvs">
+          <!-- <base:PropertyBag id="2qA7dRttb0mu55kS3Arokg">
+											<base:Property id="y8vs2YBiF0Kse4V2xOhV2g" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="NWw2yxBCjUOaUxT92dA1hA">
+        <uxv:Label id="g59w0pIKEEqo_d1xKBmhzw" textPoolId="vQvxZmB06kOqQCE8KHh7JA"/>
+        <uxv:InputField id="3E3Wtb0qtEORt9u5crTvtg" name="ECalendar" cctsType="date">
+         <uxv:DateCCTSConfig id="lb1mnvf5B0yl70hznkEgTQ"/>
+         <uxv:Value id="lkZ7sybDAk2yQf0TA71Aog" bindingExpression="/Root/BOBookDiarie/ECalendar">
+          <!-- <base:PropertyBag id="uIBs4BDWgky0hltIJFyMyw">
+											<base:Property id="ODKUoGQgwUesAQEqiXqsng" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="PVtND50iCkmcfU4S8K1I8g">
+        <uxv:Label id="P8QWGXuCaECACcC24e5KQw" textPoolId="NgHeHCCQGkK9CGlw2LT1qw"/>
+        <uxv:InputField id="z_ChR7HyRUagImSBcVjkmA" name="EDays" cctsType="text">
+         <uxv:Value id="DpXRgk1hxE_RkMfLZamrEA" bindingExpression="/Root/BOBookDiarie/EDays">
+          <!-- <base:PropertyBag id="E8d0oj8TbUGWflkPI8_N2w">
+											<base:Property id="nX_Chq_QhEueWVESsR4ONQ" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+      </uxv:SectionGroup>
+     </uxv:FormPane>
+    </uxv:PaneContainer>
+   </uxv:View>
+   <uxv:View id="N4Y5BFvzuasNFvcvYPSYmW" columns="2" rows="2" navigationItemId="NavigationItem1_Ue5VkLVxYa2G6mbKghBFXm"/>
+   <uxv:View id="SOnyJXESR4wEXH1IBkPs3G" columns="2" rows="2" navigationItemId="NavigationItem2_9lZlohXyV4MHv4jszm8wcG"/>
+   <uxv:View id="gPBF_IkXdKcWiGKrwPfmtW" columns="2" rows="2" navigationItemId="NavigationItem3_b2OdjH_iKa6Gjar_bnXPHm"/>
+   <uxv:View id="m2Yr7JBJV4U$C87qmB1q_m" columns="1" rows="1" navigationItemId="NavigationItem4_Bdnm29gZ9akaOKfrn0yUUm"/>
+  </uxv:ViewContainerRegion>
+  <uxv:ActionForms/>
+ </UXView>
+ <TextPool>
+  <base:TextBlock language="EN" masterLanguage="true" currentLanguage="true">
+   <base:TextPoolEntry id="oDl1EhIL$aEVczFMn5i0KG" textUuid="cd814d84b1254e01b1b6f092479ed179" text="BOBookDiarie : &lt;ID and/or Description&gt;" textCategory="XTIT"/>
+   <base:TextPoolEntry id="D7dONOlLD4ohDAEGe7d11G" textUuid="e3bbca08e04245d380a3491fa150ef7b" text="Save" textCategory="XBUT"/>
+   <base:TextPoolEntry id="vg1t2LcoIqcpE7Lcvt04TW" textUuid="b6d3802bfa274f33a8085780fb212d02" text="Close" textCategory="XBUT"/>
+   <base:TextPoolEntry id="qDlO8X5JKqka5Y8gFqo6u0" textUuid="1c6dbd827ce248b4992fac68439bcf41" text="General" textCategory="XTBS"/>
+   <base:TextPoolEntry id="BBUC7XLfP4gpHz0SqtF_km" textUuid="8898aff204454a91b0db5f1cbeb219c2" text="Line Items" textCategory="XTBS"/>
+   <base:TextPoolEntry id="O8rfcZ16PK2kaN5Lt_uSb0" textUuid="72d10059fa2543c280abbe2b092f4e61" text="Changes" textCategory="XTBS"/>
+   <base:TextPoolEntry id="j$hVjWTNbqwmSJA1YyQus0" textUuid="586dc08ebd844fe0a0237cd94ebd353e" text="Notes" textCategory="XTBS"/>
+   <base:TextPoolEntry id="T66$5XtK5qo7Lyw_NFGR20" textUuid="ffde5dd1103f4c8f90abfc1f28ba3e4a" text="Attachments" textCategory="XTBS"/>
+   <base:TextPoolEntry id="VQbXjneCqaIk2lcoo3Hd0m" textUuid="zkONqtbQ7aUwmga20vcEv0" text="FieldGroup" textCategory="XGRP"/>
+   <base:TextPoolEntry id="25mWfzdlmKQi6vXK0_xXQW" textUuid="DTIBpVjcgqQbOYm3S4vKjW" text="BOBookDiarie_OIF" textCategory="YEXP"/>
+   <base:TextPoolEntry id="YxmFt6X2vU2Wm7bBKHAgLw" textUuid="P7xD8FwC2UCDkNeQftUP8A" text="ID" esrTextId="YVINQABXY_A31E5472F3D04E3A" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="2nt5gVgOzU2ajgAUVWdZZA" textUuid="iCWpMJfVEE2hQeSZhsBlJA" text="Set Of Books" esrTextId="YVINQABXY_683AB691EFDE79EF" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="sKhqbFdUvkukXEqI7Ooeqg" textUuid="7wBAwDKcokme97Vihco9Aw" text="EConfigBooKDialyDescription"/>
+   <base:TextPoolEntry id="cyxB1QcGxkCrIuIItgibhA" textUuid="60j32JhCyEy5nSJFqrAYGQ" text="EConfigCompany"/>
+   <base:TextPoolEntry id="HgAtoL_fOU6bIYI4pKp7oQ" textUuid="FszgH53rVkOnwO6sw8qB8A" text="Company" esrTextId="YVINQABXY_616D539413585710" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="mdAjJuJDy0GFnEdEALeR9A" textUuid="_sg8SESM10mK4BsAv0hePQ" text="Year" esrTextId="YVINQABXY_5356CFAF5FBFF10A" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="CCRlZVWYhE697aC8sgyewQ" textUuid="g0X3LGj9qkKY8wnha1MsbQ" text="Mounth" esrTextId="YVINQABXY_A92985A9B18AD94D" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="_9UP5FAti0Cur2_DnTnnUg" textUuid="iuU_s_ggdUeEVJQWdVH47w" text="IsConsistent"/>
+   <base:TextPoolEntry id="AVFtN2EbGkWHd5PKcBQoEQ" textUuid="WH5l0vAfSEWeqlob3rQ0_w" text="View Data" esrTextId="YVINQABXY_228335CA5DF60A91" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="3NHUbIEaU0yvkeQsM65Kpg" textUuid="oZwoHOQDYUWf9QHlLKpatw" text="Parameters" esrTextId="YVINQABXY_EE67B20EE515F3AF" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="LFnc3Ek6nkOkpUcMVIXNCQ" textUuid="vQvxZmB06kOqQCE8KHh7JA" text="Day" esrTextId="YVINQABXY_80BB7F15502303CB" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="IKjaThQSfkKley2f3WpxrQ" textUuid="NgHeHCCQGkK9CGlw2LT1qw" text="Day" esrTextId="YVINQABXY_717E98C4EBE172AE" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="dTUHqmhpG06kL91Bqq9AEQ" textUuid="IiugD3bVukWuZj5mKr0kkA" text="DetalleUtilizado"/>
+   <base:TextPoolEntry id="8DaA5WNIsE6P9p3C3TPzvA" textUuid="ctrahZ19Kkmq6pNbESuERQ" text="execute"/>
+   <base:TextPoolEntry id="8k02Tu92oUKkoFExrUiuPA" textUuid="1bhCC7mCbU_ZmgKKqUKmPQ" text="Load"/>
+  </base:TextBlock>
+ </TextPool>
+</UXComponent>

@@ -1,0 +1,86 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FinancialAccounting.Global;
+
+[DeploymentUnit(Financials)][WithAdministrativeData] businessobject BOPyGExecution raises msj {
+
+	message msj text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+	[Label("ID")]									element Correlativo	: ID;
+	[Label("Estructura ID")]						element ID			: ID;
+	[Label("Estructura ID Equity Configuration")]	element IDEquity	: ID;
+	[Label("Report Date")]							element ReportDate	: Date;
+	[Label("Period")]								element DateFrom	:Date;
+	[Label("Company")]								element CompanyID	:OrganisationalCentreID;
+													association ToCompany			to Company;
+	[Label("RUC")]									element CompanyRuc	:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Set Of Books")]							element SetOfBooksID:SetOfBooksID;
+													association ToSetofBooks to SetOfBooks  using ID;
+	[Label("Chart of Accounts")]					element ChartOfAccountsCode: ChartOfAccountsCode;
+
+
+	[Label("To")]element DateTo:Date;//no se usa
+	[Label("Currency")]element Currency:CurrencyCode;//no se usa
+
+	[Label("Report Name")]			element ReportName: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Type Of Report")]		element TypeReport		: CLReportPYGCode;
+	
+	node Details [0,n] raises msjDetails {
+		message msjDetails text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Period")]	element Period: Date ; 
+		[Label("Catalog Code")]			element CatalogCode: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("EF Code")]			element EFCode: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("AREA FUNCIONAL")]	element AreaFuncional: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Amount")]			element Amount: Amount;
+		[Label("Status operation")]			element StatusOperation: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Campo libre")]			element CampoLibre: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Account from Numeric")]element AccountFromNumeric: DecimalValue;
+		[Label("Account to Numeric")]element AccountToNumeric: DecimalValue;
+		[Label("Concept")]element Concept: CLEquityConceptCode;
+		[Label("Debit/credit")]				element DebitCredit: CLDebitCreditCode;
+		[Label("Saldo Inicial")]			element SaldoInicial: Indicator;
+	}
+
+	node Details_Impr [0,n] raises msjDetails {
+		message msjDetails_1 text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Period")]	element Period: Date ; 
+		[Label("Catalog Code")]			element CatalogCode: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("EF Code")]			element EFCode: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("AREA FUNCIONAL")]	element AreaFuncional: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Amount")]			element Amount: Amount;
+		[Label("Status operation")]			element StatusOperation: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Campo libre")]			element CampoLibre: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Account from Numeric")]element AccountFromNumeric: DecimalValue;
+		[Label("Account to Numeric")]element AccountToNumeric: DecimalValue;
+		[Label("Concept")]element Concept: CLEquityConceptCode;
+		[Label("Debit/credit")]				element DebitCredit: CLDebitCreditCode;
+		[Label("Saldo Inicial")]			element SaldoInicial: Indicator;
+		[Label("Amount4")]			element Amount4: Amount;
+		[Label("Amount5")]			element Amount5: Amount;
+		[Label("Amount6")]			element Amount6: Amount;
+		[Label("Amount7")]			element Amount7: Amount;
+		[Label("Amount8")]			element Amount8: Amount;
+		[Label("Amount9")]			element Amount9: Amount;
+		[Label("Amount10")]			element Amount10: Amount;
+		[Label("Amount11")]			element Amount11: Amount;
+		[Label("Amount12")]			element Amount12: Amount;
+		[Label("Amount13")]			element Amount13: Amount;
+		[Label("Amount14")]			element Amount14: Amount;
+		[Label("Amount15")]			element Amount15: Amount;
+	}
+	element Execute: Indicator;
+	element Export: Indicator;
+
+	action aExecute;
+	action aExport;
+	action PYG1;
+	action PYG2;
+	action PYG3; 
+	action PYG4;
+	action PYG5;
+	action PYG6;
+	action PYG7;
+	
+	[DependentObject(AttachmentFolder)] node ReportsAttachments;
+
+}

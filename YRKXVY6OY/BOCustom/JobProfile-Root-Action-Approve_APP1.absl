@@ -1,0 +1,16 @@
+﻿/* 
+Generated scripting language implementation for approval process APP1
+
+	Business Object: JobProfile
+	Node: Root
+	Action: Approve
+
+Note: This implementation can be adjusted if required
+*/
+
+import ABSL; 
+var result = this.Function::Approve();
+
+if(this.ApprovalStatus == "4"){
+	this.publishJob();
+}

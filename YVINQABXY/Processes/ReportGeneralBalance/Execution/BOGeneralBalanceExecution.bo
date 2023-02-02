@@ -1,0 +1,60 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FinancialAccounting.Global;
+
+[DeploymentUnit(Financials)][WithAdministrativeData] businessobject BOGeneralBalanceExecution raises msj {
+
+		message msj text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+        
+		[Label("ID")][AlternativeKey]	element ID: ID;
+		[Label("Estructura ID")]			element EstructuraID							: ID;
+
+		[Label("Company")]				element CompanyID: OrganisationalCentreID;
+		association ToCompany			to Company;
+		[Label("RUC")]			element CompanyRuc: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Set Of Books")]			 element SetOfBooksID				: SetOfBooksID;
+		association ToSetofBooks to SetOfBooks  using ID;
+		[Label("Chart of Accounts")]element ChartOfAccountsCode: ChartOfAccountsCode;
+		[Label("Date Execution")]		element DateInitial		: Date;
+		[Label("Report type")]		element ReportType		: CLReportBalanceCode;
+
+		node Details [0,n] raises msjDetails {
+			message msjDetails text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Campo 1")]	element Campo1: LANGUAGEINDEPENDENT_EXTENDED_Text ; 
+			[Label("Campo 2")]	element Campo2: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Campo 3")]	element Campo3: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Campo 4")]	element Campo4: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Campo 5")]	element Campo5: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Campo 6")]	element Campo6: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Campo 7")]	element Campo7: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Campo 8")]	element Campo8: LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+			[Label("Sum")]	element Sum: Amount;
+			[Label("Account from Numeric")]element AccountFromNumeric: DecimalValue;
+			[Label("Account to Numeric")]element AccountToNumeric: DecimalValue;
+		}
+
+		node Details_Impr [0,n] raises msjDetails {
+			message msjDetails_1 text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Campo 1")]	element Campo1: LANGUAGEINDEPENDENT_EXTENDED_Text ; 
+			[Label("Campo 2")]	element Campo2: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Campo 3")]	element Campo3: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Campo 4")]	element Campo4: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Campo 5")]	element Campo5: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Campo 6")]	element Campo6: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Campo 7")]	element Campo7: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Campo 8")]	element Campo8: LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+			[Label("Sum")]	element Sum: Amount;
+			[Label("Account from Numeric")]element AccountFromNumeric: DecimalValue;
+			[Label("Account to Numeric")]element AccountToNumeric: DecimalValue;
+		}
+		[DependentObject(AttachmentFolder)] node ReportsAttachments;
+
+		element vExecute: Indicator;
+		action Execute;
+		action Return;
+		action BalanceGeneral;
+		action BalanceComprobacion;
+
+}

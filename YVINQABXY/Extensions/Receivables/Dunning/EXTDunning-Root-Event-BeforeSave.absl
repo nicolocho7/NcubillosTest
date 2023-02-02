@@ -1,0 +1,28 @@
+﻿
+import ABSL;
+import AP.CustomerInvoicing.Global;
+var QueryConfiguration = BOConfigurationSolution.QueryByElements;
+var ExecuteQueryConfiguration = QueryConfiguration.Execute();
+var Validation = false;
+if(ExecuteQueryConfiguration.Count()>0){
+	if(ExecuteQueryConfiguration.GetFirst().IsSet()){
+		if(ExecuteQueryConfiguration.GetFirst().Status== CLStatusSolutionCode.CO_01){
+			Validation = true;
+		}
+	}
+}
+if(ExecuteQueryConfiguration.Count()<=0 || Validation == true){
+	var zExternal;
+	foreach(zExternal in this.Item){
+		var QRYCusInvoice = CustomerInvoice.QueryByElements;
+		var PRMSCusInvoice = QRYCusInvoice.CreateSelectionParams();
+			//PRMSCusInvoice.Add(QRYCusInvoice.ID.content ,"I","EQ", this.Item.GetFirst().BaseBusinessTransactionDocumentReference.ID.content);
+			PRMSCusInvoice.Add(QRYCusInvoice.ID.content ,"I","EQ", zExternal.BaseBusinessTransactionDocumentReference.ID.content);
+		var ResultQRY = QRYCusInvoice.Execute(PRMSCusInvoice).GetFirst();
+		//	var a = ResultQRY.ZExternalID;
+		if(ResultQRY.IsSet()){
+			zExternal.ZExternID = ResultQRY.ZExternalID;
+			zExternal.ZIDExternal = ResultQRY.ZExternalID;
+		}
+	}
+}

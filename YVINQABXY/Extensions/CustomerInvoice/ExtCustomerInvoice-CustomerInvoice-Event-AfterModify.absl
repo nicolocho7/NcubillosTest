@@ -1,0 +1,497 @@
+﻿import ABSL;
+import AP.FO.BusinessPartner.Global;
+import AP.FO.MOM.Global;
+import AP.FO.Product.Global;
+import AP.CustomerInvoicing.Global;
+import AP.FO.Party.Global;
+import AP.FO.ProductDataMaintenance.Global;
+import AP.Common.GDT;
+import AP.CRM.Global;
+var QueryConfiguration = BOConfigurationSolution.QueryByElements;
+var ExecuteQueryConfiguration = QueryConfiguration.Execute();
+var Validation = false;
+if(ExecuteQueryConfiguration.Count()>0){
+	if(ExecuteQueryConfiguration.GetFirst().IsSet()){
+		if(ExecuteQueryConfiguration.GetFirst().Status== CLStatusSolutionCode.CO_01){
+			Validation = true;
+		}
+	}
+}
+if(ExecuteQueryConfiguration.Count()<=0 || Validation == true){
+	// - - - - - - - - - - - - - - - - Folio  - - - - - - - - - - - - - - - - //
+	var vBuyerParty = this.BuyerParty.PartyKey.PartyID.content;
+	var qryCustomer = Customer.QueryByIdentification;
+	var prmCustomer = qryCustomer.CreateSelectionParams();
+		prmCustomer.Add(qryCustomer.InternalID, "I", "EQ", vBuyerParty);
+	var InsCustomer = qryCustomer.Execute(prmCustomer).GetFirst();
+	if(InsCustomer.IsSet()){
+		if (!InsCustomer.CurrentCommon.ZCodigoImpuestoCustomer.IsInitial() && this.TipoImpuestoPropuesto==false){
+			this.ZCodigoImpuesto = InsCustomer.CurrentCommon.ZCodigoImpuestoCustomer;
+			this.TipoImpuestoPropuesto = true;
+		}
+	}
+	if(this.ZCodigoImpuesto == CLCodigoImpuestoCode.CO_Z01){
+		this.zGratuita = true;
+	}else{
+		this.zGratuita = false;
+	}
+	foreach(var item in this.Item){
+		item.zItemGratuita = this.zGratuita;
+		if(item.zItemGratuita == true){
+			if(item.zProposedValueInd == false){
+				if(item.PriceAndTaxCalculationItem.IsSet()){
+					if(item.PriceAndTaxCalculationItem.ItemMainPrice.IsSet()){
+						item.zCostoTrnsferGratuita.content = item.PriceAndTaxCalculationItem.ItemMainPrice.Rate.DecimalValue;
+						item.zCostoTrnsferGratuita.currencyCode = item.PriceAndTaxCalculationItem.ItemMainPrice.Rate.CurrencyCode;
+					
+						if(this.TotalNetAmount.currencyCode != item.zCostoTrnsferGratuita.currencyCode){
+							var Fecha = this.Date;
+							if(!this.DeviatingPostingDate.IsInitial()){
+								Fecha = this.DeviatingPostingDate;
+							}
+							item.zCostoTrnsferGratuita = item.zCostoTrnsferGratuita.ConvertCurrencywithDate(this.TotalNetAmount.currencyCode.Trim(), Fecha);
+							item.zCostoTrnsferGratuita.currencyCode = this.TotalNetAmount.currencyCode;
+						}
+						if((!item.zCostoTrnsferGratuita.content.IsInitial()) && (!item.zCostoTrnsferGratuita.currencyCode.IsInitial()) ){
+							item.zProposedValueInd = true;
+						}
+					}
+				}
+			}
+		}else{
+			item.zProposedValueInd = false;
+			item.zCostoTrnsferGratuita.Clear();
+		}
+	}
+
+	if (!this.ZCodigoImpuesto.IsInitial()){
+		var item;
+		foreach (item in this.Item){
+			item.PriceAndTaxCalculationItem.TaxationCharacteristicsCode.content = this.ZCodigoImpuesto;
+		}
+	}
+
+	//if(this.ZCodigoImpuesto.IsInitial()){
+		//this.ZCodigoImpuesto = CLCodigoImpuestoCode.CO_310;
+	//}
+	if(this.ZDocumentType.IsInitial()){
+		var Qry = BODocumentType.QueryByElements;
+		var PramasQry = Qry.CreateSelectionParams();
+		var ResultExecuteType = Qry.Execute(PramasQry);
+		var Items;
+		foreach(Items in ResultExecuteType){
+			if(Items.DefaultValue == true){
+				this.ZDocumentType = Items.DocumentTypeID;
+			}
+		}
+
+	}
+
+	if(this.ZFolioManual == false){
+		this.ZFolioManualVisible = true;
+	}else{
+		this.ZFolioManualVisible = false;
+	}
+
+	//if(!this.ZDocumentType.IsInitial()){
+		//var QryDocument = BODocumentType.Retrieve(this.ZDocumentType);
+		//if(QryDocument.IsSet()){
+			//this.ZDocumentTypeDescription = QryDocument.DocumentTypeDescription;
+		//}
+	//}
+	if(!this.ZDocumentType.IsInitial()){
+		var QryDocument = BODocumentType.Retrieve(this.ZDocumentType);
+		if(QryDocument.IsSet()){
+			this.ZDocumentTypeDescription = QryDocument.DocumentTypeDescription;
+			this.ZBoleta = QryDocument.BoletaIndicator;
+		}else{
+			this.ZDocumentTypeDescription.Clear();
+		}
+	}else{
+		this.ZDocumentTypeDescription.Clear();
+	}
+
+	// - - - - - - - - - - - - - - - - F I N - Folio  - - - - - - - - - - - - - - - - //
+
+
+
+
+	// - - - - - - - - - - - - - - - - P E R C E P C I Ó N  - - - - - - - - - - - - - - - - //
+
+	while(true){
+
+		if(this.TypeCode != "28"){break;}//28 = Invoice 
+		
+		//- - - - - - - - - - - - Messages - - - - - - - - -- -//
+		var insAuxIDWithHolding;
+		var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+		var msgWithholding = "El monto de retencion es menor al monto base por eso no aplica la retencion.";
+		var msgWithholdingIVA = "El monto de retencion es menor al monto base por eso no aplica la retencion (Percepción).";
+
+		if (LanguageCode != "ES"){
+			msgWithholding = "The withholding net amount is less than the withholding minimun amount for that retention does not apply.";
+			msgWithholdingIVA = "The net amount doesn't apply for withholding (Percepción).";
+		}
+
+		//- - - - - - - - - - - - - - - - Withholding tax - - - - - - - - - - - - - - - //
+
+		var vCleanLabels = false;
+
+		if(!this.BuyerParty.IsSet()){break;}//customer is not empty
+
+		if(!this.SellerParty.IsSet()){break;}// company is not empty
+	
+		//- - - - - - - - - - Totales  - - - - - - - - -//	
+		this.zTPercepcionCI.currencyCode = this.TotalGrossAmount.currencyCode;
+		this.zTPercepcionCI.content.Clear();
+
+		// - - - - - - - - - - find Condition company - - - - - - - - - //
+		var vSellerID = "";
+			vSellerID = this.SellerParty.PartyKey.PartyID.content;
+		var vConditionCompany = "";
+		var queryCondition = BOMaintenanceCompanySales.QueryByElements;
+		var paramsCondition = queryCondition.CreateSelectionParams();
+			paramsCondition.Add(queryCondition.CompanyID, "I", "EQ", vSellerID);
+		var resultCondition = queryCondition.Execute(paramsCondition).GetFirst();
+		if (!resultCondition.IsSet()){vCleanLabels = true; break;}
+	
+		vConditionCompany = resultCondition.ConditionCompanyID;
+	
+		//- - - - - - - - - - find Customer  - - - - - - - - - - //
+		var vBuyerID = this.BuyerParty.PartyKey.PartyID.content;
+		var queryCustomer = Customer.QueryByIdentification;
+		var paramCustomer = queryCustomer.CreateSelectionParams();
+			paramCustomer.Add(queryCustomer.InternalID, "I", "EQ", vBuyerID);
+		var insCustomer = queryCustomer.Execute(paramCustomer).GetFirst();
+		if(!insCustomer.IsSet()){break;}
+	
+		if(!insCustomer.CurrentCommon.IsSet()){break;}
+
+		if(insCustomer.CurrentCommon.zExonerationCustomer){vCleanLabels = true; break;}
+
+		var vConditionCustomer = insCustomer.CurrentCommon.zConditionCustomer;
+
+		if(this.Item.Count() < 1){break;}//exist items
+
+		//- - - - - - - - - - find Company - - - - - - - - - - //	
+		var vCountry = "";
+		var queryCompany = Company.QueryByIDAndName;
+		var paramCompany = queryCompany.CreateSelectionParams();
+			paramCompany.Add(queryCompany.ID, "I", "EQ", vSellerID);
+		var insCompany = queryCompany.Execute(paramCompany).GetFirst();
+		if(insCompany.IsSet()){
+			if(insCompany.CompanyAttributes.Count() > 0){
+				vCountry = insCompany.CompanyAttributes.GetFirst().CountryOfRegistration;
+			}
+		}
+
+		var vLanguageEnglish = Library::LanguageCode.ParseFromString("EN");
+		var vNetAmount;
+		var vCategoryID : ID;
+		var vTax;
+
+		// - - - - - - - - - - AuxIDWithHolding- - - - - - - - -//
+		insAuxIDWithHolding = BOAuxIDWithHolding.Retrieve(this.UUID);
+		if (insAuxIDWithHolding.IsSet()){
+			insAuxIDWithHolding.Delete();
+		}
+		insAuxIDWithHolding = BOAuxIDWithHolding.Create();
+		insAuxIDWithHolding.UUID.content = this.UUID.content;
+
+
+		//- - - - - - - - - - - - - Foreach items 1 - - - - - - - - - -//
+		var AuxitemCI;
+		foreach (AuxitemCI in this.Item){
+		
+			//- - - - - - - - - - - - - category ID - - - - - - - - - -//
+			vCategoryID.Clear();
+			if (AuxitemCI.ItemProduct.IsSet()){
+				if (AuxitemCI.ItemProduct.ProductKey.ProductTypeCode == "1"){
+					var qmaterial = Material.QueryByDescription;
+					var spmaterial = qmaterial.CreateSelectionParams();
+						spmaterial.Add(qmaterial.ProductID.content, "I", "EQ", AuxitemCI.ItemProduct.ProductKey.ProductID.content);
+					var rmaterial = qmaterial.Execute(spmaterial).GetFirst();
+					if (rmaterial.IsSet()){
+						if (rmaterial.CrossProcessCategory.IsSet()){
+							vCategoryID = rmaterial.CrossProcessCategory.ProductCategoryIDKey.ProductCategoryInternalID;
+						}
+					}
+				}
+				else if (AuxitemCI.ItemProduct.ProductKey.ProductTypeCode == "2"){
+					var qmaterial = ServiceProduct.QueryByDescription;
+					var spmaterial = qmaterial.CreateSelectionParams();
+						spmaterial.Add(qmaterial.ProductID.content, "I", "EQ", AuxitemCI.ItemProduct.ProductKey.ProductID.content);
+					var rmaterial = qmaterial.Execute(spmaterial).GetFirst();
+					if (rmaterial.IsSet()){
+						if (rmaterial.CrossProcessCategory.IsSet()){
+							vCategoryID = rmaterial.CrossProcessCategory.ProductCategoryIDKey.ProductCategoryInternalID;
+						}
+					}
+				}
+			}
+
+			// Net amount 
+			vNetAmount = AuxitemCI.NetAmount.content;
+			if (vNetAmount.ToString().Find("-") > -1){
+				vNetAmount = vNetAmount * -1;
+			}
+
+			// - - - - - - - - - - Withholding Net - - - - - - - - - //
+			if (!vCategoryID.IsInitial()){
+											
+				if (AuxitemCI.TaxAmount.content != 0){
+					vTax = AuxitemCI.TaxAmount.content;
+				}
+				else{
+					vTax = 0;
+				}
+				
+				var queryRelationNet = BORelationCustomerCompany.QueryByElements;
+				var paramRelationNet = queryRelationNet.CreateSelectionParams();
+					paramRelationNet.Add(queryRelationNet.TypeWithholding, "I", "EQ", CLTypeWithholdingSalesCode.CO_PER);
+					paramRelationNet.Add(queryRelationNet.ConditionCompanyID, "I", "EQ", vConditionCompany);
+					paramRelationNet.Add(queryRelationNet.ConditionCustomerID, "I", "EQ", vConditionCustomer);
+					paramRelationNet.Add(queryRelationNet.CategoryID, "I", "EQ", vCategoryID.AddLeadingZeros());
+					paramRelationNet.Add(queryRelationNet.Country, "I", "EQ", vCountry);
+				var insRelationNet = queryRelationNet.Execute(paramRelationNet).GetFirst();
+				if(insRelationNet.IsSet()){
+				
+					var queryMinimum = BOMinimumWithholdingAmountSales.QueryByElements;
+					var paramMinimum = queryMinimum.CreateSelectionParams();
+						paramMinimum.Add(queryMinimum.ID, "I", "EQ", insRelationNet.AmountMinimun);
+					var insMinimunBaseSales = queryMinimum.Execute(paramMinimum).GetFirst();
+					if(insMinimunBaseSales.IsSet()){
+				
+						var vBase = insMinimunBaseSales.Base;
+						var vCurrency = insMinimunBaseSales.Coin;
+						if (this.TotalGrossAmount.currencyCode != vCurrency){
+							var vNetAmount2 = AuxitemCI.NetAmount.ConvertCurrencywithDate(vCurrency, this.Date).content;
+							vNetAmount = vNetAmount2;
+						}
+
+						var isAuxIDWithHolding = true;
+						foreach (var insWithHolding in insAuxIDWithHolding.items.Where(n => n.ID == insRelationNet.AmountMinimun)){
+							insWithHolding.SumAmount.content = insWithHolding.SumAmount.content + vNetAmount;
+							isAuxIDWithHolding = false;
+							if (insWithHolding.SumAmount.content >= vBase){
+								insWithHolding.State = true;
+								break;
+							}
+						}
+
+						if (isAuxIDWithHolding){
+							var vItemIAWithHoldings = insAuxIDWithHolding.items.Create();
+							if (vNetAmount >= vBase){
+								vItemIAWithHoldings.State = true;
+							}
+							else{
+								vItemIAWithHoldings.State = false;
+							}
+							vItemIAWithHoldings.ID = insRelationNet.AmountMinimun;
+							vItemIAWithHoldings.SumAmount.content = vNetAmount;
+						}
+					}
+				}
+			}
+			// - - - - - - - - - - fin: Withholding Net - - - - - - - - - //			
+		}
+
+
+		//- - - - - - - - - - - - - Foreach items 2 - - - - - - - - - -//
+		var itemCI;
+		foreach (itemCI in this.Item){			
+		
+			//- - - - - - - - - - - - - category ID - - - - - - - - - -//
+			vCategoryID.Clear();
+			if (itemCI.ItemProduct.IsSet()){
+				if (itemCI.ItemProduct.ProductKey.ProductTypeCode == "1"){
+					var qmaterial = Material.QueryByDescription;
+					var spmaterial = qmaterial.CreateSelectionParams();
+						spmaterial.Add(qmaterial.ProductID.content, "I", "EQ", itemCI.ItemProduct.ProductKey.ProductID.content);
+					var rmaterial = qmaterial.Execute(spmaterial).GetFirst();
+					if (rmaterial.IsSet()){
+						if (rmaterial.CrossProcessCategory.IsSet()){
+							vCategoryID = rmaterial.CrossProcessCategory.ProductCategoryIDKey.ProductCategoryInternalID;
+						}
+					}
+				}
+				else if(itemCI.ItemProduct.ProductKey.ProductTypeCode == "2"){
+					var qmaterial = ServiceProduct.QueryByDescription;
+					var spmaterial = qmaterial.CreateSelectionParams();
+						spmaterial.Add(qmaterial.ProductID.content, "I", "EQ", itemCI.ItemProduct.ProductKey.ProductID.content);
+					var rmaterial = qmaterial.Execute(spmaterial).GetFirst();
+					if (rmaterial.IsSet()){
+						if (rmaterial.CrossProcessCategory.IsSet()){
+							vCategoryID = rmaterial.CrossProcessCategory.ProductCategoryIDKey.ProductCategoryInternalID;
+						}
+					}
+				}
+			}
+
+			//Net amount
+			vNetAmount = itemCI.NetAmount.content;
+			var VGrossAmount = itemCI.GrossAmount.content;
+			if (vNetAmount.ToString().Find("-") > -1){
+				vNetAmount = vNetAmount * -1;
+			}
+			if (VGrossAmount.ToString().Find("-") > -1){
+				VGrossAmount = VGrossAmount * -1;
+			}
+
+			// - - - - - - - - - - Withholding Net - - - - - - - - - //
+			if (!vCategoryID.IsInitial()){			
+			
+				if (itemCI.TaxAmount.content != 0){
+					vTax = itemCI.TaxAmount.content;
+				}
+				else{
+					vTax = 0;
+				}
+				
+				var queryRelationNet = BORelationCustomerCompany.QueryByElements;  
+				var paramRelationNet = queryRelationNet.CreateSelectionParams();
+					paramRelationNet.Add(queryRelationNet.TypeWithholding, "I", "EQ", CLTypeWithholdingSalesCode.CO_PER);
+					paramRelationNet.Add(queryRelationNet.ConditionCompanyID, "I", "EQ", vConditionCompany);
+					paramRelationNet.Add(queryRelationNet.ConditionCustomerID, "I", "EQ", vConditionCustomer);
+					paramRelationNet.Add(queryRelationNet.CategoryID, "I", "EQ", vCategoryID.AddLeadingZeros());
+					paramRelationNet.Add(queryRelationNet.Country, "I", "EQ", vCountry);
+				var insRelationNet = queryRelationNet.Execute(paramRelationNet).GetFirst();
+				if(insRelationNet.IsSet()){
+				
+					var isAuxIDWithHolding = true;
+					foreach (var insWithHolding in insAuxIDWithHolding.items.Where(n => n.ID == insRelationNet.AmountMinimun)){
+						if (insWithHolding.State){
+						
+							var TempzPercentNETCINV = insRelationNet.Percent.RoundToString(2);
+							TempzPercentNETCINV = TempzPercentNETCINV.Replace(",", ".");
+							itemCI.zPer1PercentCI = Numeric.ParseFromString(TempzPercentNETCINV);
+
+							var TempzAmountNETCINV = (VGrossAmount * (insRelationNet.Percent / 100)).RoundToString(2);//(vNetAmount * (insRelationNet.Percent / 100)).RoundToString(2);
+							TempzAmountNETCINV = TempzAmountNETCINV.Replace(",", ".");
+							itemCI.zPer1AmountCI.content = Numeric.ParseFromString(TempzAmountNETCINV);
+							itemCI.zPer1AmountCI.currencyCode = this.TotalGrossAmount.currencyCode;
+
+							itemCI.zPer1IDCI = insRelationNet.WithHoldingCode;
+							itemCI.zPer1BankCI = insRelationNet.BankAccountID;
+							itemCI.zPer1AmountMinimunCI = insRelationNet.AmountMinimun;
+							this.zTPercepcionCI.content = this.zTPercepcionCI.content + itemCI.zPer1AmountCI.content;
+						}
+						else{
+							itemCI.zPer1PercentCI.Clear();
+							itemCI.zPer1AmountCI.Clear();
+							itemCI.zPer1IDCI.Clear();
+							itemCI.zPer1BankCI.Clear();
+							itemCI.zPer1AmountMinimunCI.Clear();
+							raise msj.Create("W", msgWithholding);
+						}
+					}	
+				}
+				else{
+					itemCI.zPer1PercentCI.Clear();
+					itemCI.zPer1AmountCI.Clear();
+					itemCI.zPer1IDCI.Clear();
+					itemCI.zPer1BankCI.Clear();
+					itemCI.zPer1AmountMinimunCI.Clear();
+				}
+			}
+			// - - - - - - - - - - fin: Withholding Net - - - - - - - - - //
+		
+		}							
+		// - - - - - - - - - - Foreach Items - - - - - - - - - //
+
+		if(vCleanLabels){
+			if(this.Item.Count() > 0){
+				foreach (var itemItem in this.Item){
+					itemItem.zPer1IDCI.Clear();
+					itemItem.zPer1AmountCI.Clear();
+					itemItem.zPer1PercentCI.Clear();
+					itemItem.zPer1AmountMinimunCI.Clear();
+					itemItem.zPer1BankCI.Clear();
+				}
+			}
+		}
+		//- - - - - - - - - - fin: Withholding tax - - - - - - - - - - //
+
+		break;
+
+	}
+
+	// - - - - - - - - - - - - - - - - F I N - P E R C E P C I Ó N  - - - - - - - - - - - - - - - - //
+	//---------------------------------Begin BPB 26.12.18------------------------------------------ //
+	while(true){
+		if(this.Item.Count() <=0){break;}
+		var Item = this.Item;
+		if(Item.GetFirst().ItemBusinessTransactionDocumentReference.Count()<=0){break;}
+		var ItemBusinessTransactionDocumentReference = Item.GetFirst().ItemBusinessTransactionDocumentReference;
+		var FindInvoiceAssociated = ItemBusinessTransactionDocumentReference.Where(n=>n.BusinessTransactionDocumentReference.TypeCode == "28");		
+		if(FindInvoiceAssociated.Count()<=0){break;}
+		var IDInvoiceAssociated = FindInvoiceAssociated.GetFirst().BusinessTransactionDocumentReference.ID.content.RemoveLeadingZeros();
+		var QueryInvoice = CustomerInvoice.QueryByElements;
+		var ParamsInvoice = QueryInvoice.CreateSelectionParams();
+		ParamsInvoice.Add(QueryInvoice.ID.content,"I","EQ",IDInvoiceAssociated);
+		var resultInvoice = QueryInvoice.Execute(ParamsInvoice).GetFirst();
+		if(!resultInvoice.IsSet()){break;}
+		if(resultInvoice.ZExternalID.IsInitial()){break;}
+		var lenghtZExternalID = resultInvoice.ZExternalID.Length();
+		var FindZexternalID = resultInvoice.ZExternalID.Find("-")+ 1; 
+		this.ZCustomerInvoiceAssociated = resultInvoice.ZExternalID.Substring(FindZexternalID,lenghtZExternalID-FindZexternalID);	
+		break;
+	}
+	//--------------------------------End BPB 26.12.18--------------------------------------------//
+	//--------------------------------Begin KJFE @18102019----------------------------------------//
+	while(true){
+		if(!this.BuyerParty.IsSet()){break;}
+		if(this.BuyerParty.PartyKey.IsInitial()){break;}
+		if(this.BuyerParty.PartyKey.PartyID.IsInitial()){break;}
+		var BuyerID = this.BuyerParty.PartyKey.PartyID.content.RemoveLeadingZeros();
+		//-----for retrieve a customer info------------------//
+		var QueryCustomer = Customer.QueryByIdentification;
+		var ParamCustomer = QueryCustomer.CreateSelectionParams();
+			ParamCustomer.Add(QueryCustomer.InternalID,"I","EQ",BuyerID);
+		var ResultCustomer = QueryCustomer.Execute(ParamCustomer).GetFirst();
+		if(!ResultCustomer.IsSet()){break;}
+		if(!ResultCustomer.CurrentCommon.IsSet()){break;}
+		if(ResultCustomer.CurrentCommon.zDistritoSDK.IsInitial()){break;}
+		this.ZClienteDistrito2 = ResultCustomer.CurrentCommon.zDistritoSDK;
+		if(ResultCustomer.CurrentCommon.zProvinciaSDK.IsInitial()){break;}
+		this.ZClienteProvincia2 = ResultCustomer.CurrentCommon.zProvinciaSDK;
+		if(ResultCustomer.CurrentCommon.zDepartamentoSDK.IsInitial()){break;}
+		this.ZClienteDepartamento2 = ResultCustomer.CurrentCommon.zDepartamentoSDK;
+		break;
+	}
+	//--------------------------------END KJFE @18102019----------------------------------------//
+
+	while(true){
+		if(!this.ZCustomerInvoiceAssociated.IsInitial()){break;}
+		if(this.ProcessingTypeCode != "CCM"){break;}
+		if(this.Item.Count() == 0){break;}
+		var insItem = this.Item.GetFirst();
+		if(insItem.ItemBusinessTransactionDocumentReference.Count() == 0){break;}
+		var insSalesOrder = insItem.ItemBusinessTransactionDocumentReference.Where(n=>n.BusinessTransactionDocumentReference.TypeCode == "114").GetFirst();
+		if(!insSalesOrder.IsSet()){break;}
+		var vIDSalesOrder = insSalesOrder.BusinessTransactionDocumentReference.ID.content.RemoveLeadingZeros();
+
+		var query = SalesOrder.QueryByElements;
+		var selectionParams = query.CreateSelectionParams();
+			selectionParams.Add(query.ID.content, "I", "EQ", vIDSalesOrder);
+		var resultData = query.Execute(selectionParams).GetFirst();
+		if(!resultData.IsSet()){break;}
+		if(resultData.BusinessTransactionDocumentReference.Count() == 0){break;}
+		var insBusinessTransactionDocument = resultData.BusinessTransactionDocumentReference.Where(n=>n.BusinessTransactionDocumentReference.TypeCode == "28").GetFirst();
+		if(!insBusinessTransactionDocument.IsSet()){break;}
+		var vCIID = insBusinessTransactionDocument.BusinessTransactionDocumentReference.ID.content.RemoveLeadingZeros();
+
+		var queryCI = CustomerInvoice.QueryByElements;
+		var selectionParamsCI = queryCI.CreateSelectionParams();
+			selectionParamsCI.Add(queryCI.ID.content, "I", "EQ", vCIID);
+		var resultDataCI = queryCI.Execute(selectionParamsCI).GetFirst();
+		if(!resultDataCI.IsSet()){break;}
+		var lenghtZExternalID = resultDataCI.ZExternalID.Length();
+		var FindZexternalID = resultDataCI.ZExternalID.Find("-")+ 1; 
+		this.ZCustomerInvoiceAssociated = resultDataCI.ZExternalID.Substring(FindZexternalID,lenghtZExternalID-FindZexternalID);
+
+	
+		break;
+	}
+}
+

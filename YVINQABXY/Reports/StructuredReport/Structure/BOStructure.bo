@@ -1,0 +1,52 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.PC.IdentityManagement.Global as apGlobal;
+import AP.FinancialAccounting.Global;
+import AP.FO.MOM.Global;
+
+[WithAdministrativeData] businessobject BOStructure raises msg {
+
+        message msg text "&": LANGUAGEINDEPENDENT_EXTENDED_Name;
+
+		[AlternativeKey] [Label("ID")]	element StructureID		: ID;
+		[Label("Company")]				element CompanyID		: OrganisationalCentreID;
+		[Label("Structure name")]		element StructureDesc	: LANGUAGEINDEPENDENT_LONG_Description;
+		[Label("Status")]				element Status			: ValidityStatusCode;//1 Not Started 2 Active 3 Expired
+		[Label("Set Of Book")]			element SetOfBooksID	: SetOfBooksID;
+		[Label("Set Of Book")]			element SetOfBooksDesc  : LANGUAGEINDEPENDENT_EXTENDED_Name;
+		[Label("Chart of accounts")]	element ChartOfAccountsCode : ChartOfAccountsCode;
+		element WasModify		:	Indicator;
+		element IsConsistent	:	Indicator;
+		
+		association ToCompany to Company;
+		[CrossDeploymentUnit]association ToSetOfBooks to SetOfBooks using ID;
+
+
+			node Elements [0,n] raises msgElements
+			{
+				message msgElements text "&" : LANGUAGEINDEPENDENT_EXTENDED_Name;
+
+				[Label("ID")]					element ID						: ID;
+				[Label("Code/Account")]			element AcccountingCode			: ID;
+				[Label("Account")]				element Accounting1Code			: ChartOfAccountsItemCode;
+				[Label("Code")]					element Accounting2Code			: LANGUAGEINDEPENDENT_EXTENDED_Name;
+				[Label("Order")]				element Orden					: ID;
+				[Label("Description")]			element Description				: LANGUAGEINDEPENDENT_EXTENDED_Name;
+				[Label("Relationship")]			element Relation				: ID;
+				[Label("Sign")]					element Sign					: CLSignCode;
+				[Label("Show positive")]		element ShowSign				: Indicator;
+				[Label("Show on master")]		element includeByD				: Indicator;
+				[Label("Structure")]			element StructureID			:	ID;
+			
+				node SubElements[0,n]  raises msgSubElements 
+				{
+					message msgSubElements text "&"	:	LANGUAGEINDEPENDENT_EXTENDED_Name;
+
+					[Label("ID")]			element ID	: ID;	
+					[Label("Account")]		element Account	:	ChartOfAccountsItemCode;
+					[Label("Operation")]	element Operation	:	CLSignCode;		
+				}
+			}
+
+			action Load;
+			action Accept;
+}

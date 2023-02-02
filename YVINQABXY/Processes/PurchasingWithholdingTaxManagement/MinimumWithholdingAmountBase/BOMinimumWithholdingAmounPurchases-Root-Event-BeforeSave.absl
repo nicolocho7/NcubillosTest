@@ -1,0 +1,101 @@
+﻿import ABSL;
+import AP.FO.Product.Global;
+
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+
+var msgConcept = "Falto ingresar concepto. switch";
+var msgCoin = "Falto ingresar moneda.";
+var msgUVTBase = "Falto ingresar uvt Base.";
+var msgValueUVT = "Falto ingresar valor uvt.";
+var msgCityID = "Falto ingresar ciudad.";
+var msgTypeWithholding = "Falto seleccionar un tipo de retención.";
+var msgBase = "Falto ingresar base.";
+
+if(LanguageCode != "ES"){
+	msgConcept = "I miss enter concept.";
+	msgCoin = "I miss enter currency.";
+	msgUVTBase = "I miss enter base uvt.";
+	msgValueUVT = "I miss enter value uvt.";
+	msgCityID = "I miss enter city.";
+	msgTypeWithholding = "I miss selecting a type of retention.";
+	msgBase = "I miss enter base.";
+}
+
+this.IsConsistent = true;
+
+if(this.TypeWithholding.IsInitial()){
+	raise msj.Create("E", msgTypeWithholding);
+	this.IsConsistent = false;
+}
+
+if(this.Concept.IsInitial()){
+	raise msj.Create("E", msgConcept);
+	this.IsConsistent = false;
+}
+
+if(this.Coin.IsInitial()){
+	raise msj.Create("E", msgCoin);
+	this.IsConsistent = false;
+}
+
+if(this.UVTBase.IsInitial()){
+    raise msj.Create("E", msgUVTBase);
+	this.IsConsistent = false;
+}
+
+if(this.ValueUVT.IsInitial()){
+   raise msj.Create("E", msgValueUVT);
+   this.IsConsistent = false;
+}
+
+if((!this.UVTBase.IsInitial()) && (!this.ValueUVT.IsInitial())){
+	this.Base = this.ValueUVT.content * this.UVTBase;
+    this.ValueUVT.currencyCode = this.Coin;
+}
+
+if(this.ID.IsInitial()){
+	var Code = "BOMINIMUNWITHHOLDINGPURCHASES";
+	var InsBOBuildIDV2 = BOBuildIDV2.Retrieve(Code);
+	if(InsBOBuildIDV2.IsSet())
+	{
+		InsBOBuildIDV2.Increase();		
+	}else
+	{
+		var StructureBOBuildIDV2 : elementsof BOBuildIDV2;
+		StructureBOBuildIDV2.ID = Code;
+		StructureBOBuildIDV2.description = "Minimum Withholding Amount Purchases";
+		StructureBOBuildIDV2.UUID.content = UUID.Generate();
+		InsBOBuildIDV2 = BOBuildIDV2.Create(StructureBOBuildIDV2);
+		InsBOBuildIDV2.Increase();
+	}
+
+	this.ID = InsBOBuildIDV2.consecutive;
+}
+//if(this.ID.IsInitial()){
+	//
+	//var queryBuildID = BOBuildID.QueryByElements;
+	//var paramBuildID = queryBuildID.CreateSelectionParams();
+		//paramBuildID.Add(queryBuildID.ID, "I", "EQ", "BOMINIMUNWITHHOLDINGPURCHASES");
+	//var resultBuildID = queryBuildID.Execute(paramBuildID).GetFirst();
+	//if(resultBuildID.IsSet()){
+		//resultBuildID.consecutive = resultBuildID.consecutive + 1;
+		//this.ID = resultBuildID.consecutive.ToString();
+		//this.UUID.content = UUID.Generate();
+	//}
+	//else
+	//{
+		//this.ID = "1";
+		//this.UUID.content = UUID.Generate();
+		////-- create new register
+		//var insBuildID = BOBuildID.Create();
+		//if (insBuildID.IsSet())
+		//{
+			//insBuildID.consecutive = 1;
+			//insBuildID.description = "Minimum Withholding Amount Purchases";
+			//insBuildID.ID = "BOMINIMUNWITHHOLDINGPURCHASES";
+			//insBuildID.UUID.content = UUID.Generate();
+		//}
+	//}
+//}
+//
+

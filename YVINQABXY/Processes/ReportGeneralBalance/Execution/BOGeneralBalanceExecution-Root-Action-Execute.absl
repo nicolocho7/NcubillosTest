@@ -1,0 +1,64 @@
+﻿/*-----------------------------------------------------------------------------------------------------------------
+										Historial de Modificaciones                                               
+-------------------------------------------------------------------------------------------------------------------
+ Funcional Responsable.....: Jose Romero                                        
+ Creado por................: Joe Gonzales                           
+ Marca.....................: --
+ Fecha.....................: 24.03.2018                                    
+ Descripción...............: Versión Inicial. Contiene los reportes de Balance General y Balance de comprobación
+		Reporte............: Z1E40E9A5D20DA228AB5ABB
+		Fuente de datos....: FINGLAU11                         
+-------------------------------------------------------------------------------------------------------------------
+ Funcional Responsable.....:                                        
+ Modificado por............:                            
+ Marca.....................: 
+ Fecha.....................:                                     
+ Descripción...............: 
+-------------------------------------------------------------------------------------------------------------------*/
+import ABSL;
+import AP.FO.BusinessPartner.Global;
+import AP.Common.GDT as apCommonGDT;
+import BASIS.Global as basis;
+
+while(true){
+	
+	var vIsConsistent = true;
+	
+	switch(this.ReportType){
+		case CLReportBalanceCode.CO_1{
+			if(this.EstructuraID.IsInitial()){
+				vIsConsistent = false;
+				raise msj.Create("E","Falto ingresar Estructura del reporte");
+			}
+		}
+	}
+	
+	if(this.CompanyID.IsInitial()){
+		vIsConsistent = false;
+		raise msj.Create("E","Falto ingresar empresa");
+	}
+
+	if(this.CompanyRuc.IsInitial()){
+		vIsConsistent = false;
+		raise msj.Create("E","Falto ingresar RUC de empresa");
+	}
+
+	if(this.SetOfBooksID.content.IsInitial()){
+		vIsConsistent = false;
+		raise msj.Create("E","Falto ingresar Sistema Contable");
+	}
+
+	if(this.DateInitial.IsInitial()){
+		vIsConsistent = false;
+		raise msj.Create("E","Falto ingresar fecha/periodo del reporte");
+	}
+
+	if(!vIsConsistent){ break;}
+
+	switch(this.ReportType){
+		case CLReportBalanceCode.CO_1{this.BalanceGeneral();}
+		case CLReportBalanceCode.CO_2{this.BalanceComprobacion();}
+	}
+
+	break;
+}

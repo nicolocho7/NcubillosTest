@@ -1,0 +1,20 @@
+﻿
+import AP.Common.GDT as apCommonGDT;
+import AP.SupplierInvoicing.Global;
+
+businessobject BOProviderDocumentType raises msg{
+
+message msg text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+        element ID:ID;		
+		element UUID:UUID;
+		
+		[Label("TypeID")]			 [AlternativeKey]	element TypeID			: ID;
+		[Label("Type Sap")]					element TypeSap					: CLDocumentTypeSAPCode ;
+        [Label("TypeDescripcion")]			element TypeDes			: LANGUAGEINDEPENDENT_EXTENDED_Text; 
+		[Label("Supplier")]					element supplier				: ID;
+		[Label("Description Supplier")]		element DescriptionSupplier		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("TypeSupplierID")]			element TypeSupplierID			: ID;
+
+		element inconsistent : Indicator;
+
+}

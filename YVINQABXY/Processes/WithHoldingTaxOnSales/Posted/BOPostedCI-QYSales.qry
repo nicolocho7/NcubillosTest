@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<QueryDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://sap.com/xi/BASIS/Global">
+  <ProxyName xmlns="">YVINQABXY_CHWPYZLNLU4YDW</ProxyName>
+  <QueryDefintionXrepPath xmlns="">/YVINQABXY_MAIN/SRC/Processes/WithHoldingTaxOnSales/Posted/BOPostedCI-QYSales.sadl</QueryDefintionXrepPath>
+  <Description xmlns="" />
+  <AnalyticalQueryIndicator xmlns="">false</AnalyticalQueryIndicator>
+  <SensitiveQueryIndicator xmlns="">false</SensitiveQueryIndicator>
+  <LanguageCode xmlns="">EN</LanguageCode>
+  <ParentNodeProxyName xmlns="">ROOT4F903855210031B0</ParentNodeProxyName>
+  <BOProxyName xmlns="">YVINQABXY_BOCIEA3F87A5DE2ABE3A</BOProxyName>
+  <LogReferenceFields xmlns="">false</LogReferenceFields>
+  <QueryAnnotationElements xmlns="">
+    <QueryInputParameters>
+      <ProxyName>WITHHOROOT3BF3AB854AF10141</ProxyName>
+      <Name>WithholdingStatus</Name>
+      <Type>YVINQABXY_90C2DE37E2651C89</Type>
+      <uiTextProxyName>YVINQABXY_04570CB52B65C3C4</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOCIEA3F87A5DE2ABE3A</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">WITHHOTATUS9071B89C50E62646</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>ADVICEROOT76D502CB237877DD</ProxyName>
+      <Name>AdviceID</Name>
+      <Type>APC_V_LANGUAGEINDEPENDENT_TEXT</Type>
+      <uiTextProxyName>YVINQABXY_45F34C00019A7711</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOCIEA3F87A5DE2ABE3A</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">ADVICEIDDAC248311FB0584F</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>PAYMENROOTDB2F69757217FDD7</ProxyName>
+      <Name>PaymentType</Name>
+      <Type>APC_V_LANGUAGEINDEPENDENT_TEXT</Type>
+      <uiTextProxyName>YVINQABXY_692E6DDE5CF65F5F</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOCIEA3F87A5DE2ABE3A</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">PAYMENTTYPE73AF06E6A208F2C6</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>CUSTOMROOTA041C400605ED038</ProxyName>
+      <Name>CustomerID</Name>
+      <Type>PDI_ABSL_IDENTIFIER</Type>
+      <uiTextProxyName>YVINQABXY_79CDC97DDB4C34A8</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOCIEA3F87A5DE2ABE3A</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">CUSTOMERIDAABBFA1D1639E593</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>CUSTOMROOT06E82A4AFE3D5D94</ProxyName>
+      <Name>CustomerDesc</Name>
+      <Type>APC_V_LANGUAGEINDEPENDENT_TEXT</Type>
+      <uiTextProxyName>YVINQABXY_AC93F814EB25FFDC</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOCIEA3F87A5DE2ABE3A</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">CUSTOMRDESC7933ACD8B75A2612</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>PAYMENROOT82077655A000AC1F</ProxyName>
+      <Name>PaymentOriginReference</Name>
+      <Type>APC_V_LANGUAGEINDEPENDENT_TEXT</Type>
+      <uiTextProxyName>YVINQABXY_FA08B4591D189F7C</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOCIEA3F87A5DE2ABE3A</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">PAYMENRENCE2EA1D0DB2005057F</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>PAYMENROOT11D4429EFBAF9FC9</ProxyName>
+      <Name>PaymentReference</Name>
+      <Type>APC_V_LANGUAGEINDEPENDENT_TEXT</Type>
+      <uiTextProxyName>YVINQABXY_F838DDFDDE7A7863</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOCIEA3F87A5DE2ABE3A</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">PAYMENRENCEAB05666040425BB3</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>PAYMENROOTC25CDFFFFE626E3C</ProxyName>
+      <Name>PaymentTypeCode</Name>
+      <Type>APC_V_BTD_PROCESSING_TYPE_CODE</Type>
+      <uiTextProxyName>YVINQABXY_6550B761B2C5FBBC</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOCIEA3F87A5DE2ABE3A</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">PAYMENECODE842830FBCA95838D</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>BANKROOTFA9F00941F3E27A8</ProxyName>
+      <Name>Bank</Name>
+      <Type>APC_V_LANGUAGEINDEPENDENT_TEXT</Type>
+      <uiTextProxyName>YVINQABXY_A76E8EE5B0EC8865</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOCIEA3F87A5DE2ABE3A</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">BANKE64228640F5A0543</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>PAYMENROOTD131930C93575DD0</ProxyName>
+      <Name>PaymentAmount</Name>
+      <Type>APC_S_AMOUNT</Type>
+      <MetaObjectProxyName>CURRENCY_CODE</MetaObjectProxyName>
+      <MetaObjectProxyName>CONTENT</MetaObjectProxyName>
+      <uiTextProxyName>YVINQABXY_D4E60BF0BC533D93</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOCIEA3F87A5DE2ABE3A</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">PAYMENMOUNTC3C65F4A05B44DAE</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>COMPANROOT1DF618FBC9BFD399</ProxyName>
+      <Name>CompanyID</Name>
+      <Type>APC_V_LANGUAGEINDEPENDENT_TEXT</Type>
+      <uiTextProxyName>YVINQABXY_8ABA8388723DA46E</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOCIEA3F87A5DE2ABE3A</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">COMPANYIDD8CC9CD94DA9AB61</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>DEBITIROOTA957D63C4B8D575F</ProxyName>
+      <Name>DebitIndicator</Name>
+      <Type>APC_V_INDICATOR</Type>
+      <uiTextProxyName>YVINQABXY_35399CA87C68A385</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOCIEA3F87A5DE2ABE3A</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">DEBITICATORA1D3C8275A9A67EC</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>POSTINROOTF318236489BF092A</ProxyName>
+      <Name>PostingDate</Name>
+      <Type>CDT_DATE</Type>
+      <uiTextProxyName>YVINQABXY_8CECC00BB30DD9A7</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOCIEA3F87A5DE2ABE3A</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">POSTINGDATE2D52EA542B5E0E74</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryInputParameters>
+    <QueryInputParameters>
+      <ProxyName>SEARCH_TEXT</ProxyName>
+      <Name>SearchText</Name>
+      <Type>APC_V_SEARCH_TEXT</Type>
+    </QueryInputParameters>
+    <QueryQRTNElements>
+      <ProxyName>WITHHOROOT3BF3AB854AF10141</ProxyName>
+      <Name>WithholdingStatus</Name>
+      <Type>YVINQABXY_90C2DE37E2651C89</Type>
+      <uiTextProxyName>YVINQABXY_04570CB52B65C3C4</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOCIEA3F87A5DE2ABE3A</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">WITHHOTATUS9071B89C50E62646</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <QueryQRTNElements>
+      <ProxyName>ADVICEROOT76D502CB237877DD</ProxyName>
+      <Name>AdviceID</Name>
+      <Type>APC_V_LANGUAGEINDEPENDENT_TEXT</Type>
+      <uiTextProxyName>YVINQABXY_45F34C00019A7711</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOCIEA3F87A5DE2ABE3A</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">ADVICEIDDAC248311FB0584F</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <QueryQRTNElements>
+      <ProxyName>PAYMENROOTDB2F69757217FDD7</ProxyName>
+      <Name>PaymentType</Name>
+      <Type>APC_V_LANGUAGEINDEPENDENT_TEXT</Type>
+      <uiTextProxyName>YVINQABXY_692E6DDE5CF65F5F</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOCIEA3F87A5DE2ABE3A</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">PAYMENTTYPE73AF06E6A208F2C6</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <QueryQRTNElements>
+      <ProxyName>CUSTOMROOTA041C400605ED038</ProxyName>
+      <Name>CustomerID</Name>
+      <Type>PDI_ABSL_IDENTIFIER</Type>
+      <uiTextProxyName>YVINQABXY_79CDC97DDB4C34A8</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOCIEA3F87A5DE2ABE3A</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">CUSTOMERIDAABBFA1D1639E593</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <QueryQRTNElements>
+      <ProxyName>CUSTOMROOT06E82A4AFE3D5D94</ProxyName>
+      <Name>CustomerDesc</Name>
+      <Type>APC_V_LANGUAGEINDEPENDENT_TEXT</Type>
+      <uiTextProxyName>YVINQABXY_AC93F814EB25FFDC</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOCIEA3F87A5DE2ABE3A</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">CUSTOMRDESC7933ACD8B75A2612</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <QueryQRTNElements>
+      <ProxyName>PAYMENROOT82077655A000AC1F</ProxyName>
+      <Name>PaymentOriginReference</Name>
+      <Type>APC_V_LANGUAGEINDEPENDENT_TEXT</Type>
+      <uiTextProxyName>YVINQABXY_FA08B4591D189F7C</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOCIEA3F87A5DE2ABE3A</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">PAYMENRENCE2EA1D0DB2005057F</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <QueryQRTNElements>
+      <ProxyName>PAYMENROOT11D4429EFBAF9FC9</ProxyName>
+      <Name>PaymentReference</Name>
+      <Type>APC_V_LANGUAGEINDEPENDENT_TEXT</Type>
+      <uiTextProxyName>YVINQABXY_F838DDFDDE7A7863</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOCIEA3F87A5DE2ABE3A</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">PAYMENRENCEAB05666040425BB3</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <QueryQRTNElements>
+      <ProxyName>PAYMENROOTC25CDFFFFE626E3C</ProxyName>
+      <Name>PaymentTypeCode</Name>
+      <Type>APC_V_BTD_PROCESSING_TYPE_CODE</Type>
+      <uiTextProxyName>YVINQABXY_6550B761B2C5FBBC</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOCIEA3F87A5DE2ABE3A</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">PAYMENECODE842830FBCA95838D</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <QueryQRTNElements>
+      <ProxyName>BANKROOTFA9F00941F3E27A8</ProxyName>
+      <Name>Bank</Name>
+      <Type>APC_V_LANGUAGEINDEPENDENT_TEXT</Type>
+      <uiTextProxyName>YVINQABXY_A76E8EE5B0EC8865</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOCIEA3F87A5DE2ABE3A</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">BANKE64228640F5A0543</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <QueryQRTNElements>
+      <ProxyName>PAYMENROOTD131930C93575DD0</ProxyName>
+      <Name>PaymentAmount</Name>
+      <Type>APC_S_AMOUNT</Type>
+      <MetaObjectProxyName>CURRENCY_CODE</MetaObjectProxyName>
+      <MetaObjectProxyName>CONTENT</MetaObjectProxyName>
+      <uiTextProxyName>YVINQABXY_D4E60BF0BC533D93</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOCIEA3F87A5DE2ABE3A</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">PAYMENMOUNTC3C65F4A05B44DAE</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <QueryQRTNElements>
+      <ProxyName>COMPANROOT1DF618FBC9BFD399</ProxyName>
+      <Name>CompanyID</Name>
+      <Type>APC_V_LANGUAGEINDEPENDENT_TEXT</Type>
+      <uiTextProxyName>YVINQABXY_8ABA8388723DA46E</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOCIEA3F87A5DE2ABE3A</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">COMPANYIDD8CC9CD94DA9AB61</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <QueryQRTNElements>
+      <ProxyName>DEBITIROOTA957D63C4B8D575F</ProxyName>
+      <Name>DebitIndicator</Name>
+      <Type>APC_V_INDICATOR</Type>
+      <uiTextProxyName>YVINQABXY_35399CA87C68A385</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOCIEA3F87A5DE2ABE3A</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">DEBITICATORA1D3C8275A9A67EC</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <QueryQRTNElements>
+      <ProxyName>POSTINROOTF318236489BF092A</ProxyName>
+      <Name>PostingDate</Name>
+      <Type>CDT_DATE</Type>
+      <uiTextProxyName>YVINQABXY_8CECC00BB30DD9A7</uiTextProxyName>
+      <BindingInformation>
+        <BOProxyName xmlns="http://sap.com/xi/BASIS/Global">YVINQABXY_BOCIEA3F87A5DE2ABE3A</BOProxyName>
+        <BONodeProxyName xmlns="http://sap.com/xi/BASIS/Global">ROOT4F903855210031B0</BONodeProxyName>
+        <BONodeElementProxyName xmlns="http://sap.com/xi/BASIS/Global">POSTINGDATE2D52EA542B5E0E74</BONodeElementProxyName>
+      </BindingInformation>
+    </QueryQRTNElements>
+    <ParentNodeProxyName>ROOT4F903855210031B0</ParentNodeProxyName>
+    <UseForFeedsIndicator>false</UseForFeedsIndicator>
+    <UseForEnterpriseSearchIndicator>false</UseForEnterpriseSearchIndicator>
+  </QueryAnnotationElements>
+</QueryDefinition>

@@ -1,0 +1,39 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BODepartament
+		Node: Root
+		Validation: OnSave 
+
+		Script file signature
+		----------------------------
+		Returns: Boolean
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script before an instance of the business object is saved to the data base.
+		It can have a return value of either true or false, which determines whether the instance of the business object is saved or not.
+		All fields in this business object are read-only and cannot be changed.
+*/
+
+import ABSL;
+
+var ret = true;
+
+if(this.DepartamentDescription.IsInitial()){
+	ret = false;
+	raise Msj.Create("E","Debe ingresar descripción de departamento");
+}
+
+if(this.DepartamentCode.IsInitial()){
+	ret = false;
+	raise Msj.Create("E","Debe ingresar código de departamento");
+}
+
+if(this.CountryCode.IsInitial()){
+	ret = false;
+	raise Msj.Create("E","Debe ingresar código de país");
+}
+
+return ret;

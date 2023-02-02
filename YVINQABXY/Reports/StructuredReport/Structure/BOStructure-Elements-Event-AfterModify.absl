@@ -1,0 +1,34 @@
+﻿//import ABSL;
+//import AP.FO.MOM.Global;
+//import AP.FinancialAccounting.Global;
+//
+//this.ToRoot.WasModify = true;
+//
+//if(this.includeByD){
+	//this.AcccountingCode = this.Accounting1Code.content;
+	//this.Accounting2Code.Clear();
+	//this.SubElements.Delete();
+//}
+//else{
+	//this.AcccountingCode = this.Accounting2Code;
+	//this.Accounting1Code.content.Clear();
+//}
+//
+////while(true)
+////{
+	////if(!this.ToParent.IsSet()){break;}
+	////if(this.ToParent.CompanyID.IsInitial()){break;}
+		////
+	////var QueryCompany = Company.QueryByIDAndName;
+	////var ParameterQueryCompany = QueryCompany.CreateSelectionParams();
+		////ParameterQueryCompany.Add(QueryCompany.ID, "I", "EQ", this.ToParent.CompanyID);
+	////var ResultQueryCompany = QueryCompany.Execute(ParameterQueryCompany).GetFirst();
+	////if(!ResultQueryCompany.IsSet()){break;}
+	////if(ResultQueryCompany.NameByValidity.Count()<=0){break;}
+	////if(ResultQueryCompany.NameByValidity.GetFirst().Name.IsInitial()){break;}
+	////if(ResultQueryCompany.NameByValidity.GetFirst().Name.content.IsInitial()){break;}
+		//////this.CompanyDescr = ResultQueryCompany.NameByValidity.GetFirst().Name.content;
+		////this.ToParent.CompanyID = ResultQueryCompany.NameByValidity.GetFirst().Name.content;
+////break;
+////}
+//

@@ -1,0 +1,43 @@
+﻿import ABSL;
+
+if(this.Position.IsInitial()){
+	var vQuantity = this.ToRoot.Values.Count();
+	this.Position = vQuantity;
+}
+
+
+if(!this.TechnicalID.IsInitial()){
+	var qTech = BOConfigurationReportsData.Select.QueryByElements;	
+	var pTech = qTech.CreateSelectionParams();
+		pTech.Add(qTech.selectVariableID,"I","EQ",this.TechnicalID);
+	var insRep = qTech.Execute(pTech).GetFirst();
+	if(insRep.IsSet())		
+			this.TechnicalDesc = insRep.SelectDescription;	
+	else
+		this.TechnicalDesc.Clear();	
+}
+
+if(!this.HomologationID.IsInitial()){
+	var qHomo = BOHomologation.QueryByElements;	
+	var pHomo = qHomo.CreateSelectionParams();
+		pHomo.Add(qHomo.HomologationID,"I","EQ",this.HomologationID.RemoveLeadingZeros());
+	var insRep = qHomo.Execute(pHomo).GetFirst();
+	if(insRep.IsSet()){		
+			//this.HomologationDesc = insRep.HomologationDesc;
+			
+			foreach(var nodoHomologacion in insRep.DataHomologation)
+			{
+				if(nodoHomologacion.IsSet())
+				{
+					var vCampoHomologacion = nodoHomologacion.DestData;
+					if(!vCampoHomologacion.IsInitial())
+					{
+						this.HomologationDesc = vCampoHomologacion;
+					}
+				}
+			}	
+	}
+	else
+		this.HomologationDesc.Clear();	
+}
+

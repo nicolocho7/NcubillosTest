@@ -1,0 +1,13 @@
+﻿import ABSL;
+if(!this.AccountFrom.content.IsInitial()){
+	if(ABSL:Numeric.IsNumeric(this.AccountFrom.content)){
+		this.AccountFromNumeric = ABSL:Numeric.ParseFromString(this.AccountFrom.content);
+	}
+}
+
+if(!this.AccountTo.content.IsInitial()){
+	if(ABSL:Numeric.IsNumeric(this.AccountTo.content)){
+		this.AccountToNumeric = ABSL:Numeric.ParseFromString(this.AccountTo.content);
+	}
+}
+

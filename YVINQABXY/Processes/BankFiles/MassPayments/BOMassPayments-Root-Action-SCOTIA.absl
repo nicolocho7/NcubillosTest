@@ -1,0 +1,208 @@
+﻿/*-----------------------------------------------------------------------------------------------------
+										Historial de Modificaciones                                               
+-----------------------------------------------------------------------------------------------------
+ Funcional Responsable.....: Jose Romero                                        
+ Modificado por............: Joe Gonzales                           
+ Marca.....................: 
+ Fecha.....................: 24.03.2018                                    
+ Descripción...............: Versión Inicial                              
+-----------------------------------------------------------------------------------------------------
+ Funcional Responsable.....:                                        
+ Modificado por............:                            
+ Marca.....................: 
+ Fecha.....................:                                     
+ Descripción...............: 
+-----------------------------------------------------------------------------------------------------*/
+
+import ABSL;
+import DocumentServices.Global;
+import BASIS.Global as basis;
+import AP.Common.GDT as common;
+import AP.FO.PaymentControl.Global;
+import AP.FO.BankDirectoryEntry.Global;
+import AP.SupplierInvoicing.Global;
+import AP.FO.BusinessPartner.Global;
+import AP.Payment.Global;
+import AP.FO.TaxArrangement.Global;
+
+// - - - - - - - - - - - - - - - Definiciones para el armado del TXT - - - - - - - - - - - - - - -//
+var type  :  DocumentTypeCode;
+var binary  : BinaryObject;
+var name  : LANGUAGEINDEPENDENT_LONG_Name;
+var desc  :  Description;
+var StringExport="";
+var AmmountAcumu = 0;
+	
+var vStringCab = "";
+var vStringDetalle = "";
+var isStringCab = false;
+var vCount = 0;
+
+//Detalle
+var vD01 = "";	//RUC del proveedor
+var vD02 = "";	//Razon social
+var vD03 = "";	//N Factura
+var vD04 = "";	//Fecha Factura
+var vD05 = "";	//Monto a pagar
+var vD06 = "1";	//Forma de pago
+var vD07 = "999";	//Oficina
+var vD08 = "";	//Cuenta
+
+
+// - - - - - - - - - - - - - - - Foreach a los items - - - - - - - - - - - - - - -//
+var insPaymentOrder;
+var vCorrelativo = 0;
+var vIsCabecera = false;
+var vSumaTotal = 0;
+
+foreach(var itemDetail in this.Details){ 
+
+	insPaymentOrder = PaymentOrder.Retrieve(itemDetail.PaymentOrderUUID);
+	if(insPaymentOrder.IsSet()){
+		
+		if(insPaymentOrder.BusinessPartner.IsSet()){	
+			var insSupplier = Supplier.Retrieve(insPaymentOrder.BusinessPartner.InternalID.RemoveLeadingZeros());
+			if(insSupplier.IsSet()){
+				
+				if(insSupplier.BankDetails.Count()>0){
+					var insBankDetails = insSupplier.BankDetails.GetFirst();
+					if(insBankDetails.IsSet()){
+						//if(!insBankDetails.zAccountType.IsInitial()){
+							//switch(insBankDetails.zAccountType){
+								////case CLAccountTypeBankCode.CO_1{vD02 = "A";}
+								////case CLAccountTypeBankCode.CO_2{vD02 = "C";}
+								////case CLAccountTypeBankCode.CO_3{vD02 = "M";}
+							//}
+						//}
+
+						vD08 = insBankDetails.BankAccountID;
+					} 
+				}
+
+				if(insSupplier.TaxNumber.Count() > 0){
+					var insSupplierTaxNumber = insSupplier.TaxNumber.GetFirst();
+					//switch(insSupplierTaxNumber.TaxIdentificationNumberTypeCode.content){
+						//case "1"{vD05 = "R";}//RUC Number
+						//case "2"{vD05 = "C";}//National Identification Document
+						//case "3"{vD05 = "P";}//Passport
+						//case "4"{vD05 = "I";}//Fiscal ID for Individuals
+						//case "5"{vD05 = "E";}//Foreigner ID
+						//case "6"{vD05 = "O";}//Other Type of Documents
+					//}
+					//
+					vD01 = insSupplierTaxNumber.PartyTaxID.content;
+				}
+
+				if(insSupplier.CurrentCommon.IsSet()){
+					vD02 = insSupplier.CurrentCommon.BusinessPartnerFormattedName;
+				}
+				
+				var vReferenciaExterna = "";
+				if(insPaymentOrder.IsSet()){
+					var RefExter = insPaymentOrder.PaymentExplanation.Item;
+					if(!RefExter.GetFirst().ExternalInvoiceReference.ID.content.IsInitial()){
+						vReferenciaExterna = RefExter.GetFirst().ExternalInvoiceReference.ID.content.RemoveLeadingZeros();
+					}
+				}
+
+				vD03 = vReferenciaExterna.Trim();
+				//vD10 = vD08 + " " + vD09;
+
+			}
+
+		}//fin if(insPaymentOrder.BusinessPartner.IsSet()){	
+		
+		vD04 = insPaymentOrder.PaymentExecutionDate.GetYear() + insPaymentOrder.PaymentExecutionDate.GetMonth() + insPaymentOrder.PaymentExecutionDate.GetDay(); 
+
+		//vD05 = insPaymentOrder.PaymentAmount.currencyCode;
+		var vPaymentAmount = insPaymentOrder.PaymentAmount.content;
+		if(vPaymentAmount < 0){
+			vPaymentAmount = vPaymentAmount * (-1);
+		}
+		vSumaTotal = vSumaTotal + vPaymentAmount;
+		vD05 = vPaymentAmount.RoundToString(2,true);
+		vD05 = vD05.Replace(",","").Replace(".","");
+
+		vCorrelativo = vCorrelativo + 1;
+		//vD07 = vCorrelativo.ToString();
+
+		var x = vD01.Length();
+		if(x>11){
+			vD01 = vD01.Substring(0,11);
+		}
+		else{
+			while(x<11){
+				vD01 = "0" +vD01; x = x +1;
+			}
+		}
+
+		x = vD02.Length();
+		if(x>60){
+			vD02 = vD02.Substring(0,60);
+		}
+		else{
+			while(x<60){
+				vD02 = " " +vD02; x = x +1;
+			}
+		}
+
+		x = vD03.Length();
+		if(x>14){
+			vD03 = vD03.Substring(0,14);
+		}
+		else{
+			while(x<14){
+				vD03 = " " +vD03; x = x +1;
+			}
+		}
+
+		x = vD05.Length();
+		if(x>11){
+			vD05 = vD05.Substring(0,11);
+		}
+		else{
+			while(x<11){
+				vD05 = "0" +vD05; x = x +1;
+			}
+		}
+
+		x = vD07.Length();
+		if(x>3){
+			vD07 = vD07.Substring(0,3);
+		}
+		else{
+			while(x<3){
+				vD07 = "0" +vD07;x = x +1;
+			}
+		}
+
+		x = vD08.Length();
+		if(x>20){
+			vD08 = vD08.Substring(0,20);
+		}
+		else{
+			while(x<20){
+				vD08 = "0" +vD08; x = x +1;
+			}
+		}
+
+		vStringDetalle = vStringDetalle 
+						 + vD01 + vD02 + vD03 + vD04 + vD05
+						 + vD06 + vD07 + vD08 + "\r\n";
+
+	}// fin if(insPaymentOrder.IsSet())
+
+
+}
+
+
+StringExport = vStringDetalle;
+
+name = "Banco Scotia";
+type.content = "10001";
+type.listID = "10296";
+binary.mimeCode = "text/plain";
+binary.content = Binary.ParseFromString(StringExport);
+name = name + ".txt";
+	
+this.myAttachments.CreateFile(type,name,name,desc,binary);

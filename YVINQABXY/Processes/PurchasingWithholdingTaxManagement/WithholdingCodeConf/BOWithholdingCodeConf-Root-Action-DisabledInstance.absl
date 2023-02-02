@@ -1,0 +1,18 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BOWithholdingCodeConf
+		Node: Root
+		Action: DisabledInstance 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+
+import ABSL;
+
+if(!this.Disabled){
+	this.Disabled = true;
+}

@@ -1,0 +1,22 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BOExecutionFlujoEfectivo
+		Node: Root
+		Action: aExecute 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+
+import ABSL;
+
+var vIsConsistent = true;
+if(vIsConsistent){
+	switch(this.TypeReport){
+		case CLFlujoEfectivoReportCode.CO_1 {this.MeptodoDirecto();}
+		case CLFlujoEfectivoReportCode.CO_2 {this.MeptodoIndirecto();}
+	}
+}

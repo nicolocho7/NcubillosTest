@@ -1,0 +1,73 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+[WithAdministrativeData] businessobject Report raises msjReport{
+
+        message msjReport text "&"	: LANGUAGEINDEPENDENT_LONG_Text;
+		
+		[AlternativeKey] [Label("ID")]	element ReportID		:	ID;
+		[Label("Status")]				element Status			:	CLStatusReportCode;
+		[Label("Structure")]			element StructureID		:	ID;
+		[Label("Start Date")]			element StartDate		:	Date;
+		[Label("End Date")]				element EndDate			:	Date;
+		[Label("Report name")]			element ReportDesc		:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Group")]				element Group			:	Indicator;
+										element IsConsistent	:	Indicator;
+
+
+		element ID			:	ID;//no se usa
+		element ReportName	:	ID;//no se usa
+
+		action Generate;
+		action Validate; 
+		action Return;
+
+		association toEstructura to BOStructure;
+		[DependentObject(AttachmentFolder)] node Attachment;
+
+		node Filters [0,n]
+		{
+			[Label("Filter")]			element Filter			:	CLFilterObjectCode;
+			[Label("Value")]			element Value			:	ID;
+			[Label("Description")]		element ValueDesc		:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+			[Label("Profit Center")]	element ProfitCenterID	:	OrganisationalCentreID;
+			[Label("Cost Object")]		element CostObjectID	:	FinancialAccountingViewOfCostObjectID;
+			[Label("Cost Center")]		element CostCenterID	:	OrganisationalCentreID;
+			[Label("Segment")]			element SegmentID		:	OrganisationalCentreID;
+			[Label("Description")]		element ObejctDesc		:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+		}
+
+		node Report [0,n]
+		{
+			[Label("ID")]				element ID				:	ID;
+			[Label("Internal Code")]	element CodeInternal	:	ID;
+			[Label("Description")]		element Description		:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Value")]			element Value			:	Amount;
+			[Label("Show sign")]		element ShowSign		:	Indicator;
+			[Label("Profit Center")]	element ProfitCenterID	:	ID;
+			[Label("ProfitCenterDesc")]	element ProfitCenterDesc:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Cost Object")]		element CostObjectID	:	ID;
+			[Label("CostObjectDesc")]	element CostObjectDesc	:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Cost Center")]		element CostCenterID	:	ID;
+			[Label("CostCenterDesc")]	element CostCenterDesc	:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Segment")]			element SegmentID		:	ID;
+			[Label("SegmentDesc")]		element SegmentDesc		:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+			[Label("Code ")]				element Code			:	ID;//no se usa
+		}
+
+		node ReportResponse[0,n]
+		{
+			[Label("Code")]					element AcccountingCode			:	ID;
+			[Label("Value")]				element Value					:	Amount;
+			[Label("Profit Center")]		element ProfitCenterID			:	ID;
+			[Label("ProfitCenterDesc")]		element ProfitCenterDesc		:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Cost Object")]			element CostObjectID			:	ID;
+			[Label("CostObjectDesc")]		element CostObjectDesc			:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Cost Center")]			element CostCenterID			:	ID;
+			[Label("CostCenterDesc")]		element CostCenterDesc			:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Segment")]				element SegmentID				:	ID;
+			[Label("SegmentDesc")]			element SegmentDesc				:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+		}
+
+}

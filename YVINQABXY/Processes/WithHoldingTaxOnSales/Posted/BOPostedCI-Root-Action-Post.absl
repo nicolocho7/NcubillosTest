@@ -1,0 +1,65 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BOPostedCI
+		Node: Root
+		Action: Post 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+
+import ABSL;
+import AP.CustomerInvoicing.Global;
+import AP.Payment.Global;
+import AP.FO.BusinessPartner.Global;
+
+var sng = 0;
+var queryF = CustomerInvoice.QueryByElements;
+var queryP = queryF.CreateSelectionParams();
+	queryP.Add(queryF.ID.content, "I", "EQ", this.PaymentReference);
+var queryE = queryF.Execute(queryP);
+
+if(this.WithholdingStatus == "1"){
+	
+	//Antes de realizar el posteo se hace una consulta a las facturas, para ver si ese ID aun existe (Por ejemplo puede que hayan cancelado la factura y ya no aparezca)
+	if(queryE.Count() > 0){
+		//------------------------------------------------------------------------------------------------------------------------
+		var paymentRequest : PaymentProcessing.ManageBankAdvice.PaymentAdviceRequest;
+		var paExIt : PaymentProcessing.ManageBankAdvice.PaymentAdviceRequest.PaymentExplanationItem; 
+		var PaymentAdviceResult; 
+		paymentRequest.ExternalAdviceID.content = this.AdviceID; 
+		//-----------------------------------------------------------------------------------------------------------------
+	
+		//paymentRequest.AccountDebitIndicator = false;
+		paymentRequest.BusinessPartnerInternalID = this.CustomerID.RemoveLeadingZeros();//ojo con los ceros
+		paymentRequest.AdviceDate = this.PostingDate;// Context.GetCurrentSystemDate();
+		paymentRequest.PaymentReference.ID.content = this.PaymentReference;
+		paymentRequest.AccountDebitIndicator = this.DebitIndicator;
+		    
+		paymentRequest.PaymentFormCode = this.PaymentType; 
+		paymentRequest.HouseBankAccountInternalID.content = this.Bank;
+		paymentRequest.EffectivePaymentAmount.currencyCode = this.PaymentAmount.currencyCode;
+		paymentRequest.EffectivePaymentAmount.content = this.PaymentAmount.content;
+		
+		//PaymentExplanationItem
+		paExIt.ID = "1";
+		paExIt.BusinessTransactionDocumentDate = this.PostingDate;// Context.GetCurrentSystemDate();
+		paExIt.PaymentTransactionInitiatorInvoiceReference.ID.content = this.PaymentOriginReference;
+		paExIt.PaymentTransactionDestinatedInvoiceReference.ID.content = this.PaymentReference;
+		paExIt.CompanyID = this.CompanyID;
+		paExIt.NetAmount.currencyCode = this.PaymentAmount.currencyCode;
+		paExIt.NetAmount.content = this.PaymentAmount.content;
+		paExIt.Note.content = this.Bank;
+		paymentRequest.PaymentExplanationItem.Add(paExIt);
+		PaymentAdviceResult = PaymentProcessing.ManageBankAdvice(paymentRequest);
+		
+		this.WithholdingStatus = "2";
+	}
+	else{
+		this.WithholdingStatus = "3";
+	}
+}
+

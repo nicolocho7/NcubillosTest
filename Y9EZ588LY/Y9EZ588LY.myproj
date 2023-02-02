@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{3544ab21-a520-45ce-8a3a-81050d30edaf}</ProjectGuid>
+    <ProjectType>CopernicusProject</ProjectType>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Name>Y9EZ588LY</Name>
+    <RootNamespace>Y9EZ588LY</RootNamespace>
+    <RepositoryNamespace>http://0004019099-one-off.sap.com/Y9EZ588LY_</RepositoryNamespace>
+    <RuntimeNamespacePrefix>Y9EZ588LY_</RuntimeNamespacePrefix>
+    <RepositoryRootFolder>/Y9EZ588LY_MAIN</RepositoryRootFolder>
+    <DefaultProcessComponent>Y9EZ588LY_Y9EZ588LY</DefaultProcessComponent>
+    <DevelopmentPackage>$Y9EZ588LY_DEV</DevelopmentPackage>
+    <XRepSolution>Y9EZ588LY_MAIN</XRepSolution>
+    <BCSourceFolderInXRep>/Y9EZ588LY_BC/SRC</BCSourceFolderInXRep>
+    <ProjectSourceFolderinXRep>/Y9EZ588LY_MAIN/SRC</ProjectSourceFolderinXRep>
+    <DeploymentUnit>FOUNDATION</DeploymentUnit>
+    <CompilerVersion>1302_FP15</CompilerVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>bin</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="BoCustom" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BoCustom\ConsumeService-Root-Action-callWebService.absl">
+      <DependentUpon>BoCustom\ConsumeService-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BoCustom\ConsumeService-Root.node">
+      <DependentUpon>BoCustom\ConsumeService.bo</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BoCustom\ConsumeService.bo">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoCustom\ConsumeService_OIF.OIF.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoCustom\ConsumeService_OWL.OWL.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoCustom\ConsumeService_PTP.PTP.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoCustom\ConsumeService_QA.QA.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoCustom\ConsumeService_WCF.WCF.uiwoc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoCustom\ConsumeService_WCView.WCVIEW.uiwocview">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoCustom\CS_JPConExtServ.csd">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoCustom\JPConExtServ-YRKXVY6OY_ManageJobProfileIn.wsdl">
+      <DependentUpon>BoCustom\JPConExtServ.wsid</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BoCustom\JPConExtServ.wsid">
+      <SubType>Content</SubType>
+    </Content>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

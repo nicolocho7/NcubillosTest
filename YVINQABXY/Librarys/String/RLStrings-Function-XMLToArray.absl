@@ -1,0 +1,76 @@
+﻿import ABSL;
+
+var result : collectionof elementsof BusinessObject::BORecord;
+var elRow : elementsof BusinessObject::BORecord;
+var instRow;
+var instColumn : elementsof BusinessObject::BORecord.Columns;
+
+var sOriginalString = Parameter::String;
+var sNodeStart = "<m:properties>";
+var sNodeEnd = "</m:properties>";
+var sLine = "";
+var sColumn = "";
+
+var iRow = 0;
+var iColumn = 0;
+var iStartPosition = 0;
+var iEndPosition = 0;
+var iTempPosition = 0;
+var iLength = 0;
+
+if (!sOriginalString.IsInitial()) {
+
+	if (!Parameter::NodeName.IsInitial()) { 
+		sNodeStart = Parameter::NodeName; 
+		sNodeEnd = Parameter::NodeName.Replace("<", "</");
+	}
+	iLength = sNodeStart.Length();
+
+	iStartPosition = sOriginalString.Find(sNodeStart); 
+	while (iStartPosition != -1) {
+		
+		iTempPosition = sOriginalString.Find(sNodeEnd, iStartPosition);
+		sLine = sOriginalString.Substring(iStartPosition + iLength, iTempPosition - iStartPosition - iLength);
+		
+		elRow.Clear();
+		elRow.Row = iRow;
+		elRow.String = sLine;
+
+		iEndPosition = iTempPosition + 1;
+		result.Add(elRow);
+
+		/*
+		instRow = BORecord.Create(elRow);
+
+		iStartPosition = sOriginalString.Find("<d:", iStartPosition + 1); 
+		iColumn = Library::Numeric.ParseFromString("0");
+
+		while (iStartPosition < iTempPosition) {
+			iEndPosition = sOriginalString.Find(">", iStartPosition);
+
+			sColumn = sOriginalString.Substring(iStartPosition + 3, iEndPosition - iStartPosition - 3);
+			iStartPosition = iEndPosition + 1;
+			iEndPosition = sOriginalString.Find("</d:", iStartPosition);
+			sLine = sOriginalString.Substring(iStartPosition, iEndPosition - iStartPosition);
+
+			instColumn.Clear();
+			instColumn.Index = iColumn;
+			instColumn.Name = sColumn;
+			instColumn.Value = sLine;
+
+			instRow.Columns.Create(instColumn);
+			iColumn = iColumn + 1;
+
+			iStartPosition = sOriginalString.Find("<d:", iStartPosition); 
+		}
+		result.Add(instRow);
+		*/
+
+		iRow = iRow + 1; 
+
+		iStartPosition = sOriginalString.Find(sNodeStart, iEndPosition + 1);
+	}
+
+}
+
+return result;

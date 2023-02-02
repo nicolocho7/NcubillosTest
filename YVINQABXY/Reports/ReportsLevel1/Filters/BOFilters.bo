@@ -1,0 +1,54 @@
+﻿
+import AP.Common.GDT as apCommonGDT;
+import AP.Common.Global;
+import AP.FinancialAccounting.Global;
+
+[WithAdministrativeData]businessobject BOFilters raises msg{
+
+        message msg text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+		[Label("ID")]					element BOFiltersID			:	ID;
+		[Label("Description")]			element FiltersDesc			:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+		[Label("Company")]				element Company				:	Indicator;
+		[Label("Selection parameter")]	element COSelctionP			:	CLSelectionParametersCode;
+		[Label("Technical ID")]			element COTechnicalId		:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+		
+		[Label("Accounting System")]	element AccountingSystem	:	Indicator;
+		[Label("Selection parameter")]	element ASSelctionP			:	CLSelectionParametersCode;
+		[Label("Technical ID")]			element ASTechnicalId		:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+		
+		[Label("Period")]				element Period				:	Indicator;
+		[Label("Selection parameter")]	element PESelctionP			:	CLSelectionParametersCode;
+		[Label("Technical ID")]			element PETechnicalId		:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+		
+		[Label("Date")]					element Date				:	Indicator;
+		[Label("Selection parameter")]	element DASelctionP			:	CLSelectionParametersCode;
+		[Label("Technical ID")]			element DATechnicalId		:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+		[Label("G/L Account")]			element AccountGL			:	Indicator;
+		[Label("Selection parameter")]	element GLSelctionP			:	CLSelectionParametersCode;
+		[Label("Technical ID")]			element GLTechnicalId		:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+		//New Filter GL Account Header
+		[Label("G/L Account Parameter")] element GLAccount			:	ChartOfAccountsCode;//Header
+		[Label("Description")]			element GLDescription		:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Company")]				element GLCompany			:	OrganisationalCentreID;
+		[Label("Set Of Book")]			element GLSetOfBooks		:	SetOfBooksID;
+		[Label("Description  Set")]		element GLDescriptionSetBKS	:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+		[WithAdministrativeData] node GLNodeAccount [0,n] raises msgValues
+		{
+			message msgValues text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("G/L Account Parameter")] element GLAccountItem	 : ChartOfAccountsItemCode;	//:	AllChartOfAccountsItemCode;
+
+		}
+
+
+		[WithAdministrativeData] node GLNodeAcc [0,n] raises msgAcc
+		{
+			message msgAcc text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("G/L Account Parameter")] element GLAccItem	 : LANGUAGEINDEPENDENT_EXTENDED_Text;	//:	AllChartOfAccountsItemCode;
+		}
+
+		action aDelete;
+}

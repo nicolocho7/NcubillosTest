@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-16"?>
+<FormTemplateGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Title="JobProfile Form Group" BusinessArea="PDI" GroupCode="YRKXVY6OY_PK">
+  <ReferenceBO ESRName="JobProfile">
+    <ProxyName>YRKXVY6OY_JOLED417F50D542D3BF6</ProxyName>
+    <Namespace>http://0004019099-one-off.sap.com/YRKXVY6OY_</Namespace>
+  </ReferenceBO>
+  <BackendPrinting>false</BackendPrinting>
+</FormTemplateGroup>

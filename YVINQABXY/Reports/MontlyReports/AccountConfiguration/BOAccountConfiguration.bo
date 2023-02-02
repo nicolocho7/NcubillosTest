@@ -1,0 +1,24 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FinancialAccounting.Global;
+
+businessobject BOAccountConfiguration raises msg {
+
+		message msg text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+		
+		[Label("ID Configuration")]			element IDConfiguration: ID;
+        [Label("Company")]					element CompanyID: OrganisationalCentreID;
+		association ToCompany	to Company;
+		[Label("Set of Books")]				element SetOfBookID: SetOfBooksID;
+		[Label("Set of Book Desc")]			element SetOfBookDesc : LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Chart Of Accounts")]		element ChartOfAccountsCode: ChartOfAccountsCode;
+		[Label("Type Of Report")]			element TypeReport: CLReportPLEsCode;
+		[Label("Account Range")]			element AccountRange: Indicator;
+		[Label("From Account")]			element FromAccount			: ChartOfAccountsItemCode;
+		[Label("To Account")]			element ToAccount			: ChartOfAccountsItemCode;
+		 [WithAdministrativeData] node GLAccounts [1,n] raises msg {
+			[Label("Cuenta de Mayor")]			element NCuentas			: ChartOfAccountsItemCode;
+		}
+
+
+}

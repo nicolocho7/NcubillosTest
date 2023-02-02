@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sadl:definition xmlns:ass="http://sap.com/sap.nw.f.sadl/association" xmlns:pdi="http://sap.com/xi/AP/PDI" date="20220623" time="154629" uuid="30AEF95D93D44BA984012D0C32B13941" xmlns:sadl="http://sap.com/sap.nw.f.sadl">
+  <sadl:conversions>
+    <sadl:conversion type="ALPHA" />
+  </sadl:conversions>
+  <sadl:modes>
+    <sadl:mode type="UI" />
+  </sadl:modes>
+  <sadl:dataSource name="DS" binding="YRKXVY6OY_JONG65E0A1F85FCE7E77/ass:ROOT4F903855210031B0" type="BusinessObjectNode" pdi:mdrsBinding="JobListing.Root" />
+  <sadl:resultSet>
+    <sadl:structure name="YRKXVY6OY_JONG65E0A1F85FCE7E77" dataSource="DS" maxEditMode="EX" pdi:mdrsName="JobListing.Root">
+      <sadl:attribute name="ID4A0A3E77772EF12E" binding="ID4A0A3E77772EF12E" pdi:mdrsName="id" />
+      <sadl:attribute name="TITLEA204496BAC7E8BE5" binding="TITLEA204496BAC7E8BE5" pdi:mdrsName="title" />
+      <sadl:attribute name="JOBLOCATIOND1D9DBEDAC9DE2A2" binding="JOBLOCATIOND1D9DBEDAC9DE2A2" pdi:mdrsName="jobLocation" />
+      <sadl:attribute name="DOMAIN18EBC0034E4CC087" binding="DOMAIN18EBC0034E4CC087" pdi:mdrsName="domain" />
+      <sadl:attribute name="EMPTYPE44DE055D725BF14F" binding="EMPTYPE44DE055D725BF14F" pdi:mdrsName="empType" />
+      <sadl:attribute name="JOBENDDATE0051BC169334DBD2" binding="JOBENDDATE0051BC169334DBD2" pdi:mdrsName="jobEndDate" />
+      <sadl:attribute name="HIREMGRNAMEAA4799AEA6B93131" binding="HIREMGRNAMEAA4799AEA6B93131" pdi:mdrsName="hireMgrName" />
+      <sadl:attribute name="HIREMGRID6E9BAEAC49CD6A1B" binding="HIREMGRID6E9BAEAC49CD6A1B" pdi:mdrsName="hireMgrID" />
+    </sadl:structure>
+  </sadl:resultSet>
+</sadl:definition>

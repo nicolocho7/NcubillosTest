@@ -1,0 +1,22 @@
+﻿import ABSL;
+import AP.Common.GDT;
+
+var result : DataType::LANGUAGEINDEPENDENT_Name = "";
+
+var sOriginalString = Parameter::String;
+var sItem = Parameter::Item;
+
+if (!sOriginalString.IsInitial() && !sItem.IsInitial()) {
+
+	var sNode = "<d:" + sItem + ">";
+	var iStartPosition = sOriginalString.Find(sNode);
+	if (iStartPosition > -1) {
+		iStartPosition = iStartPosition + sNode.Length();
+		var iEndPosition = sOriginalString.Find("</d:" + sItem + ">", iStartPosition);
+		if (iEndPosition > 0) {
+			result = sOriginalString.Substring(iStartPosition, iEndPosition  - iStartPosition);
+		}
+	}
+}
+
+return result;

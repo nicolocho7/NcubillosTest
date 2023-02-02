@@ -1,0 +1,17 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+[WithAdministrativeData]businessobject BO2Homologation raises msg {
+
+	message msg text "&":LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[AlternativeKey][Label("ID")]element HomologationID:ID;
+	[Label("Homologation")]element HomologationDesc:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Comments")]element HomologationComments:LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+	[WithAdministrativeData]node Values[0,n]raises msgValues{
+		message msgValues text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Initial Value")]element InitialValue:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Final Value")]element FinalValue:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Additional comments")]element AdditionalComments:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	}
+
+}

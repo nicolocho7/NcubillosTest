@@ -1,0 +1,27 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FinancialAccounting.Global;
+
+
+[DeploymentUnit(Financials)][WithAdministrativeData] businessobject BOAccount42Execute raises msg {
+	
+	message msg text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+	
+	[Label("ID")]								element EID	: ID;
+	[Label("Set Of Books")]						element EConfigBooKDialy	: SetOfBooksID;
+	element EConfigBooKDialyDescription	: LANGUAGEINDEPENDENT_EXTENDED_Name;
+	element EConfigCompany				: LANGUAGEINDEPENDENT_EXTENDED_Name;
+	association ToBookConfi to BOBookDiarie_Configuration ; 
+	[Label("Company")]						element ECompany			: OrganisationalCentreID;
+	[Label("Year")]							element EYears				: CLYearCode;
+	[Label("Mounth")]						element EMounths			: CLMonthCode;
+	[Transient]								element IsConsistent		: Indicator; 
+	[Label("View Data")]					element EView				: Indicator ;
+	[Label("Parameters")]					element EOvs				: ID;
+	[Label("Day")]							element ECalendar			: Date;
+	[Label("Day")]							element EDays				: CLDayCode;
+	[Label("Date")]							element EDate				: Date;
+
+	[DependentObject(AttachmentFolder)] node ReportsAttachments;
+	
+	action execute;
+}

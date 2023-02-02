@@ -1,0 +1,44 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FinancialAccounting.Global;
+
+businessobject BOReportPDT  raises msj{
+
+		message msj text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+        
+		[Label("ID")][AlternativeKey]	element ID					: ID;
+		element UUID :UUID;
+		[Label("Company")]				element CompanyID						: OrganisationalCentreID;
+		[Label("Set of Book")]			element SetOfBook						: SetOfBooksID;
+		association ToCompany	to Company;
+		[Label("Date Execution Initial")]		element EDateInitial		: Date;
+		[Label("Date Execution End")]		element EDateEnd		: Date;
+		[Label("Type of Taxe")]			element TypeTax		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Type Of Report")]		element TypeReport		: CLReportPDTCode;
+		[Label("Company")]			element Company		: ID;
+		[Label("Valor")]	element ValorConvert: Amount;
+		association  Companyto to BOTableCompany;
+
+		node Details [0,n] raises msjDetails {
+			message msjDetails text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("TipoDocumento")]	element TipoDocumento:LANGUAGEINDEPENDENT_EXTENDED_Text; 
+			[Label("Serie")]			element Serie: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Periodo")]			element Periodo: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Ventas Totales")]	element VentasTotales: Amount;
+			[Label("Ventas Grabadas")]	element VentasGrabadas: Amount;
+		}
+
+		[DependentObject(AttachmentFolder)] node ReportsAttachments;
+
+		action Execute;
+		action PDT626;
+		action PDT621;
+		action PDT621C;
+		action PDT601;
+		action PDT617;
+		action PDT626MCS;
+		action PDT626I;
+		action PDT3550COMP;
+		action PDT3550VENT;
+		action PDT350VENTASDAOT;
+}

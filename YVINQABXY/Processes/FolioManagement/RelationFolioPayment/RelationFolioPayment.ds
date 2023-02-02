@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<QueryDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://sap.com/xi/BASIS/Global">
+  <ProxyName xmlns="">YVINQABXY_ZHLKIKCDOIIX4Y</ProxyName>
+  <QueryDefintionXrepPath xmlns="">/YVINQABXY_MAIN/SRC/Processes/FolioManagement/RelationFolioPayment/RelationFolioPayment.sadl</QueryDefintionXrepPath>
+  <Description xmlns="" />
+  <AnalyticalQueryIndicator xmlns="">true</AnalyticalQueryIndicator>
+  <SensitiveQueryIndicator xmlns="">false</SensitiveQueryIndicator>
+  <LanguageCode xmlns="">EN</LanguageCode>
+  <ParentNodeProxyName xmlns="">ROOT4F903855210031B0</ParentNodeProxyName>
+  <BOProxyName xmlns="">YVINQABXY_BONT327CFBADFF795B0B</BOProxyName>
+  <LogReferenceFields xmlns="">false</LogReferenceFields>
+  <MdavAnnotationElements xmlns="">
+    <ProxyName>YVINQABXY_S6E0OTMSTJGGRD</ProxyName>
+    <UiText>
+      <ProxyName>RELATIUITEXTE62BDB424D403210</ProxyName>
+      <ShortText>RelationFolioPayment</ShortText>
+      <ColumnHeaderText>RelationFolioPayment</ColumnHeaderText>
+      <ToolTipText>RelationFolioPayment</ToolTipText>
+      <HelpText>RelationFolioPayment</HelpText>
+    </UiText>
+    <AccessControlListIndicator>false</AccessControlListIndicator>
+    <Reference>
+      <ReferenceAllowed>false</ReferenceAllowed>
+    </Reference>
+    <ViewElementElements>
+      <ProxyName>IDPAYMONROOT53D7D0A8C0263594</ProxyName>
+      <QueryDefinitionElementProxyName>IDPAYMONROOT53D7D0A8C0263594</QueryDefinitionElementProxyName>
+      <ViewElementTypeCode>1</ViewElementTypeCode>
+      <UiText>
+        <ProxyName>IDPAYMONROOT53D7D0A8C0263594</ProxyName>
+        <ShortText>IDPaymentCompensation</ShortText>
+        <ColumnHeaderText>IDPaymentCompensation</ColumnHeaderText>
+        <ToolTipText>IDPaymentCompensation</ToolTipText>
+        <HelpText>IDPaymentCompensation</HelpText>
+      </UiText>
+      <Characteristic>
+        <ValueSelectionTypeCode>1</ValueSelectionTypeCode>
+        <IsKeyIndicator>false</IsKeyIndicator>
+        <KeyType>1</KeyType>
+        <UserInterfaceDisplayTypeCode>1</UserInterfaceDisplayTypeCode>
+        <ValueHelpSequence>0</ValueHelpSequence>
+        <MasterDataBONEInd>false</MasterDataBONEInd>
+        <HasDateKeyFigure>false</HasDateKeyFigure>
+      </Characteristic>
+    </ViewElementElements>
+    <ViewElementElements>
+      <ProxyName>IDPAYMNTROOT9E19E94358691D4B</ProxyName>
+      <QueryDefinitionElementProxyName>IDPAYMNTROOT9E19E94358691D4B</QueryDefinitionElementProxyName>
+      <ViewElementTypeCode>1</ViewElementTypeCode>
+      <UiText>
+        <ProxyName>IDPAYMNTROOT9E19E94358691D4B</ProxyName>
+        <ShortText>IDPayment</ShortText>
+        <ColumnHeaderText>IDPayment</ColumnHeaderText>
+        <ToolTipText>IDPayment</ToolTipText>
+        <HelpText>IDPayment</HelpText>
+      </UiText>
+      <Characteristic>
+        <ValueSelectionTypeCode>1</ValueSelectionTypeCode>
+        <IsKeyIndicator>false</IsKeyIndicator>
+        <KeyType>1</KeyType>
+        <UserInterfaceDisplayTypeCode>1</UserInterfaceDisplayTypeCode>
+        <ValueHelpSequence>0</ValueHelpSequence>
+        <MasterDataBONEInd>false</MasterDataBONEInd>
+        <HasDateKeyFigure>false</HasDateKeyFigure>
+      </Characteristic>
+    </ViewElementElements>
+    <ViewElementElements>
+      <ProxyName>IDFOLIOROOT08FC58E652084305</ProxyName>
+      <QueryDefinitionElementProxyName>IDFOLIOROOT08FC58E652084305</QueryDefinitionElementProxyName>
+      <ViewElementTypeCode>1</ViewElementTypeCode>
+      <UiText>
+        <ProxyName>IDFOLIOROOT08FC58E652084305</ProxyName>
+        <ShortText>IDFolio</ShortText>
+        <ColumnHeaderText>IDFolio</ColumnHeaderText>
+        <ToolTipText>IDFolio</ToolTipText>
+        <HelpText>IDFolio</HelpText>
+      </UiText>
+      <Characteristic>
+        <ValueSelectionTypeCode>1</ValueSelectionTypeCode>
+        <IsKeyIndicator>false</IsKeyIndicator>
+        <KeyType>1</KeyType>
+        <UserInterfaceDisplayTypeCode>1</UserInterfaceDisplayTypeCode>
+        <ValueHelpSequence>0</ValueHelpSequence>
+        <MasterDataBONEInd>false</MasterDataBONEInd>
+        <HasDateKeyFigure>false</HasDateKeyFigure>
+      </Characteristic>
+    </ViewElementElements>
+    <ViewElementElements>
+      <ProxyName>IDROOT469924C86F9445F3</ProxyName>
+      <QueryDefinitionElementProxyName>IDROOT469924C86F9445F3</QueryDefinitionElementProxyName>
+      <ViewElementTypeCode>1</ViewElementTypeCode>
+      <UiText>
+        <ProxyName>IDROOT469924C86F9445F3</ProxyName>
+        <ShortText>ID</ShortText>
+        <ColumnHeaderText>ID</ColumnHeaderText>
+        <ToolTipText>ID</ToolTipText>
+        <HelpText>ID</HelpText>
+      </UiText>
+      <Characteristic>
+        <ValueSelectionTypeCode>1</ValueSelectionTypeCode>
+        <IsKeyIndicator>true</IsKeyIndicator>
+        <KeyType>1</KeyType>
+        <UserInterfaceDisplayTypeCode>1</UserInterfaceDisplayTypeCode>
+        <ValueHelpSequence>0</ValueHelpSequence>
+        <MasterDataBONEInd>false</MasterDataBONEInd>
+        <HasDateKeyFigure>false</HasDateKeyFigure>
+      </Characteristic>
+    </ViewElementElements>
+  </MdavAnnotationElements>
+</QueryDefinition>

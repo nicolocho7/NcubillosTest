@@ -1,0 +1,15 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FO.Product.Global;
+import AP.FO.ProductDataMaintenance.Global;
+
+[WithAdministrativeData] businessobject BOWithholdingEnabled raises msj {
+
+    message msj text "&":LANGUAGEINDEPENDENT_EXTENDED_Text;
+	
+	[AlternativeKey][Label("Company")]element CompanyID:ID;
+	association ToCompany to Company;
+
+	[Label("Enable")] element Enable:Indicator;
+
+}

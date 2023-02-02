@@ -1,0 +1,31 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FinancialAccounting.Global as apFinancialsGobal;
+
+businessobject ReportAverageRate raises msj {
+	
+	message msj text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+	[AlternativeKey] [Label("Report id")]					element id				: ID;
+					 [Label("Company")]						element company			: ID;
+					 [Label("Company name")]				element companyName		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+					 [Label("Accounting system")]			element SystemAcc		: SetOfBooksID;
+					 [Label("fiscal year")]					element fiscalYear		: ID;
+					 [Label("Accounting period")]			element SystemPer		: ID;
+					 [Label("Financial report structure")]	element fanancialStruc	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+					 [Label("Balance type")]				element balanceType		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+					 [Label("Conversion date")]				element date			: Date;
+
+	action execute;
+
+	[DependentObject(AttachmentFolder)]	node ReportAttachments;
+
+	node resultReport [0, n]  raises msjResult {
+
+		message msjResult text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+		[Label("Balance sheet and income statement")]	element balanceSheet : ChartOfAccountsItemCode;
+		[Label("Balance before disposal")]				element BalBefDis	 : DecimalValue;
+		[Label("Elimination between companies")]		element EliBetCom	 : DecimalValue;
+		[Label("Balance after elimination")]			element BalAftEli	 : DecimalValue;
+	}
+}

@@ -1,0 +1,14 @@
+﻿import AP.FO.MOM.Global;
+import AP.Common.GDT;
+import AP.FinancialAccounting.Global;
+
+if(!this.CompanyID.IsInitial()){
+	var qCompany = Company.QueryByIDAndName;
+	var pCompany = qCompany.CreateSelectionParams();
+	pCompany.Add(qCompany.ID,"I","EQ",this.CompanyID);
+	var insCompany = qCompany.Execute(pCompany).GetFirst();
+	if(insCompany.IsSet()){
+		this.ToCompany  = insCompany;
+	}
+
+}

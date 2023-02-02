@@ -1,0 +1,34 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FinancialAccounting.Global;
+
+[DeploymentUnit(Financials)][WithAdministrativeData] businessobject BOConfigurationFlujoEfectivo raises msj {
+
+	message msj text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+ 
+
+	[Label("Estructura ID")]			element ID							: ID;
+	[Label("Company")]					 element CompanyID					: OrganisationalCentreID;
+	association ToCompany to Company;
+	[Label("RUC")]			element CompanyRuc: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Set Of Books")]			 element SetOfBooksID				: SetOfBooksID;
+	association ToSetofBooks to SetOfBooks  using ID;
+	[Label("Chart of Accounts")]element ChartOfAccountsCode: ChartOfAccountsCode;
+
+	 node Details [0,n] raises msjDetails {
+		message msjDetails text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Nro.")]						element Numero: ID ;  
+		[Label("Account from Credit")]element AccountFromCredit: ChartOfAccountsItemCode;
+		[Label("Account to Credit")]element AccountToCredit: ChartOfAccountsItemCode;
+		[Label("Account from Debit")]element AccountFromDebit: ChartOfAccountsItemCode;
+		[Label("Account to Debit")]element AccountToDedit: ChartOfAccountsItemCode;
+		[Label("Saldo")]element Saldo: Indicator;
+		[Label("Code EF")]			element CodeEF: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Account from Credit Numeric")]element AccountFromCreditNumeric: DecimalValue;
+		[Label("Account to Credit Numeric")]element AccountToCreditNumeric: DecimalValue;
+		[Label("Account from Debit Numeric")]element AccountFromDebitNumeric: DecimalValue;
+		[Label("Account to Debit Numeric")]element AccountToDeditNumeric: DecimalValue;
+		[Label("Value")]element Valor: Amount;
+	}
+}

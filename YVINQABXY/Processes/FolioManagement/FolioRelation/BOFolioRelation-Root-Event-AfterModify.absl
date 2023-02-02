@@ -1,0 +1,60 @@
+﻿import ABSL;
+import AP.FO.MOM.Global;
+import AP.FO.Product.Global;
+import AP.FO.ProductDataMaintenance.Global;
+
+if (!this.CompanyID.IsInitial())
+{
+	var queryCompany = Company.QueryByIDAndName;
+	var paramcompany = queryCompany.CreateSelectionParams();
+	paramcompany.Add(queryCompany.ID, "I", "EQ", this.CompanyID.RemoveLeadingZeros());
+	var resultCompany = queryCompany.Execute(paramcompany).GetFirst();
+	if (resultCompany.IsSet())
+	{
+		this.ToCompany = resultCompany;
+	}
+	else
+	{
+		this.ToCompany.Reset();
+	}
+}
+if(!this.FolioConfigurationID.IsInitial()){
+	var ResultFolio = BOFolioConfiguration.Retrieve(this.FolioConfigurationID);
+	if(ResultFolio.IsSet()){
+		this.FolioConfigurationDescription = ResultFolio.DescriptionConf;
+		this.Consecutive = ResultFolio.Consecutive;
+		this.SectionSize1 = ResultFolio.SectionSize1;
+		this.SectionSize2 = ResultFolio.SectionSize2;
+		this.UseSec1 = ResultFolio.UseSec1;
+		this.UseSec2 = ResultFolio.UseSec2;
+	}
+}
+if(!this.Sectionsequence1.IsInitial()){
+	if(!this.SectionSize1.IsInitial()){
+		var x = this.Sectionsequence1.Length();
+		if(x>this.SectionSize1){
+			this.Sectionsequence1 = this.Sectionsequence1.Substring(0,this.SectionSize1);
+		}else{
+			while (x < this.SectionSize1){
+				this.Sectionsequence1 = "0" + this.Sectionsequence1;
+				x = x + 1;	
+			}
+		}
+	}
+}
+if(!this.MatchingTableID.IsInitial()){
+	var ResultMAtching = BOMatchingTable.Retrieve(this.MatchingTableID);
+	if(ResultMAtching.IsSet()){
+		this.FolioMatchingDescription = ResultMAtching.DocumentTypeDescription + "-" + ResultMAtching.BillingUnitText;
+		this.Consecutive = ResultMAtching.Consecutive;
+		this.ValueX = ResultMAtching.ValueX;
+		this.Serie = ResultMAtching.Serie;
+	}
+}
+if(!this.FolioOutboundDeliveryID.IsInitial()){
+	var ResultOutbond = BOBusinessResidence.Retrieve(this.FolioOutboundDeliveryID);
+	if(ResultOutbond.IsSet()){
+		this.Serie = ResultOutbond.Serie;
+		this.Consecutive = ResultOutbond.Consecutive;	
+	}
+}

@@ -1,0 +1,31 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FinancialAccounting.Global;
+
+[DeploymentUnit(Financials)] businessobject BOPruchasesExecution  raises msj {
+
+	message msj text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+	[Label("ID")][AlternativeKey]				element ID					: ID;
+	element UUID :UUID;
+	[Label("Purchases configuration")]			element IDPurchConfig		: ID;
+	[Label("Date Execution")]					element EDateInitial		: Date;
+	[Label("Company")]			element Company		: ID;
+	[Label("State Domicil")]			element State		: Indicator = true;
+	[Label("Ratio")]			element Ratio		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Execution State")]			element ExecutionState		: CLExecutionStatusCode;
+	
+	
+	association  Companyto to BOTableCompany;
+	
+
+	[DependentObject(AttachmentFolder)] node ReportsAttachments;
+
+	action Execution;
+	action NoDomiciate;
+	action NoDomiciateInnova;
+	action executeInnova;
+
+
+
+}

@@ -1,0 +1,309 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UXComponent xmlns:base="http://www.sap.com/a1s/cd/oberon/base-1.0" xmlns:uxv="http://www.sap.com/a1s/cd/oberon/uxview-1.0" xmlns:uxc="http://www.sap.com/a1s/cd/oberon/uxcontroller-1.0" id="UTG$i1cupqIvyNqkKOyD6W" enableBackendOperationsClubbing="true" name="AverageRate_QA" AuthorizationClassificationCode="Application" taskRegionDisabled="true" useUIController="true" helpId="vTBc1UOgAaY$C00LDI_0Q0" designtimeVersion="5.10.0.289" modelVersion="0.9" xmlns="http://www.sap.com/a1s/cd/oberon/uxcomponent-1.0">
+ <uxc:Interface id="9OaLoYmj54okgvnPVkzY70">
+  <uxc:InPorts id="hubHZFkDbqcnVKMG3c8iqG">
+   <uxc:InPort id="UmWgR57r14MpJLnEcmmc6m" name="OBNInportCreate" portTypeReference="To_AverageRate_create" portTypePackage="/YFOB14P8Y_MAIN/SRC/BoCustom/AverageRate_PTP.PTP.uicomponent" default="true" onFire="CreateHandler" navBO="AverageRate" navBONS="http://0004019099-one-off.sap.com/YFOB14P8Y_" navBONode="Root" navOperation="To_AverageRate_create">
+    <base:PropertyBag id="MapfVKEWRa60Jvsz57oHX0">
+     <base:Property id="XIxSz11na4gc9XiHbwzXUm" name="ESIBindingPath" value="Root"/>
+    </base:PropertyBag>
+   </uxc:InPort>
+   <uxc:InPort id="2ifaaP3ON4cvyqYdRX$42m" name="OBNEditInport" portTypeReference="To_AverageRate_edit" portTypePackage="/YFOB14P8Y_MAIN/SRC/BoCustom/AverageRate_PTP.PTP.uicomponent" onFire="EditHandler" navBO="AverageRate" navBONS="http://0004019099-one-off.sap.com/YFOB14P8Y_" navBONode="Root" navOperation="To_AverageRate_edit">
+    <base:PropertyBag id="bTf__Ilpya6fnYy3OFUEMG">
+     <base:Property id="SwSAJCnbeK2Tw29ltdJ2_m" name="ESIBindingPath" value="Root"/>
+    </base:PropertyBag>
+    <uxc:Parameter id="JJ$mPmpcOK_UfsIQT6kYoW" name="Parameter0" bind="/Root/OBN_NAV_KEY"/>
+   </uxc:InPort>
+   <uxc:InPort id="2ifaaP3ON4cvyqYdRX$42n" name="OBNEditInportSysPTP" portTypeReference="OpenByKey" portTypePackage="/SAP_BYD_UI/SystemPortTypes.PTP.uicomponent" onFire="EditHandlerSysPTP" navBO="AverageRate" navBONS="http://0004019099-one-off.sap.com/YFOB14P8Y_" navBONode="Root" navOperation="EditSysPTP">
+    <base:PropertyBag id="bTf__Ilpya6fnYy3OFUEMG">
+     <base:Property id="SwSAJCnbeK2Tw29ltdJ2_m" name="ESIBindingPath" value="Root"/>
+    </base:PropertyBag>
+    <uxc:ListParameter id="Gr6Jc4oTfq2XQicAHr7EVG" name="KeyList" listBinding="Root">
+     <uxc:Parameter id="FcxKSG5Ny4ky1Ie36Q3_XW" name="Key" bind="./OBN_NAV_KEY"/>
+    </uxc:ListParameter>
+   </uxc:InPort>
+  </uxc:InPorts>
+  <uxc:OutPorts id="_U4eJ3HV1K_rxQ35QRBkU0">
+   <uxc:OutPort id="QIavFZouZac4cqJDPAaJnW" name="OBNViewAllOutport" portTypeReference="To_AverageRate_viewAll" portTypePackage="/YFOB14P8Y_MAIN/SRC/BoCustom/AverageRate_PTP.PTP.uicomponent">
+    <uxc:Parameter id="Ku6ENzudP4YdqiR3tvo74W" name="Parameter0" bind="/Root/AverageRate/NodeID"/>
+   </uxc:OutPort>
+  </uxc:OutPorts>
+  <uxc:Configuration/>
+ </uxc:Interface>
+ <uxc:Implementation>
+  <uxc:DataModel id="72a9b94473024b68b4c861c760ff8c0e" name="Root" designtimeMainBOProxyName="AverageRate" designtimeMainBOEsrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_">
+   <base:PropertyBag id="3IA3hRLf9a60oOJIVwI61W">
+    <base:Property id="wsViKBUC64sn1GOTGpQrhm" name="BINDINGSTATUS" value="OK"/>
+   </base:PropertyBag>
+   <uxc:Bind id="fU52JjJw_KYuqR9Gsg6Z_G" proxyName="AverageRate" field="Root" esrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_"/>
+   <uxc:DataField id="Mx$xrCzqQq6Fy1tk9GzVI0" name="@ErrorOccured" type="boolean">
+    <base:PropertyBag id="psQnOuq3L4MQ8fPz$JntqG">
+     <base:Property id="gRSb7JfsF46pFuH4ywBDY0" name="BINDINGSTATUS" value="Internal"/>
+    </base:PropertyBag>
+   </uxc:DataField>
+   <uxc:Structure id="Em$F8IEUSqYHi_Upbv6g60" name="$System">
+    <base:PropertyBag id="GClEsv9vQ42ykEMi3oPS4G">
+     <base:Property id="0vmxWXuJVKAUlFfCgPfxY0" name="BINDINGSTATUS" value="Internal"/>
+    </base:PropertyBag>
+    <uxc:DataField id="Vx8dM7GThKwx5FRQGuBoMG" name="SessionUrl" type="string">
+     <base:PropertyBag id="wAW2bp_$f4IMtyKOrrCXFW">
+      <base:Property id="RAeKiWB$Qqwl48xeW6Le_0" name="BINDINGSTATUS" value="Internal"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+   </uxc:Structure>
+   <uxc:Structure id="lTHP1Q6bhaU$$49iEOZLa0" name="AverageRate">
+    <base:PropertyBag id="L8VVW8xVQqYij71L25e37G">
+     <base:Property id="4RQDgq6974ITk$0TY98zem" name="BINDINGSTATUS" value="OK"/>
+     <base:Property id="7PHAcTCCqqMkE$d08kdL6W" name="USERCHANGEDNAME" value="False"/>
+    </base:PropertyBag>
+    <uxc:Bind id="4G81Zg8VaaAfnw28zG5B0G" proxyName="AverageRate" field="Root" esrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_"/>
+    <uxc:DataField id="sSsiXCvsqEisNwojfAl0Ug" name="id" type="string" cctsType="identifier">
+     <base:PropertyBag id="GJi9EG55rUa1RXOeM0vcjA">
+      <base:Property id="bj8arrWF8UOIY_YCTEJVoA" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="c3CXqPOrnkW05lJlB6huUQ" name="UITEXTID" value="YFOB14P8Y_84F65B4BF6A28DB6"/>
+      <base:Property id="A1_9YCj7YUek95AAd1wUZQ" name="XFLD" value="Id"/>
+      <base:Property id="mvq4tbgpfkaZTQLz44IP7g" name="XCOL" value="Id"/>
+      <base:Property id="WhHJjcrpXkyhxp6IQdFZGQ" name="XTOL" value="Id"/>
+     </base:PropertyBag>
+     <uxc:Bind id="DVzXWdEUh0a7ZltbmP3TMg" proxyName="AverageRate" field="-~id" esrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_"/>
+    </uxc:DataField>
+    <uxc:DataField id="KOsrlIgxf0aI8XzAPxZP0w" name="iniDate" type="date" cctsType="date">
+     <base:PropertyBag id="Vftf1baSJUGtcEUEpb2xkg">
+      <base:Property id="HcPGJKQd2Ue7I9qyuCSLMQ" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="sexdJSI4ZUGBGcKDdhS7LQ" name="UITEXTID" value="YFOB14P8Y_EA8DDDD7FBAFBC28"/>
+      <base:Property id="iXijF_O87kSvCNkAHJX4kw" name="XFLD" value="Initial date"/>
+      <base:Property id="swJUk04An0aAzMUjNXuBhw" name="XCOL" value="Initial date"/>
+      <base:Property id="UBjAk6vIM0S6P16n4KD5LQ" name="XTOL" value="Initial date"/>
+     </base:PropertyBag>
+     <uxc:Bind id="JBFXmAFMLkiqCAgzVSyoog" proxyName="AverageRate" field="-~iniDate" esrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_"/>
+    </uxc:DataField>
+    <uxc:DataField id="zkY5MnpV4U20FMFgZJoYIA" name="endDate" type="date" cctsType="date">
+     <base:PropertyBag id="pQiJllqxeE6SJx_GvUgSyA">
+      <base:Property id="WjHhpP4CZkaT4LEFmdl_aw" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="hS6wl4JFDk6Al64wgsvP3g" name="UITEXTID" value="YFOB14P8Y_9C925CDC5696A10D"/>
+      <base:Property id="iCrmWCL12UWWfvD3FOM8xw" name="XFLD" value="End date"/>
+      <base:Property id="7xJ2xoz3wECOOfE8p0HmWA" name="XCOL" value="End date"/>
+      <base:Property id="ub_RF4qBM0ayOEQfAFHxrA" name="XTOL" value="End date"/>
+     </base:PropertyBag>
+     <uxc:Bind id="VPkPhyhbe0KsvKkctwQMwg" proxyName="AverageRate" field="-~endDate" esrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_"/>
+    </uxc:DataField>
+    <uxc:DataField id="UH5gJ4nP6UiXvxp7RunuwQ" name="amount" type="float" cctsType="value">
+     <base:PropertyBag id="634VDVP9DUKzAm6y5WO12Q">
+      <base:Property id="LdOG5Cl_5Ei_RkcTSbUJ7Q" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="JS2HNnGNvEiFoClV2t7FQQ" name="UITEXTID" value="YFOB14P8Y_3B4453CDCB666633"/>
+      <base:Property id="QKL1Wgxv00_f7sno0WeYGA" name="XFLD" value="Average amount"/>
+      <base:Property id="0PywANtCRku9goyG8qZJIg" name="XCOL" value="Average amount"/>
+      <base:Property id="_DP7OkLdbEeB89qUcEHO0A" name="XTOL" value="Average amount"/>
+     </base:PropertyBag>
+     <uxc:Bind id="RPNrmCjqKkCqb2Jd_ZlnmQ" proxyName="AverageRate" field="-~amount" esrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_"/>
+    </uxc:DataField>
+    <uxc:DataField id="Ui_5WLuOJq2nAwhJNFr5cm" name="NodeID" type="string">
+     <base:PropertyBag id="WdWWAoo3WaMRItkXql1raW">
+      <base:Property id="a5MX93C2iq6R$L3h4Xagrm" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="1MfCUnAYXqkaLi7B9G4NGm" name="USERCHANGEDNAME" value="True"/>
+     </base:PropertyBag>
+     <uxc:Bind id="evrUaMg3y4oOtk06ZwX7fm" proxyName="AverageRate" field="-~NodeID" esrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_"/>
+    </uxc:DataField>
+   </uxc:Structure>
+   <uxc:DataField id="rRcGGwTplK6ukdAknhP2a0" name="OBN_NAV_KEY" type="string">
+    <base:PropertyBag id="0eFpsQd9SaYTE8GEOiTU9m">
+     <base:Property id="XJP8DdF4qKAnrHJOxWsk_0" name="BINDINGSTATUS" value="ToBind"/>
+     <base:Property id="VvpulYI0r4oZuSukMdtn6m" name="USERCHANGEDNAME" value="True"/>
+    </base:PropertyBag>
+   </uxc:DataField>
+  </uxc:DataModel>
+  <uxc:EventHandlers>
+   <uxc:EventHandler id="2z0UHyfVXa6dSOVtDh5IYm" name="SaveHandler">
+    <uxc:WindowAction id="EcgJtU8UbacVAsBqXc2EIW" name="Save" action="Save"/>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="a2kNyfAoMq2YInIOc8Pz1G" name="CreateHandler" eventType="simple">
+    <uxc:BoOperation id="40_yiE2sH4El8zfDDI2LsW" name="Create" proxyName="AverageRate" esrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_" operation="Create"/>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="Rfo$1QIZ$KEaR$Gc2AJ0C0" name="EditHandler">
+    <uxc:BoOperation id="cC5S_nmc84k5dlYY_QiUCW" name="Operation" proxyName="AverageRate" esrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_" operation="Read">
+     <uxc:BoOperationParameter id="wYBT97L7ea2_Jnkekp1Uh0" name="NavKey" bind="/Root/OBN_NAV_KEY" type="nodeId" path="/Root/AverageRate/NodeID"/>
+    </uxc:BoOperation>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="fGmUQdskE4kHlLCxpY3SMW" name="ViewAllHandler">
+    <uxc:FirePlug id="TX8RhxPW0q6Y8oT1Or5Cmm" name="Operation2" outPlug="OBNViewAllOutport"/>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="Rfo$1QIZ$KEaR$Gc2AJ0C1" name="EditHandlerSysPTP">
+    <uxc:BoOperation id="cC5S_nmc84k5dlYY_QiUCW" name="Operation" proxyName="AverageRate" esrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_" operation="Read">
+     <uxc:BoOperationParameter id="t1EEA56iF4Y$vZX_8Brj0G" name="Parameter" bind="/Root/OBN_NAV_KEY" type="keyNavigation"/>
+    </uxc:BoOperation>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="Kbkm_nDPPqYHSPbCH7dDF0" name="CloseHandler">
+    <uxc:WindowAction id="BUWvY$F_4akZm72C1SQuI0" name="Operation" action="Close"/>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="PSGkmuhEPUqBIoh0MRhj3g" name="ActionCalculateHandler">
+    <uxc:BoAction id="dZbcReLJM0KE7wJOHKLXTw" name="ActionCalculate" proxyName="AverageRate" esrNamespace="http://0004019099-one-off.sap.com/YFOB14P8Y_" actionPath="-&gt;Calculate" instanceBinding="/Root"/>
+   </uxc:EventHandler>
+  </uxc:EventHandlers>
+  <uxc:Queries/>
+  <uxc:DefaultSets/>
+ </uxc:Implementation>
+ <uxc:Navigation id="_sm4v_KjxKMXgUH4mM1_wm">
+  <uxc:OBN id="KkSPppoMP4wRtu63Qfh2HW" outPlug="OBNViewAllOutport" style="inplaceHandover" navBO="AverageRate" navBONS="http://0004019099-one-off.sap.com/YFOB14P8Y_" navBONode="Root" navOperation="To_AverageRate_viewAll">
+   <base:PropertyBag id="7zG4XV8YNKE1kqmrcobIZW">
+    <base:Property id="IuQ$SCK$DqYtAqPM6N3H7G" name="Name" value="OBNViewAll"/>
+   </base:PropertyBag>
+  </uxc:OBN>
+ </uxc:Navigation>
+ <uxc:WorkCenterReferences/>
+ <uxc:RBAMData id="6zs4Ry1pQKs2PdJT_mTkFW" accessCheckMode="PrivilegedExceptAccessControlledBusinessObjects">
+  <uxc:AccessControlledBusinessObject id="E2evFJ$Vm4ARFWTcGCUbkG" BO="AverageRate" BONS="http://0004019099-one-off.sap.com/YFOB14P8Y_" unrestrictedAccess="true"/>
+ </uxc:RBAMData>
+ <uxc:EmbeddedComponents/>
+ <uxc:Description id="jDMFr$U5taUPXCzOMHCY8m" textPoolId="NxN8niTWQKgBIXAV5DNIjG"/>
+ <Tags id="7UGpWxSINKU9cuGqT0IWHG">
+          </Tags>
+ <UXView id="zalKt9g5f4woqOo6d9$LpW" patternType="quickActivity" preferredWidth="1024" preferredHeight="768" checkClassification="Standard" checkMode="Both">
+  <uxv:IdentificationRegion id="lnyDCEBSzq2RB9QgqkeJbm">
+   <uxv:Title id="4C1gbtwYxKoMKctJYurvPm" textPoolId="vEgp7JG82qwNsE$DwbNFvG">
+    <base:PropertyBag id="K73I$tcSKKUgEkB4ifb55m">
+     <base:Property id="$A2Y7uuRp4UKmdMR_V7Zw0" name="Name" value=""/>
+    </base:PropertyBag>
+   </uxv:Title>
+  </uxv:IdentificationRegion>
+  <uxv:ContextualNavigationRegion id="kGf4JXOcgqUR1rQRWwGLCG">
+   <uxv:FunctionBar id="9xu5gkjpfa6EZSz_fCVd4G">
+    <uxv:ButtonGroup id="6VQYu_PQ0qwh0jQviO9BNW" name="ActionButtons">
+     <uxv:Button id="NenTEEusya2GtCW_n_VkPG" name="SaveButton" onClick="SaveHandler" style="Standard">
+      <uxv:Text id="L$jvczsav4MVX7yqOqltp0" textPoolId="637f86765fbf498ba2cc6017dd6696f0">
+       <base:PropertyBag id="Zn1cryQElKoV1qlXfm$Uam">
+        <base:Property id="EqVq6Ht$wqg_noN5TBgoOG" name="Name" value=""/>
+       </base:PropertyBag>
+      </uxv:Text>
+     </uxv:Button>
+     <uxv:Button id="ITNFSY8_z4Ejm2PaYwQLq0" name="Close" onClick="CloseHandler" style="Cancel">
+      <uxv:Text id="USppiwHn9qwi1$d347Bzrm" textPoolId="919e4e3f12f14f069a74f34988fb1659"/>
+     </uxv:Button>
+    </uxv:ButtonGroup>
+    <uxv:ButtonGroup id="_fYeoij524YxoRJO3Cy0Xm" name="ApplicationSpecificButtons">
+     <uxv:Button id="tDbjFkAbOU60GkqZpqk4GA" name="ActionCalculateButton" onClick="ActionCalculateHandler" style="Standard">
+      <uxv:Text id="f8Ddqy0GtU_gLPMIWAhx6Q" textPoolId="AZV6DrS0fEKEanQ8CAzECg"/>
+     </uxv:Button>
+    </uxv:ButtonGroup>
+   </uxv:FunctionBar>
+   <uxv:ViewAll id="iNdOLless46UcgKh4lw_hG" name="ViewAll" onClick="ViewAllHandler" style="Standard">
+    <base:PropertyBag id="WjRYff0v04Y4EnT129HRQG">
+     <base:Property id="37lZPjlfb4Ylcnebxn2Qjm" name="NavigationTarget" value="OBN"/>
+    </base:PropertyBag>
+    <uxv:Text id="TmwtlbnEjKwp7kuawgXHnW" textPoolId="ce0df2a204704609a26d6859b1987bfc">
+     <base:PropertyBag id="lTL2qqBEeKQEk0NgAIE1xm">
+      <base:Property id="NvCOkTrrLacFjg0HW5owFm" name="Name" value=""/>
+     </base:PropertyBag>
+    </uxv:Text>
+   </uxv:ViewAll>
+  </uxv:ContextualNavigationRegion>
+  <uxv:ViewContainerRegion id="NhHCykSHiq2t8eVDLHSCO0">
+   <uxv:View id="6d7CfNfhyKgx$E0Uu2ELBW" columns="1" rows="1">
+    <uxv:PaneContainer id="f7_Igch6NKQVO8ewqMGlkG" column="0" row="0">
+     <uxv:FormPane id="Mu4MXNiMh4_I4bn2jLTzt0">
+      <base:PropertyBag id="fkKspNX5PKYsT$V7k2g3hm">
+       <base:Property id="yslJWEX3hKQWSkenC0_ERG" name="Name" value="FormPane"/>
+      </base:PropertyBag>
+      <uxv:SectionGroup id="5_pj9NbfEK65wAwbsj$eMm" column="0" row="0" showGroupName="true">
+       <base:PropertyBag id="b2$4sqaQoqEebecpHMV7o0">
+        <base:Property id="7mxksPre14kzAsyvppF0SG" name="Name" value="FieldGroup"/>
+       </base:PropertyBag>
+       <uxv:SectionGroupName id="HNMFHk$RsawIiwmwLC_SxG" textPoolId="S222eb2ut4oYv8OK4VpJWG">
+        <base:PropertyBag id="pPUyotO4w4UW9F4BHk9fn0">
+         <base:Property id="xwUpPzs3qqIthAtgyKRC_W" name="Name" value="Field"/>
+        </base:PropertyBag>
+       </uxv:SectionGroupName>
+       <uxv:SectionGroupItem id="NFbngJVdM0K_oJ2oQf07Gw">
+        <base:PropertyBag id="qVEYYvpdzE2zRM8ye3eaVA">
+         <base:Property id="_ELX5sIAfE_IScbYRkxASw" name="Name" value="id"/>
+        </base:PropertyBag>
+        <uxv:Label id="yZOEdvjkxUa2QTpW97GmrA" textPoolId="_9UMcj_gS0GRntSmJGdWxg">
+         <base:PropertyBag id="AV6Pq9ab9keAMuRgxtJJ5Q">
+          <base:Property id="D4Ov0nnr4kOM2aC7SjkJyQ" name="Name" value="id"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:InputField id="_lSd8JLnKUOEdsQjlwk3hA" name="id" cctsType="identifier">
+         <uxv:IdentifierCCTSConfig id="3d628H3aAEKwoMIbySWyug" interpretAsInteger="false"/>
+         <uxv:Value id="nxunR3Q8HECJFb6uWfBgvQ" bindingExpression="/Root/AverageRate/id">
+          <!-- <base:PropertyBag id="kbTZako0Wk2wAN_sTwNWtA">
+											<base:Property id="wAYkKewBA0_m0mGgG9XJAQ" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="pleznJS4xEahHF_O8UD0Uw">
+        <base:PropertyBag id="CtfDmni6Qk24MzDXOuejKQ">
+         <base:Property id="4vQTdw2EqUmbxdfg1BMvgA" name="Name" value="iniDate"/>
+        </base:PropertyBag>
+        <uxv:Label id="_ACW9QhEK0O0qCCcx3RX8w" textPoolId="t59ya1LQ6k69GIGKm8fHFQ">
+         <base:PropertyBag id="cq9IN8BWx0C7nDX7Pzkcmw">
+          <base:Property id="lkbiDz2t_EyHRvqyB3JZNg" name="Name" value="iniDate"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:InputField id="o1a4V1TFTE2n3stJhmIRew" name="iniDate" cctsType="date">
+         <uxv:DateCCTSConfig id="qyWT9BbRxkKLBA9wT9kykQ"/>
+         <uxv:Value id="d73ix9y07keAsjoZmhI5EQ" bindingExpression="/Root/AverageRate/iniDate">
+          <!-- <base:PropertyBag id="KSFXtfYMi0uIWTTnMuGw0Q">
+											<base:Property id="AOFZ1QfujkSSNJSrbz9cXg" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="btBU7w_2mkWzUakmcNNmCA">
+        <base:PropertyBag id="AHSAfaF14kiCuDQ1v8F_sQ">
+         <base:Property id="skpED559yk6RrqQ5XqzTEw" name="Name" value="endDate"/>
+        </base:PropertyBag>
+        <uxv:Label id="28cFaWAfAE_uZRHCZAj0iQ" textPoolId="gJo4Lxux60_xIdkrsqy5Pg">
+         <base:PropertyBag id="aOYcMRwdb0qHyCayYvJhNQ">
+          <base:Property id="pGVWd5I1i02A_Rj4IMojkg" name="Name" value="endDate"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:InputField id="soEJaPN47U2BgPimD9YDvA" name="endDate" cctsType="date">
+         <uxv:DateCCTSConfig id="3uY96LNdt06BzSKpAj0TzA"/>
+         <uxv:Value id="dNfPHBGCoku7aQmgZvt1gg" bindingExpression="/Root/AverageRate/endDate">
+          <!-- <base:PropertyBag id="GayPtD9ZbkCT9Y1xePEtAw">
+											<base:Property id="FZLqA0B7B0eHUz6av_wsPQ" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="q3Hxb0vs9UGPqDfxUr0Hbg">
+        <base:PropertyBag id="qMMqLQ94XESOzwTBHgxT_Q">
+         <base:Property id="AI9R7QfSc0qReKCiwJWyBg" name="Name" value="amount"/>
+        </base:PropertyBag>
+        <uxv:Label id="YWtjieeIX02de6IMSA_9pw" textPoolId="BGRuK5bNJUqSynk8OZXLAA">
+         <base:PropertyBag id="KVGlUBlZDUOO0v52jqQuOQ">
+          <base:Property id="41saLomx_kiMC2pKLM61rg" name="Name" value="amount"/>
+         </base:PropertyBag>
+        </uxv:Label>
+        <uxv:InputField id="mgCpUaWDz0GkIpxS5iPAsQ" name="amount" cctsType="value">
+         <uxv:Value id="eA7_T0W_lkuAFFUlQOVRDg" bindingExpression="/Root/AverageRate/amount">
+          <!-- <base:PropertyBag id="MF0Eomgjf0GUQULR7wrU9Q">
+											<base:Property id="FA53R6GWf0_vQopAZzYZVg" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+      </uxv:SectionGroup>
+     </uxv:FormPane>
+    </uxv:PaneContainer>
+   </uxv:View>
+  </uxv:ViewContainerRegion>
+  <uxv:ActionForms/>
+ </UXView>
+ <TextPool>
+  <base:TextBlock language="EN" masterLanguage="true" currentLanguage="true">
+   <base:TextPoolEntry id="XL0JqFnI2qEeDu4ZuKZLdG" textUuid="vEgp7JG82qwNsE$DwbNFvG" text="AverageRate : &lt;ID and/or Description&gt;"/>
+   <base:TextPoolEntry id="$wWN0nFF3qstIVVz4CfJi0" textUuid="637f86765fbf498ba2cc6017dd6696f0" text="Save"/>
+   <base:TextPoolEntry id="BSUDa3AMGKElWsHLlt2ca0" textUuid="ce0df2a204704609a26d6859b1987bfc" text="View All"/>
+   <base:TextPoolEntry id="MHDhDDLMRKcz_nDZn1mVc0" textUuid="919e4e3f12f14f069a74f34988fb1659" text="Close"/>
+   <base:TextPoolEntry id="gMgkBicDG4AN$Tqc7cM8G0" textUuid="IYfxI9yemKwe6zQqeNHVyG" text="Print"/>
+   <base:TextPoolEntry id="9Qs5IA8Hmqsq234NGEPaem" textUuid="RIJ71VyRE4cdUmRi5CzIBG" text="Send"/>
+   <base:TextPoolEntry id="uFrNvBoGJ4U25qHQfrhA2W" textUuid="S222eb2ut4oYv8OK4VpJWG" text="Root Node Elements"/>
+   <base:TextPoolEntry id="WpTj$444OaYQbWHJfdn2kW" textUuid="NxN8niTWQKgBIXAV5DNIjG" text="AverageRate_QA" textCategory="YEXP"/>
+   <base:TextPoolEntry id="NFydVqgORkS0kUnAzwVKpg" textUuid="_9UMcj_gS0GRntSmJGdWxg" text="Id" esrTextId="YFOB14P8Y_84F65B4BF6A28DB6" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="sDsXyJugf0uZK3FjgGVh1Q" textUuid="t59ya1LQ6k69GIGKm8fHFQ" text="Initial date" esrTextId="YFOB14P8Y_EA8DDDD7FBAFBC28" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="Kf5KJeiWtUawXlB9DEmWGA" textUuid="gJo4Lxux60_xIdkrsqy5Pg" text="End date" esrTextId="YFOB14P8Y_9C925CDC5696A10D" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="rh67AK4BGUy2d0lRz79shA" textUuid="BGRuK5bNJUqSynk8OZXLAA" text="Average amount" esrTextId="YFOB14P8Y_3B4453CDCB666633" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="CmAJGMnz6UmgqrDnhc_jBw" textUuid="AZV6DrS0fEKEanQ8CAzECg" text="Calculate"/>
+  </base:TextBlock>
+ </TextPool>
+</UXComponent>

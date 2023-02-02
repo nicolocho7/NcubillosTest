@@ -1,0 +1,15 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+
+[WithAdministrativeData] businessobject BORestrictionsCI raises msj {
+
+	message msj text "&":LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[AlternativeKey] [Label("Company")]element CompanyID:ID;
+	association ToCompany to Company;
+	[Label("Country")]	element Country:CountryCode;
+	[Transient]	element IsConsistent:Indicator;
+	[Label("Save Validation")]	element IsSaved:Indicator;
+	//[Label("It is obligatory city by header")]	element CityByHeader:Indicator;
+	//[Label("It is obligatory city by position")]element CityByPosition:Indicator;
+
+}

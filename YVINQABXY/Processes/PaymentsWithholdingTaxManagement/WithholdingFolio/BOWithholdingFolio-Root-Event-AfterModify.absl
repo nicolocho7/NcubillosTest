@@ -1,0 +1,36 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BOWithholdingFolio
+		Node: Root
+		Event: AfterModify 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script if:
+		- the value of any field in the node in which this script is contained is modified.
+		- the node itself is modified by another business object within the same solution.
+*/
+
+import ABSL;
+import AP.FO.MOM.Global;
+import AP.FO.Product.Global;
+import AP.FO.ProductDataMaintenance.Global;
+
+if (!this.CompanyID.IsInitial())
+{
+	var queryCompany = Company.QueryByIDAndName;
+	var paramcompany = queryCompany.CreateSelectionParams();
+	paramcompany.Add(queryCompany.ID, "I", "EQ", this.CompanyID.RemoveLeadingZeros());
+	var resultCompany = queryCompany.Execute(paramcompany).GetFirst();
+	if (resultCompany.IsSet())
+	{
+		this.ToCompany = resultCompany;
+	}
+	else
+	{
+		this.ToCompany.Reset();
+	}
+}
+

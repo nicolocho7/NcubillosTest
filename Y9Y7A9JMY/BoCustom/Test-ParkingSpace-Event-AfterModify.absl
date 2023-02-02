@@ -1,0 +1,48 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: Test
+		Node: ParkingSpace
+		Event: AfterModify 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script if:
+		- the value of any field in the node in which this script is contained is modified.
+		- the node itself is modified by another business object within the same solution.
+*/
+
+import ABSL;
+
+import AP.FO.BusinessPartner.Global;
+
+var bUpdateEmployee = false;
+var queryEmployees;
+var paramEmployee;
+var resultEmployees;
+
+if(this.ParkingSpaceAssignedEmployeeID.IsInitial()) {
+	if(this.ToEmployee.IsSet()){
+		this.ToEmployee.Reset();
+	}
+}
+else if(!this.ToEmployee.IsSet()){
+	bUpdateEmployee =  true;
+}
+else if(this.ToEmployee.IdentificationEmployeeID.EmployeeID.content != this.ParkingSpaceAssignedEmployeeID){
+	bUpdateEmployee = true;
+}
+
+if(bUpdateEmployee){
+	this.ToEmployee.Reset();
+	queryEmployees = Employee.Identification.QueryByEmployeeAttributes;
+	paramEmployee = queryEmployees.CreateSelectionParams();
+	paramEmployee.Add(queryEmployees.EmployeeID.content, "I", "EQ", this.ParkingSpaceAssignedEmployeeID);
+	resultEmployees = queryEmployees.Execute(paramEmployee);
+
+	foreach(var oneEmployee in resultEmployees){
+		this.ToEmployee = oneEmployee.ToRoot;
+		break;
+	}
+}

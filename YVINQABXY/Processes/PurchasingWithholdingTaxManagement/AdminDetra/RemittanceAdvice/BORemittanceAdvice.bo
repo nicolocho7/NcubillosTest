@@ -1,0 +1,20 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BORemittanceAdvice {
+       message msg text "&1":LANGUAGEINDEPENDENT_Text;
+		[Label("Withholding Status")] element WithholdingStatus	: CLStatusPostedCodeCode;
+        [Label("AdviceID")] element AdviceID:LANGUAGEINDEPENDENT_Text;
+		[Label("Payment Type")] element PaymentType: LANGUAGEINDEPENDENT_Text;
+		[Label("Supplier")] element SupplierID:ID;
+		[Label("Supplier")] element SupplierDesc:LANGUAGEINDEPENDENT_Text;
+		[Label("Payment Origin Reference")] element PaymentOriginReference:LANGUAGEINDEPENDENT_Text;
+		[Label("Payment Reference")] element PaymentReference:LANGUAGEINDEPENDENT_Text;
+		[Label("Reference Document Type")] element PaymentTypeCode:BusinessTransactionDocumentProcessingTypeCode;
+		[Label("Bank")] element Bank:LANGUAGEINDEPENDENT_Text;
+		[Label("Payment Amount")] element PaymentAmount:apCommonGDT:Amount;
+		[Label("Company ID")] element CompanyID:LANGUAGEINDEPENDENT_Text;
+		[Label("Debit Indicator")] element DebitIndicator:apCommonGDT:Indicator;
+		[Label("Posting Date")] element PostingDate:BASIS.Global:Date;
+		action Post raises msg;
+		action DeleteInstance;
+}

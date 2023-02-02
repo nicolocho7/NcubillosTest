@@ -1,0 +1,8 @@
+﻿import ABSL;
+import AP.FO.BusinessPartner.Global;
+
+if(!this.hireMgrID.IsInitial()){
+	var employee = Employee.Identification.Retrieve(this.hireMgrID);
+	var root = employee.ToRoot;
+	this.hireMgrName = root.CurrentCommon.BusinessPartnerFormattedName;
+}

@@ -1,0 +1,25 @@
+﻿import ABSL;
+
+if(!this.vIDContent.IsInitial())
+{
+	var QueryConfigurationReport = BOConfigurationReportsData.QueryByElements;
+	var parameterConfigReport = QueryConfigurationReport.CreateSelectionParams();
+		parameterConfigReport.Add(QueryConfigurationReport.ConfRepoDataID, "I", "EQ", this.vIDContent.RemoveLeadingZeros());
+	var ResultQuery = QueryConfigurationReport.Execute(parameterConfigReport).GetFirst();
+	
+	if(ResultQuery.IsSet())
+	{		
+		//this.Report = ResultQuery.Description;	
+		this.ReportID = ResultQuery.ReportID;
+
+		if(this.Report.IsInitial())
+		{
+			this.Description = ResultQuery.Description;
+		}
+	}
+	else{
+		this.ReportDesc.Clear();	
+		this.Report.Clear();
+		}
+}
+

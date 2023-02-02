@@ -1,0 +1,1408 @@
+﻿import ABSL;
+import AP.Common.GDT as common;
+import BASIS.Global as basis;
+import AP.CustomerInvoicing.Global;
+import AP.SupplierInvoicing.Global;
+import AP.FO.TaxArrangement.Global;
+import AP.FO.BusinessPartner.Global;
+import AP.FO.MOM.Global;
+
+var vRucEmisor = "";
+var vRUC = "";
+var vRUCCliente = "";
+var vDireccion = "";
+var vDireccionCliente = "";
+var vTipoDocumentoIdentificacionCliente = "";
+var vTipoDocumentoIdentificacion = "";
+var vRazonSocialCliente = "";
+var vNombreComercial = "";
+var vTipoDocumento = "";
+var vNumeroDocumento = "";
+var vTipoMonedaPais = "";
+var vTipoMonedaOrigen = "";
+var vRazonSocial = "";
+var vDepartamento = "";
+var vProvincia = "";
+var vDistrito = "";
+var vCodigoPais = "";
+var vImporteTotal = 0.0;
+var vFlagPercepcion = "";
+var vDescuentoGlobal = 0.0;
+var vFechaEmision = "";
+var vFechaVencimiento = "";
+var vFlagSpot = "0";
+var vTotalDescuentoMonto = 0;
+var vBaseinponibleMonto12 = 0;
+var vBaseinponibleMonto0 = 0;
+var vTotalGravado = 0;
+var vTotalInafecto = 0;
+var vTotalExonerado = 0;
+var vTipoDoc = "";
+var vSupplierWS = "QNAN";
+var vUbigueo = "";
+var vIdPercepcion = "2001";
+var vValorConcepto = "";
+var vUrbanizacion = "";
+var vComentario = "";
+var vPorcDescuento = 0;
+var insDataSend : elementsof BODataSent;
+var insDataSendItem : elementsof BODataSent.Item;
+var insDataSentImp : elementsof BODataSent.Impuesto;
+var insDataSentPer : elementsof BODataSent.Percepcion;
+var insDataSentTri : elementsof BODataSent.Tributario;
+var insCustomerInv = CustomerInvoice.Retrieve(this.DocUUID);
+var vInsDataSent = BODataSent.Create(insDataSend);
+var vCustomer = Customer.Retrieve(insCustomerInv.BuyerParty.PartyUUID);
+//Save data sent to webService
+
+
+
+//Web service send bill
+var requestBill : Library::EWSSendEBill2.recepcionFact.Request; //request structure
+var responseBill : Library::EWSSendEBill2.recepcionFact.Response; //response structure
+var scenarioBill = "CSSendEBill2"; //scenario
+var requestBillItem : EWSSendEBill2.recepcionFact.Request.itemFactura.item; //request structure
+var requestBillImp : EWSSendEBill2.recepcionFact.Request.impuestos.item; 
+var requestBillTri : EWSSendEBill2.recepcionFact.Request.conceptosTrib.item; 
+var requestBillAddTri : EWSSendEBill2.recepcionFact.Request.infoAdicionalTributario.item; 
+var requestBillAddGen : EWSSendEBill2.recepcionFact.Request.infoAdicionalGeneral.item; 
+var requestBillDocAfec : EWSSendEBill2.recepcionFact.Request.documentoAfectado.item; 
+
+
+
+//-------Cabecera 1 ----//
+var insCompany = Company.Retrieve(this.CompanyUUID);
+if (insCompany.IsSet())
+{
+	vNombreComercial = insCompany.NameByValidity.GetFirst().Name.content;
+	vRazonSocial = insCompany.NameByValidity.GetFirst().Name.content;
+	vDireccion = insCompany.AddressSnapshot.PostalAddress.GetFirst().StreetName;
+	vDireccion  = "CALLE 53 NRO 23-14";
+	vNombreComercial = "Gilat Networks Peru";
+	vRazonSocial =  "Gilat Networks Peru";
+	var qcta = CompanyTaxArrangement.QueryByElements;
+	var rcta = qcta.CreateSelectionParams();
+	rcta.Add(qcta.CompanyID, "I", "EQ", insCompany.ID);
+	var insConpanyTaxAr = qcta.Execute(rcta).GetFirst();
+	if (insConpanyTaxAr.IsSet())
+	{
+	
+		if (insConpanyTaxAr.TaxIdentificationNumber.Count() > 0)
+		{
+			vRucEmisor = insConpanyTaxAr.TaxIdentificationNumber.GetFirst().PartyTaxID.content;
+			
+			//vRucEmisor = "20423195119";
+			vRUC = vRucEmisor;	
+			this.CompanyRUC = vRucEmisor; 		
+			vTipoDoc = insConpanyTaxAr.TaxIdentificationNumber.GetFirst().TypeCode.content;
+			 
+		}
+	}
+}
+
+var insCliente;
+if (insCustomerInv.BuyerParty.IsSet())
+{
+	if (insCustomerInv.BuyerParty.Party.IsSet())
+	{
+		if (insCustomerInv.BuyerParty.Party.Customer.IsSet())
+		{
+			insCliente = insCustomerInv.BuyerParty.Party.Customer;
+			if (insCliente.CurrentCommonFormattedDefaultAddress.IsSet())
+			{
+				vDireccionCliente = insCliente.CurrentCommonFormattedDefaultAddress.FormattedAddress.SecondLineDescription;
+			}
+			if (insCliente.TaxNumber.Count() > 0)
+			{
+				vRUCCliente = insCliente.TaxNumber.GetFirst().PartyTaxID.content;
+				vTipoDocumentoIdentificacionCliente = insCliente.TaxNumber.GetFirst().TaxIdentificationNumberTypeCode.content;
+					
+				//vProvincia = insCliente.AddressInformation.GetFirst().zProvinceDes;
+				//vDistrito = insCliente.AddressInformation.GetFirst().zDistrictDes;		
+				//vUrbanizacion = insCliente.AddressInformation.GetFirst().zLocalityDes;
+			}
+			if (insCliente.CurrentCommon.IsSet())
+			{
+				vRazonSocialCliente = insCliente.CurrentCommon.BusinessPartnerFormattedName;
+			}
+		}
+	}
+}
+
+//------------Nueva logica para los campos PROVINCIA, DISTRITO Y URBANIZACION--------
+while(true)
+{	
+	var vIsConsistentCustomer = false;
+	if(!vCustomer.IsSet()){vIsConsistentCustomer = true;}
+	if(vCustomer.Common.Count()<=0){vIsConsistentCustomer = true;break;}
+	var nCommon = vCustomer.Common;
+	if(!nCommon.GetFirst().zProvincia.IsInitial()){break;}
+	vProvincia = nCommon.GetFirst().zProvincia;
+	if(!nCommon.GetFirst().zDistrito.IsInitial()){break;}
+	vDistrito = nCommon.GetFirst().zDistrito;
+	if(!nCommon.GetFirst().zUrbanizacion.IsInitial()){break;}
+	vUrbanizacion = nCommon.GetFirst().zUrbanizacion;
+break;
+}
+
+//---------------------FIN NUEVA LOGICA
+
+//--------------------------------------------------------------//
+//					Web Service Create Customer
+//--------------------------------------------------------------//
+
+var requestCus : Library::EWSCreateCustomer2.Crear.Request; //request structure
+var responseCus : Library::EWSCreateCustomer2.Crear.Response; //response structure
+var scenarioCus = "CSCreateCustomer2"; //scenario
+
+requestCus.ruc_cliente = vRUCCliente;
+var vEmail = "";
+if (insCliente.CurrentDefaultAddressInformation.IsSet())
+{
+	if (insCliente.CurrentDefaultAddressInformation.Address.IsSet())
+	{
+		if (insCliente.CurrentDefaultAddressInformation.Address.DefaultEMail.IsSet())
+		{
+			vEmail = insCliente.CurrentDefaultAddressInformation.Address.DefaultEMail.URI.content;
+		}
+	}
+}
+
+requestCus.correo = vEmail;
+requestCus.razon_social_cliente = vRazonSocialCliente;	
+requestCus.ruc_emisor = vRucEmisor;
+
+//requestCus.ruc_emisor = "20423195119";
+		
+
+responseCus = Library::EWSCreateCustomer2.Crear(requestCus, "", scenarioCus);
+
+if (responseCus.IsInitial())
+{
+	raise msg.Create("E", "WS: Response vacio");
+}
+	
+//Fault messages
+var FaultItems = responseCus.CommunicationFault.Item;
+var insFault;
+foreach(insFault in FaultItems){
+	raise msg.Create("E", "WS Customer Create:" + insFault.Note);	
+}
+
+var Respuesta = responseCus.CrearReturn;
+var Rta = "";
+	
+Rta = Respuesta.Substring(0, 1); 
+	
+if (Rta == "0")
+{//ok
+		 
+	raise msg.Create("S", "WS Customer Create:" + Respuesta);
+	//--------------------------------------------------------------//
+	//				End	Web Service Create Customer
+	//--------------------------------------------------------------//
+
+
+	//--------------------------------------------------------------//
+	//					Web Service Send EBill
+	//--------------------------------------------------------------//
+
+
+
+	//--------------------------------------------------------------//
+	//					GeoLocalization Company
+	//--------------------------------------------------------------//
+
+	var qGeoLoc = BOCompanyGeoLoca.QueryByElements;
+	var pGeoLoc = qGeoLoc.CreateSelectionParams();
+	
+	pGeoLoc.Add(qGeoLoc.CompanyID, "I", "EQ", insCompany.ID);
+	var insGeoLoc = qGeoLoc.Execute(pGeoLoc).GetFirst();
+
+	if (insGeoLoc.IsSet())
+	{	
+
+		var qryDep = BODepartament.QueryByElements;
+		var selDep = qryDep.CreateSelectionParams();
+		selDep.Add(qryDep.CountryCode, "I", "EQ", insGeoLoc.zCountryDirecM);
+		selDep.Add(qryDep.DepartamentCode, "I", "EQ", insGeoLoc.zDepartamentID);
+		var objDep = qryDep.Execute(selDep).GetFirst();
+		if (objDep.IsSet())
+		{
+			vDepartamento = objDep.DepartamentDescription; 
+		}
+
+		var qryProv = BOProvinceV2.QueryByElements;
+		var selProv = qryProv.CreateSelectionParams();
+		selProv.Add(qryProv.zPais, "I", "EQ", insGeoLoc.zCountryDirecM);
+		selProv.Add(qryProv.zDepartamentoCode, "I", "EQ", insGeoLoc.zDepartamentID);
+		selProv.Add(qryProv.zProvinciaCode, "I", "EQ", insGeoLoc.zProvinceID);
+		var objProv = qryProv.Execute(selProv).GetFirst();
+		if (objProv.IsSet())
+		{
+			vProvincia = objProv.zProvinciaDescrip; 
+		}
+
+
+		var qryDis = BODistrictV2.QueryByElements;
+		var selDis = qryDis.CreateSelectionParams();
+		selDis.Add(qryDis.zPais, "I", "EQ", insGeoLoc.zCountryDirecM);
+		selDis.Add(qryDis.zDepartamentoCode, "I", "EQ", insGeoLoc.zDepartamentID);
+		selDis.Add(qryDis.zProvinciaCode, "I", "EQ", insGeoLoc.zProvinceID);
+		var objDis = qryDis.Execute(selDis).GetFirst();
+		if (objDis.IsSet())
+		{
+
+			vDistrito = objDis.zDistritoDescrip; 
+		}
+		vUrbanizacion = insGeoLoc.zUrbanizacion;
+		vUbigueo = insGeoLoc.zUbigeo;
+	}
+
+
+	//--------------------------------------------------------------//
+	//					tipo de documento 
+	//--------------------------------------------------------------//
+	var vTipoDocumentoDocAfectado;
+	var vValidate = false;
+
+	if(insCustomerInv.Item.Count() > 0){
+		var inItem = insCustomerInv.Item.GetFirst();
+		if(inItem.ItemBusinessTransactionDocumentReference.Count() > 0){
+			var vFactura = inItem.ItemBusinessTransactionDocumentReference.Where(n=>n.BusinessTransactionDocumentReference.TypeCode == "28").GetFirst();
+			if(vFactura.IsSet()){
+				var qryCI = CustomerInvoice.QueryByElements;
+				var prmCI = qryCI.CreateSelectionParams();
+					prmCI.Add(qryCI.ID.content, "I", "EQ",vFactura.BusinessTransactionDocumentReference.ID.content.RemoveLeadingZeros());
+				var insCI = qryCI.Execute(prmCI).GetFirst();
+				if(insCI.IsSet()){
+					vValidate = true;
+
+					var qTypeDocI = BOHomologationDocumentType.QueryByElements;
+					var pTypeDocI = qTypeDocI.CreateSelectionParams();
+						pTypeDocI.Add(qTypeDocI.CompanyID, "I", "EQ", insCompany.ID);
+						pTypeDocI.Add(qTypeDocI.DocumentTypeSAP, "I", "EQ", insCI.ZDocumentType.RemoveLeadingZeros());
+						pTypeDocI.Add(qTypeDocI.DescriptionSupplier, "I", "EQ", vSupplierWS);
+					var insTypeDocI = qTypeDocI.Execute(pTypeDocI).GetFirst();
+
+					if (insTypeDocI.IsSet()){	
+						vTipoDocumentoDocAfectado = insTypeDocI.DocumentTypeSup.RemoveLeadingZeros();
+					}
+
+
+				}
+			}
+		}
+	}
+
+	var qTypeDocI = BOHomologationDocumentType.QueryByElements;
+	var pTypeDocI = qTypeDocI.CreateSelectionParams();
+		pTypeDocI.Add(qTypeDocI.CompanyID, "I", "EQ", insCompany.ID);
+		pTypeDocI.Add(qTypeDocI.DocumentTypeSAP, "I", "EQ", insCustomerInv.ZDocumentType.RemoveLeadingZeros());
+		pTypeDocI.Add(qTypeDocI.DescriptionSupplier, "I", "EQ", vSupplierWS);
+	var insTypeDocI = qTypeDocI.Execute(pTypeDocI).GetFirst();
+
+	if (insTypeDocI.IsSet()){	
+		vTipoDocumento = insTypeDocI.DocumentTypeSup.RemoveLeadingZeros();
+		this.DocumentTypePro2 = vTipoDocumento;
+	}
+
+
+
+
+	//--------------------------------------------------------------//
+	//					tipo de documento de identificación
+	//--------------------------------------------------------------//
+
+	var qTypeDoc = BOHomoIdentificationDoc.QueryByElements;
+	var pTypeDoc = qTypeDoc.CreateSelectionParams();
+	
+	pTypeDoc.Add(qTypeDoc.CompanyID, "I", "EQ", insCompany.ID);
+	pTypeDoc.Add(qTypeDoc.DocumentTypeSAP.content, "I", "EQ", vTipoDoc);
+	pTypeDoc.Add(qTypeDoc.DescriptionSupplier, "I", "EQ", vSupplierWS);
+	var insTypeDoc = qTypeDoc.Execute(pTypeDoc).GetFirst();
+
+	if (insTypeDoc.IsSet())
+	{	
+		vTipoDocumentoIdentificacion = insTypeDoc.DocumentTypeSup.RemoveLeadingZeros();
+	}
+
+	var qTypeDocCli = BOHomoIdentificationDoc.QueryByElements;
+	var pTypeDocCli = qTypeDocCli.CreateSelectionParams();
+	
+	pTypeDocCli.Add(qTypeDocCli.CompanyID, "I", "EQ", insCompany.ID);
+	pTypeDocCli.Add(qTypeDocCli.DocumentTypeSAP.content, "I", "EQ", vTipoDocumentoIdentificacionCliente);
+	pTypeDocCli.Add(qTypeDocCli.DescriptionSupplier, "I", "EQ", vSupplierWS);
+	var insTypeDocCli = qTypeDocCli.Execute(pTypeDocCli).GetFirst();
+
+	if (insTypeDocCli.IsSet())
+	{	
+		vTipoDocumentoIdentificacionCliente = insTypeDocCli.DocumentTypeSup.RemoveLeadingZeros();
+	}
+	//--------------------------------------------------------------//
+	//					moneda
+	//--------------------------------------------------------------//
+	var qTypeCurr = BOHomoCurrency.QueryByElements;
+	var pTypeCurr = qTypeCurr.CreateSelectionParams();
+	
+	pTypeCurr.Add(qTypeCurr.CompanyID, "I", "EQ", insCompany.ID);
+	pTypeCurr.Add(qTypeCurr.CurrencyCodeSAP, "I", "EQ", insCustomerInv.TotalNetAmount.currencyCode);
+	pTypeCurr.Add(qTypeCurr.DescriptionSupplier, "I", "EQ", vSupplierWS);
+	var insTypeCurr = qTypeCurr.Execute(pTypeCurr).GetFirst();
+
+	if (insTypeCurr.IsSet())
+	{	
+		vTipoMonedaPais = insTypeCurr.CurrencyCodeSup.RemoveLeadingZeros();
+		vTipoMonedaOrigen = insTypeCurr.CurrencyCodeSup.RemoveLeadingZeros();
+	}
+
+	vNumeroDocumento = insCustomerInv.ZExternalID.Substring(3, 13);
+	this.DocIDProvider = vNumeroDocumento;
+
+	var qCount = BOHomoCountry.QueryByElements;
+	var pCount = qCount.CreateSelectionParams();
+	
+	pCount.Add(qCount.CompanyID, "I", "EQ", insCompany.ID);
+	pCount.Add(qCount.CountryCodeSAP, "I", "EQ", insCustomerInv.SellerRegistrationCountryCode);
+	pCount.Add(qCount.DescriptionSupplier, "I", "EQ", vSupplierWS);
+	var insCount = qCount.Execute(pCount).GetFirst();
+
+	if (insCount.IsSet())
+	{	
+		vCodigoPais = insCount.CountryCodeSup.RemoveLeadingZeros();
+	}
+
+
+	vImporteTotal = insCustomerInv.TotalGrossAmount.content;
+
+	if (vImporteTotal < 0)
+	{
+		vImporteTotal = vImporteTotal * -1;
+	}
+	vFlagPercepcion = "1";
+	vFechaEmision = this.DocDate.GetDay() + "/" + this.DocDate.GetMonth() + "/" + this.DocDate.GetYear();
+
+
+	//if (insCustomerInv.PriceAndTaxCalculation.IsSet())
+	//{
+		//if (insCustomerInv.PriceAndTaxCalculation.MainDiscount.IsSet())
+		//{
+			//vDescuentoGlobal = insCustomerInv.PriceAndTaxCalculation.MainDiscount.Rate.DecimalValue;
+		//}
+	//}
+
+
+
+	//--------------------------------------------------------------//
+	//				Detalle
+	//--------------------------------------------------------------//
+
+	var vCodigo = "";
+	var vCodigoPorcentaje = "";
+	var vTarifa = "";
+	var vPrecioUnitario = 0.0;
+	var vDescuentoDetMonto = 0.0;
+	var vPrecioTotalSinImpuesto = "0.00";
+	var vBaseImponibleDet = "";
+	var vValorDet = "";
+	var vCodigoValorUnitario = "";
+	var vDescuentoDetTotal = 0.0;
+	var vPorcentajeImpuesto = 0.0;
+	var vCodigoAfectacionIGV = "";
+	var vNombreTributo = "";
+	var vCodigoTributo = "";
+	var vFlagConISC = "1";
+	var vDescripcionMaterial = "";
+	var vCodigoMaterial = "";
+	var vIdentificacionTributo = "";
+	var vValorVentaUnitario = 0.0;
+	var vImporteTotalImp = 0.0;
+	var vdescuentoItem = 0.0;
+
+
+	foreach (var itemCustInv in insCustomerInv.Item)
+	{
+		
+		vCodigoPorcentaje = "";
+		vPrecioUnitario = 0.0;
+		vPrecioTotalSinImpuesto = "0.00";
+		vTarifa = "0.00";
+		vBaseImponibleDet = "0.00";
+		vValorDet = "0.00";
+		vCodigo = "";
+		vDescuentoDetMonto = 0.0;
+		vDescuentoDetTotal = 0.0;
+		vCodigoAfectacionIGV = "";
+		vValorVentaUnitario = 0.0;
+		
+		var vPrecioLista = 0.0;
+		vDescripcionMaterial = "";
+		vDescripcionMaterial = itemCustInv.Description.content; 
+		vCodigoMaterial = itemCustInv.ItemProduct.ProductKey.ProductID.content;
+		
+		var vNetAmount = itemCustInv.NetAmount.content;
+
+		if (vNetAmount < 0)
+		{
+			vNetAmount = vNetAmount * -1;
+		}
+
+		var itemPriceAndTax = itemCustInv.PriceAndTaxCalculationItem;
+		if (itemPriceAndTax.IsSet())
+		{						
+			
+			if (itemPriceAndTax.TaxationCharacteristicsCode.content == "310")
+			{
+				vIdentificacionTributo = "1000";
+				vNombreTributo = "IGV";//"IMPUESTO GENERAL A LAS VENTAS";
+				vCodigoTributo = "VAT";
+				vCodigoValorUnitario = "01";
+			}
+			else
+			{
+				vIdentificacionTributo = "9999";
+				vNombreTributo = "OTROS CONCEPTOS DE PAGO";
+				vCodigoTributo = "OTH";
+				vCodigoValorUnitario = "01";			
+			}
+
+			switch (itemPriceAndTax.TaxationCharacteristicsCode.content)
+			{
+				case "300"
+				{
+					vCodigoAfectacionIGV = "30";
+					vTotalInafecto = vTotalInafecto + vNetAmount;
+				}
+				case "311"
+				{
+					vCodigoAfectacionIGV = "30";
+					vTotalExonerado = vTotalExonerado + vNetAmount; 
+				}
+				case "310"
+				{
+					vCodigoAfectacionIGV = "10";
+					vTotalGravado = vTotalGravado + vNetAmount;
+				}
+				case "500" { vCodigoAfectacionIGV = "40"; }
+			
+			}
+			
+			if (itemPriceAndTax.ItemMainPrice.IsSet())
+			{
+				//vPrecioLista = itemPriceAndTax.ItemMainPrice.CalculatedAmount.content / itemCustInv.Quantity.content;
+				vPrecioLista = itemPriceAndTax.ItemMainPrice.Rate.DecimalValue;
+				if (vPrecioLista < 0)
+				{
+					vPrecioLista = vPrecioLista * -1;
+				}
+			}
+
+			var vDescuentoDet = 0.0;
+			if (itemPriceAndTax.ItemMainDiscount.IsSet())
+			{
+				vDescuentoDet = itemPriceAndTax.ItemMainDiscount.Rate.DecimalValue;
+			}
+
+			vPorcentajeImpuesto = 0.0;
+			if (itemPriceAndTax.ItemProductTaxDetails.Count() > 0)
+			{
+				vPorcentajeImpuesto = itemPriceAndTax.ItemProductTaxDetails.GetFirst().ProductTax.Percent;
+			}
+
+			vDescuentoDetTotal = (1 - (1 + (vDescuentoDet / 100)) * (1 + (vDescuentoGlobal / 100)));
+			
+			vPrecioUnitario = (vPrecioLista - (vPrecioLista * vDescuentoDetTotal));
+
+			vDescuentoDetMonto = (vPrecioLista * itemCustInv.Quantity.content) * vDescuentoDetTotal;
+
+			vTotalDescuentoMonto = vTotalDescuentoMonto + vDescuentoDetMonto;
+
+
+			if (vDescuentoDetTotal < 0) { vDescuentoDetTotal = vDescuentoDetTotal * -1; }
+			if (vPrecioUnitario < 0) { vPrecioUnitario = vPrecioUnitario * -1; }
+			if (vDescuentoDetMonto < 0) { vDescuentoDetMonto = vDescuentoDetMonto * -1; }
+			if (vTotalDescuentoMonto < 0) { vTotalDescuentoMonto = vTotalDescuentoMonto * -1; }
+
+			
+			switch (itemCustInv.PriceAndTaxCalculationItem.TaxationCharacteristicsCode.content)
+			{
+				case "Z02"
+				{
+					vCodigoPorcentaje = "0"; vCodigo = "2"; vTarifa = "0.00";
+					vBaseinponibleMonto0 = vBaseinponibleMonto0 + itemCustInv.NetAmount.content; 
+				}
+				//vBaseImponibleDet =  itemCustInv.NetAmount.content.RoundToString(2);}//importe de base gravada
+				case "310"
+				{
+					vCodigoPorcentaje = "2"; vCodigo = "2"; vTarifa = "12.00";
+					vBaseinponibleMonto12 = vBaseinponibleMonto12 + itemCustInv.NetAmount.content; 
+				}
+				//vBaseImponibleDet =  itemCustInv.NetAmount.content.RoundToString(2);}//importe de base gravada
+				case "Z1" { vCodigoPorcentaje = "6"; }
+				default { vCodigoPorcentaje = "7"; }
+			}
+		}
+		
+		//--------------------------------------------------------------//
+		//					Unidad de medida
+		//--------------------------------------------------------------//
+
+		var qQuanType = BOHomoQuanUniCode.QueryByElements;
+		var pQuanType = qQuanType.CreateSelectionParams();
+		var vUnidadMedida = "";
+		pQuanType.Add(qQuanType.CompanyID, "I", "EQ", insCompany.ID);
+		pQuanType.Add(qQuanType.QuanUnitCodeSAP, "I", "EQ", itemCustInv.Quantity.unitCode);
+		pQuanType.Add(qQuanType.DescriptionSupplier, "I", "EQ", vSupplierWS);
+		var insQuanType = qQuanType.Execute(pQuanType).GetFirst();
+
+		if (insQuanType.IsSet())
+		{	
+			vUnidadMedida = insQuanType.QuanUnitCodeSup;
+		}
+
+		//--------------------------------------------------------------//
+		//					Moneda
+		//--------------------------------------------------------------//
+		pTypeCurr.Clear();
+		pTypeCurr.Add(qTypeCurr.CompanyID, "I", "EQ", insCompany.ID);
+		pTypeCurr.Add(qTypeCurr.CurrencyCodeSAP, "I", "EQ", itemCustInv.GrossAmount.currencyCode);
+		pTypeCurr.Add(qTypeCurr.DescriptionSupplier, "I", "EQ", vSupplierWS);
+		insTypeCurr = qTypeCurr.Execute(pTypeCurr).GetFirst();
+
+		if (insTypeCurr.IsSet())
+		{	
+			requestBillItem.moneda = insTypeCurr.CurrencyCodeSup.RemoveLeadingZeros();
+		}
+
+		var vTaxAmount = itemCustInv.TaxAmount.content;
+
+		if (vTaxAmount < 0)
+		{
+			vTaxAmount = vTaxAmount * -1;		
+		}
+
+		
+		vValorDet = vTaxAmount.RoundToString(2);//importe de impuesto				
+		vPrecioTotalSinImpuesto = vNetAmount.RoundToString(2);
+
+		vValorVentaUnitario = vNetAmount / itemCustInv.Quantity.content;
+		//vImporteTotalImp = vImporteTotalImp + (vTaxAmount * itemCustInv.Quantity.content);
+		vImporteTotalImp = vImporteTotalImp + vTaxAmount;
+
+		var ItemMainDiscount = itemCustInv.PriceAndTaxCalculationItem.ItemMainDiscount;
+		var ItemProductTaxDetails = itemCustInv.PriceAndTaxCalculationItem.ItemProductTaxDetails;
+		// Descuento
+		var descu = 0.00;
+		if (ItemMainDiscount.IsSet())
+		{
+			descu = ItemMainDiscount.CalculatedAmount.content;
+			vPorcDescuento = ItemMainDiscount.Rate.DecimalValue;
+			vdescuentoItem = vdescuentoItem * -1 ;
+			if (descu < 0)
+			{ descu = descu * -1;
+			}
+
+			
+			vDescuentoGlobal = vDescuentoGlobal + descu;
+			vdescuentoItem = vPrecioLista * vPorcDescuento / 100 ;
+	    }
+
+		requestBillItem.correlativo = itemCustInv.ID.RemoveLeadingZeros();
+		requestBillItem.unidadMedida = vUnidadMedida; 
+		requestBillItem.cantidad = itemCustInv.Quantity.content.RoundToString(0);
+		requestBillItem.montoTotalItem = vPrecioTotalSinImpuesto;
+		requestBillItem.precioUnitario = vPrecioLista.RoundToString(2); //vPrecioUnitario.RoundToString(2);
+		requestBillItem.codigoValorUnitario = vCodigoValorUnitario;
+		requestBillItem.importeTotalImpuesto = vValorDet;
+		requestBillItem.importeTotalImpuesto_sub = vValorDet;
+		requestBillItem.porcentajeImpuesto = vPorcentajeImpuesto.RoundToString(2);
+		requestBillItem.codigoAfectacionIGV = vCodigoAfectacionIGV; 
+		requestBillItem.identificacionTributo = vIdentificacionTributo;
+		requestBillItem.nombreTributo = vNombreTributo;
+		requestBillItem.codigoTributo = vCodigoTributo;
+		requestBillItem.flagConISC = vFlagConISC;
+		requestBillItem.descripcionMaterial = vDescripcionMaterial;
+		requestBillItem.codigoMaterial = vCodigoMaterial;
+		requestBillItem.valorVentaUnitario = vPrecioLista.RoundToString(2) ; //vValorVentaUnitario.RoundToString(2);
+		requestBillItem.descuentoItem = vdescuentoItem.RoundToString(2); //vDescuentoDetTotal.RoundToString(2);
+		requestBillItem.importeTotalImpuesto_isc = "";
+		requestBillItem.importeTotalImpuesto_sub_isc = "";
+		requestBillItem.codigoAfectacionISC = "";
+		requestBillItem.identificacionTributo_isc = "";
+		requestBillItem.nombreTributo_isc = "";
+		requestBillItem.codigoTributo_isc = "";
+		
+
+		requestBillItem.cantidad = requestBillItem.cantidad.Replace(",", ".");
+		requestBillItem.montoTotalItem = requestBillItem.montoTotalItem.Replace(",", ".");
+		requestBillItem.importeTotalImpuesto = requestBillItem.importeTotalImpuesto.Replace(",", ".");
+		requestBillItem.importeTotalImpuesto_sub = requestBillItem.importeTotalImpuesto_sub.Replace(",", ".");
+		requestBillItem.porcentajeImpuesto = requestBillItem.porcentajeImpuesto.Replace(",", ".");
+		requestBillItem.valorVentaUnitario = requestBillItem.valorVentaUnitario.Replace(",", ".");
+		requestBillItem.precioUnitario = requestBillItem.precioUnitario.Replace(",", ".");
+		requestBillItem.descuentoItem = requestBillItem.descuentoItem.Replace(",", ".");
+		
+		
+		//Save data sent to Web Service
+
+		//Item
+
+		insDataSendItem.correlativo = requestBillItem.correlativo; 
+		insDataSendItem.unidadMedida = requestBillItem.unidadMedida;
+		insDataSendItem.cantidad = requestBillItem.cantidad;
+		insDataSendItem.montoTotalItem = requestBillItem.montoTotalItem;
+		insDataSendItem.precioUnitario = requestBillItem.precioUnitario;
+		insDataSendItem.codigoValorUnitario = requestBillItem.codigoValorUnitario;
+		insDataSendItem.importeTotalImpuesto = requestBillItem.importeTotalImpuesto;
+		insDataSendItem.importeTotalImpuesto_sub = requestBillItem.importeTotalImpuesto_sub;
+		insDataSendItem.porcentajeImpuesto = requestBillItem.porcentajeImpuesto;
+		insDataSendItem.codigoAfectacionIGV = requestBillItem.codigoAfectacionIGV;
+		insDataSendItem.identificacionTributo = requestBillItem.identificacionTributo;
+		insDataSendItem.nombreTributo = requestBillItem.nombreTributo;
+		insDataSendItem.codigoTributo = requestBillItem.codigoTributo;
+		insDataSendItem.flagConISC = requestBillItem.flagConISC;
+		insDataSendItem.descripcionMaterial = requestBillItem.descripcionMaterial;
+		insDataSendItem.codigoMaterial = requestBillItem.codigoMaterial;
+		insDataSendItem.valorVentaUnitario = requestBillItem.valorVentaUnitario;
+		insDataSendItem.descuentoItem = requestBillItem.descuentoItem;
+		vInsDataSent.Item.Create(insDataSendItem);
+
+			
+
+		//this.Item.Create(insDataSendItem);
+
+
+
+		/*stringDetalle = stringDetalle +nivel2+ "detalle" + espacio + 
+						nivel3 + "codigoPrincipal=" + itemCustInv.ItemProduct.ProductKey.ProductID.content + espacio+ 
+						nivel3+ "codigoAuxiliar=" + itemCustInv.ItemProduct.ProductKey.ProductID.content + espacio + 
+						nivel3 + "descripcion=" + itemCustInv.Description.content + espacio+ 
+						nivel3 + "cantidad=" + itemCustInv.Quantity.content.RoundToString(0) + espacio+
+						nivel3 +"precioUnitario=" + vPrecioLista.RoundToString(2) + espacio +
+						nivel3 + "descuento=" + vDescuentoDetMonto.RoundToString(2) + espacio +
+						nivel3 + "precioTotalSinImpuesto=" + vPrecioTotalSinImpuesto + espacio+
+						nivel3 + "impuestos" + espacio + nivel4+ "impuesto" + espacio +
+						nivel4 + nivel1+ "codigo="+ vCodigo + espacio + 
+						nivel4 + nivel1+"codigoPorcentaje=" + vCodigoPorcentaje + espacio+
+						nivel4 + nivel1 + "tarifa="+ vTarifa+ espacio + 
+						nivel4 + nivel1 + "baseImponible=" +vPrecioTotalSinImpuesto + espacio +
+						nivel4 + nivel1 + "valor=" + vValorDet+ espacio;
+		*/
+		requestBill.itemFactura.item.Add(requestBillItem);
+		//if(insCustomerInv.ProcessingTypeCode == "CCM"){//credit note
+			//foreach (var ItemBussinesDocument in itemCustInv.ItemBusinessTransactionDocumentReference)
+			//{
+				//if (ItemBussinesDocument.BusinessTransactionDocumentReference.TypeCode == "28"){ //Invoice
+			//
+				//var insCustomerInv2 = CustomerInvoice.Retrieve(ItemBussinesDocument.BusinessTransactionDocumentReference.UUID );
+				    //
+					//if(insCustomerInv2.IsSet()){
+						//requestBillDocAfec.docAfectado = insCustomerInv2.ZExternalID.Substring(3, 13);
+						//requestBillDocAfec.tipoNotaCredito = "01";
+						//requestBillDocAfec.descTipoNotaCredito = insCustomerInv2.ZReason ;
+						//requestBillDocAfec.tipoDocModificado = "01";
+						//requestBillDocAfec.fechaDocAfectado = insCustomerInv2.Date.GetDay() + "/" + insCustomerInv2.Date.GetMonth() + "/" + insCustomerInv2.Date.GetYear();;
+						//requestBill.documentoAfectado.item.Add(requestBillDocAfec);
+					//}
+					//
+					 //
+//
+//
+				//}
+			//}
+			//
+			//if(requestBill.documentoAfectado.item.Count() == 0 ){
+			//
+				//requestBillDocAfec.docAfectado = insCustomerInv.ZExternalID.Substring(3, 13); ;
+				//requestBillDocAfec.tipoNotaCredito = "01";
+				//requestBillDocAfec.descTipoNotaCredito = insCustomerInv.ZReason;
+				//requestBillDocAfec.tipoDocModificado = "01";
+				//requestBillDocAfec.fechaDocAfectado = insCustomerInv.Date.GetDay() + "/" + insCustomerInv.Date.GetMonth() + "/" + insCustomerInv.Date.GetYear();;
+				//requestBill.documentoAfectado.item.Add(requestBillDocAfec);
+					//
+			//}	
+		
+		
+
+	}//For each Item
+
+	var vLanguage1 = Context.GetCurrentUserLanguage();
+	var Deb = 0;
+	if(insCustomerInv.ProcessingTypeCode == "CCM" || insCustomerInv.ProcessingTypeCode == "CCI"){//credit note
+		var insItem = insCustomerInv.Item.GetFirst();
+		if(insItem.IsSet()){
+			foreach (var ItemBussinesDocument in insItem.ItemBusinessTransactionDocumentReference)
+			{
+				if (ItemBussinesDocument.BusinessTransactionDocumentReference.TypeCode == "28"){ //Invoice
+			
+				var insCustomerInv2 = CustomerInvoice.Retrieve(ItemBussinesDocument.BusinessTransactionDocumentReference.UUID );
+				    
+					if(insCustomerInv2.IsSet()){
+						requestBillDocAfec.docAfectado = insCustomerInv2.ZExternalID.Substring(3, 13);
+						requestBillDocAfec.tipoNotaCredito = insCustomerInv2.ZReason2;
+						requestBillDocAfec.descTipoNotaCredito = insCustomerInv2.ZReason2.GetDescriptionInOtherLanguage(vLanguage1);
+						
+						if(requestBillDocAfec.descTipoNotaCredito.IsInitial()){
+							var AllDescription = insCustomerInv2.ZReason2.GetAllValuesAndDescriptions();
+							if(requestBillDocAfec.descTipoNotaCredito.IsInitial() || requestBillDocAfec.descTipoNotaCredito == ""){
+								foreach(var AllDes in AllDescription.Collection){
+									if(AllDes.Value == insCustomerInv2.ZReason2){
+										requestBillDocAfec.descTipoNotaCredito = AllDes.Description;
+									}
+								}
+							
+							}
+						}
+
+						if(requestBillDocAfec.descTipoNotaCredito.IsInitial()){
+									switch(insCustomerInv2.ZReason2){
+										case CLTypeOfCreditNoteCode.CO_01 {
+											requestBillDocAfec.descTipoNotaCredito = "Anulación de la operación";
+										}
+
+										case CLTypeOfCreditNoteCode.CO_02 {
+											requestBillDocAfec.descTipoNotaCredito = "Anulación por error en el RUC";
+										}
+
+										case CLTypeOfCreditNoteCode.CO_03 {
+											requestBillDocAfec.descTipoNotaCredito = "Corrección por error en la descripción";
+										}
+
+										case CLTypeOfCreditNoteCode.CO_04 {
+											requestBillDocAfec.descTipoNotaCredito = "Descuento global";
+										}
+
+										case CLTypeOfCreditNoteCode.CO_05 {
+											requestBillDocAfec.descTipoNotaCredito = "Descuento por item";
+										}
+
+										case CLTypeOfCreditNoteCode.CO_06 {
+											requestBillDocAfec.descTipoNotaCredito = "Devolución total";
+										}
+
+										case CLTypeOfCreditNoteCode.CO_07 {
+											requestBillDocAfec.descTipoNotaCredito = "Devolución por item";
+										}
+
+										case CLTypeOfCreditNoteCode.CO_08 {
+											requestBillDocAfec.descTipoNotaCredito = "Bonificación";
+										}
+
+										case CLTypeOfCreditNoteCode.CO_09 {
+											requestBillDocAfec.descTipoNotaCredito = "Disminución en el valor";
+										}
+
+										case CLTypeOfCreditNoteCode.CO_10 {
+											requestBillDocAfec.descTipoNotaCredito = "Otros conceptos";
+										}
+
+										case CLTypeOfCreditNoteCode.CO_11 {
+											requestBillDocAfec.descTipoNotaCredito = "Ajustes de operaciones de exportación";
+										}
+
+										case CLTypeOfCreditNoteCode.CO_12 {
+											requestBillDocAfec.descTipoNotaCredito = "Ajustes afectos al IVAP";
+										}
+
+										case CLTypeOfCreditNoteCode.CO_01D {
+											requestBillDocAfec.descTipoNotaCredito = "Intereses por mora";
+										}
+
+										case CLTypeOfCreditNoteCode.CO_02D {
+											requestBillDocAfec.descTipoNotaCredito = "Aumento en el valor";
+										}
+
+										case CLTypeOfCreditNoteCode.CO_03D {
+											requestBillDocAfec.descTipoNotaCredito = "Penalidades";
+										}
+
+									}
+
+								}
+
+						//requestBillDocAfec.tipoDocModificado = insCustomerInv2.ZExternalID.Substring(0, 2);
+						requestBillDocAfec.tipoDocModificado = vTipoDocumentoDocAfectado;
+						requestBillDocAfec.fechaDocAfectado = insCustomerInv2.Date.GetDay() + "/" + insCustomerInv2.Date.GetMonth() + "/" + insCustomerInv2.Date.GetYear();;
+						requestBill.documentoAfectado.item.Add(requestBillDocAfec);
+					}
+					 
+					 
+
+
+				}
+			}
+		}
+	}else{
+		Deb = 1;
+	}
+
+	
+	if(Deb == 1){
+		var External =insCustomerInv.ZExternalID;
+		if(External.Length() > 1){
+			var Dig = External.Substring(0,2);
+			if(Dig == "08"){
+				var insItem = insCustomerInv.Item.GetFirst();
+				if(insItem.IsSet()){
+					foreach (var ItemBussinesDocument in insItem.ItemBusinessTransactionDocumentReference){
+						if (ItemBussinesDocument.BusinessTransactionDocumentReference.TypeCode == "28"){ //Invoice
+							var insCustomerInv2 = CustomerInvoice.Retrieve(ItemBussinesDocument.BusinessTransactionDocumentReference.UUID );
+							if(insCustomerInv2.IsSet()){
+								requestBillDocAfec.docAfectado = insCustomerInv2.ZExternalID.Substring(3, 13);
+								requestBillDocAfec.tipoNotaCredito = insCustomerInv2.ZReason2.Replace("D","");
+								requestBillDocAfec.descTipoNotaCredito = insCustomerInv2.ZReason2.GetDescriptionInOtherLanguage(vLanguage1);
+								
+								if(requestBillDocAfec.descTipoNotaCredito.IsInitial()){
+									var AllDescription = insCustomerInv2.ZReason2.GetAllValuesAndDescriptions();
+									if(requestBillDocAfec.descTipoNotaCredito.IsInitial() || requestBillDocAfec.descTipoNotaCredito == ""){
+										foreach(var AllDes in AllDescription.Collection){
+											if(AllDes.Value == insCustomerInv2.ZReason2){
+												requestBillDocAfec.descTipoNotaCredito = AllDes.Description;
+											}
+										}
+							
+									}
+								}
+
+								if(requestBillDocAfec.descTipoNotaCredito.IsInitial()){
+									switch(insCustomerInv2.ZReason2){
+										case CLTypeOfCreditNoteCode.CO_01 {
+											requestBillDocAfec.descTipoNotaCredito = "Anulación de la operación";
+										}
+
+										case CLTypeOfCreditNoteCode.CO_02 {
+											requestBillDocAfec.descTipoNotaCredito = "Anulación por error en el RUC";
+										}
+
+										case CLTypeOfCreditNoteCode.CO_03 {
+											requestBillDocAfec.descTipoNotaCredito = "Corrección por error en la descripción";
+										}
+
+										case CLTypeOfCreditNoteCode.CO_04 {
+											requestBillDocAfec.descTipoNotaCredito = "Descuento global";
+										}
+
+										case CLTypeOfCreditNoteCode.CO_05 {
+											requestBillDocAfec.descTipoNotaCredito = "Descuento por item";
+										}
+
+										case CLTypeOfCreditNoteCode.CO_06 {
+											requestBillDocAfec.descTipoNotaCredito = "Devolución total";
+										}
+
+										case CLTypeOfCreditNoteCode.CO_07 {
+											requestBillDocAfec.descTipoNotaCredito = "Devolución por item";
+										}
+
+										case CLTypeOfCreditNoteCode.CO_08 {
+											requestBillDocAfec.descTipoNotaCredito = "Bonificación";
+										}
+
+										case CLTypeOfCreditNoteCode.CO_09 {
+											requestBillDocAfec.descTipoNotaCredito = "Disminución en el valor";
+										}
+
+										case CLTypeOfCreditNoteCode.CO_10 {
+											requestBillDocAfec.descTipoNotaCredito = "Otros conceptos";
+										}
+
+										case CLTypeOfCreditNoteCode.CO_11 {
+											requestBillDocAfec.descTipoNotaCredito = "Ajustes de operaciones de exportación";
+										}
+
+										case CLTypeOfCreditNoteCode.CO_12 {
+											requestBillDocAfec.descTipoNotaCredito = "Ajustes afectos al IVAP";
+										}
+
+										case CLTypeOfCreditNoteCode.CO_01D {
+											requestBillDocAfec.descTipoNotaCredito = "Intereses por mora";
+										}
+
+										case CLTypeOfCreditNoteCode.CO_02D {
+											requestBillDocAfec.descTipoNotaCredito = "Aumento en el valor";
+										}
+
+										case CLTypeOfCreditNoteCode.CO_03D {
+											requestBillDocAfec.descTipoNotaCredito = "Penalidades";
+										}
+
+									}
+
+								}
+
+								//requestBillDocAfec.tipoDocModificado = insCustomerInv2.ZExternalID.Substring(0, 2);
+								requestBillDocAfec.tipoDocModificado = vTipoDocumentoDocAfectado;
+								requestBillDocAfec.fechaDocAfectado = insCustomerInv2.Date.GetDay() + "/" + insCustomerInv2.Date.GetMonth() + "/" + insCustomerInv2.Date.GetYear();;
+								requestBill.documentoAfectado.item.Add(requestBillDocAfec);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+
+	//	Set Header WS sEND e.bill
+	requestBill.RucEmisor = vRucEmisor;
+	requestBill.cabecera.ruc = vRUC;
+	requestBill.cabecera.rucCliente = vRUCCliente;
+	requestBill.cabecera.direccionCliente = vDireccionCliente;
+	requestBill.cabecera.tipoDocumentoIdentificacion = vTipoDocumentoIdentificacion;
+	requestBill.cabecera.tipoDocumentoIdentificacionCliente = vTipoDocumentoIdentificacionCliente;
+	requestBill.cabecera.razonSocialCliente = vRazonSocialCliente;
+	requestBill.cabecera.nombreComercial = vNombreComercial;
+	requestBill.cabecera.tipoDocumento = vTipoDocumento;
+	requestBill.cabecera.numeroDocumento = vNumeroDocumento;
+	requestBill.cabecera.tipoMonedaPais = vTipoMonedaPais;
+	requestBill.cabecera.tipoMonedaOrigen = vTipoMonedaOrigen;
+	requestBill.cabecera.razonSocial = vRazonSocial;
+	requestBill.cabecera.departamento = vDepartamento;
+	requestBill.cabecera.provincia = vProvincia;
+	requestBill.cabecera.distrito = vDistrito;
+	requestBill.cabecera.codigoPais = vCodigoPais;
+	requestBill.cabecera.importeTotal = vImporteTotal.RoundToString(2);
+	requestBill.cabecera.flagPercepcion = vFlagPercepcion;
+	requestBill.cabecera.descuentoGlobal = vDescuentoGlobal.RoundToString(2);
+	requestBill.cabecera.fechaEmision = vFechaEmision;
+	requestBill.cabecera.flagSpot = vFlagSpot;
+	requestBill.cabecera.ubigeo = vUbigueo;
+	requestBill.cabecera.direccion = vDireccion;
+	requestBill.cabecera.urbanizacion = vUrbanizacion;
+	
+
+	requestBill.cabecera.importeTotal = requestBill.cabecera.importeTotal.Replace(",", ".");
+	requestBill.cabecera.descuentoGlobal = requestBill.cabecera.descuentoGlobal.Replace(",", ".");
+
+
+
+	//--------------------------------------------------------------//
+	//			impuesto
+	//--------------------------------------------------------------//
+
+
+
+	requestBillImp.codigoTributo = vCodigoTributo;
+	requestBillImp.importeTotal = vImporteTotalImp.RoundToString(2);
+	requestBillImp.importeExplicito = vImporteTotalImp.RoundToString(2);
+	requestBillImp.identificacionTributo = vIdentificacionTributo;
+	requestBillImp.nombreTributo = vNombreTributo;
+	requestBillImp.importeTotal = requestBillImp.importeTotal.Replace(",", ".");
+	requestBillImp.importeExplicito = requestBillImp.importeExplicito.Replace(",", ".");
+	requestBill.impuestos.item.Add(requestBillImp);
+
+
+	insDataSentImp.codigoTributoI = requestBillImp.codigoTributo;
+	insDataSentImp.importeTotalI = requestBillImp.importeTotal;
+	insDataSentImp.importeExplicitoI = requestBillImp.importeExplicito; 
+	insDataSentImp.identificacionTributoI = requestBillImp.identificacionTributo;
+	insDataSentImp.nombreTributoI = requestBillImp.nombreTributo; 
+	vInsDataSent.Impuesto.Create(insDataSentImp);
+
+	//--------------------------------------------------------------//
+	//			Percepción
+	//--------------------------------------------------------------//
+	requestBill.percepcion.idConcepto = vIdPercepcion;
+	requestBill.percepcion.montoPrecepcion = "0";
+	requestBill.percepcion.baseImponiblePercepcion = "0";
+	requestBill.percepcion.montoIncluidoPercepcion = "0";
+	requestBill.percepcion.porcentaje = "0";
+
+	//Backup Data Sent
+	insDataSentPer.idConcepto = requestBill.percepcion.idConcepto;
+	insDataSentPer.montoPrecepcion = requestBill.percepcion.montoPrecepcion;
+	insDataSentPer.baseImponiblePercepcion = requestBill.percepcion.baseImponiblePercepcion;
+	insDataSentPer.montoIncluidoPercepcion = requestBill.percepcion.montoIncluidoPercepcion;
+	insDataSentPer.porcentaje = requestBill.percepcion.porcentaje;
+	vInsDataSent.Percepcion.Create(insDataSentPer);
+	//--------------------------------------------------------------//
+	//			Conceptos Tributarios
+	//--------------------------------------------------------------//
+	
+	//if(insCustomerInv.ProcessingTypeCode == "CI"){// Invoice
+	
+	requestBillTri.idConcepto = "1001";
+	requestBillTri.totalValorOperacion = vTotalGravado.RoundToString(2);
+	requestBillTri.totalValorOperacion = requestBillTri.totalValorOperacion.Replace(",", ".");
+	requestBill.conceptosTrib.item.Add(requestBillTri);
+
+	insDataSentTri.idConceptoT = requestBillTri.idConcepto;
+	insDataSentTri.totalValorOperacion = requestBillTri.totalValorOperacion;
+	vInsDataSent.Tributario.Create(insDataSentTri);
+	//}
+
+	requestBillTri.idConcepto = "1002";
+	requestBillTri.totalValorOperacion = vTotalInafecto.RoundToString(2);
+	requestBillTri.totalValorOperacion = requestBillTri.totalValorOperacion.Replace(",", ".");
+	requestBill.conceptosTrib.item.Add(requestBillTri);
+
+	insDataSentTri.idConceptoT = requestBillTri.idConcepto;
+	insDataSentTri.totalValorOperacion = requestBillTri.totalValorOperacion;
+	vInsDataSent.Tributario.Create(insDataSentTri);
+
+	requestBillTri.idConcepto = "1003";
+	requestBillTri.totalValorOperacion = vTotalExonerado.RoundToString(2);
+	requestBillTri.totalValorOperacion = requestBillTri.totalValorOperacion.Replace(",", ".");
+	requestBill.conceptosTrib.item.Add(requestBillTri);
+
+	insDataSentTri.idConceptoT = requestBillTri.idConcepto;
+	insDataSentTri.totalValorOperacion = requestBillTri.totalValorOperacion;
+	vInsDataSent.Tributario.Create(insDataSentTri);
+
+
+	
+	//else{
+	//
+		//requestBillTri.idConcepto = "1001";
+	//requestBillTri.totalValorOperacion = vTotalExonerado.RoundToString(2);
+	//requestBillTri.totalValorOperacion = requestBillTri.totalValorOperacion.Replace(",", ".");
+	//requestBill.conceptosTrib.item.Add(requestBillTri);
+//
+	//insDataSentTri.idConceptoT = requestBillTri.idConcepto;
+	//insDataSentTri.totalValorOperacion = requestBillTri.totalValorOperacion;
+	//vInsDataSent.Tributario.Create(insDataSentTri);
+//
+//
+	//
+	//requestBillTri.idConcepto = "1003";
+	//requestBillTri.totalValorOperacion = vTotalGravado.RoundToString(2);
+	//requestBillTri.totalValorOperacion = requestBillTri.totalValorOperacion.Replace(",", ".");
+	//requestBill.conceptosTrib.item.Add(requestBillTri);
+//
+	//insDataSentTri.idConceptoT = requestBillTri.idConcepto;
+	//insDataSentTri.totalValorOperacion = requestBillTri.totalValorOperacion;
+	//vInsDataSent.Tributario.Create(insDataSentTri);
+	//
+	//
+	//
+	//}
+	
+
+//	if(insCustomerInv.ProcessingTypeCode == "CI"){// Invoice
+
+	requestBillTri.idConcepto = "2005";
+	requestBillTri.totalValorOperacion = vDescuentoGlobal.RoundToString(2);
+	requestBillTri.totalValorOperacion = requestBillTri.totalValorOperacion.Replace(",", ".");
+	requestBill.conceptosTrib.item.Add(requestBillTri);
+
+	insDataSentTri.idConceptoT = requestBillTri.idConcepto;
+	insDataSentTri.totalValorOperacion = requestBillTri.totalValorOperacion;
+	vInsDataSent.Tributario.Create(insDataSentTri);
+
+
+	
+
+	//requestBillTri.idConcepto = "2003";
+	//requestBillTri.totalValorOperacion = "0.00";// No detracciónes
+	//requestBill.conceptosTrib.item.Add(requestBillTri);
+//
+	//insDataSentTri.idConceptoT = requestBillTri.idConcepto;
+	//insDataSentTri.totalValorOperacion = requestBillTri.totalValorOperacion;
+	//vInsDataSent.Tributario.Create(insDataSentTri);
+	//}
+
+	//--------------------------------------------------------------//
+	//			Adicional Tributario
+	//--------------------------------------------------------------//
+
+	var vLanguage = Context.GetCurrentUserLanguage();
+	var vAmountString = "";
+	var vAmountEntero = "";
+	var vAmountDecimal = "";
+	var vSpell; 
+	var vTotalGrossAmount = 0.0;
+	vSpell = insCustomerInv.TotalGrossAmount.SpellAmount(vLanguage);
+	vTotalGrossAmount = insCustomerInv.TotalGrossAmount.content;
+	
+	if(vTotalGrossAmount < 0 ){
+		vTotalGrossAmount = vTotalGrossAmount * -1;
+	}
+	
+	vAmountString = vTotalGrossAmount.ToString();
+
+     var index = vAmountString.Find(".");
+
+
+if (index > 0)
+{
+	index = index + 1 ;
+    vAmountDecimal =  vAmountString.Substring(index, 2); //be careful with values 1234.5
+}
+
+
+	vValorConcepto = vSpell.IntegerValue + " Y " + vAmountDecimal  + "/100 SOLES";
+
+	if(insCustomerInv.ProcessingTypeCode == "CI"){// Invoice
+	requestBillAddTri.codigoConcepto = "1000";
+	}else{
+	requestBillAddTri.codigoConcepto = "1001";
+	}
+	
+	
+	requestBillAddTri.nombreConcepto = "";
+	requestBillAddTri.valorConcepto = vValorConcepto;
+	requestBill.infoAdicionalTributario.item.Add(requestBillAddTri);
+
+	//--------------------------------------------------------------//
+	//			Adicional General
+	//--------------------------------------------------------------//
+
+	requestBillAddGen.codigo = "0001";
+
+	vFechaVencimiento = insCustomerInv.CashDiscountTerms.FullPaymentEndDate.GetDay() + "/" + insCustomerInv.CashDiscountTerms.FullPaymentEndDate.GetMonth() + "/" + insCustomerInv.CashDiscountTerms.FullPaymentEndDate.GetYear();
+	requestBillAddGen.descripcion = vFechaVencimiento; 
+	requestBill.infoAdicionalGeneral.item.Add(requestBillAddGen);
+
+	requestBillAddGen.codigo = "0002";
+	requestBillAddGen.descripcion = "Se ha enviado el documento al correo:" + vEmail; 
+	requestBill.infoAdicionalGeneral.item.Add(requestBillAddGen);
+	//comentario Interno
+	foreach (var textComent in insCustomerInv.TextCollection.Text )
+	{
+	 if( textComent.TypeCode.content == "10011" )
+	 {
+	   vComentario = textComent.TextContent.Text.content;
+	   break;		
+	 }	
+	}
+
+
+	requestBillAddGen.codigo = "0003";
+	requestBillAddGen.descripcion = vComentario ; 
+	requestBill.infoAdicionalGeneral.item.Add(requestBillAddGen);
+
+	requestBillAddGen.codigo = "0004";
+	requestBillAddGen.descripcion = "-"; 
+	requestBill.infoAdicionalGeneral.item.Add(requestBillAddGen);
+
+	requestBillAddGen.codigo = "0005";
+	requestBillAddGen.descripcion = "-"; 
+	requestBill.infoAdicionalGeneral.item.Add(requestBillAddGen);
+
+	requestBillAddGen.codigo = "0006";
+	requestBillAddGen.descripcion = "-"; 
+	requestBill.infoAdicionalGeneral.item.Add(requestBillAddGen);
+
+	requestBillAddGen.codigo = "0007";
+	requestBillAddGen.descripcion = "-"; 
+	requestBill.infoAdicionalGeneral.item.Add(requestBillAddGen);
+
+	requestBillAddGen.codigo = "0008";
+	requestBillAddGen.descripcion = "-"; 
+	requestBill.infoAdicionalGeneral.item.Add(requestBillAddGen);
+
+	requestBillAddGen.codigo = "0009";
+	requestBillAddGen.descripcion = "-"; 
+	requestBill.infoAdicionalGeneral.item.Add(requestBillAddGen);
+
+	requestBillAddGen.codigo = "0010";
+	requestBillAddGen.descripcion = "-"; 
+	requestBill.infoAdicionalGeneral.item.Add(requestBillAddGen);
+
+	requestBillAddGen.codigo = "0011";
+	requestBillAddGen.descripcion = "-"; 
+	requestBill.infoAdicionalGeneral.item.Add(requestBillAddGen);
+
+	requestBillAddGen.codigo = "0012";
+	requestBillAddGen.descripcion = "-"; 
+	requestBill.infoAdicionalGeneral.item.Add(requestBillAddGen);
+
+	requestBill.cabecera.distrito = "150101";
+	requestBill.cabecera.rucCliente = "20467534026";
+
+	responseBill = Library::EWSSendEBill2.recepcionFact(requestBill, "", scenarioBill);
+
+	if (responseBill.IsInitial())
+	{
+		raise msg.Create("E", "WS: Response vacio");
+	}
+	
+	//Fault messages
+	var FaultItemsBill = responseBill.CommunicationFault.Item;
+	foreach(insFault in FaultItemsBill){
+		raise msg.Create("E", "WS Send Bill:" + insFault.Note);	
+	}
+
+	var RespuestaBill = responseBill.recepcionFactReturn;
+		
+	Rta = RespuestaBill.Substring(0,1); 
+	//if (Rta == "0¬")
+	if (Rta == "0")
+	{//ok
+		this.Status = CLStatusEBillingCode.CO_1;
+		this.ExternalMessageSuIn = RespuestaBill;
+		raise msg.Create("S", "WS Send Bill:" + RespuestaBill);
+	}
+	else
+	{
+		this.Status = CLStatusEBillingCode.CO_2;
+		this.ExternalMessageSuIn = RespuestaBill;
+		raise msg.Create("E", "WS Send Bill:" + RespuestaBill);
+	}
+
+
+}
+else
+{
+	this.Status = CLStatusEBillingCode.CO_2;
+	this.ExternalMessageSuIn = Respuesta;
+	raise msg.Create("E", "WS Customer Create:" + Respuesta);
+}
+
+
+
+
+//Save data sent to Web Service
+
+vInsDataSent.ruc = requestBill.cabecera.ruc;
+vInsDataSent.rucCliente = requestBill.cabecera.rucCliente;
+vInsDataSent.direccionCliente = requestBill.cabecera.direccionCliente;
+vInsDataSent.tipoDocumentoIdentificacion = requestBill.cabecera.tipoDocumentoIdentificacion;
+vInsDataSent.tipoDocumentoIdentificacionCliente = requestBill.cabecera.tipoDocumentoIdentificacionCliente;
+vInsDataSent.razonSocialCliente = requestBill.cabecera.razonSocialCliente;
+vInsDataSent.nombreComercial = requestBill.cabecera.nombreComercial;
+vInsDataSent.tipoDocumento = requestBill.cabecera.tipoDocumento;
+vInsDataSent.numeroDocumento = requestBill.cabecera.numeroDocumento;
+vInsDataSent.tipoMonedaOrigen = requestBill.cabecera.tipoMonedaOrigen;
+vInsDataSent.razonSocial = requestBill.cabecera.razonSocial;
+vInsDataSent.departamento = requestBill.cabecera.departamento;
+vInsDataSent.provincia = requestBill.cabecera.provincia;
+vInsDataSent.distrito = requestBill.cabecera.distrito;
+vInsDataSent.codigoPais = requestBill.cabecera.codigoPais;
+vInsDataSent.importeTotal = requestBill.cabecera.importeTotal;
+vInsDataSent.flagPercepcion = requestBill.cabecera.flagPercepcion;
+vInsDataSent.descuentoGlobal = requestBill.cabecera.descuentoGlobal;
+vInsDataSent.fechaEmision = requestBill.cabecera.fechaEmision;
+vInsDataSent.flagSpot = requestBill.cabecera.flagSpot;
+vInsDataSent.ubigeo = requestBill.cabecera.ubigeo;
+vInsDataSent.direccion = requestBill.cabecera.direccion;
+vInsDataSent.urbanizacion = requestBill.cabecera.urbanizacion;
+
+//String prueba
+var String = "";
+String = String + "RucEmisor "+ requestBill.RucEmisor +"\n";
+String = String + "cabecera.ruc "+ requestBill.cabecera.ruc+"\n";
+String = String + "cabecera.tipoDocumentoIdentificacion "+ requestBill.cabecera.tipoDocumentoIdentificacion+"\n";
+String = String + "cabecera.nombreComercial "+ requestBill.cabecera.nombreComercial+"\n";
+String = String + "cabecera.tipoDocumento "+ requestBill.cabecera.tipoDocumento+"\n";
+String = String + "cabecera.numeroDocumento "+ requestBill.cabecera.numeroDocumento+"\n";
+String = String + "cabecera.tipoMonedaPais "+ requestBill.cabecera.tipoMonedaPais+"\n";
+String = String + "cabecera.tipoMonedaOrigen "+ requestBill.cabecera.tipoMonedaOrigen+"\n";
+String = String + "cabecera.razonSocial "+ requestBill.cabecera.razonSocial+"\n";
+String = String + "cabecera.ubigeo "+ requestBill.cabecera.ubigeo+"\n";
+String = String + "cabecera.direccion "+ requestBill.cabecera.direccion+"\n";
+String = String + "cabecera.urbanizacion "+ requestBill.cabecera.urbanizacion+"\n";
+String = String + "cabecera.departamento "+ requestBill.cabecera.departamento+"\n";
+String = String + "cabecera.provincia "+ requestBill.cabecera.provincia+"\n";
+String = String + "cabecera.distrito "+ requestBill.cabecera.distrito+"\n";
+String = String + "cabecera.codigoPais "+ requestBill.cabecera.codigoPais+"\n";
+String = String + "cabecera.rucCliente "+ requestBill.cabecera.rucCliente+"\n";
+String = String + "cabecera.tipoDocumentoIdentificacionCliente "+ requestBill.cabecera.tipoDocumentoIdentificacionCliente+"\n";
+String = String + "cabecera.direccionCliente "+ requestBill.cabecera.direccionCliente+"\n";
+String = String + "cabecera.razonSocialCliente "+ requestBill.cabecera.razonSocialCliente+"\n";
+String = String + "cabecera.importeTotal "+ requestBill.cabecera.importeTotal+"\n";
+String = String + "cabecera.numeroGuiaRemision "+ requestBill.cabecera.numeroGuiaRemision+"\n";
+String = String + "cabecera.codigoTipoDocumentoGuia "+ requestBill.cabecera.codigoTipoDocumentoGuia+"\n";
+String = String + "cabecera.flagPercepcion "+ requestBill.cabecera.flagPercepcion+"\n";
+String = String + "cabecera.descuentoGlobal "+ requestBill.cabecera.descuentoGlobal+"\n";
+String = String + "cabecera.fechaEmision "+ requestBill.cabecera.fechaEmision+"\n";
+String = String + "cabecera.flagSpot "+ requestBill.cabecera.flagSpot+"\n";
+
+
+
+foreach(var itemrequest in requestBill.itemFactura.item){
+	String = String + "\n";
+	String = String + "itemFactura.item.correlativo "+ itemrequest.correlativo+"\n";
+	String = String + "itemFactura.item.unidadMedida "+ itemrequest.unidadMedida+"\n";
+	String = String + "itemFactura.item.cantidad "+ itemrequest.cantidad+"\n";
+	String = String + "itemFactura.item.moneda "+ itemrequest.moneda+"\n";
+	String = String + "itemFactura.item.montoTotalItem "+ itemrequest.montoTotalItem+"\n";
+	String = String + "itemFactura.item.precioUnitario "+ itemrequest.precioUnitario+"\n";
+	String = String + "itemFactura.item.codigoValorUnitario "+ itemrequest.codigoValorUnitario+"\n";
+	String = String + "itemFactura.item.importeTotalImpuesto "+ itemrequest.importeTotalImpuesto+"\n";
+	String = String + "itemFactura.item.importeTotalImpuesto_sub "+ itemrequest.importeTotalImpuesto_sub+"\n";
+	String = String + "itemFactura.item.porcentajeImpuesto "+ itemrequest.porcentajeImpuesto+"\n";
+	String = String + "itemFactura.item.codigoAfectacionIGV "+ itemrequest.codigoAfectacionIGV+"\n";
+	String = String + "itemFactura.item.identificacionTributo "+ itemrequest.identificacionTributo+"\n";
+	String = String + "itemFactura.item.nombreTributo "+ itemrequest.nombreTributo+"\n";
+	String = String + "itemFactura.item.codigoTributo "+ itemrequest.codigoTributo+"\n";
+	String = String + "itemFactura.item.flagConISC "+ itemrequest.flagConISC+"\n";
+	String = String + "itemFactura.item.importeTotalImpuesto_isc "+ itemrequest.importeTotalImpuesto_isc+"\n";
+	String = String + "itemFactura.item.importeTotalImpuesto_sub_isc "+ itemrequest.importeTotalImpuesto_sub_isc+"\n";
+	String = String + "itemFactura.item.porcentajeImpuesto_isc "+ itemrequest.porcentajeImpuesto_isc+"\n";
+	String = String + "itemFactura.item.codigoAfectacionISC "+ itemrequest.codigoAfectacionISC+"\n";
+	String = String + "itemFactura.item.identificacionTributo_isc "+ itemrequest.identificacionTributo_isc+"\n";
+	String = String + "itemFactura.item.nombreTributo_isc "+ itemrequest.nombreTributo_isc+"\n";
+	String = String + "itemFactura.item.codigoTributo_isc "+ itemrequest.codigoTributo_isc+"\n";
+	String = String + "itemFactura.item.descripcionMaterial "+ itemrequest.descripcionMaterial+"\n";
+	String = String + "itemFactura.item.codigoMaterial "+ itemrequest.codigoMaterial+"\n";
+	String = String + "itemFactura.item.valorVentaUnitario "+ itemrequest.valorVentaUnitario+"\n";
+	String = String + "itemFactura.item.descuentoItem "+ itemrequest.descuentoItem+"\n";
+}
+
+
+foreach(var itemrequest_imp in requestBill.impuestos.item){
+	String = String + "\n";
+	String = String + "impuestos.item.importeTotal "+ itemrequest_imp.importeTotal+"\n";
+	String = String + "impuestos.item.importeExplicito "+ itemrequest_imp.importeExplicito+"\n";
+	String = String + "impuestos.item.identificacionTributo "+ itemrequest_imp.identificacionTributo+"\n";
+	String = String + "impuestos.item.nombreTributo "+ itemrequest_imp.nombreTributo+"\n";
+	String = String + "impuestos.item.codigoTributo "+ itemrequest_imp.codigoTributo+"\n";
+}
+
+String = String + "\n";
+String = String + "percepcion.idConcepto "+requestBill.percepcion.idConcepto+"\n";
+String = String + "percepcion.montoPrecepcion "+requestBill.percepcion.montoPrecepcion+"\n";
+String = String + "percepcion.baseImponiblePercepcion "+requestBill.percepcion.baseImponiblePercepcion+"\n";
+String = String + "percepcion.montoIncluidoPercepcion "+requestBill.percepcion.montoIncluidoPercepcion+"\n";
+String = String + "percepcion.porcentaje "+requestBill.percepcion.porcentaje+"\n";
+
+foreach(var itemrequest_ct in requestBill.conceptosTrib.item){
+	String = String + "\n";
+	String = String + "conceptosTrib.item.importeTotal "+ itemrequest_ct.idConcepto+"\n";
+	String = String + "conceptosTrib.item.totalValorOperacion "+ itemrequest_ct.totalValorOperacion+"\n";
+}
+
+foreach(var itemrequest_iat in requestBill.infoAdicionalTributario.item){
+	String = String + "\n";
+	String = String + "infoAdicionalTributario.item.codigoConcepto "+ itemrequest_iat.codigoConcepto+"\n";
+	String = String + "infoAdicionalTributario.item.nombreConcepto "+ itemrequest_iat.nombreConcepto+"\n";
+	String = String + "infoAdicionalTributario.item.valorConcepto "+ itemrequest_iat.valorConcepto+"\n";
+}
+
+foreach(var itemrequest_iag in requestBill.infoAdicionalGeneral.item){
+	String = String + "\n";
+	String = String + "infoAdicionalGeneral.item.codigo "+ itemrequest_iag.codigo+"\n";
+	String = String + "infoAdicionalGeneral.item.descripcion "+ itemrequest_iag.descripcion+"\n";
+}
+
+foreach(var itemrequest_da in requestBill.documentoAfectado.item){
+	String = String + "\n";
+	String = String + "documentoAfectado.item.docAfectado "+ itemrequest_da.docAfectado+"\n";
+	String = String + "documentoAfectado.item.tipoNotaCredito "+ itemrequest_da.tipoNotaCredito+"\n";
+	String = String + "documentoAfectado.item.descTipoNotaCredito "+ itemrequest_da.descTipoNotaCredito+"\n";
+	String = String + "documentoAfectado.item.tipoDocModificado "+ itemrequest_da.tipoDocModificado+"\n";	
+	String = String + "documentoAfectado.item.fechaDocAfectado "+ itemrequest_da.fechaDocAfectado+"\n";
+}
+
+
+var name	:LANGUAGEINDEPENDENT_LONG_Name;
+var type	:DocumentTypeCode;
+var desc	:Description;
+var binary	:basis:BinaryObject;
+	name = "Request "  + this.DocID.content.RemoveLeadingZeros()+".txt";
+	type.content = "10001";
+	type.listID = "10296";
+	binary.mimeCode = "text/plain";
+	binary.content = Binary.ParseFromString(String);
+var vInsMyAtt;
+
+if(this.Attachment.IsSet()){
+	vInsMyAtt = this.Attachment;
+}else{
+	vInsMyAtt = this.Attachment.Create();
+}
+
+if(vInsMyAtt.IsSet()){
+	vInsMyAtt.CreateFile(type, name, name, desc, binary);
+}

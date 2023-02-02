@@ -1,0 +1,13 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BOResponseSunat {
+
+  [AlternativeKey][Label("ID")]		element ID:ID;
+	[Label("Date")]						element date: Date;
+	[Label("Batch")]	element Batch:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Number of deposit")]	element deposit:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Number of proof")]	element proof:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("External Reference")]	element ref_external:LANGUAGEINDEPENDENT_EXTENDED_Text;	
+
+
+}

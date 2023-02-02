@@ -1,0 +1,12 @@
+﻿
+
+import ABSL;
+import AP.PC.IdentityManagement.Global;
+import AP.FO.BusinessPartner.Global;
+
+if (this.fecha.IsInitial())
+{
+	this.fecha = Context.GetCurrentUserDate();
+}
+
+

@@ -1,0 +1,256 @@
+﻿import ABSL;
+import AP.Common.GDT as apCommonGDT;
+import AP.SupplierInvoicing.Global;
+import AP.FO.BusinessPartner.Global;
+import AP.FinancialAccounting.Global;
+import AP.FO.BankDirectoryEntry.Global;
+import AP.Payment.Global;
+import AP.DueItemManagement.Global;
+
+var IsConsistent = true;
+
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+
+var msgCompanyID = "Falto ingresar Empresa.";
+var msgFormatType = "Seleccione formato de banco.";
+var msgCurrencyCode = "Seleccione moneda.";
+var msgProfitCentreID = "Falto ingresar Centro de beneficio.";
+var msgPaymentID = "Falto ingresar ID de pago.";
+var msgExecutionID = "Falto ingresar ID de ejecución de pago.";
+var msgkind = "Falto seleccionar un tipo de ejecución.";
+var msgStatusCode = "No se encontraron IDs de pagos.";
+var msgParameters = "No se encontraron datos con los parametros seleccionados.";
+var msgItems = "Falto ingresar al menos una posición de ID de Pago.";
+
+if (LanguageCode != "ES"){
+	msgCompanyID = "I miss enter Company.";
+	msgCompanyID = "Select format bank.";
+	msgCurrencyCode = "Select currency.";
+	msgProfitCentreID = "I miss enter profit centero.";
+	msgPaymentID = "I miss enter payment ID.";
+	msgExecutionID = "I miss enter payment run ID.";
+	msgkind = "I miss selecting a type of execution.";
+	msgStatusCode = "No payment IDs found.";
+	msgParameters = "No data were found with the selected parameters.";
+	msgItems = "Failed to enter at least one Payment ID position.";
+}
+
+//Validation
+if (this.CompanyID.IsInitial()){
+	raise msj.Create("E", msgCompanyID);
+	IsConsistent = false;
+}
+
+if (this.FormatType.IsInitial()){
+	raise msj.Create("E", msgFormatType);
+	IsConsistent = false;
+}
+
+if (this.CurrencyCode.IsInitial()){
+	raise msj.Create("E", msgCurrencyCode);
+	IsConsistent = false;
+}
+
+if (this.ProfitCentreID.IsInitial()){
+	raise msj.Create("E", msgProfitCentreID);
+	IsConsistent = false;
+}
+
+if (!this.ExecutionType.IsInitial()){
+	if (this.ExecutionType == CLTypeExecutionPaymentCode.CO_1){//1:pagos
+		//if (this.PaymentID.IsInitial()){
+			//raise msj.Create("E", msgPaymentID);
+			//IsConsistent = false;
+		//}
+		if(this.Payments.Count() <= 0){
+			raise msj.Create("E",msgItems);
+			IsConsistent = false;
+		}
+	}
+	else if (this.ExecutionType == CLTypeExecutionPaymentCode.CO_2){//2:ID ejecucion
+		if (this.ExecutionID.IsInitial()){
+			raise msj.Create("E", msgExecutionID);
+			IsConsistent = false;
+		}
+	}
+}
+else{
+	raise msj.Create("E", msgkind);
+	IsConsistent = false;
+}
+
+
+if(IsConsistent){
+	
+	var qryPaymentOrder;
+	var selPaymentOrder;
+	var objPaymentOrder;
+
+	var Date1 = Library::Date.ParseFromString(this.year + "-01-01");
+	var Date2 = Library::Date.ParseFromString(this.year + "-12-31");
+	
+	switch (this.ExecutionType){
+		
+		// - - - - - - - - - - - - case 1: ID Payment - - - - - - - - - - - - - //
+		case CLTypeExecutionPaymentCode.CO_1{
+
+			foreach(var itemPayment in this.Payments){
+				
+				qryPaymentOrder = PaymentOrder.QueryByElements;
+				selPaymentOrder = qryPaymentOrder.CreateSelectionParams();
+					selPaymentOrder.Add(qryPaymentOrder.CompanyID, "I", "EQ", this.CompanyID);
+					selPaymentOrder.Add(qryPaymentOrder.ID.content, "I", "EQ", itemPayment.PaymentID.RemoveLeadingZeros());
+					selPaymentOrder.Add(qryPaymentOrder.PaymentExecutionDate ,"I","BT", Date1,Date2);  
+					objPaymentOrder = qryPaymentOrder.Execute(selPaymentOrder).Where(n => (n.PaymentFormCode == "05") && n.Status.LifeCycleStatusCode != "4" && (n.BaseBusinessTransactionDocumentReference.TypeCode == "37" || n.BaseBusinessTransactionDocumentReference.TypeCode == "82")).GetFirst();
+				if (objPaymentOrder.IsSet()){
+					
+					var qDetPayments = BOMassPayments.Payments.QueryByElements;
+					var pDetPayments = qDetPayments.CreateSelectionParams();
+						pDetPayments.Add(qDetPayments.PaymentUUID.content,"I","EQ",objPaymentOrder.UUID.content);
+					var insDetPayment = qDetPayments.Execute(pDetPayments).GetFirst();
+					if(!insDetPayment.IsSet()){
+					
+						this.StatusCode = CLStatusPaymentMassCode.CO_2;
+
+						//Payments
+						itemPayment.PaymentUUID.content = objPaymentOrder.UUID.content;
+					
+						//Details
+						var insDetail = this.Details.Create();
+						if (insDetail.IsSet()){
+							
+							insDetail.PaymentOrderUUID.content = objPaymentOrder.UUID.content;
+							insDetail.CompanyID = objPaymentOrder.CompanyID;
+							if (objPaymentOrder.Company.IsSet()){
+								insDetail.CompanyDes = objPaymentOrder.Company.NameByValidity.GetFirst().Name.content;
+							}
+							
+							if(objPaymentOrder.BusinessPartner.IsSet()){
+								if (objPaymentOrder.BusinessPartner.CurrentCommon.IsSet()){
+									insDetail.SupplierDes = objPaymentOrder.BusinessPartner.CurrentCommon.SortingFormattedName;
+								}
+								insDetail.SupplierID = objPaymentOrder.BusinessPartner.InternalID.RemoveLeadingZeros();
+							}
+							
+							if(objPaymentOrder.BusinessPartnerBankDetails.IsSet()){
+								insDetail.BankAccountID = objPaymentOrder.BusinessPartnerBankDetails.BankAccountID;
+							}
+									
+							insDetail.Amount = objPaymentOrder.PaymentAmount;
+							if(insDetail.Amount.content < 0){
+								insDetail.Amount.content = insDetail.Amount.content * -1;
+							}
+							
+							foreach (var itemPayExpItem in objPaymentOrder.PaymentExplanation.Item){//@kevin ferrucho
+								var extensioninsDetailDocuments = insDetail.Documents.Length();
+								var Invoices =itemPayExpItem.InternalInvoiceReference.ID.content.RemoveLeadingZeros() + "/" + itemPayExpItem.ExternalInvoiceReference.ID.content.RemoveLeadingZeros() + "  ";
+								var extensionInvoices = Invoices.Length();
+								if((extensioninsDetailDocuments + extensionInvoices) < 245 ){
+									insDetail.Documents = insDetail.Documents + Invoices;
+								}
+								else{
+									break;
+								}//@kevin Ferrucho
+							}
+						}
+					}
+					else{
+						raise msj.Create("I","El pago: " + itemPayment.PaymentID.RemoveLeadingZeros() + " ya fue generado en el registro " + insDetPayment.ToRoot.ID.RemoveLeadingZeros());
+						itemPayment.Delete();
+					}					
+				}
+				else{
+					raise msj.Create("I","El pago: " + itemPayment.PaymentID.RemoveLeadingZeros() + " no fue encontrado");
+					itemPayment.Delete();
+				}
+			}//Fin foreach this.Payments
+		}
+
+		// - - - - - - - - - - - - case 2: ID Execution - - - - - - - - - - - - - //
+		case CLTypeExecutionPaymentCode.CO_2{
+			
+			var queryDuePayment = DuePayment.QueryByElements;
+			var paramsDuePayment = queryDuePayment.CreateSelectionParams();
+				paramsDuePayment.Add(queryDuePayment.DuePaymentRunID.content, "I", "EQ", this.ExecutionID.RemoveLeadingZeros());
+				paramsDuePayment.Add(queryDuePayment.Status.LifeCycleStatusCode, "I", "EQ", "11");//11:Completed
+			var resultDuePayment = queryDuePayment.ExecuteDataOnly(paramsDuePayment);
+			if (resultDuePayment.Count() > 0){
+				
+				this.StatusCode = CLStatusPaymentMassCode.CO_2;
+				
+				foreach (var itemDuePayment in resultDuePayment){
+					
+					qryPaymentOrder = PaymentOrder.QueryByElements;
+					selPaymentOrder = qryPaymentOrder.CreateSelectionParams();
+						selPaymentOrder.Add(qryPaymentOrder.CompanyID, "I", "EQ", this.CompanyID);
+						selPaymentOrder.Add(qryPaymentOrder.ID.content, "I", "EQ", itemDuePayment.ID.content);
+						selPaymentOrder.Add(qryPaymentOrder.PaymentExecutionDate ,"I","BT", Date1,Date2);
+					objPaymentOrder = qryPaymentOrder.Execute(selPaymentOrder).Where(n => (n.PaymentFormCode == "05") && n.Status.LifeCycleStatusCode != "4" && (n.BaseBusinessTransactionDocumentReference.TypeCode == "37" || n.BaseBusinessTransactionDocumentReference.TypeCode == "82")).GetFirst();
+					if (objPaymentOrder.IsSet()){
+					
+						var qDetPayments = BOMassPayments.Payments.QueryByElements;
+						var pDetPayments = qDetPayments.CreateSelectionParams();
+							pDetPayments.Add(qDetPayments.PaymentUUID.content,"I","EQ",objPaymentOrder.UUID.content);
+						var insDetPayment = qDetPayments.Execute(pDetPayments).GetFirst();
+						if(!insDetPayment.IsSet()){
+
+							//Payments
+							var insPaymentDetail = this.Payments.Create();
+							if (insPaymentDetail.IsSet()){
+								insPaymentDetail.PaymentID = objPaymentOrder.ID.content;
+								insPaymentDetail.PaymentUUID.content = objPaymentOrder.UUID.content;
+							}
+						
+							//Details
+							var insDetail = this.Details.Create();
+							if (insDetail.IsSet()){
+							
+								insDetail.PaymentOrderUUID.content = objPaymentOrder.UUID.content;
+								insDetail.CompanyID = objPaymentOrder.CompanyID;
+								if(objPaymentOrder.Company.IsSet()){
+									insDetail.CompanyDes = objPaymentOrder.Company.NameByValidity.GetFirst().Name.content;
+								}
+								
+								if(objPaymentOrder.BusinessPartner.IsSet()){
+									if (objPaymentOrder.BusinessPartner.CurrentCommon.IsSet()){
+										insDetail.SupplierDes = objPaymentOrder.BusinessPartner.CurrentCommon.SortingFormattedName;
+									}
+									insDetail.SupplierID = objPaymentOrder.BusinessPartner.InternalID.RemoveLeadingZeros();
+								}
+
+								if(objPaymentOrder.BusinessPartnerBankDetails.IsSet()){
+									insDetail.BankAccountID = objPaymentOrder.BusinessPartnerBankDetails.BankAccountID;
+								}
+									
+								insDetail.Amount = objPaymentOrder.PaymentAmount;
+								if(insDetail.Amount.content < 0){
+									insDetail.Amount.content = insDetail.Amount.content * -1;
+								}
+								
+								foreach (var itemPayExpItem in objPaymentOrder.PaymentExplanation.Item){//@kevin ferrucho
+									var extensioninsDetailDocuments = insDetail.Documents.Length();
+									var Invoices =itemPayExpItem.InternalInvoiceReference.ID.content.RemoveLeadingZeros() + "/" + itemPayExpItem.ExternalInvoiceReference.ID.content.RemoveLeadingZeros() + "  ";
+									var extensionInvoices = Invoices.Length();
+									if((extensioninsDetailDocuments + extensionInvoices)< 245 ){
+										insDetail.Documents = insDetail.Documents + Invoices;
+									}
+									else{
+										break;
+									}
+								}//end @kevin ferrucho
+							}
+						}
+						else{
+							raise msj.Create("I","El pago: " + objPaymentOrder.ID.content.RemoveLeadingZeros() + " ya fue generado en el registro " + insDetPayment.ToRoot.ID.RemoveLeadingZeros());
+						}
+					}
+				}// fin Foreach resultDuePayment
+			}
+			else{
+				raise msj.Create("E", msgParameters);
+				this.IsConsistent = false;
+			}
+		}
+	}//fin swicth
+
+}//fin IsConsistent

@@ -1,0 +1,88 @@
+﻿//import ABSL;
+//import AP.FO.MOM.Global;
+//import AP.FinancialAccounting.Global;
+//
+//
+////CODIGO PARA OVS FILTROS
+//while(true)
+//{
+	//if(this.FilterID.IsInitial()){break;}
+	//var QueryFilter = BOFilters.QueryByElements;
+	//var parameterFilter = QueryFilter.CreateSelectionParams();
+		//parameterFilter.Add(QueryFilter.BOFiltersID, "I", "EQ", this.FilterID.RemoveLeadingZeros());
+	//var ResultQueryFilter = QueryFilter.Execute(parameterFilter).GetFirst();		
+	//if(!ResultQueryFilter.IsSet())
+	//{
+		//this.Company = false;
+		//this.Date = false;
+		//this.Period =false;
+		//this.zBetween =false;
+		//this.AccountingSystem = false;
+		//this.IndicatorAccount = false;
+		//break;
+	//}
+	//this.FilterDesc = ResultQueryFilter.FiltersDesc;
+	//this.Company = ResultQueryFilter.Company;
+	//this.Date = ResultQueryFilter.Date;
+	//this.Period =ResultQueryFilter.Period;
+	//this.AccountingSystem = ResultQueryFilter.AccountingSystem;
+	//this.IndicatorAccount = ResultQueryFilter.AccountGL;
+	//
+	//if(this.Company == false){this.CompanyID.Clear();}
+	//if(this.Date == false){this.Date2.Clear(); this.EDate.Clear();}
+	//if(this.AccountingSystem == false){this.SetOfBooksID.Clear();}
+	//if(this.IndicatorAccount == false){this.OVSAccount.Clear();}
+	//if(this.Period == false){this.EPeriod.Clear();}
+	//if(this.Date == false){this.zBetween = false; this.Date2.Clear(); break;}
+	//if(ResultQueryFilter.DASelctionP.IsInitial()){this.zBetween = false; this.Date2.Clear(); break;}
+	//if(ResultQueryFilter.DASelctionP != CLSelectionParametersCode.CO_BT){this.zBetween = false; this.Date2.Clear(); break;}
+	//this.zBetween = true;
+//break;
+//}
+////FIN CODIGO DE OVS FILTROS
+//
+////CODIGO PARA OVS SELECT
+//while(true){
+	//if(this.SelectID.IsInitial()){break;}
+	//var QuerySelect = BOConfigurationReports.QueryByElements;
+	//var parameterSelect = QuerySelect.CreateSelectionParams();
+		//parameterSelect.Add(QuerySelect.ConfRepID, "I", "EQ", this.SelectID.RemoveLeadingZeros());
+	//var ResultQuerySelect = QuerySelect.Execute(parameterSelect).GetFirst();
+	//if(!ResultQuerySelect.IsSet()){break;}
+	//this.SelectDesc = ResultQuerySelect.Description;
+	//break;
+//}
+////FIN CODIGO OVS SELECT
+////Codigo OVS Company
+//while(true){
+	//if(this.CompanyID.IsInitial()){break;}
+	//var QueryCompany = Company.QueryByIDAndName;
+	//var ParameterQueryCompany = QueryCompany.CreateSelectionParams();
+		//ParameterQueryCompany.Add(QueryCompany.ID, "I", "EQ", this.CompanyID);
+	//var ResultQueryCompany = QueryCompany.Execute(ParameterQueryCompany).GetFirst();
+	//if(!ResultQueryCompany.IsSet()){break;}
+	//if(ResultQueryCompany.NameByValidity.Count()<=0){break;}
+	//if(ResultQueryCompany.NameByValidity.GetFirst().Name.IsInitial()){break;}
+	//if( ResultQueryCompany.NameByValidity.GetFirst().Name.content.IsInitial()){break;}
+	//this.CompanyDescr = ResultQueryCompany.NameByValidity.GetFirst().Name.content;
+//break;
+//}
+////Fin Codigo OVS Company
+//
+////CODIGO OVS SETOFBOOK
+//while(true){
+	//if(this.SetOfBooksID.IsInitial()){break;}
+	//if(this.SetOfBooksID.content.IsInitial()){break;}
+	//var QuerySetBook = SetOfBooks.QueryByIDAndDescription;
+	//var ParameterQueySetBook = QuerySetBook.CreateSelectionParams();
+	//ParameterQueySetBook.Add(QuerySetBook.ID.content, "I", "EQ", this.SetOfBooksID.content);
+	//var ResultQuerySetBook = QuerySetBook.Execute(ParameterQueySetBook).GetFirst();
+	//if(!ResultQuerySetBook.IsSet()){break;}
+	//if(ResultQuerySetBook.Description.Count()<=0){break;}
+	//if(ResultQuerySetBook.Description.GetFirst().Description.IsInitial()){break;}
+	//if(ResultQuerySetBook.Description.GetFirst().Description.content.IsInitial()){break;}
+	//this.SetOfBooksDesc = ResultQuerySetBook.Description.GetFirst().Description.content; 
+//break;
+//}
+////FIN OVS SETOFBOOK
+//

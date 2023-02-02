@@ -1,0 +1,12 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+[WithAdministrativeData] businessobject BOAuxIDWithHolding raises msj {
+
+        message msj text "&":LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[AlternativeKey]element UUID:UUID;
+		node items [0,n]{
+		element ID:ID;
+		[Label("SumAmount")]element SumAmount:Amount;
+		element State:Indicator;
+		}
+}

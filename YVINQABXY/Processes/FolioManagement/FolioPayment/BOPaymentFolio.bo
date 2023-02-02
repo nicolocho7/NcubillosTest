@@ -1,0 +1,24 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FO.Product.Global;
+import AP.FO.ProductDataMaintenance.Global;
+
+businessobject BOPaymentFolio raises msj{
+
+		message msj text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+	
+		[AlternativeKey][Label("ID")]element FolioRelationID:ID;
+		[Label("Company")]element CompanyID:ID;
+		association ToCompany to Company;
+		[Label("Supplier")]element SupplierID:BusinessPartnerInternalID;
+		element NameSupplier:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Inactive")]element Inactive:Indicator;
+		[Label("Lenght Of Serie")]element SerieLength:NumberValue;
+		[Label("Serie")]element Serie:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Lenght Of Correlative")]element CorrelativeLength:NumberValue;
+		[Label("Initial Correlative")]element CorrelativeInitial:NumberValue;
+		[Label("Current Correlative")]element CorrelativeCurrent:NumberValue;
+
+		action Del;
+
+}

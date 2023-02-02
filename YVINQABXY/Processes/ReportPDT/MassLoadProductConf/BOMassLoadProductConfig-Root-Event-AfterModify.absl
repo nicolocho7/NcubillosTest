@@ -1,0 +1,41 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BOMassLoadProductConfig
+		Node: Root
+		Event: AfterModify 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script if:
+		- the value of any field in the node in which this script is contained is modified.
+		- the node itself is modified by another business object within the same solution.
+*/
+
+import ABSL;
+
+
+
+if (this.ID.IsInitial()){
+	
+	var queryBuildID = BOBuildID.QueryByElements;
+	var paramBuildID = queryBuildID.CreateSelectionParams();
+		paramBuildID.Add(queryBuildID.ID, "I", "EQ", "BOMASSLOADPRODUCTCONF");
+	var resultBuildID = queryBuildID.Execute(paramBuildID).GetFirst();
+	if (resultBuildID.IsSet()){
+		resultBuildID.consecutive = resultBuildID.consecutive + 1;
+		this.ID = resultBuildID.consecutive.ToString();
+	}else{
+		this.ID = "1";
+		//-- create new register
+		var insBuildID = BOBuildID.Create();
+		if (insBuildID.IsSet()){
+			insBuildID.consecutive = 1;
+			insBuildID.description = "Carga Masiva Productos exonerados";
+			insBuildID.ID = "BOMASSLOADPRODUCTCONF";
+			insBuildID.UUID.content = UUID.Generate();
+		}
+	}
+}
+

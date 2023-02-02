@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<MassDataRunObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://sap.com/ByD/PDI/MassDataRunObjectDefinition">
+  <MdroEsrNameSpace xmlns="">http://0004019099-one-off.sap.com/YVINQABXY_</MdroEsrNameSpace>
+  <MdroEsrName xmlns="">MassDaInnova</MdroEsrName>
+  <MdroPrxName xmlns="">YVINQABXY_MAVAE75C4E0DF348E35E</MdroPrxName>
+  <ParallelProcessing xmlns="">X</ParallelProcessing>
+  <ApplicationLogDetailLevelCode xmlns="">5</ApplicationLogDetailLevelCode>
+  <ApplicationLogRetentionTimeCode xmlns="">P1D</ApplicationLogRetentionTimeCode>
+  <AccessControlledBoList xmlns="">
+    <AccessControlledBo>
+      <ActionEntity>
+        <BoEsrNameSpace>http://0004019099-one-off.sap.com/YVINQABXY_</BoEsrNameSpace>
+        <BoEsrName>BOPruchasesExecution</BoEsrName>
+        <BoPrxName>YVINQABXY_BOONB44C2AB009EE0813</BoPrxName>
+        <BoEsrNodeName>Root</BoEsrNodeName>
+        <BoPrxNodeName>ROOT4F903855210031B0</BoPrxNodeName>
+        <BoEsrEntityName>executeInnova</BoEsrEntityName>
+        <BoPrxEntityName>EXECUTNNOVA147F196B624C9A65</BoPrxEntityName>
+      </ActionEntity>
+      <ActionPath>\TO_PARENT</ActionPath>
+      <QueryEntity>
+        <BoEsrNameSpace>http://0004019099-one-off.sap.com/YVINQABXY_</BoEsrNameSpace>
+        <BoEsrName>BOPruchasesExecution</BoEsrName>
+        <BoPrxName>YVINQABXY_BOONB44C2AB009EE0813</BoPrxName>
+        <BoEsrNodeName>QryPurchase</BoEsrNodeName>
+        <BoPrxNodeName>QRYPURCHASE7A1329F90AFF7068</BoPrxNodeName>
+        <BoEsrEntityName>QueryByElements</BoEsrEntityName>
+        <BoPrxEntityName>QUERY_BY_ELEMENTS</BoPrxEntityName>
+      </QueryEntity>
+      <QueryParameterList>
+        <QueryParameter>
+          <QueryEsrParameterName>ID</QueryEsrParameterName>
+          <QueryPrxParameterName>IDROOT5B57ADF3C76011D1</QueryPrxParameterName>
+          <QueryPrxParameterDataType>PDI_ABSL_IDENTIFIER</QueryPrxParameterDataType>
+          <MdroEsrNodeName>SelectByID</MdroEsrNodeName>
+          <MdroPrxNodeName>SEL_BY_IDTSBC3FFB5328F2A0EC</MdroPrxNodeName>
+        </QueryParameter>
+        <QueryParameter>
+          <QueryEsrParameterName>State</QueryEsrParameterName>
+          <QueryPrxParameterName>STATEROOT264BC3A9D49FFCB8</QueryPrxParameterName>
+          <QueryPrxParameterDataType>APC_V_INDICATOR</QueryPrxParameterDataType>
+          <MdroEsrNodeName>SelectByState</MdroEsrNodeName>
+          <MdroPrxNodeName>SEL_BY_STTE4AF77DAD5AAA7F7F</MdroPrxNodeName>
+          <QueryParameterValueList>
+            <QueryParameterValue>
+              <InclusionExclusionCode>I</InclusionExclusionCode>
+              <IntervalBoundaryTypeCode>EQ</IntervalBoundaryTypeCode>
+              <LowerBoundaryValue>X</LowerBoundaryValue>
+            </QueryParameterValue>
+          </QueryParameterValueList>
+        </QueryParameter>
+        <QueryParameter>
+          <QueryEsrParameterName>ExecutionState</QueryEsrParameterName>
+          <QueryPrxParameterName>EXECUTROOT81B233F34FB05A85</QueryPrxParameterName>
+          <QueryPrxParameterDataType>YVINQABXY_961F8F6DD805519C</QueryPrxParameterDataType>
+          <MdroEsrNodeName>SelectByExecutionState</MdroEsrNodeName>
+          <MdroPrxNodeName>SEL_BY_EXTS71C5EB1F2B29A465</MdroPrxNodeName>
+          <QueryParameterValueList>
+            <QueryParameterValue>
+              <InclusionExclusionCode>I</InclusionExclusionCode>
+              <IntervalBoundaryTypeCode>EQ</IntervalBoundaryTypeCode>
+              <LowerBoundaryValue>2</LowerBoundaryValue>
+            </QueryParameterValue>
+          </QueryParameterValueList>
+        </QueryParameter>
+      </QueryParameterList>
+    </AccessControlledBo>
+  </AccessControlledBoList>
+</MassDataRunObject>

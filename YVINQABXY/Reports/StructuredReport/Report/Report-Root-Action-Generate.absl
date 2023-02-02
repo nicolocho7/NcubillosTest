@@ -1,0 +1,299 @@
+﻿//import ABSL;
+//import AP.Common.GDT as apCommonGDT;
+//import BASIS.Global as basis;
+//
+//// - - - - - Validations  - - - - - //
+//this.IsConsistent = true;
+//
+//this.Validate();
+//
+//if(this.IsConsistent){
+	//
+	//var serviceID = "";  
+	//var parameter : NameAndValue;  
+	//var parameters : collectionof NameAndValue;  
+	//
+	//serviceID = "PW00066";
+	//if(this.Group){
+		//parameter.Name = "$select";
+		//parameter.Value = "CCOMPANY_UUID,CSETOFBKS,CGLACCT,KCAMTCOMP,RCAMTCOMP";  
+		//parameters.Add(parameter);  
+	//}
+	//else{
+		//parameter.Name = "$select";
+		//parameter.Value = "CCOMPANY_UUID,CSETOFBKS,CGLACCT,CPROFITCTR_UUID,TPROFITCTR_UUID,CCOST_OBJECT,TCOST_OBJECT,CCOST_CTR_UUID,TCOST_CTR_UUID,CSEG_UUID,TSEG_UUID,KCAMTCOMP,RCAMTCOMP";  
+		//parameters.Add(parameter);  
+	//}
+	//
+	//parameter.Name = "$filter"; 
+	//parameter.Value = "";
+	//if(this.toEstructura.IsSet()){
+		//parameter.Value = parameter.Value + " CCOMPANY_UUID eq '" + this.toEstructura.CompanyID.RemoveLeadingZeros() +"' ";
+	//}
+	//
+	////PROFIT CENTER
+	//var pcTotal = this.Filters.Where(n=>n.Filter == "1").Count();
+	//if(pcTotal > 0){
+		//var pc = " and ( ";
+		//var pcIndex = 0;
+		//foreach(var itemFilter in this.Filters.Where(n=>n.Filter == "1")){
+			//pcIndex = pcIndex + 1;
+			//pc = pc + " CPROFITCTR_UUID eq '" + itemFilter.Value.RemoveLeadingZeros() + "' ";
+			//if(pcIndex < pcTotal) pc = pc + " or ";
+		//}
+		//pc = pc + " ) ";
+		//parameter.Value = parameter.Value + pc;
+	//}
+//
+	////COST OBJECT
+	//var coTotal = this.Filters.Where(n=>n.Filter == "2").Count();
+	//if(coTotal > 0){
+		//var co = " and ( ";
+		//var coIndex = 0;
+		//foreach(var filter in this.Filters.Where(n=>n.Filter == "2")){
+			//coIndex = coIndex + 1;
+			//co = co + " CCOST_OBJECT eq '" + filter.Value.RemoveLeadingZeros() + "' ";
+			//if(coIndex < coTotal) co = co + " or ";
+		//}
+		//co = co + " ) ";
+		//parameter.Value = parameter.Value + co;
+	//}
+	//
+	////COST CENTER
+	//var ccTotal = this.Filters.Where(n=>n.Filter == "3").Count();
+	//if(ccTotal > 0){
+		//var cc = " and ( ";
+		//var ccIndex = 0;
+		//foreach(var filter in this.Filters.Where(n=>n.Filter == "3")){
+			//ccIndex = ccIndex + 1;
+			//cc = cc + " CCOST_CTR_UUID eq '" + filter.Value.RemoveLeadingZeros() + "' ";
+			//if(ccIndex < ccTotal) cc = cc + " or ";
+		//}
+		//cc = cc + " ) ";
+		//parameter.Value = parameter.Value + cc;
+	//}
+//
+	////SEGMENT
+	//var seTotal = this.Filters.Where(n=>n.Filter == "4").Count();
+	//if(seTotal > 0){
+		//var se = " and ( ";
+		//var seIndex = 0;
+		//foreach(var filter in this.Filters.Where(n=>n.Filter == "4")){
+			//seIndex = seIndex + 1;
+			//se = se + " CSEG_UUID eq '" + filter.Value.RemoveLeadingZeros() + "' ";
+			//if(seIndex < seTotal) se = se + " or ";
+		//}
+		//se = se + " ) ";
+		//parameter.Value = parameter.Value + se;
+	//}
+//
+	//// Realizar por periodos 
+	//var YearDateFrom = ABSL:Numeric.ParseFromString(this.StartDate.GetYear());
+	//var YearDateTo = ABSL:Numeric.ParseFromString(this.EndDate.GetYear());
+	//if (YearDateTo > YearDateFrom || YearDateFrom > YearDateTo){
+		//this.IsConsistent = false;
+		//raise msjReport.Create("E", "El reporte solo se ejecuta en un mismo año.");
+	//}
+//
+	//var TemDateFromM = this.StartDate.GetMonth();
+	//var TemDateToM = this.EndDate.GetMonth();
+	//switch (TemDateToM){
+		//case "01" { TemDateToM = "1"; }
+		//case "02" { TemDateToM = "2"; }
+		//case "03" { TemDateToM = "3"; }
+		//case "04" { TemDateToM = "4"; }
+		//case "05" { TemDateToM = "5"; }
+		//case "06" { TemDateToM = "6"; }
+		//case "07" { TemDateToM = "7"; }
+		//case "08" { TemDateToM = "8"; }
+		//case "09" { TemDateToM = "9"; }
+	//}
+//
+	//switch (TemDateFromM){
+		//case "01" { TemDateFromM = "1"; }
+		//case "02" { TemDateFromM = "2"; }
+		//case "03" { TemDateFromM = "3"; }
+		//case "04" { TemDateFromM = "4"; }
+		//case "05" { TemDateFromM = "5"; }
+		//case "06" { TemDateFromM = "6"; }
+		//case "07" { TemDateFromM = "7"; }
+		//case "08" { TemDateFromM = "8"; }
+		//case "09" { TemDateFromM = "9"; }
+	//}
+//
+	//var MonthDateFrom = ABSL:Numeric.ParseFromString(TemDateFromM);
+	//var MonthDateTo = ABSL:Numeric.ParseFromString(TemDateToM);	
+//
+	//if (MonthDateFrom > MonthDateTo){
+		//this.IsConsistent = false;
+		//raise msjReport.Create("E", "El reporte solo se ejecuta si el mes de inicio es menor o igual al mes final.");
+	//}
+//
+	//var urlPeriod = "";
+	//while (MonthDateFrom <= MonthDateTo){
+		//if (MonthDateFrom == MonthDateTo){
+			//urlPeriod = urlPeriod + "CFISCALYEARPERIO eq " + MonthDateFrom.ToString() + YearDateFrom.ToString();}
+		//else{
+			//urlPeriod = urlPeriod + "CFISCALYEARPERIO eq " + MonthDateFrom.ToString() + YearDateFrom.ToString() + " or ";
+		//}
+		//MonthDateFrom = MonthDateFrom + 1;
+	//}
+//
+	//urlPeriod = " and (" + urlPeriod + ")";
+//
+	//parameter.Value = parameter.Value + urlPeriod;
+//
+	//parameters.Add(parameter); 
+	//
+	//var limite = 0;
+	//var indiceGeneral = 0;
+	//
+	//while(limite == 0){
+		//
+		//parameter.Name = "$filter"; 
+		//parameter.Value = "";
+		//
+		//var cuentas = "";
+		//var indice = 0;
+		//var total = this.toEstructura.Elements.Where(n=>n.includeByD).Count();
+//
+		//foreach(var cta in this.toEstructura.Elements.Where(n=>n.includeByD)){
+//
+			//var longitud = parameter.Value.Length();
+			//indice = indice + 1;
+			//
+			//if(indice > indiceGeneral){ // Para no concatenar las cuentas que ya se incluyeron
+				//indiceGeneral = indiceGeneral + 1;
+				//
+				//cuentas = cuentas + " CGLACCT eq '" + cta.AcccountingCode.RemoveLeadingZeros() + "'";
+//
+				//longitud = longitud + cuentas.Length();
+//
+				//if( (indice < total) && (longitud < 950) ) {
+					//cuentas = cuentas + " or ";
+				//}else{
+					//if(indice == total){
+						//limite = 1;
+					//}else{
+						//break;
+					//}					
+				//}
+			//}
+		//}
+		//parameter.Value = cuentas;
+		//parameters.Add(parameter);
+	//}
+	//
+	//parameter.Name = "$top";  
+	//parameter.Value = "99999";  
+	//parameters.Add(parameter); 
+	//
+	//if(this.IsConsistent){//validación de periodos
+		//
+		//this.Status = CLStatusReportCode.CO_2;
+//
+		//var ws_result = WebServiceUtilities.ExecuteWebService(serviceID, parameters);  
+		//var Content = ws_result.ResponseContent;
+		//var returnCode = ws_result.ReturnCode;
+	//
+		//var xmlResult;
+		//xmlResult = Library::RLStrings.XMLToArray(Content);
+		//
+		//if(xmlResult.Count() > 0){
+		//
+			//// - - - - - - Agrego todos los resultados a un nodo  - - - - - - -//
+			//foreach (var xmlRow in xmlResult){
+				//var insReportResponse = this.ReportResponse.Create();
+				//if(insReportResponse.IsSet()){
+					//insReportResponse.AcccountingCode = Library::RLStrings.GetElementByName(xmlRow.String, "CGLACCT");
+					//insReportResponse.Value.content = Library::Numeric.ParseFromString(Library::RLStrings.GetElementByName(xmlRow.String, "KCAMTCOMP"));
+					//insReportResponse.Value.currencyCode = Library::RLStrings.GetElementByName(xmlRow.String, "RCAMTCOMP");
+					//if(!this.Group){
+						//insReportResponse.ProfitCenterID  = Library::RLStrings.GetElementByName(xmlRow.String, "CPROFITCTR_UUID");
+						//insReportResponse.ProfitCenterDesc = Library::RLStrings.GetElementByName(xmlRow.String, "TPROFITCTR_UUID");
+						//insReportResponse.CostObjectID = Library::RLStrings.GetElementByName(xmlRow.String, "CCOST_OBJECT");
+						//insReportResponse.CostObjectDesc = Library::RLStrings.GetElementByName(xmlRow.String, "TCOST_OBJECT");
+						//insReportResponse.CostCenterID = Library::RLStrings.GetElementByName(xmlRow.String, "CCOST_CTR_UUID");
+						//insReportResponse.CostCenterDesc = Library::RLStrings.GetElementByName(xmlRow.String, "TCOST_CTR_UUID");
+						//insReportResponse.SegmentID = Library::RLStrings.GetElementByName(xmlRow.String, "CSEG_UUID");
+						//insReportResponse.SegmentDesc = Library::RLStrings.GetElementByName(xmlRow.String, "TSEG_UUID");
+					//}
+				//}	
+			//}
+//
+			////- - - - - - - Armamos el reporte con estructura - - - - - - - - - //
+			//foreach(var itemElement in this.toEstructura.Elements.OrderBy(n=>n.ID) ){
+				//var itemReport = this.Report.Create();
+				//if(itemReport.IsSet()){
+					//itemReport.ID = itemElement.Orden;
+					//itemReport.ShowSign = itemElement.ShowSign;
+					//itemReport.CodeInternal= itemElement.AcccountingCode.RemoveLeadingZeros();
+			//
+					//if(itemElement.includeByD){//Si es cuenta 
+						//itemReport.Description = itemElement.Accounting1Code.GetDescription();
+						//var insResponse = this.ReportResponse.Where(n=>n.AcccountingCode.RemoveLeadingZeros() == itemElement.AcccountingCode.RemoveLeadingZeros()).GetFirst();
+						//if(insResponse.IsSet()){
+							//itemReport.Value.content = insResponse.Value.content;
+							//itemReport.Value.currencyCode = insResponse.Value.currencyCode;
+							//if(!this.Group){
+								//itemReport.ProfitCenterID  = insResponse.ProfitCenterID;
+								//itemReport.ProfitCenterDesc = insResponse.ProfitCenterDesc;
+								//itemReport.CostObjectID = insResponse.CostObjectID;
+								//itemReport.CostObjectDesc = insResponse.CostObjectDesc;
+								//itemReport.CostCenterID = insResponse.CostCenterID;
+								//itemReport.CostCenterDesc = insResponse.CostCenterDesc;
+								//itemReport.SegmentID = insResponse.SegmentID;
+								//itemReport.SegmentDesc = insResponse.SegmentDesc;
+							//}
+						//}
+					//}
+					//else{//Si tiene regla de calculo
+						//itemReport.Description = itemElement.Description;
+						//foreach(var itemCalculationRule in itemElement.SubElements){
+							//var insResponse = this.ReportResponse.Where(n=>n.AcccountingCode.RemoveLeadingZeros() == itemCalculationRule.Account.content.Trim()).GetFirst();
+							//if(insResponse.IsSet()){
+								//if(itemReport.Value.currencyCode.IsInitial()){
+									//itemReport.Value.currencyCode = insResponse.Value.currencyCode;
+								//}	
+								//if(itemCalculationRule.Operation == CLSignCode.CO_1){
+									//itemReport.Value.content = itemReport.Value.content + insResponse.Value.content;
+								//}else if(itemCalculationRule.Operation == CLSignCode.CO_2){
+									//itemReport.Value.content = itemReport.Value.content - insResponse.Value.content;
+								//}
+								//if(!this.Group){
+									//itemReport.ProfitCenterID  = insResponse.ProfitCenterID;
+									//itemReport.ProfitCenterDesc = insResponse.ProfitCenterDesc;
+									//itemReport.CostObjectID = insResponse.CostObjectID;
+									//itemReport.CostObjectDesc = insResponse.CostObjectDesc;
+									//itemReport.CostCenterID = insResponse.CostCenterID;
+									//itemReport.CostCenterDesc = insResponse.CostCenterDesc;
+									//itemReport.SegmentID = insResponse.SegmentID;
+									//itemReport.SegmentDesc = insResponse.SegmentDesc;
+								//}			
+							//}
+						//}
+						//if(!itemReport.ShowSign){
+							//itemReport.Value.content = itemReport.Value.content * -1;
+						//}
+					//}
+				//}
+			//}
+		//}
+		//else{
+			//this.IsConsistent = false;
+			//raise msjReport.Create("E", "No se encontraron datos con los parametros seleccionados. Favor de revisar la respuesta del reporte leido.");
+		//}
+//
+		////- - - - - - - - - - -  Read ODATA txt - - - - - - - - - -//
+		//var xname	:LANGUAGEINDEPENDENT_LONG_Name;
+		//var xtype	:DocumentTypeCode;
+		//var xdesc	:Description;
+		//var xbinary	:basis:BinaryObject;
+			//xname = "Reporte Leído";
+			//xtype.content = "10001";
+			//xtype.listID = "10296";
+			//xbinary.mimeCode = "text/plain";
+			//xbinary.content = Binary.ParseFromString(urlPeriod + "//n" + Content);
+		//this.Attachment.CreateFile(xtype,xname,xname,xdesc,xbinary);
+	//}//Fin if This.IsConsistent 2
+//}//Fin IsConsistent

@@ -1,0 +1,946 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BOListOfFields
+		Node: Root
+		Event: BeforeSave 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script when:
+		- the instance of the business object is being saved.
+		- the instance of the business object is created from other sources like web services, preview screen, and so on.
+*/
+
+import ABSL;
+
+var insListOfField : elementsof BOListOfFields;
+var insField : elementsof BOListOfFields.ListField;
+
+//- - - - - - - - - - - - - - - - -   Customer - - - - - - - - - - - -//
+this.ListOfFieldID = "C01";
+this.ListOfFieldDesc = "Customer";
+
+insField.Clear();
+insField.ListFieldID = "CU001";
+insField.ListFieldDesc = "ID Cliente";
+insField.ListFieldRoute = "";
+this.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CU002";
+insField.ListFieldDesc = "Identificacion Fiscal sin DV";
+insField.ListFieldRoute = "";
+this.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CU003";
+insField.ListFieldDesc = "Identificacion Fiscal con DV";
+insField.ListFieldRoute = "";
+this.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CU004";
+insField.ListFieldDesc = "Tipo de identificación";
+insField.ListFieldRoute = "";
+this.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CU005";
+insField.ListFieldDesc = "Razon social - persona juridica";
+insField.ListFieldRoute = "";
+this.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CU006";
+insField.ListFieldDesc = "Dirección";
+insField.ListFieldRoute = "";
+this.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CU007";
+insField.ListFieldDesc = "Departamento";
+insField.ListFieldRoute = "";
+this.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CU008";
+insField.ListFieldDesc = "Ciudad - Código";
+insField.ListFieldRoute = "";
+this.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CU009";
+insField.ListFieldDesc = "Pais - Código";
+insField.ListFieldRoute = "";
+this.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CU010";
+insField.ListFieldDesc = "País - Descripción";
+insField.ListFieldRoute = "";
+this.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CU011";
+insField.ListFieldDesc = "Código Postal";
+insField.ListFieldRoute = "";
+this.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CU012";
+insField.ListFieldDesc = "Matricula Mercantil";
+insField.ListFieldRoute = "";
+this.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CU013";
+insField.ListFieldDesc = "Tipo de persona";
+insField.ListFieldRoute = "";
+this.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CU014";
+insField.ListFieldDesc = "Tipo de regimen";
+insField.ListFieldRoute = "";
+this.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CU015";
+insField.ListFieldDesc = "Nombre - persona natural";
+insField.ListFieldRoute = "";
+this.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CU016";
+insField.ListFieldDesc = "Apellido - persona natural";
+insField.ListFieldRoute = "";
+this.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CU017";
+insField.ListFieldDesc = "Correo electrónico";
+insField.ListFieldRoute = "";
+this.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CU018";
+insField.ListFieldDesc = "Responsabilidad Código";
+insField.ListFieldRoute = "";
+this.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CU019";
+insField.ListFieldDesc = "Ciudad - Descripción";
+insField.ListFieldRoute = "";
+this.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CU020";
+insField.ListFieldDesc = "Nombre de persona de contacto";
+insField.ListFieldRoute = "";
+this.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CU021";
+insField.ListFieldDesc = "Telefono";
+insField.ListFieldRoute = "";
+this.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CU022";
+insField.ListFieldDesc = "Nombre y apellido Cliente ";
+insField.ListFieldRoute = "";
+this.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CU023";
+insField.ListFieldDesc = "Departamento";
+insField.ListFieldRoute = "";
+this.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CU024";
+insField.ListFieldDesc = "Provincia";
+insField.ListFieldRoute = "";
+this.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CU025";
+insField.ListFieldDesc = "Distrito";
+insField.ListFieldRoute = "";
+this.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CU026";
+insField.ListFieldDesc = "Ubigeo";
+insField.ListFieldRoute = "";
+this.ListField.Create(insField);
+
+
+//- - - - - - - - - - - - - - - -  Company - - - - - - - - - - - -//
+insListOfField.Clear();
+insListOfField.ListOfFieldID = "C02";
+insListOfField.ListOfFieldDesc = "Company";
+var insLisFields = BOListOfFields.Create(insListOfField);
+
+insField.Clear();
+insField.ListFieldID = "CO001";
+insField.ListFieldDesc = "Identificación fiscal sin DV";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CO002";
+insField.ListFieldDesc = "Identificación fiscal con DV";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CO003";
+insField.ListFieldDesc = "Tipo Identificacion";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CO004";
+insField.ListFieldDesc = "Nombre";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CO005";
+insField.ListFieldDesc = "ID Compañia";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CO006";
+insField.ListFieldDesc = "Dirección";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CO007";
+insField.ListFieldDesc = "Departamento";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CO008";
+insField.ListFieldDesc = "Ciudad - Código";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CO009";
+insField.ListFieldDesc = "País - código";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CO010";
+insField.ListFieldDesc = "Código Postal";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CO011";
+insField.ListFieldDesc = "Telefono";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CO012";
+insField.ListFieldDesc = "Correo electrónico";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CO013";
+insField.ListFieldDesc = "Matricula mercantil";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CO014";
+insField.ListFieldDesc = "País - descripción";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CO015";
+insField.ListFieldDesc = "Tipo de persona";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CO016";
+insField.ListFieldDesc = "Tipo de regimen";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CO017";
+insField.ListFieldDesc = "Nombre del contacto";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CO018";
+insField.ListFieldDesc = "Número de la cuenta";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CO019";
+insField.ListFieldDesc = "Tipo de cuenta";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CO020";
+insField.ListFieldDesc = "Titular de la cuenta";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CO021";
+insField.ListFieldDesc = "Responsabilidad Código";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "CO022";
+insField.ListFieldDesc = "Ciudad - Descripción";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+
+//- - - - - - - - - - - - - - - - -   Header Invoice - - - - - - - - - - - -//
+insListOfField.Clear();
+insListOfField.ListOfFieldID = "C03";
+insListOfField.ListOfFieldDesc = "Header Invoice";
+insLisFields = BOListOfFields.Create(insListOfField);
+
+insField.Clear();
+insField.ListFieldID = "HI001";
+insField.ListFieldDesc = "ID de factura";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI002";
+insField.ListFieldDesc = "Fecha de documento";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI003";
+insField.ListFieldDesc = "Hora de documento";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI004";
+insField.ListFieldDesc = "Comentario interno";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI005";
+insField.ListFieldDesc = "Moneda del documento";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI006";
+insField.ListFieldDesc = "Valor Neto antes de Dsc y flete - En letras";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI007";
+insField.ListFieldDesc = "Valor Neto antes de Dsc y flete ";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI008";
+insField.ListFieldDesc = "Descuento global";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI009";
+insField.ListFieldDesc = "Porcentaje del descuento";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI010";
+insField.ListFieldDesc = "Valor flete";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI011";
+insField.ListFieldDesc = "Valor neto despues de Dsc y Flete - En Letras";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI012";
+insField.ListFieldDesc = "Valor neto despues de Dsc y Flete";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI013";
+insField.ListFieldDesc = "Importe Impuesto - En letras";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI014";
+insField.ListFieldDesc = "Importe Impuesto";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI015";
+insField.ListFieldDesc = "Porcentaje de impuesto";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI016";
+insField.ListFieldDesc = "Total Bruto - En Letras";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI017";
+insField.ListFieldDesc = "Total Bruto";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI018";
+insField.ListFieldDesc = "Condición de pago";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI019";
+insField.ListFieldDesc = "Fecha Vencimiento del documento";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI020";
+insField.ListFieldDesc = "Destinatario de mercancías";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI021";
+insField.ListFieldDesc = "Direccion del destinario de mercancías";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI022";
+insField.ListFieldDesc = "Código postal del destinatario de mercancías";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI023";
+insField.ListFieldDesc = "Ciudad del destinatario de mercancías";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI024";
+insField.ListFieldDesc = "País del destinatario de mercancías";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI025";
+insField.ListFieldDesc = "Referencia externa del documento";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI026";
+insField.ListFieldDesc = "Pedido cliente";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI027";
+insField.ListFieldDesc = "ID de la factura legal";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI028";
+insField.ListFieldDesc = "Tasa de cambio";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI029";
+insField.ListFieldDesc = "Total de lineas del documento";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI030";
+insField.ListFieldDesc = "Valor del anticipo";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI031";
+insField.ListFieldDesc = "Información del cliente";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI032";
+insField.ListFieldDesc = "ID de proyecto";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI033";
+insField.ListFieldDesc = "Total retención fuente";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI034";
+insField.ListFieldDesc = "Total retención IVA";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI035";
+insField.ListFieldDesc = "Total retención distrital";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI036";
+insField.ListFieldDesc = "Valor Total a pagar";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI037";
+insField.ListFieldDesc = "Base Gravable";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI038";
+insField.ListFieldDesc = "Base No Gravable";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI039";
+insField.ListFieldDesc = "Concepto tributario inafecto";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI040";
+insField.ListFieldDesc = "Concepto Tributario Gravada";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI041";
+insField.ListFieldDesc = "Estado impuesto";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI042";
+insField.ListFieldDesc = "Codigo de Tipo de Tributo";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI043";
+insField.ListFieldDesc = "Tipo Valor Venta Gravado";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI044";
+insField.ListFieldDesc = "Tipo Valor Venta Inafecto";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI045";
+insField.ListFieldDesc = "Importe Bruto Afecto al tipo de cambio";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI046";
+insField.ListFieldDesc = "Importe de Descuento al tipo de cambio";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI047";
+insField.ListFieldDesc = "Importe Bruto Inafecto al tipo de cambio";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI048";
+insField.ListFieldDesc = "Importe Impuesto al tipo de cambio";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI049";
+insField.ListFieldDesc = "Importe Total al tipo de cambio";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI050";
+insField.ListFieldDesc = "Importe percepcion";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI051";
+insField.ListFieldDesc = "Percepcion - Enviar S o N";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI052";
+insField.ListFieldDesc = "Número de Documento 1";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI053";
+insField.ListFieldDesc = "Número de Documento 2";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI054";
+insField.ListFieldDesc = "Número de Documento 3";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+insField.Clear();
+
+insField.ListFieldID = "HI055";
+insField.ListFieldDesc = "ID Externo Asociado";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.ListFieldID = "HI056";
+insField.ListFieldDesc = "Descripcion Unica Posicion";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.ListFieldID = "HI057";
+insField.ListFieldDesc = "Tipo de Afectación gravado";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.ListFieldID = "HI058";
+insField.ListFieldDesc = "Tipo de Afectación Inafecto";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.ListFieldID = "HI059";
+insField.ListFieldDesc = "ID Producto Unica Posicion";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.ListFieldID = "HI060";
+insField.ListFieldDesc = "Codigo de Impuesto";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.ListFieldID = "HI061";
+insField.ListFieldDesc = "Importe bruto exonerado";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.ListFieldID = "HI062";
+insField.ListFieldDesc = "Importe bruto exonerado al tipo de cambio";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.ListFieldID = "HI063";
+insField.ListFieldDesc = "Base gravable percepción";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+
+insField.ListFieldID = "HI064";
+insField.ListFieldDesc = "Importe bruto gratuito";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.ListFieldID = "HI065";
+insField.ListFieldDesc = "Importe bruto Soles";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.ListFieldID = "HI066";
+insField.ListFieldDesc = "Orden de servicio";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.ListFieldID = "HI067";
+insField.ListFieldDesc = "Guia de Remisión";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.ListFieldID = "HI068";
+insField.ListFieldDesc = "Campo Referencia Externa - Orden de Servicio";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.ListFieldID = "HI069";
+insField.ListFieldDesc = "Campo Referencia Externa - Venta Directa";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI070";
+insField.ListFieldDesc = "Cargo por Devoluciones";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "HI071";
+insField.ListFieldDesc = "Forma de Pago (Cliente)";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+//- - - - - - - - - - - - - - - - -  Item Invoice - - - - - - - - - - - -//
+insListOfField.Clear();
+insListOfField.ListOfFieldID = "C04";
+insListOfField.ListOfFieldDesc = "Item Invoice";
+insLisFields = BOListOfFields.Create(insListOfField);
+
+insField.Clear();
+insField.ListFieldID = "II001";
+insField.ListFieldDesc = "ID de posición";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II002";
+insField.ListFieldDesc = "ID de producto";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II003";
+insField.ListFieldDesc = "Descripción";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II004";
+insField.ListFieldDesc = "Cantidad";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II005";
+insField.ListFieldDesc = "Unidad de medida";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II006";
+insField.ListFieldDesc = "Precio lista";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II007";
+insField.ListFieldDesc = "Descuento por posición";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II008";
+insField.ListFieldDesc = "Descuento porcentaje";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II009";
+insField.ListFieldDesc = "Ciudad";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II010";
+insField.ListFieldDesc = "Valor Neto antes de Dsc y flete";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II011";
+insField.ListFieldDesc = "Valor neto después de Dsc y flete";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II012";
+insField.ListFieldDesc = "Importe Impuesto";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II013";
+insField.ListFieldDesc = "Porcentaje de impuesto";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II014";
+insField.ListFieldDesc = "Total Bruto";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II015";
+insField.ListFieldDesc = "Número de Serial";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II016";
+insField.ListFieldDesc = "Valor a pagar del item";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II017";
+insField.ListFieldDesc = "Comentario interno del item";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II018";
+insField.ListFieldDesc = "Información del cliente del item";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II019";
+insField.ListFieldDesc = "Concatenado: Descripción - ciudad - información cliente";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II020";
+insField.ListFieldDesc = "Tipo de Afectacion Inafecto";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II021";
+insField.ListFieldDesc = "Tipo de Afectacion Gravado";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II022";
+insField.ListFieldDesc = "Codigo de Tipo de Tributo";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II023";
+insField.ListFieldDesc = "Estatus de Impuesto";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II024";
+insField.ListFieldDesc = "Id Posicion Simple";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II025";
+insField.ListFieldDesc = "Precio Unitario con Impuesto";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+
+insField.Clear();
+insField.ListFieldID = "II026";
+insField.ListFieldDesc = "Precio Unitario Gratuito";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II027";
+insField.ListFieldDesc = "Precio Unitario Total Gratuito";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II028";
+insField.ListFieldDesc = "Número Alternativo de Material PE";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II029";
+insField.ListFieldDesc = "Código de herramienta";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II030";
+insField.ListFieldDesc = "Producto De Referencia";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II031";
+insField.ListFieldDesc = "Cargo por Perdida de Calidad";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II032";
+insField.ListFieldDesc = "Recargo";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+insField.Clear();
+insField.ListFieldID = "II033";
+insField.ListFieldDesc = "Precio de Lista – Moneda Documento";
+insField.ListFieldRoute = "";
+insLisFields.ListField.Create(insField);
+
+raise msg.Create("I", "Se actualizaron los datos");
+

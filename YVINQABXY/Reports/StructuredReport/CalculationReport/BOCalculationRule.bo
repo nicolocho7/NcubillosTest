@@ -1,0 +1,26 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FinancialAccounting.Global;
+
+[WithAdministrativeData] businessobject BOCalculationRule raises msg{
+	
+	message msg text "&"	:	LANGUAGEINDEPENDENT_EXTENDED_Name;
+
+	[AlternativeKey] [Label("ID")]		element CalculationRuleID	:	ID;
+	[Label("Structure")]				element StructureID			:	ID;
+	[Label("Code")]						element CodeStructure		:	ID;
+	[Label("Description Code")]			element CodeStructureDesc	:	LANGUAGEINDEPENDENT_EXTENDED_Name;
+										element IsConsistent		:	Indicator;
+										element WasModify			:	Indicator;
+
+	node Elements[0,n]  raises msgElements 
+	{
+		message msgElements text "&"	:	LANGUAGEINDEPENDENT_EXTENDED_Name;
+
+		[Label("ID")]				element ID			:	ID;	
+		[Label("Account")]			element Account		:	ChartOfAccountsItemCode;
+		[Label("Operation")]		element Operation	:	CLSignCode;		
+	}
+
+	association toEstructura to BOStructure;
+
+}

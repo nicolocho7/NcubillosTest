@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--Published by JAX-WS RI at http://jax-ws.dev.java.net. RI's version is JAX-WS RI 2.2-hudson-740-.--><xs:schema version="1.0" targetNamespace="http://servicio/" xmlns:tns="http://servicio/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="EnvioDocumento" type="tns:EnvioDocumento"/>
+  <xs:element name="EnvioDocumentoResponse" type="tns:EnvioDocumentoResponse"/>
+  <xs:element name="EstadoDocumento" type="tns:EstadoDocumento"/>
+  <xs:element name="EstadoDocumentoResponse" type="tns:EstadoDocumentoResponse"/>
+  <xs:complexType name="EstadoDocumento">
+    <xs:sequence>
+      <xs:element name="RequestEstado" type="tns:requestEstado" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="requestEstado">
+    <xs:sequence>
+      <xs:element name="correlativo" type="xs:string" minOccurs="0"/>
+      <xs:element name="ruc" type="xs:string" minOccurs="0"/>
+      <xs:element name="serie" type="xs:string" minOccurs="0"/>
+      <xs:element name="tipo" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="EstadoDocumentoResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:responseEstado" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="responseEstado">
+    <xs:sequence>
+      <xs:element name="codigoError" type="xs:string" minOccurs="0"/>
+      <xs:element name="estado" type="xs:string" minOccurs="0"/>
+      <xs:element name="mensajeError" type="xs:string" minOccurs="0"/>
+      <xs:element name="pdfImpresion" type="xs:string" minOccurs="0"/>
+      <xs:element name="xmlEnvio" type="xs:string" minOccurs="0"/>
+      <xs:element name="xmlRespuesta" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="EnvioDocumento">
+    <xs:sequence>
+      <xs:element name="RequestDocumento" type="tns:requestDocumento" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="requestDocumento">
+    <xs:sequence>
+      <xs:element name="archivo" type="xs:base64Binary" minOccurs="0"/>
+      <xs:element name="correlativo" type="xs:string" minOccurs="0"/>
+      <xs:element name="ruc" type="xs:string" minOccurs="0"/>
+      <xs:element name="serie" type="xs:string" minOccurs="0"/>
+      <xs:element name="tipo" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="EnvioDocumentoResponse">
+    <xs:sequence>
+      <xs:element name="return" type="tns:responseDocumento" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="responseDocumento">
+    <xs:sequence>
+      <xs:element name="codigo" type="xs:int"/>
+      <xs:element name="mensaje" type="xs:string" minOccurs="0"/>
+    </xs:sequence>
+  </xs:complexType>
+</xs:schema>

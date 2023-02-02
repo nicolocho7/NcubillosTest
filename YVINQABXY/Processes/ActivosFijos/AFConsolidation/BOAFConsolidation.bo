@@ -1,0 +1,68 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FinancialAccounting.Global;
+
+businessobject BOAFConsolidation raises msj{
+
+		message msj text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+        
+		[Label("ID")][AlternativeKey]			element ID				: ID;
+												element UUID			: UUID;
+		[Label("Company")]						element CompanyID		: OrganisationalCentreID;
+		[Label("Set Of Books")]					element SetOfBooksID	: SetOfBooksID;
+		[Label("Date Execution")]				element EDateInitial	: Date;
+		[Label("Type Report")]					element TypeReport		: CLRegistroActivosFijosCode;
+		[Label("Fixed Valuation")]				element FixedValuation	: FixedAssetValuationViewCode;
+		[Label("Company")]						element Company			: ID;
+		[Label("Ejecutar años anteriores ")]	element RunPreviousYears: Indicator;
+		[Label("Tipo de Cambio")]				element Coin			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Parametro de Consolidación")]	element Consolidation	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+		node result [0,n]{
+			element campo1 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo2 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo3 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo4 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo5 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo6 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo7 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo8 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo9 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo10 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo11 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo12 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo13 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo14 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo15 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo16 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo17 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo18 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo19 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo20 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo21 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo22 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo23 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo24 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo25 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo26 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo27 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo28 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo29 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo30 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo31 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo32 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo33 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo34 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo35 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			element campo36 : LANGUAGEINDEPENDENT_EXTENDED_Text;
+		}
+		association Companyto to BOTableCompany;
+		association ToCompany to Company;
+		[DependentObject(AttachmentFolder)] node ReportsAttachments;
+
+		action REVALUADOS;
+		action DIFERENCIA;
+		action ARRENDAMIENTO;
+		action Execution;
+
+}

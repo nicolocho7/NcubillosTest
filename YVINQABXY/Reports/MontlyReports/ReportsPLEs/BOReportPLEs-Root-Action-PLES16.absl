@@ -1,0 +1,105 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BOReportPLEs
+		Node: Root
+		Action: PLES16 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+
+import ABSL;
+import AP.Common.GDT as apCommonGDT;
+import BASIS.Global as basis;
+import AP.FO.TaxArrangement.Global;
+import AP.FO.ProductDataMaintenance.Global;
+import AP.FinancialAccounting.Global;
+
+var strLine="";
+//Campos para asignar
+var vCampo1;
+var vCampo2;
+var vCampo3;
+var vCampo4;
+var vCampo5;
+var vCampo6;
+
+var qryAccount50 = BOAccount50.QueryByElements;
+var prmAccount50 = qryAccount50.CreateSelectionParams();
+	prmAccount50.Add(qryAccount50.CompanyID, "I", "EQ",this.CompanyID.RemoveLeadingZeros());
+	prmAccount50.Add(qryAccount50.InitialDate, "I", "LE", this.DateInitial);
+	prmAccount50.Add(qryAccount50.EndDate, "I", "GE", this.DateEnd);
+var ResConsum = qryAccount50.Execute(prmAccount50);
+
+if(ResConsum.Count() > 0){	
+	var insAccount50;
+	foreach(insAccount50 in ResConsum){
+		vCampo1 = this.DateEnd.GetYear() + this.DateEnd.GetMonth() +  this.DateEnd.GetDay();
+
+		vCampo2 = insAccount50.SocialCapitalAmount.content.RoundToString(2,true);
+		vCampo3 = insAccount50.NominalValueAmount.content.RoundToString(2,true);
+		vCampo4 = insAccount50.SubscribedShares.RoundToString(2,true);
+		vCampo5 = insAccount50.PaidShares.RoundToString(2,true);
+		vCampo6 = "1";
+
+		strLine =	strLine +	vCampo1 + "|" +
+					vCampo2 + "|" + 
+					vCampo3 + "|" +
+					vCampo4 + "|" +
+					vCampo5 + "|" +
+					vCampo6 + "|" + "\r\n";
+
+	}
+	var name : LANGUAGEINDEPENDENT_LONG_Name;
+	var type : DocumentTypeCode;
+	var desc : Description;
+	var binary : basis:BinaryObject;
+	var vNit;
+
+	var qryCompanyTax = CompanyTaxArrangement.QueryByElements;
+	var prmCompanyTax = qryCompanyTax.CreateSelectionParams();
+		prmCompanyTax.Add(qryCompanyTax.CompanyID,"I","EQ",this.CompanyID.RemoveLeadingZeros());
+	var insCompanyTax = qryCompanyTax.Execute(prmCompanyTax).GetFirst();
+	if(insCompanyTax.IsSet()){
+		if(insCompanyTax.TaxIdentificationNumber.Count() > 0){
+			vNit = insCompanyTax.TaxIdentificationNumber.GetFirst().PartyTaxID.content;
+		}
+	}
+
+	name = "LE" + vNit + this.DateEnd.GetYear() + this.DateEnd.GetMonth() + this.DateEnd.GetDay() + "031601" + "07" + "1111" + ".TXT";
+	type.content = "10001";
+	type.listID = "10296";
+	binary.mimeCode = "text/plain";
+	binary.content = Binary.ParseFromString(strLine);
+
+	this.ReportsAttachments.CreateFile(type, name, name, desc, binary);	
+}else{
+	var vacio  = "";	
+	var name : LANGUAGEINDEPENDENT_LONG_Name;
+	var type : DocumentTypeCode;
+	var desc : Description;
+	var binary : basis:BinaryObject;
+	var vNit;
+	var qryCompanyTax = CompanyTaxArrangement.QueryByElements;
+	var prmCompanyTax = qryCompanyTax.CreateSelectionParams();
+		prmCompanyTax.Add(qryCompanyTax.CompanyID,"I","EQ",this.CompanyID.RemoveLeadingZeros());
+	var insCompanyTax = qryCompanyTax.Execute(prmCompanyTax).GetFirst();
+	if(insCompanyTax.IsSet()){
+		if(insCompanyTax.TaxIdentificationNumber.Count() > 0){
+			vNit = insCompanyTax.TaxIdentificationNumber.GetFirst().PartyTaxID.content;
+		}
+	}
+
+
+	name = "LE" + vNit + this.DateEnd.GetYear() + this.DateEnd.GetMonth() + this.DateEnd.GetDay() + "031601" + "07" + "1011" + ".TXT";
+	type.content = "10001";
+	type.listID = "10296";
+	binary.mimeCode = "text/plain";
+	binary.content = Binary.ParseFromString(vacio);
+
+	this.ReportsAttachments.CreateFile(type, name, name, desc, binary);	
+
+}

@@ -1,0 +1,47 @@
+﻿import ABSL;
+import BASIS.Global as basis;
+import AP.Common.GDT;
+
+var requestDoc : Library::EWSGetDocument2.ObtenerPDF.Request; //request structure
+var responseDoc : Library::EWSGetDocument2.ObtenerPDF.Response; //response structure
+var scenarioDoc = "CSGetDocument2"; //scenario
+
+requestDoc.ruc  = this.CompanyRUC;
+requestDoc.tipoDocumento   = this.DocumentTypePro2;
+requestDoc.numeroDocumento = this.DocIDProvider;
+
+responseDoc = Library::EWSGetDocument2.ObtenerPDF(requestDoc, "", scenarioDoc);
+
+if (responseDoc.IsInitial()){
+	raise msg.Create("E", "WS Get Document: Response vacio");
+}
+	
+//fault messages
+var faultItems = responseDoc.CommunicationFault.Item;
+
+var insFault;
+foreach(insFault in faultItems){
+	raise msg.Create("E", "WS Get Document: " + insFault.Note);	
+}
+
+var RtaCod = responseDoc.ObtenerPDFReturn.resultado;
+//---------------------------------------------------------------------//
+///                       Creation TXT
+//---------------------------------------------------------------------// 
+		
+var name	:LANGUAGEINDEPENDENT_EXTENDED_Name;
+var type	:DocumentTypeCode;
+var desc	:Description;
+var binary	:basis:BinaryObject;
+var bin		:BinaryObject.content;
+
+if(RtaCod == "0"){
+	raise msg.Create("S", "WS Get Document: " + responseDoc.ObtenerPDFReturn.resultado);	
+	name = "EBill" + this.DocIDProvider + ".pdf";
+	type.content = "10001";
+	binary.mimeCode = "application/pdf";
+	bin = responseDoc.ObtenerPDFReturn.archivo;
+	binary.content =  bin;//Binary.ParseFromString(CodArchivo);
+	if (!this.Attachment.IsSet()) { this.Attachment.Create(); }
+	this.Attachment.CreateFile(type,name,name,desc,binary);	
+}

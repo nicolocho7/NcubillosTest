@@ -1,0 +1,26 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import BASIS.Global;
+
+businessobject BOInterfaceMessage raises msg {
+
+
+message msg text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+        // Root node must not be specified, it is created implicitly
+        //
+        // Add elements here. 
+        // 
+        // To declare an element as alternative key, use the [AlternativeKey] annotation.
+        // Please note:
+        // - An alternative key of type UUID exists implicitly for each node, enabling the node
+        //   to be used as an association target.
+        // - The QueryByElements query is created automatically for each node.
+        // - Code completion is available with CTRL + SPACE.
+		[Label("Type Sap")]				element TypeSap				: CLDocumentTypeSAPCode ;
+		[Label("Code")]					element  Code				: ID;
+		[Label("Language Message")]		element Language			: LanguageCode;
+		[Label("Message")]				element Message				: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			
+										element IsConsisten			: apCommonGDT							: Indicator;
+
+}

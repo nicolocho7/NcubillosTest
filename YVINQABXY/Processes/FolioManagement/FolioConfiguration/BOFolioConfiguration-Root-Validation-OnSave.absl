@@ -1,0 +1,67 @@
+﻿import ABSL;
+
+var vIsConsistent = true;
+
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+
+var msgCompany = "Falto ingresar empresa.";
+var msgDescription = "Falto ingresar descripción.";
+var msgDate = "Falto ingresar fecha de registro.";
+var msgConsecutive = "Falto ingresar consecutivo.";
+var msgSize1 = "Falto ingresar tamaño 1.";
+var msgSize2 = "Falto ingresar tamaño 2.";
+var msgCont = "El Consecutivo no puede ser mayor a 10";
+
+
+if (LanguageCode != "ES"){
+	msgCompany = "Missing Serie.";
+	msgDescription = "Missing description";
+	msgDate = "Missing date.";
+	msgConsecutive = "Missing consecutive.";
+	msgSize1 = "Missing size 1.";
+	msgSize2 = "Missing size 2.";
+	msgCont= "The Consecutive can not be greater than 10";
+}
+
+if(!this.Consecutive.IsInitial()){
+	if(this.Consecutive > 10 ){
+		raise msj.Create("E", msgCont);
+		vIsConsistent = false;
+	}
+}
+if(this.CompanyID.IsInitial()){
+	raise msj.Create("E",msgDescription);
+	vIsConsistent = false;
+}
+
+if(this.DescriptionConf.IsInitial()){
+	raise msj.Create("E",msgDescription);
+	vIsConsistent = false;
+}
+
+if(this.RegistrationDate.IsInitial()){
+	raise msj.Create("E",msgDate);
+	vIsConsistent = false;
+}
+
+if(this.Consecutive.IsInitial()){
+	raise msj.Create("E",msgConsecutive);
+	vIsConsistent = false;
+}
+
+if(this.UseSec1){
+	if(this.SectionSize1.IsInitial()){
+		raise msj.Create("E",msgSize1);
+		vIsConsistent = false;
+	}
+}
+
+if(this.UseSec2){
+	if(this.SectionSize2.IsInitial()){
+		raise msj.Create("E",msgSize2);
+		vIsConsistent = false;
+	}
+}
+
+return vIsConsistent;
+

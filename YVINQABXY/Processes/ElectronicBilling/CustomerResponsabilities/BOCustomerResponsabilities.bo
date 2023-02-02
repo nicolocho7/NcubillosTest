@@ -1,0 +1,9 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+[WithAdministrativeData]businessobject BOCustomerResponsabilities raises msj{
+
+        message msj text "&":LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[AlternativeKey][Label("ID")]	element CustomerResponsabilitiesID			: ID;
+		[Label("Description")]			element CustomerResponsabilitiesDesc		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+}

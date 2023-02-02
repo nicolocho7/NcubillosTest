@@ -1,0 +1,44 @@
+﻿import ABSL;
+
+this.IsConsistent = true;
+
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+
+var msgDate = "Falto ingresar fecha.";
+var msgDescription = "Falto ingresar descripción.";
+var msgTypeFormat = "Falto ingresar formato de banco.";
+var msgType = "Formato de banco no considerado para este proceso.";
+
+if (LanguageCode != "ES"){
+	msgDate = "I miss enter date.";
+	msgDescription = "I miss enter description.";
+	msgTypeFormat = "I miss enter bank format.";
+	msgType = "Bank format not considered for this process.";
+	
+}
+
+if(this.Date.IsInitial()){
+	this.IsConsistent = false;
+	raise msj.Create("E", msgDate);
+}
+
+if(this.Description.IsInitial()){
+	this.IsConsistent = false;
+	raise msj.Create("E", msgDescription);
+}
+
+if(this.TypeFormatConciliation.IsInitial()){
+	this.IsConsistent = false;
+	raise msj.Create("E", msgTypeFormat);
+}
+
+if(this.IsConsistent){
+	switch (this.TypeFormatConciliation){
+		//case CLTypeBankConciliationCode.CO_BOGO { this.BOGO(); }
+		//case CLTypeBankConciliationCode.CO_BACO { this.BCOL(); }
+		//case CLTypeBankConciliationCode.CO_CITY { this.BCITI(); }
+		//case CLTypeBankConciliationCode.CO_BAAL { this.BALIA(); }
+		//case CLTypeBankConciliationCode.CO_DAVI { this.BDAVI(); }
+		default {raise msj.Create("E", msgType);}
+	}
+}

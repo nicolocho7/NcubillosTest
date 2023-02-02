@@ -1,0 +1,28 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FinancialAccounting.Global;
+
+businessobject BOInventarios raises msj{
+
+		message msj text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+        
+		[Label("ID")][AlternativeKey]	element ID	: ID;
+		element UUID :UUID;
+		[Label("Company")]		element CompanyID	: OrganisationalCentreID;
+		association ToCompany	to Company;
+		[Label("Set Of Books")]		element SetOfBooksID	: SetOfBooksID;
+		
+		[Label("Date Execution")]	element EDateInitial		: Date;
+
+		[Label("Company")]			element Company		: ID;
+
+		[Label("Executed")]			element Exe		: Indicator = true;
+		association  Companyto to BOTableCompany;
+
+
+		[DependentObject(AttachmentFolder)] node ReportsAttachments;
+
+		action Executed;
+		action ExecutedMCS;
+
+}

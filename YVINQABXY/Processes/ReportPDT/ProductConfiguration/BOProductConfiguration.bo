@@ -1,0 +1,18 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FinancialAccounting.Global;
+
+businessobject BOProductConfiguration raises msj {
+	
+	message msj text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+	[Label("Company")] [AlternativeKey]		element CompanyID					: OrganisationalCentreID;
+	association ToCompany to Company;
+
+	node Products [0,n] raises msjProd {
+		message msjProd text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Product ID")]				element ProductID				: ProductID;
+		[Label("Product Desc")]				element ProductInternalID		: LANGUAGEINDEPENDENT_EXTENDED_Text;//Se usará como descripción
+		
+	}
+}

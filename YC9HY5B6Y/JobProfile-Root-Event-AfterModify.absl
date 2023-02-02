@@ -1,0 +1,27 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: JobProfile
+		Node: Root
+		Event: AfterModify 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script if:
+		- the value of any field in the node in which this script is contained is modified.
+		- the node itself is modified by another business object within the same solution.
+*/
+
+import ABSL;
+import AP.FO.BusinessPartner.Global;
+
+if(!this.hireMgrId.IsInitial())
+{
+	var employee = Employee.Identification.Retrieve(this.hireMgrId);// Employee es un objeto de la libreria de AP.FO.BusinessPartner.Global
+																	// con la rutina anterior toma el employee
+																	// basado en lo que se encuentra en el campo hireMrgId ya que la validacion
+																	// es cuando no este vacio el hireMgrId
+	var root = employee.ToRoot; // Con esto instacio la variable root con el objeto employee que acabe de crear con la asignacion anterior.
+	this.hireMgrName = root.CurrentCommon.BusinessPartnerFormattedName; //Asigno el nombre al campo hireMgrName
+}

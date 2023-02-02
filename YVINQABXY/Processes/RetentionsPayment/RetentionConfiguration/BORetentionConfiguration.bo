@@ -1,0 +1,14 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.ProductDataMaintenance.Global;
+
+businessobject BORetentionConfiguration raises msj{
+	message msj text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+	
+	[Label("Configuration ID")]									element ConfigurationID					: ID;
+	[Label("Company ID")]							element CompanyID						: PartyID;  //Compañia
+	[Label("Retention type")]						element RetentionType					: CLRetentionTypeCode;
+	[Label("Base")]									element Base							: NumberValue;
+	[Label("Percent")]								element Percent							: Percent;
+	[Label("Determination Accounts")]				element DeterAccounts					: GeneralLedgerAccountAliasCode;
+	[Label("Product ID")]							element ProductID						: ProductInternalID;
+}

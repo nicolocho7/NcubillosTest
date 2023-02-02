@@ -1,0 +1,334 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{09b7ff01-116a-4ec0-9534-26ea95c7ac24}</ProjectGuid>
+    <ProjectType>CopernicusProject</ProjectType>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Name>YRKXVY6OY</Name>
+    <RootNamespace>YRKXVY6OY</RootNamespace>
+    <RepositoryNamespace>http://0004019099-one-off.sap.com/YRKXVY6OY_</RepositoryNamespace>
+    <RuntimeNamespacePrefix>YRKXVY6OY_</RuntimeNamespacePrefix>
+    <RepositoryRootFolder>/YRKXVY6OY_MAIN</RepositoryRootFolder>
+    <DefaultProcessComponent>YRKXVY6OY_YRKXVY6OY</DefaultProcessComponent>
+    <DevelopmentPackage>$YRKXVY6OY_DEV</DevelopmentPackage>
+    <XRepSolution>YRKXVY6OY_MAIN</XRepSolution>
+    <BCSourceFolderInXRep>/YRKXVY6OY_BC/SRC</BCSourceFolderInXRep>
+    <ProjectSourceFolderinXRep>/YRKXVY6OY_MAIN/SRC</ProjectSourceFolderinXRep>
+    <DeploymentUnit>FOUNDATION</DeploymentUnit>
+    <CompilerVersion>1302_FP15</CompilerVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>bin</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="BOCustom" />
+    <Folder Include="BoEstandar" />
+    <Folder Include="BACElement" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="BOCustom\ApprovalByIt-DETERMINE_RESPONSIBILE_EMP.absl">
+      <DependentUpon>BOCustom\ApprovalByIt.enht</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\ApprovalByIt.enht">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\ApprovalByIt.fltr">
+      <DependentUpon>BOCustom\ApprovalByIt.enht</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\CS_JPExtInt.csd">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\CustomReuseLibrary-Function-Identity.absl">
+      <DependentUpon>BOCustom\CustomReuseLibrary.library</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\CustomReuseLibrary.library">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JobApplications-Root-Action-accept.absl">
+      <DependentUpon>BOCustom\JobApplications-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\JobApplications-Root-Action-reject.absl">
+      <DependentUpon>BOCustom\JobApplications-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\JobApplications-Root.node">
+      <DependentUpon>BOCustom\JobApplications.bo</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\JobApplications.bo">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JobApplications.ds">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JobApplications_OIF.OIF.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JobApplications_OWL.OWL.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JobApplications_PTP.PTP.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JobApplications_QA.QA.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JobApplications_WCF.WCF.uiwoc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JobApplications_WCView.WCVIEW.uiwocview">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JobListing-Root-Action-apply.absl">
+      <DependentUpon>BOCustom\JobListing-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\JobListing-Root-Action-withdraw.absl">
+      <DependentUpon>BOCustom\JobListing-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\JobListing-Root-Event-AfterModify.absl">
+      <DependentUpon>BOCustom\JobListing-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\JobListing-Root.node">
+      <DependentUpon>BOCustom\JobListing.bo</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\JobListing.bo">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JobListing.ds">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JobListing_OIF.OIF.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JobListing_OWL.OWL.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JobListing_PTP.PTP.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JobListing_QA.QA.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JobListing_WCF.WCF.uiwoc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JobListing_WCView.WCVIEW.uiwocview">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfile-candidatesApplied-Action-sendMail.absl">
+      <DependentUpon>BOCustom\JobProfile-candidatesApplied.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfile-candidatesApplied.node">
+      <DependentUpon>BOCustom\JobProfile.bo</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfile-Root-Action-Approve_APP1.absl">
+      <DependentUpon>BOCustom\JobProfile-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfile-Root-Action-CallWebService.absl">
+      <DependentUpon>BOCustom\JobProfile-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfile-Root-Action-Close.absl">
+      <DependentUpon>BOCustom\JobProfile-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfile-Root-Action-Obselete.absl">
+      <DependentUpon>BOCustom\JobProfile-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfile-Root-Action-publishJob.absl">
+      <DependentUpon>BOCustom\JobProfile-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfile-Root-Action-Reject_APP1.absl">
+      <DependentUpon>BOCustom\JobProfile-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfile-Root-Action-SendBackForRevision_APP1.absl">
+      <DependentUpon>BOCustom\JobProfile-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfile-Root-Action-SubmitForApproval_APP1.absl">
+      <DependentUpon>BOCustom\JobProfile-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfile-Root-Action-WithdrawFromApproval_APP1.absl">
+      <DependentUpon>BOCustom\JobProfile-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfile-Root-APP1.QA.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfile-Root-APP1_NotificationUI.FS.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfile-Root-ApprovalStatus.approvalprocess">
+      <DependentUpon>BOCustom\JobProfile-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfile-Root-Event-AfterModify.absl">
+      <DependentUpon>BOCustom\JobProfile-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfile-Root-Event-BeforeSave.absl">
+      <DependentUpon>BOCustom\JobProfile-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfile-Root-Validation-OnSave.absl">
+      <DependentUpon>BOCustom\JobProfile-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfile-Root.node">
+      <DependentUpon>BOCustom\JobProfile.bo</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfile.bo">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfileForm.fthd">
+      <DependentUpon>BOCustom\JobProfileFormGroup.ftgd</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfileFormGroup.ftgd">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfileForm__EN.xdp">
+      <DependentUpon>BOCustom\JobProfileForm.fthd</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfileMassUpload-Input-In.sadl">
+      <IsHidden>TRUE</IsHidden>
+      <DependentUpon>BOCustom\JobProfileMassUpload.pid</DependentUpon>
+    </Content>
+    <Content Include="BOCustom\JobProfileMassUpload.pid">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfileToJobListing-JobProfile-Root-Start.absl">
+      <IsHidden>TRUE</IsHidden>
+      <DependentUpon>BOCustom\JobProfileToJobListing.pid</DependentUpon>
+    </Content>
+    <Content Include="BOCustom\JobProfileToJobListing-Maintain-In.sadl">
+      <IsHidden>TRUE</IsHidden>
+      <DependentUpon>BOCustom\JobProfileToJobListing.pid</DependentUpon>
+    </Content>
+    <Content Include="BOCustom\JobProfileToJobListing-Maintain-Out.sadl">
+      <IsHidden>TRUE</IsHidden>
+      <DependentUpon>BOCustom\JobProfileToJobListing.pid</DependentUpon>
+    </Content>
+    <Content Include="BOCustom\JobProfileToJobListing.pid">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfile_OIF.OIF.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfile_OWL.OWL.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfile_PTP.PTP.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfile_QA.QA.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfile_WCF.WCF.uiwoc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JobProfile_WCView.WCVIEW.uiwocview">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\JPExtInt-YRKXVY6OY_ManageJobProfileIn.wsdl">
+      <DependentUpon>BOCustom\JPExtInt.wsid</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BOCustom\JPExtInt.wsid">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\ManageJobProfileIn.webservice">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BOCustom\ManageJobProfileIn.wsauth">
+      <DependentUpon>BOCustom\ManageJobProfileIn.webservice</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BoEstandar\HiringManagerRole.uiswitch">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoEstandar\pooifchangeeco.OIF.xuicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoEstandar\poowlqrn.OWL.xuicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoEstandar\PurchaseOrder-Root-Event-AfterModify.absl">
+      <DependentUpon>BoEstandar\PurchaseOrder-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BoEstandar\PurchaseOrder-Root.node">
+      <DependentUpon>BoEstandar\PurchaseOrder.xbo</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="BoEstandar\PurchaseOrder.xbo">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoEstandar\PurchaseOrderEXT.xs">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoEstandar\SalesOrder.xbo">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoEstandar\sivqafcreateeco.QA.xuicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="BoEstandar\SupplierInvoice.xbo">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="YRKXVY6OY_E28DEE5AFA197E.jds">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="YRKXVY6OY_E2B357E9418321.cds">
+      <SubType>Content</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <BCSet Include="..\YRKXVY6OY_BC\BACElement\BACElement.bac">
+      <SubType>BCSet</SubType>
+    </BCSet>
+    <BCSet Include="..\YRKXVY6OY_BC\BOCustom\Domain.codelist">
+      <SubType>BCSet</SubType>
+    </BCSet>
+    <BCSet Include="..\YRKXVY6OY_BC\BOCustom\EmploymentType.codelist">
+      <SubType>BCSet</SubType>
+    </BCSet>
+    <BCSet Include="..\YRKXVY6OY_BC\BOCustom\JOBNUMBER.bcc">
+      <SubType>BCSet</SubType>
+    </BCSet>
+    <BCSet Include="..\YRKXVY6OY_BC\BOCustom\JOBNUMBERVIEW.QA.uicomponent">
+      <SubType>BCSet</SubType>
+    </BCSet>
+    <BCSet Include="..\YRKXVY6OY_BC\BOCustom\JobStatus.codelist">
+      <SubType>BCSet</SubType>
+    </BCSet>
+    <BCSet Include="..\YRKXVY6OY_BC\BOCustom\NUMBERDERIVATIONJOBID.bco">
+      <SubType>BCSet</SubType>
+    </BCSet>
+    <BCSet Include="..\YRKXVY6OY_BC\BOCustom\OfferStatus.codelist">
+      <SubType>BCSet</SubType>
+    </BCSet>
+    <BCSet Include="..\YRKXVY6OY_BC\BoEstandar\POAPPROVALRULE.bcc">
+      <SubType>BCSet</SubType>
+    </BCSet>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

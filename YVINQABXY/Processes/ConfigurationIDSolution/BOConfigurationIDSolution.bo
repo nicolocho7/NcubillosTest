@@ -1,0 +1,11 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BOConfigurationIDSolution raises msj{
+
+		message msj text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+		[Label("ID Solution")]		element IDSolution		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Inactive")]		element Inactive		: Indicator;
+
+
+}

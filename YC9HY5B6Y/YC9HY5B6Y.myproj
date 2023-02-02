@@ -1,0 +1,372 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{a5989839-e877-4d35-b112-1471364700bc}</ProjectGuid>
+    <ProjectType>CopernicusProject</ProjectType>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Name>YC9HY5B6Y</Name>
+    <RootNamespace>YC9HY5B6Y</RootNamespace>
+    <RepositoryNamespace>http://0004019099-one-off.sap.com/YC9HY5B6Y_</RepositoryNamespace>
+    <RuntimeNamespacePrefix>YC9HY5B6Y_</RuntimeNamespacePrefix>
+    <RepositoryRootFolder>/YC9HY5B6Y_MAIN</RepositoryRootFolder>
+    <DefaultProcessComponent>YC9HY5B6Y_YC9HY5B6Y</DefaultProcessComponent>
+    <DevelopmentPackage>$YC9HY5B6Y_DEV</DevelopmentPackage>
+    <XRepSolution>YC9HY5B6Y_MAIN</XRepSolution>
+    <BCSourceFolderInXRep>/YC9HY5B6Y_BC/SRC</BCSourceFolderInXRep>
+    <ProjectSourceFolderinXRep>/YC9HY5B6Y_MAIN/SRC</ProjectSourceFolderinXRep>
+    <DeploymentUnit>FOUNDATION</DeploymentUnit>
+    <CompilerVersion>1302_FP15</CompilerVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>bin</OutputPath>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="ApprovalByIT-DETERMINE_RESPONSIBILE_EMP.absl">
+      <DependentUpon>ApprovalByIT.enht</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="ApprovalByIT.enht">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="ApprovalByIT.fltr">
+      <DependentUpon>ApprovalByIT.enht</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="ConsumeService-Root-Action-callWebService.absl">
+      <DependentUpon>ConsumeService-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="ConsumeService-Root.node">
+      <DependentUpon>ConsumeService.bo</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="ConsumeService.bo">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="ConsumeService_OIF.OIF.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="ConsumeService_OWL.OWL.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="ConsumeService_PTP.PTP.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="ConsumeService_QA.QA.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="ConsumeService_WCF.WCF.uiwoc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="ConsumeService_WCView.WCVIEW.uiwocview">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="CS_JPExtInt.csd">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="CS_JPExtInt1.csd">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="CustomReuseLibrary-Function-IdentityEmployee.absl">
+      <DependentUpon>CustomReuseLibrary.library</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="CustomReuseLibrary.library">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="DiscloseEmployee-JOBSEARCH-GET_RECORDS.absl">
+      <DependentUpon>DiscloseEmployee-JOBSEARCH.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="DiscloseEmployee-JOBSEARCH.node">
+      <DependentUpon>DiscloseEmployee.pdd</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="DiscloseEmployee.pdd">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="HiringManagerRole.uiswitch">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="JobApplications-Root-Action-accept.absl">
+      <DependentUpon>JobApplications-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="JobApplications-Root-Action-reject.absl">
+      <DependentUpon>JobApplications-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="JobApplications-Root.node">
+      <DependentUpon>JobApplications.bo</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="JobApplications.bo">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="JobApplications_OIF.OIF.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="JobApplications_OWL.OWL.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="JobApplications_PTP.PTP.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="JobApplications_QA.QA.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="JobApplications_WCF.WCF.uiwoc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="JobApplications_WCView.WCVIEW.uiwocview">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="JobListing-Root-Action-apply.absl">
+      <DependentUpon>JobListing-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="JobListing-Root-Action-withdraw.absl">
+      <DependentUpon>JobListing-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="JobListing-Root-Event-AfterModify.absl">
+      <DependentUpon>JobListing-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="JobListing-Root.node">
+      <DependentUpon>JobListing.bo</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="JobListing.bo">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="JobListing_OIF.OIF.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="JobListing_OWL.OWL.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="JobListing_PTP.PTP.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="JobListing_QA.QA.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="JobListing_WCF.WCF.uiwoc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="JobListing_WCView.WCVIEW.uiwocview">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="JobProfile-candidatesApplied-Action-sendMail.absl">
+      <DependentUpon>JobProfile-candidatesApplied.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="JobProfile-candidatesApplied.node">
+      <DependentUpon>JobProfile.bo</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="JobProfile-Overview01.qry">
+      <DependentUpon>JobProfile.bo</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="JobProfile-Root-Action-Approve_APP1.absl">
+      <DependentUpon>JobProfile-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="JobProfile-Root-Action-callWebService.absl">
+      <DependentUpon>JobProfile-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="JobProfile-Root-Action-close.absl">
+      <DependentUpon>JobProfile-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="JobProfile-Root-Action-obselete.absl">
+      <DependentUpon>JobProfile-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="JobProfile-Root-Action-publish.absl">
+      <DependentUpon>JobProfile-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="JobProfile-Root-Action-Reject_APP1.absl">
+      <DependentUpon>JobProfile-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="JobProfile-Root-Action-SendBackForRevision_APP1.absl">
+      <DependentUpon>JobProfile-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="JobProfile-Root-Action-SubmitForApproval_APP1.absl">
+      <DependentUpon>JobProfile-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="JobProfile-Root-Action-WithdrawFromApproval_APP1.absl">
+      <DependentUpon>JobProfile-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="JobProfile-Root-APP1.QA.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="JobProfile-Root-APP1_NotificationUI.FS.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="JobProfile-Root-ApprovalStatus.approvalprocess">
+      <DependentUpon>JobProfile-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="JobProfile-Root-Event-AfterModify.absl">
+      <DependentUpon>JobProfile-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="JobProfile-Root-Event-BeforeSave.absl">
+      <DependentUpon>JobProfile-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="JobProfile-Root-Validation-OnSave.absl">
+      <DependentUpon>JobProfile-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="JobProfile-Root.node">
+      <DependentUpon>JobProfile.bo</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="JobProfile.bo">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="JobProfileIntegration-Input-In.sadl">
+      <IsHidden>TRUE</IsHidden>
+      <DependentUpon>JobProfileIntegration.pid</DependentUpon>
+    </Content>
+    <Content Include="JobProfileIntegration.pid">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="JobProfileJobListing-JobProfile-Root-Start.absl">
+      <IsHidden>TRUE</IsHidden>
+      <DependentUpon>JobProfileJobListing.pid</DependentUpon>
+    </Content>
+    <Content Include="JobProfileJobListing-Maintain-In.sadl">
+      <IsHidden>TRUE</IsHidden>
+      <DependentUpon>JobProfileJobListing.pid</DependentUpon>
+    </Content>
+    <Content Include="JobProfileJobListing-Maintain-Out.sadl">
+      <IsHidden>TRUE</IsHidden>
+      <DependentUpon>JobProfileJobListing.pid</DependentUpon>
+    </Content>
+    <Content Include="JobProfileJobListing.pid">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="JobProfile_OIF.OIF.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="JobProfile_OWL.OWL.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="JobProfile_PTP.PTP.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="JobProfile_QA.QA.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="JobProfile_WCF.WCF.uiwoc">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="JobProfile_WCView.WCVIEW.uiwocview">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="JPExtInt-YC9HY5B6Y_ManageJobProfileIn.wsdl">
+      <DependentUpon>JPExtInt.wsid</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="JPExtInt.wsid">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="JPExtInt1-YC9HY5B6Y_ManageJobProfileIn.wsdl">
+      <DependentUpon>JPExtInt1.wsid</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="JPExtInt1.wsid">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="ManageJobProfileIn.webservice">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="ManageJobProfileIn.wsauth">
+      <DependentUpon>ManageJobProfileIn.webservice</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="pooifchangeeco.OIF.xuicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="poowlqrn.OWL.xuicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="PortTypePackage1.PTP.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="PublishJobs.run">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="PublishJobs_OWL.OWL.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="PublishJobs_QA.QA.uicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="PublishJobs_WCView.WCVIEW.uiwocview">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="PurchaseOrder-Root-Event-AfterModify.absl">
+      <DependentUpon>PurchaseOrder-Root.node</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="PurchaseOrder-Root.node">
+      <DependentUpon>PurchaseOrder.xbo</DependentUpon>
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="PurchaseOrder.xbo">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="PurchaseOrderEXT.xs">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="sivqafcreateeco.QA.xuicomponent">
+      <SubType>Content</SubType>
+    </Content>
+    <Content Include="SupplierInvoice.xbo">
+      <SubType>Content</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <BCSet Include="..\YC9HY5B6Y_BC\Domain.codelist">
+      <SubType>BCSet</SubType>
+    </BCSet>
+    <BCSet Include="..\YC9HY5B6Y_BC\EmploymentType.codelist">
+      <SubType>BCSet</SubType>
+    </BCSet>
+    <BCSet Include="..\YC9HY5B6Y_BC\JOBNUMBER.bcc">
+      <SubType>BCSet</SubType>
+    </BCSet>
+    <BCSet Include="..\YC9HY5B6Y_BC\JOBNUMBERVIEW.QA.uicomponent">
+      <SubType>BCSet</SubType>
+    </BCSet>
+    <BCSet Include="..\YC9HY5B6Y_BC\JobSearch.bac">
+      <SubType>BCSet</SubType>
+    </BCSet>
+    <BCSet Include="..\YC9HY5B6Y_BC\JobStatus.codelist">
+      <SubType>BCSet</SubType>
+    </BCSet>
+    <BCSet Include="..\YC9HY5B6Y_BC\NUMBERDERIVATIONJOBID.bco">
+      <SubType>BCSet</SubType>
+    </BCSet>
+    <BCSet Include="..\YC9HY5B6Y_BC\OfferStatus.codelist">
+      <SubType>BCSet</SubType>
+    </BCSet>
+    <BCSet Include="..\YC9HY5B6Y_BC\POAPPROVALRULE.bcc">
+      <SubType>BCSet</SubType>
+    </BCSet>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+</Project>

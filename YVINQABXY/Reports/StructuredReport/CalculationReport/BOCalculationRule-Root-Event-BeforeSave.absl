@@ -1,0 +1,52 @@
+﻿//import ABSL;
+//
+//this.CalculationRuleID = this.StructureID.RemoveLeadingZeros() + this.CodeStructure.RemoveLeadingZeros();
+//
+//this.WasModify = false;
+//
+//// - - - - - - - - - Validations  - - - - - - - - - - //
+//var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+//var MsgStructure = "Falto ingresar estructura.";
+//var MsgCode = "Falto ingresar codigo.";
+//var MsgElements = "Falto ingresar al menos un elemento.";
+//
+//if (LanguageCode != "ES")
+//{
+	//MsgStructure = "You must enter structure.";
+	//MsgCode = "You must enter code.";
+	//MsgElements = "You must enter at least one item.";
+//}
+//
+//this.IsConsistent = true; 
+//
+//if(this.StructureID.IsInitial()){
+	//this.IsConsistent = false; 
+	//raise msg.Create("E",MsgStructure);
+//}
+//
+//if(this.CodeStructure.IsInitial()){
+	//this.IsConsistent = false; 
+	//raise msg.Create("E",MsgCode);
+//}
+//
+//if(this.Elements.Count() > 0){
+	//var vAdd = 1;
+	//foreach(var itemElement in this.Elements.OrderBy(n=>n.ID)){
+		//itemElement.ID = vAdd.ToString();
+				//
+		//if(itemElement.Account.content.IsInitial()){
+			//raise msg.Create("E", " Posición " + vAdd.ToString() + ": falto ingresar cuenta contable.");
+			//this.IsConsistent = false;
+		//}
+//
+		//if(itemElement.Operation.IsInitial()){
+			//raise msg.Create("E", " Posición " + vAdd.ToString() + ": falto ingresar operación.");
+			//this.IsConsistent = false;
+		//}
+//
+		//vAdd = vAdd + 1;
+	//}
+//}else{
+	//this.IsConsistent = false; 
+	//raise msg.Create("E",MsgElements);
+//}

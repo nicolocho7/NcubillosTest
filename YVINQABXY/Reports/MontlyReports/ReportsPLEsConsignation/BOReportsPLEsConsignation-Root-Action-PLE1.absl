@@ -1,0 +1,233 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BOReportsPLEsConsignation
+		Node: Root
+		Action: PLE1 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	   
+*/
+
+import ABSL;
+import AP.Common.GDT as apCommonGDT;
+import BASIS.Global as basis;
+import AP.FO.TaxArrangement.Global;
+import AP.FO.ProductDataMaintenance.Global;
+import AP.FinancialAccounting.Global;
+
+var insCompanyConfig;
+var strLine = "";
+//Messages definition
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+var msgNotConfig = "No hay datos de configuración de esta empresa para el informe.";
+
+if (LanguageCode != "ES"){
+	msgNotConfig = "No configuration data for the company fro the report.";
+}
+
+while(true){
+	if (this.CompanyID.IsInitial() && this.TypeReport.IsInitial()){raise msg.Create("E", msgNotConfig); break;}
+	
+	if (this.ReportsAttachments.DocumentList.Count() > 0){
+		this.ReportsAttachments.DocumentList.Delete();
+	}
+
+	var serviceID = "";
+	var parameter : NameAndValue;
+	var parameters : collectionof NameAndValue;  
+	var StringValue = "";
+
+	//Adicion de Campos a seleccionar
+	serviceID = "PW00124";  
+	parameter.Name = "$select";  
+	parameter.Value = "CTRANSACT_DATE,CPRODUCT,CREF_PO,CREF_PO_ITEM_ID,TPRODUCT,CBU_QTY_UNIT,CRECEIVING_EDATE,CDELIVERY_NOTE_ID,CREF_CIV,CTAX_TYPE,CTAX_ID_NR,TSELLER,KCQUANTITY";
+	parameters.Add(parameter);    
+	
+	//Filtros
+	var DateInitialString = this.DateInitial.ToString().Replace("/","-"); 
+	var DateFinalString = this.DateEnd.ToString().Replace("/","-");
+
+	StringValue = "CBUYER eq '" + this.CompanyID + "'"//Compañia
+				+ " and (CTRANSACT_DATE ge datetime'"+DateInitialString+"T00:00:00' and CTRANSACT_DATE le datetime'"+DateFinalString+"T00:00:00')"
+				+ " and CGSA_TYPE eq '282'"
+				+ " and CYVINQABXY_3126FBBC65 eq false";
+
+	//Adicion de filtros a parametros
+	parameter.Name = "$filter";
+	parameter.Value = StringValue;
+	parameters.Add(parameter);
+
+	var ws_result = WebServiceUtilities.ExecuteWebService(serviceID, parameters);
+	var Content = ws_result.ResponseContent;  
+	var returnCode = ws_result.ReturnCode;  
+	
+	var xmlResult;
+	
+	xmlResult = Library::RLStrings.XMLToArray(Content);
+
+	//Campos para asignar
+	var vCampo1;
+	var vCampo2;
+	var vCampo3;
+	var vCampo4;
+	var vCampo5;
+	var vCampo6;
+	var vCampo7;
+	var vCampo8;
+	var vCampo9;
+	var vCampo10;
+	var vCampo11;
+	var vCampo12;
+	var vCampo13;
+	var vCampo14;
+	var vCampo15;
+	var vCampo16;
+	var vCampo17;
+	var vCampo18;
+	var vCampo19;
+	var vCampo20;
+	var vCampo21;
+	var vCampo22;
+	var vCampo23;
+
+	foreach (var xmlRow in xmlResult){
+		//Lógica para campo 1
+		vCampo1 = Library::RLStrings.GetElementByName(xmlRow.String, "CTRANSACT_DATE").Trim();//Campo fecha de transacción
+		vCampo1 = vCampo1.Substring(0, 4)  + vCampo1.Substring(5, 2)  + "00";
+
+		vCampo2 = "9";
+		vCampo3 = "01";
+		vCampo4 = Library::RLStrings.GetElementByName(xmlRow.String, "CPRODUCT").Trim();//Campo ID de Producto
+
+		//Lógica para campo 5
+		var REF_PO = Library::RLStrings.GetElementByName(xmlRow.String, "CREF_PO").Trim();//Campo REF_PO 
+		var REF_PO_ITEM_ID = Library::RLStrings.GetElementByName(xmlRow.String, "CREF_PO_ITEM_ID").Trim();//Campo REF_PO_ITEM_ID 
+		vCampo5 = REF_PO + REF_PO_ITEM_ID;
+
+		vCampo6 = Library::RLStrings.GetElementByName(xmlRow.String, "TPRODUCT").Trim();//Descripción de producto
+
+		//Lógica para campo 7
+		vCampo7 = Library::RLStrings.GetElementByName(xmlRow.String, "CBU_QTY_UNIT").Trim();//BU_QTY_UNIT
+		var qry = BOMeasureUnitCodeHomo.QueryByElements;
+		var prm = qry.CreateSelectionParams();
+			prm.Add(qry.CompanyID, "I", "EQ", this.CompanyID.RemoveLeadingZeros());
+		var ins = qry.Execute(prm).GetFirst();
+		while(true){
+			if(!ins.IsSet()){break;}
+			if(ins.Homologations.Count() == 0){break;}
+			var insHomologations = ins.Homologations;
+			var insUnitCode = insHomologations.Where(n=>n.TypeCodeSAP == vCampo7).GetFirst();
+			if(!insUnitCode.IsSet()){break;}
+			vCampo7 = insUnitCode.TypeCodeSunat;
+			break;
+		}
+
+		vCampo8 = Library::RLStrings.GetElementByName(xmlRow.String, "CRECEIVING_EDATE").Trim();//RECEIVING_EDATE
+		vCampo8 = vCampo8.Substring(8, 2) +"/"+ vCampo8.Substring(5, 2) +"/"+ vCampo8.Substring(0, 4);
+
+		vCampo9 = Library::RLStrings.GetElementByName(xmlRow.String, "CDELIVERY_NOTE_ID").Trim();//DELIVERY_NOTE_ID
+		vCampo10 = Library::RLStrings.GetElementByName(xmlRow.String, "CDELIVERY_NOTE_ID").Trim();//DELIVERY_NOTE_ID
+
+		var AuxCampo11 = Library::RLStrings.GetElementByName(xmlRow.String, "CREF_CIV").Trim();//2 primeros digitos de REF_CIV_01 
+		vCampo11 = AuxCampo11.Substring(0,2);
+
+		vCampo12 = vCampo8;//Library::RLStrings.GetElementByName(xmlRow.String, "CRECEIVING_EDATE").Trim();//No dice nada la especificación de donde traerlo, basandose en el 9.2 es el RECEIVING_EDATE 
+
+		//Lógica Campo 13
+		var vLenght = AuxCampo11.Length();//valor entre el primer y segundo guion de REF_CIV
+		var vPos = AuxCampo11.Find("_");
+		vPos = vPos + 1;
+		var vAux = AuxCampo11.Substring(vPos,vLenght-vPos);
+		vPos = vAux.Find("_");
+		vCampo13 = vAux.Substring(0,vPos);
+
+		if(vCampo13.IsInitial()){
+			vCampo13 = "0";
+		}
+
+		//Lógica Campo 14
+		var vLenght2 = vAux.Length();//valor despues del segundo guion de REF_CIV
+		vPos = vAux.Find("_");
+		vPos = vPos + 1;
+		vCampo14 = vAux.Substring(vPos,vLenght2-vPos);
+
+		if(vCampo14.IsInitial()){
+			vCampo14 = "0";
+		}
+
+		vCampo15 = vCampo8;//Library::RLStrings.GetElementByName(xmlRow.String, "CRECEIVING_EDATE").Trim();//RECEIVING_EDATE
+
+		//Logica Campo 16
+		var AuxCampo16 = Library::RLStrings.GetElementByName(xmlRow.String, "CTAX_TYPE").Trim();//TAX_TYPE Homologado según tabla SUNAT
+		if(AuxCampo16 == "4" || AuxCampo16 == "6"){vCampo16 = "0";}
+		if(AuxCampo16 == "2"){vCampo16 = "1";}
+		if(AuxCampo16 == "5"){vCampo16 = "4";}
+		if(AuxCampo16 == "1"){vCampo16 = "6";}
+		if(AuxCampo16 == "3"){vCampo16 = "7";}
+
+		vCampo17 = Library::RLStrings.GetElementByName(xmlRow.String, "CTAX_ID_NR").Trim();//TAX_ID_NR 
+		vCampo18 = Library::RLStrings.GetElementByName(xmlRow.String, "TSELLER").Trim();//Nombre SELLER
+		
+		var AuxCampo19 = Library::RLStrings.GetElementByName(xmlRow.String, "KCQUANTITY").Trim();//Ratio QUANTITY , a 2 decimales 
+		vCampo19 = ABSL:Numeric.ParseFromString(AuxCampo19).RoundToString(2,true);
+
+		vCampo20 = "00.0";
+		vCampo21 = "00.0";
+		vCampo22 = "1";
+
+		strLine = strLine + vCampo1 + "|" +
+							vCampo2 + "|" + 
+							vCampo3 + "|" +
+							vCampo4 + "|" +
+							vCampo5 + "|" +
+							vCampo6 + "|" +
+							vCampo7 + "|" +
+							vCampo8 + "|" +
+							vCampo9 + "|" +
+							vCampo10 + "|" +
+							vCampo11 + "|" +
+							vCampo12 + "|" +
+							vCampo13 + "|" +
+							vCampo14 + "|" +
+							vCampo15 + "|" +
+							vCampo16 + "|" +
+							vCampo17 + "|" +
+							vCampo18 + "|" +
+							vCampo19 + "|" +
+							vCampo20 + "|" +
+							vCampo21 + "|" +
+							vCampo22 + "|" + "\r\n";
+
+	}
+
+	break;
+}
+
+var name : LANGUAGEINDEPENDENT_LONG_Name;
+var type : DocumentTypeCode;
+var desc : Description;
+var binary : basis:BinaryObject;
+var vNit;
+
+var qryCompanyTax = CompanyTaxArrangement.QueryByElements;
+var prmCompanyTax = qryCompanyTax.CreateSelectionParams();
+	prmCompanyTax.Add(qryCompanyTax.CompanyID,"I","EQ",this.CompanyID.RemoveLeadingZeros());
+var insCompanyTax = qryCompanyTax.Execute(prmCompanyTax).GetFirst();
+if(insCompanyTax.IsSet()){
+	if(insCompanyTax.TaxIdentificationNumber.Count() > 0){
+		vNit = insCompanyTax.TaxIdentificationNumber.GetFirst().PartyTaxID.content;
+	}
+}
+
+name = "LE" + vNit + this.DateEnd.GetYear() + this.DateEnd.GetMonth() + this.DateEnd.GetDay() + "090100" + "07" + "1111" + ".TXT";
+type.content = "10001";
+type.listID = "10296";
+binary.mimeCode = "text/plain";
+binary.content = Binary.ParseFromString(strLine);
+
+this.ReportsAttachments.CreateFile(type, name, name, desc, binary);		
+
+

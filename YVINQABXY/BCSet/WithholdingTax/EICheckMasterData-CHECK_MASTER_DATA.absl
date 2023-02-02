@@ -1,0 +1,17 @@
+/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Enhancement Option: CheckMasterData
+		Operation: CHECK_MASTER_DATA
+
+		Script file signature
+		----------------------------
+		Parameter: InputData of type CheckMasterDataParameters
+		Returns: Indicator
+
+	Note: 
+	  - To use code completion, press CTRL+J.
+*/
+import AP.Common.GDT;
+
+var result : Indicator;
+return result;

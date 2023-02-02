@@ -1,0 +1,16 @@
+﻿import ABSL;
+
+foreach(var jobProfile in this){
+	if(jobProfile.status == JobStatusCode.CO_01){
+		jobProfile.status = JobStatusCode.CO_02;
+
+		//var jobListing = JobListing.Create();
+		//jobListing.id = jobProfile.jobID;
+		//jobListing.title = jobProfile.title;
+		//jobListing.jobLocation = jobProfile.jobLocation;
+		//jobListing.domain = jobProfile.domain;
+		//jobListing.empType = jobProfile.empType;
+		//jobListing.jobEndDate = jobProfile.jobEndDate;
+		//jobListing.hireMgrName = jobProfile.hireMgrName;
+	}
+}

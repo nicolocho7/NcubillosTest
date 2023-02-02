@@ -1,0 +1,20 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FO.BusinessPartner.Global;
+
+businessobject ServicesAndGoodsCodes raises msj{
+
+	 message msj text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+    [AlternativeKey]		element ID			: ID;
+							element IsConsistent: Indicator;
+	[Label("Company")]		element CompanyID	: ID;
+	[Label("Company Name")]	element CompanyDesc	: ID;
+	
+	node Codes [1, n] raises msj{
+		[Label("Code ID")]			element Code_ID		: LANGUAGEINDEPENDENT_EXTENDED_Text; //para mostrar a nivel de vista 
+		[Label("Code ID")]			element CodeID		: ID;
+		[Label("Code Description")]	element CodeDesc	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	}
+
+}

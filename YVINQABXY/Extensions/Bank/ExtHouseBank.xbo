@@ -1,0 +1,19 @@
+﻿import AP.Common.GDT;
+import AP.FO.BusinessPartner.Global;
+
+[Extension] businessobject AP.FO.BusinessPartner.Global:HouseBank {
+ 
+        // You must activate this business object before you can access the extension fields
+        // or messages in script files, forms, and screens.
+
+    
+   		node AddressInformation {
+   	    } 
+    
+   		node Common {
+			[Label("(OLD) Codigo bancario")]	element	zCodigoBancario: LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+   	    } 
+     
+  
+}

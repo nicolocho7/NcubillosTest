@@ -1,0 +1,341 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UXComponent xmlns:base="http://www.sap.com/a1s/cd/oberon/base-1.0" xmlns:uxv="http://www.sap.com/a1s/cd/oberon/uxview-1.0" xmlns:uxc="http://www.sap.com/a1s/cd/oberon/uxcontroller-1.0" id="hNtcil5sRK2JUiJJ5ZFbTm" name="BOHomoCountry_OIF" AuthorizationClassificationCode="Application" useUIController="true" taskRegionDisabled="true" helpId="fe4699fa-af75-47bc-b8de-31a41e415177" designtimeVersion="5.20.0.7" modelVersion="1.0" xmlns="http://www.sap.com/a1s/cd/oberon/uxcomponent-1.0">
+ <uxc:Interface id="R0Y9OjxAJKsRqJPyEWlPmm">
+  <uxc:InPorts id="r4hHUhJu_q6Yygo0UOLU60">
+   <uxc:InPort id="Jk2mrd1YY4IdNss9yxgDNW" name="OBN_View_All_Inport" portTypeReference="To_BOHomoCountry_viewAll" portTypePackage="/YVINQABXY_MAIN/SRC/Processes/ElectronicBilling/HomologationCountry/BOHomoCountry_PTP.PTP.uicomponent" onFire="ViewAllHandler" navBO="BOHomoCountry" navBONS="http://0004019099-one-off.sap.com/YVINQABXY_" navBONode="Root" navOperation="To_BOHomoCountry_viewAll">
+    <uxc:Parameter id="ZHshY0yjeaAHoFfEENwAG0" name="Parameter0" bind="/Root/OBN_NAV_KEY"/>
+   </uxc:InPort>
+  </uxc:InPorts>
+  <uxc:Configuration id="SSuRNNHmS4YLM1k6mApamW"/>
+ </uxc:Interface>
+ <uxc:Implementation id="fAywusND4qgSN5VYycGl6W">
+  <uxc:DataModel id="rsIxymr7sqYPfvEumF$aIm" name="Root" designtimeMainBOProxyName="BOHomoCountry" designtimeMainBOEsrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_">
+   <base:PropertyBag id="sknewXtbvaoQKFYkMhOXwG">
+    <base:Property id="qh7Nb$1ed4YbIS38wTfTSm" name="BINDINGSTATUS" value="OK"/>
+   </base:PropertyBag>
+   <uxc:Bind id="pkrsKBFfd4onh0GqIBbNQG" proxyName="BOHomoCountry" field="Root" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+   <uxc:DataField id="s$rkJE$6cKAlLuj8_khpGG" name="@ErrorOccured" type="boolean">
+    <base:PropertyBag id="3jIl4VSOvac8cOFXCo9pDG">
+     <base:Property id="OOSl5oaJ4aATwOu7272rtG" name="BINDINGSTATUS" value="Internal"/>
+     <base:Property id="NnpCPMAFsaYhzqi2yY6l0m" name="USERCHANGEDNAME" value="True"/>
+    </base:PropertyBag>
+   </uxc:DataField>
+   <uxc:Structure id="JRTGjEiltqYiRB62F9oXZW" name="UIState">
+    <base:PropertyBag id="7$Yw15WmP4koSY8yTOhF0G">
+     <base:Property id="jJiXLJ7HwKk_3NAh4WQ$VG" name="BINDINGSTATUS" value="Internal"/>
+     <base:Property id="pgOMJpX9vaok6cQTTEIFVW" name="USERCHANGEDNAME" value="True"/>
+    </base:PropertyBag>
+    <uxc:DataField id="u0OE1YOgYasct6govafi20" name="ViewSwitchSelectedItem" type="string">
+     <base:PropertyBag id="fhLU2LnVWa2Yo2JomZ$eWm">
+      <base:Property id="osXB64Pbb4oYHi5tfU$Cem" name="BINDINGSTATUS" value="Internal"/>
+      <base:Property id="$EfWSaIs5Kk95wL6QteCMm" name="USERCHANGEDNAME" value="True"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+   </uxc:Structure>
+   <uxc:Structure id="lTHP1Q6bhaU$$49iEOZLa0" name="BOHomoCountry">
+    <base:PropertyBag id="L8VVW8xVQqYij71L25e37G">
+     <base:Property id="4RQDgq6974ITk$0TY98zem" name="BINDINGSTATUS" value="OK"/>
+     <base:Property id="7PHAcTCCqqMkE$d08kdL6W" name="USERCHANGEDNAME" value="False"/>
+    </base:PropertyBag>
+    <uxc:Bind id="4G81Zg8VaaAfnw28zG5B0G" proxyName="BOHomoCountry" field="Root" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    <uxc:DataField id="ro1FT2WND0_ns0o9WzEXSQ" name="ID" type="string" cctsType="identifier">
+     <base:PropertyBag id="1C_TxaWkh0KFxjNxq7oaxg">
+      <base:Property id="PgTccW5cIkmMY6Q9V0lJUg" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="TA85YBbcTUSn62bob8Mzzw" name="UITEXTID" value=""/>
+      <base:Property id="ErwAaewkhECwzFqTSFUyQw" name="XFLD" value=""/>
+      <base:Property id="mYrfbneTUEy62NnjSvZalQ" name="XCOL" value=""/>
+      <base:Property id="LP8kC3hDVU2ZRRrJYeOh1A" name="XTOL" value=""/>
+     </base:PropertyBag>
+     <uxc:Bind id="uT_0FHI88kmuzRbbctiOjA" proxyName="BOHomoCountry" field="-~ID" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="q1Rx5f4MekCHZ0PAVzFLJQ" name="UUID" type="string" cctsType="identifier">
+     <base:PropertyBag id="et1xkY3EqU60RgIkl0PEjA">
+      <base:Property id="XI8DiFSgu0OdEsILK0c3aQ" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="r9PkDqbdjUiMW1LyocpYxQ" name="UITEXTID" value=""/>
+      <base:Property id="gC9jIwhtU0_Itvwhv67p7g" name="XFLD" value=""/>
+      <base:Property id="UCEe0jhKoEWlQU0DjpwvVQ" name="XCOL" value=""/>
+      <base:Property id="wwdAGQkXx0m4BTtfIeN2aw" name="XTOL" value=""/>
+     </base:PropertyBag>
+     <uxc:Bind id="iQaP1vsTg0OMz0i6exUy5Q" proxyName="BOHomoCountry" field="-~UUID-~content" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="YTP2Q16iA0G0p5joN3zOwA" name="CompanyID" type="string" cctsType="identifier">
+     <base:PropertyBag id="eEHKrdelA0qGOIef6xYlKQ">
+      <base:Property id="cmTAYIgL40_SgfSxnyOt4w" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="4PP0ivauXUONejoUhCX9Ng" name="UITEXTID" value="YVINQABXY_184C3F7ED6BA5B57"/>
+      <base:Property id="Aip9Alk3MEOxJbChrLUQwA" name="XFLD" value="Company ID"/>
+      <base:Property id="WYJ0U6PX_Eeahn9cofd2lQ" name="XCOL" value="Company ID"/>
+      <base:Property id="DHbWgHVU7kylSkghUR2A1g" name="XTOL" value="Company ID"/>
+     </base:PropertyBag>
+     <uxc:Bind id="qWbliuGT1EyoA_HjCmno4A" proxyName="BOHomoCountry" field="-~CompanyID" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="IxAXwVGQmUuQnw81k62chw" name="CountryCodeSAP" type="string" cctsType="code">
+     <base:PropertyBag id="nYxKzP_axk2BFaWZvMmkQA">
+      <base:Property id="gJM1Wdc2o0SP71DTm1r60A" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="dO0KNAl45Eq0PCdFDXFAkw" name="UITEXTID" value="YVINQABXY_5782A8633CD05A16"/>
+      <base:Property id="0Lix7Qhd8U614yqd551A0w" name="XFLD" value="Country Code SAP"/>
+      <base:Property id="H3u8uVgWeUiuJATvQNuAYw" name="XCOL" value="Country Code SAP"/>
+      <base:Property id="woL_6JcYK020CEGjJVCwxA" name="XTOL" value="Country Code SAP"/>
+     </base:PropertyBag>
+     <uxc:Bind id="MkiohBWzxkqdjp8Gmeq1Ag" proxyName="BOHomoCountry" field="-~CountryCodeSAP" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+     <uxc:Codelist id="x5opQuKWNEOgA4NpmgERmA" type="static" typeName="CountryCode" esrNamespace="http://sap.com/xi/AP/Common/GDT"/>
+    </uxc:DataField>
+    <uxc:DataField id="U6KHuCUp906BJL4vxQ_whw" name="CountryCodeSup" type="string" cctsType="identifier">
+     <base:PropertyBag id="B48oN9Q4YEyrfuYkDJ0NAw">
+      <base:Property id="vmRMBDWvAUO0sSX98Wssuw" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="qp0a_MPY3EKmty0rvcApuQ" name="UITEXTID" value="YVINQABXY_E6D4620269A96A2F"/>
+      <base:Property id="L8RzqMG5CkedyEqF8O9SPA" name="XFLD" value="Country Code Technological Supplier"/>
+      <base:Property id="wlU72w1KWUyUYrHPKmAGRQ" name="XCOL" value="Country Code Technological Supplier"/>
+      <base:Property id="sj8DmlPzJEOUNk6VROUClA" name="XTOL" value="Country Code Technological Supplier"/>
+     </base:PropertyBag>
+     <uxc:Bind id="_XcC3OVHf0uh0S5_kGeZ8A" proxyName="BOHomoCountry" field="-~CountryCodeSup" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="QAnPrSYLmkiTeOqkCCRAtg" name="DescriptionType" type="string" cctsType="text">
+     <base:PropertyBag id="aE75zdxwAkezWGmwjaELUQ">
+      <base:Property id="bGJna4ZlokekGaoAQof2og" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="TjyuwLPFLkWZVHVSWIVOUA" name="UITEXTID" value="YVINQABXY_7CE4C2126C0FF2B0"/>
+      <base:Property id="YeEKbf1JlkunVLQonUx8cQ" name="XFLD" value="Description"/>
+      <base:Property id="Plh2ys6ag0KCEEAHSm1LIw" name="XCOL" value="Description"/>
+      <base:Property id="9dHJNNUW30y5nv6217rxOQ" name="XTOL" value="Description"/>
+     </base:PropertyBag>
+     <uxc:Bind id="OJjnSg9YnUq0hTQp2Sh5MA" proxyName="BOHomoCountry" field="-~DescriptionType" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="A5K085o1C0_WmstAAgkjAA" name="DescriptionSupplier" type="string" cctsType="text">
+     <base:PropertyBag id="j5pBW5DnCES2Gs3ah279Ng">
+      <base:Property id="uXQ9nFk5s0eWSvnGSOY5cQ" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="tjkUp2gvVEykuq2Y372EUQ" name="UITEXTID" value="YVINQABXY_5B98A6CCB11F2943"/>
+      <base:Property id="WMPmIYpPk0_M4YclRicnrA" name="XFLD" value="Technological Supplier"/>
+      <base:Property id="g9FDYl90jUe5DZDdG1s1rQ" name="XCOL" value="Technological Supplier"/>
+      <base:Property id="JaMWXSIHQUOSxSDGrceXTQ" name="XTOL" value="Technological Supplier"/>
+     </base:PropertyBag>
+     <uxc:Bind id="eGWicR6hAk2utZg9rFNiVQ" proxyName="BOHomoCountry" field="-~DescriptionSupplier" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+    <uxc:DataField id="Ui_5WLuOJq2nAwhJNFr5cm" name="NodeID" type="string">
+     <base:PropertyBag id="WdWWAoo3WaMRItkXql1raW">
+      <base:Property id="a5MX93C2iq6R$L3h4Xagrm" name="BINDINGSTATUS" value="OK"/>
+      <base:Property id="1MfCUnAYXqkaLi7B9G4NGm" name="USERCHANGEDNAME" value="True"/>
+     </base:PropertyBag>
+     <uxc:Bind id="evrUaMg3y4oOtk06ZwX7fm" proxyName="BOHomoCountry" field="-~NodeID" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_"/>
+    </uxc:DataField>
+   </uxc:Structure>
+   <uxc:DataField id="rRcGGwTplK6ukdAknhP2a0" name="OBN_NAV_KEY" type="string">
+    <base:PropertyBag id="0eFpsQd9SaYTE8GEOiTU9m">
+     <base:Property id="XJP8DdF4qKAnrHJOxWsk_0" name="BINDINGSTATUS" value="ToBind"/>
+     <base:Property id="VvpulYI0r4oZuSukMdtn6m" name="USERCHANGEDNAME" value="True"/>
+    </base:PropertyBag>
+   </uxc:DataField>
+   <uxc:Structure id="uswqsUWT9KgmvWqHfoW1dG" name="$System">
+    <base:PropertyBag id="Q_B8wsIKGqUlHAUWUk69jW">
+     <base:Property id="OlLKCzNu4agptHRHxsIB2G" name="BINDINGSTATUS" value="Internal"/>
+    </base:PropertyBag>
+    <uxc:DataField id="4BtZf3qnDqUD3kcFlwe1am" name="SessionUrl" type="string">
+     <base:PropertyBag id="GrJWgcQh9aowC8VvYXdxDG">
+      <base:Property id="7br86fQ6FKcdG8ruzb4gR0" name="BINDINGSTATUS" value="Internal"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+    <uxc:DataField id="ARIkgJXkK4ckcD$4juWrDW" name="Saved" type="boolean">
+     <base:PropertyBag id="CeESKQCZ$qIdtdujMUCXkG">
+      <base:Property id="cuTg5Ty_JKcp9YuKkf1LiG" name="BINDINGSTATUS" value="Internal"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+    <uxc:DataField id="JN$UpF71cqQPuWE3zRFX5G" name="IsPersistent" type="boolean">
+     <base:PropertyBag id="5Jq8XAmoc4otNSCq9O4V6m">
+      <base:Property id="Yb40q_nY4qkIuTZByosdmG" name="BINDINGSTATUS" value="Internal"/>
+     </base:PropertyBag>
+    </uxc:DataField>
+   </uxc:Structure>
+  </uxc:DataModel>
+  <uxc:EventHandlers id="e0GEm95gTq6TmlbvagGUe0">
+   <uxc:EventHandler id="2z0UHyfVXa6dSOVtDh5IYm" name="SaveHandler">
+    <uxc:WindowAction id="EcgJtU8UbacVAsBqXc2EIW" name="Save" action="Save"/>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="a2kNyfAoMq2YInIOc8Pz1G" name="CreateHandler" eventType="simple">
+    <uxc:BoOperation id="40_yiE2sH4El8zfDDI2LsW" name="Create" proxyName="BOHomoCountry" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_" operation="Create"/>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="sICdgFRIoq2Ygm4HxxqCyG" name="ViewAllHandler">
+    <uxc:BoOperation id="6ZMrk3qm0awumsdySc$qkW" name="Operation1" proxyName="BOHomoCountry" esrNamespace="http://0004019099-one-off.sap.com/YVINQABXY_" operation="Read">
+     <uxc:BoOperationParameter id="txzt52_XLK6E9jLmcX1HRm" name="NavKey" bind="/Root/OBN_NAV_KEY" type="nodeId" path="/Root/BOHomoCountry/NodeID"/>
+    </uxc:BoOperation>
+   </uxc:EventHandler>
+   <uxc:EventHandler id="vAommTVlWKEQiwTg_NxrQm" name="CloseHandler">
+    <uxc:WindowAction id="XgQfW7R1pa6sEXgr_fz_K0" name="Operation" action="Close"/>
+   </uxc:EventHandler>
+  </uxc:EventHandlers>
+  <uxc:ModelChanges/>
+ </uxc:Implementation>
+ <uxc:Navigation id="S$lJhzLTTqQXl_ly4VsLnW"/>
+ <uxc:EmbeddedComponents id="0GA_tdeGNqwVjdI04FCSzW"/>
+ <uxc:RBAMData id="50ecLbjAy4MOrdNhbfYrE0" accessCheckMode="PrivilegedExceptAccessControlledBusinessObjects">
+  <uxc:AccessControlledBusinessObject id="xyFiVTRY_qQOYNGhlRWsWW" BO="BOHomoCountry" BONS="http://0004019099-one-off.sap.com/YVINQABXY_" unrestrictedAccess="true"/>
+ </uxc:RBAMData>
+ <uxc:Description id="zs88KqsAVaMKDL3Z_faRDG" textPoolId="DTIBpVjcgqQbOYm3S4vKjW"/>
+ <Tags id="7UGpWxSINKU9cuGqT0IWHG">
+          </Tags>
+ <UXView id="Bpg7a1BnnK6cGvWTJ228OG" patternType="objectInstance" checkClassification="Standard" checkMode="Both">
+  <uxv:IdentificationRegion id="1GC_8KDui4UOJ9kNi3qAEW">
+   <uxv:Title id="PVPq6vaMIq_VzN5TFnzWtG" textPoolId="cd814d84b1254e01b1b6f092479ed179"/>
+  </uxv:IdentificationRegion>
+  <uxv:ContextualNavigationRegion id="h9yz0FHc4a_lKGh_KxYJeG">
+   <uxv:ViewSwitchNavigation id="z0GdRKlweKM$ZDOh9N4VPW">
+    <uxv:NavigationItem id="vrKkAihq8KcXjwFjX2wm5W" navigationItemId="NavigationItem_jwfa0SEV1KI6_3JN7GyKWm">
+     <base:PropertyBag id="Vw7Yv7kO2a2Cd$XcAgR_40">
+      <base:Property id="tBycSHg6w4kmHGQTb3rTN0" name="NavigationTarget" value=""/>
+     </base:PropertyBag>
+     <uxv:Title id="RSiShoqtXqEvBg16RQGXk0" textPoolId="1c6dbd827ce248b4992fac68439bcf41"/>
+    </uxv:NavigationItem>
+    <uxv:NavigationItem id="C0bo7Qy7zqY_c3JPaEq9Rm" navigationItemId="NavigationItem1_Ue5VkLVxYa2G6mbKghBFXm">
+     <base:PropertyBag id="XgOn58cGu4_Hi7UWHvL090">
+      <base:Property id="NtgWFIevuK2riw3I5RbMvm" name="NavigationTarget" value=""/>
+     </base:PropertyBag>
+     <uxv:Title id="eEpDAsb4R4EwH7iZhVZaFG" textPoolId="8898aff204454a91b0db5f1cbeb219c2"/>
+    </uxv:NavigationItem>
+    <uxv:NavigationItem id="A3q2fObDWKY2CpwEEnQKVW" navigationItemId="NavigationItem2_9lZlohXyV4MHv4jszm8wcG">
+     <base:PropertyBag id="vPdORFa3wqcrJU8oTZp$GG">
+      <base:Property id="NKWkypnLF4UCZztQN9Ykvm" name="NavigationTarget" value=""/>
+     </base:PropertyBag>
+     <uxv:Title id="DLdpbqrkEKw3N1_EGogBLm" textPoolId="72d10059fa2543c280abbe2b092f4e61"/>
+    </uxv:NavigationItem>
+    <uxv:NavigationItem id="D9sfIXiFZKQVBaOO6SMoV0" navigationItemId="NavigationItem3_b2OdjH_iKa6Gjar_bnXPHm">
+     <base:PropertyBag id="cQHP1PoiNqEl9Uie921E_G">
+      <base:Property id="k5nhWNg93KY96cws9aSseG" name="NavigationTarget" value=""/>
+     </base:PropertyBag>
+     <uxv:Title id="y1xWJyAiB4UyCNJVOukuyG" textPoolId="586dc08ebd844fe0a0237cd94ebd353e"/>
+    </uxv:NavigationItem>
+    <uxv:NavigationItem id="jnmtk83HmKUFjoPXrYKgnG" navigationItemId="NavigationItem4_Bdnm29gZ9akaOKfrn0yUUm">
+     <base:PropertyBag id="lRRVkbrz8qQZwUbA5VQPN0">
+      <base:Property id="c$ZCazoBm4kuHayAag6um0" name="NavigationTarget" value=""/>
+     </base:PropertyBag>
+     <uxv:Title id="7585kA_DHKc1pGaExvOnlG" textPoolId="ffde5dd1103f4c8f90abfc1f28ba3e4a"/>
+    </uxv:NavigationItem>
+    <uxv:SelectedNavigationItemId id="57daEC_8_aEhz2$OI0T$$W" bindingExpression="/Root/UIState/ViewSwitchSelectedItem"/>
+   </uxv:ViewSwitchNavigation>
+   <uxv:FunctionBar id="BDlGS_gSwqwEjecUamaX9m">
+    <uxv:ButtonGroup id="H2M9XNn56qogCBNXpM3DTW" name="ActionButtons">
+     <uxv:Button id="_Wv5nG_0RqAXtLfZ9QqrEm" name="Save" onClick="SaveHandler" style="Standard">
+      <uxv:Text id="rTYbk8neR4Mx7vRr1fWO$G" textPoolId="e3bbca08e04245d380a3491fa150ef7b"/>
+     </uxv:Button>
+     <uxv:Button id="wlDzWUDSA4sEnJR0t_W5GW" name="Close" onClick="CloseHandler" style="Cancel">
+      <uxv:Text id="jZo49xtTt4UblNsxNv5PuG" textPoolId="b6d3802bfa274f33a8085780fb212d02"/>
+     </uxv:Button>
+    </uxv:ButtonGroup>
+    <uxv:ButtonGroup id="_fYeoij524YxoRJO3Cy0Xm" name="ApplicationSpecificButtons">
+		 
+          </uxv:ButtonGroup>
+   </uxv:FunctionBar>
+  </uxv:ContextualNavigationRegion>
+  <uxv:ViewContainerRegion id="aAf0JbJ6C4o31qapXFaeSm">
+   <uxv:View id="_ErGk7B$iqgdXmAxmkLSc0" columns="2" rows="2" navigationItemId="NavigationItem_jwfa0SEV1KI6_3JN7GyKWm">
+    <uxv:PaneContainer id="_nKO8XXJr4IkWvnTG79G5m" column="0" row="0" colSpan="2" rowSpan="2">
+     <uxv:FormPane id="mkmo1qdNKqo7buT$U0$Zj0">
+      <uxv:SectionGroup id="vSMJXBECX4gXunrJDAVXH0" column="0" row="0" showGroupName="true">
+       <base:PropertyBag id="zy3ylzOgbKw40HAwcX2UdW">
+        <base:Property id="m8HUqhLOJKA0rZlRZaNUmm" name="Navigation" value=""/>
+       </base:PropertyBag>
+       <uxv:SectionGroupName id="xLE0RN6KH4gFrxmYxPavdG" textPoolId="zkONqtbQ7aUwmga20vcEv0"/>
+       <uxv:SectionGroupItem id="0Q8P309dhEq34O0tAPEx9g">
+        <uxv:Label id="0BFu92KB4UiwKEMoNXXHSA" textPoolId="Becq4RD220SeAvbUYSUpyQ"/>
+        <uxv:InputField id="kqKicVkK70CUzQmIjKhmpQ" name="ID" cctsType="identifier">
+         <uxv:IdentifierCCTSConfig id="YRafv6_xmEOaaImNg4dvtQ" interpretAsInteger="false"/>
+         <uxv:Value id="TAZJh4hemUWZHuXkXPRYmw" bindingExpression="/Root/BOHomoCountry/ID">
+          <!-- <base:PropertyBag id="hRP_HC2eWEWG4Wou0JNr_w">
+											<base:Property id="4mT37ia5_UiOn_XW8goW7Q" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="bjhc5yPAF0616uQhs_TBAA">
+        <uxv:Label id="b0FkwKOj5E2TPI9ZhWzhpA" textPoolId="APj2xYIpAUSkE8eKcZLEnw"/>
+        <uxv:InputField id="7WCjVdfTX06fUkQIF8Go0Q" name="UUID" cctsType="identifier">
+         <uxv:IdentifierCCTSConfig id="SmYUBhRiPUGIYkOWTJxdow" interpretAsInteger="false"/>
+         <uxv:Value id="Q64jtyyC5kWRpYlio1HLqA" bindingExpression="/Root/BOHomoCountry/UUID">
+          <!-- <base:PropertyBag id="FM_4PSMld0qiWmHSqnO0DQ">
+											<base:Property id="R1Uk9_67xU6L0HYTmbROBw" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="HfAtmQX25kaM4TNrMw4yvw">
+        <uxv:Label id="17iD2zAa0Em_s8izMNJ4Og" textPoolId="qAEsJmaYQ0uYjtJsBkU3TQ"/>
+        <uxv:InputField id="i6X5QouCy0Ok0Cf9ZQOqUA" name="CompanyID" cctsType="identifier">
+         <uxv:IdentifierCCTSConfig id="btJfSswrKkG0VwYHFQE_Ug" interpretAsInteger="false"/>
+         <uxv:Value id="8MWvabt0N0e99eGlv7Re4w" bindingExpression="/Root/BOHomoCountry/CompanyID">
+          <!-- <base:PropertyBag id="un26u1zWUEeiXWFG2hqREw">
+											<base:Property id="EzIDr3jClkW8qUjgVSc7jg" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="pW9ERY1ht02yA_938Y4c6Q">
+        <uxv:Label id="cT0_oz3rSkWUu0b1GyYRjg" textPoolId="_VL7NVfQYUmzSPE_swmMJg"/>
+        <uxv:DropDownListBox id="flUPQPAgUkuLdaaHmzsOkA" name="CountryCodeSAP" cctsType="code">
+         <uxv:CodeCCTSConfig id="xDkk04LJ50CsT_XVo9L85Q"/>
+         <uxv:Value id="8MGuzNyaZkOqBMDXa5zAUg" bindingExpression="/Root/BOHomoCountry/CountryCodeSAP">
+          <!-- <base:PropertyBag id="qR8MYbg9_UCE2QzryVhaFQ">
+											<base:Property id="jecA5oHT30ifpVD5fa4Vkw" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:DropDownListBox>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="x71IfGD7AkmfxsukRdUg_g">
+        <uxv:Label id="MHTFJ7CwDkOrXN03pnpngQ" textPoolId="zL7QFB0FH0CAGmlTO369NA"/>
+        <uxv:InputField id="uKWz7GDwkkupQLpAui1vIg" name="CountryCodeSup" cctsType="identifier">
+         <uxv:IdentifierCCTSConfig id="Wk2csiUOtkixPYaVLXzRjQ" interpretAsInteger="false"/>
+         <uxv:Value id="p7jbQDtp5EWz3t94knPDZA" bindingExpression="/Root/BOHomoCountry/CountryCodeSup">
+          <!-- <base:PropertyBag id="wWKfw3CslEidAH1Ern0KEA">
+											<base:Property id="rBcEwpOOuUCg9EgwNg9Sew" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="qrpF7IcNNE_a1rtyH1cAHw">
+        <uxv:Label id="37qASOPk4E_eJjLjvtm5kg" textPoolId="iNfZ8Pc9b0Oto4vcxxj9cw"/>
+        <uxv:InputField id="GmcZQCEAQ0KQxgBZSs4lWg" name="DescriptionType" cctsType="text">
+         <uxv:Value id="S9DcsR21QEeQlnfARM0b0w" bindingExpression="/Root/BOHomoCountry/DescriptionType">
+          <!-- <base:PropertyBag id="iys0Ed1yTEmcznCiWSEkVw">
+											<base:Property id="95Z109uJOUmZiA0Itva7Bg" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+       <uxv:SectionGroupItem id="9orsq0abJka20wEO3ecQ7w">
+        <uxv:Label id="37SGFeIeU0mjPgp_QgehyQ" textPoolId="7bOuk20LjkGiP4jWNLijiA"/>
+        <uxv:InputField id="qtq9IsVs8ECVm0ALPA6OWw" name="DescriptionSupplier" cctsType="text">
+         <uxv:Value id="sYNqApAcg0W_WCnztNyO6w" bindingExpression="/Root/BOHomoCountry/DescriptionSupplier">
+          <!-- <base:PropertyBag id="V7DQF5B080etGyhJ4xcbQA">
+											<base:Property id="TgYV8TsfWUCf3WJaJBOTWw" name="Name" value="" />
+										</base:PropertyBag> -->
+         </uxv:Value>
+        </uxv:InputField>
+       </uxv:SectionGroupItem>
+      </uxv:SectionGroup>
+     </uxv:FormPane>
+    </uxv:PaneContainer>
+   </uxv:View>
+   <uxv:View id="N4Y5BFvzuasNFvcvYPSYmW" columns="2" rows="2" navigationItemId="NavigationItem1_Ue5VkLVxYa2G6mbKghBFXm"/>
+   <uxv:View id="SOnyJXESR4wEXH1IBkPs3G" columns="2" rows="2" navigationItemId="NavigationItem2_9lZlohXyV4MHv4jszm8wcG"/>
+   <uxv:View id="gPBF_IkXdKcWiGKrwPfmtW" columns="2" rows="2" navigationItemId="NavigationItem3_b2OdjH_iKa6Gjar_bnXPHm"/>
+   <uxv:View id="m2Yr7JBJV4U$C87qmB1q_m" columns="1" rows="1" navigationItemId="NavigationItem4_Bdnm29gZ9akaOKfrn0yUUm"/>
+  </uxv:ViewContainerRegion>
+  <uxv:ActionForms/>
+ </UXView>
+ <TextPool>
+  <base:TextBlock language="EN" masterLanguage="true" currentLanguage="true">
+   <base:TextPoolEntry id="oDl1EhIL$aEVczFMn5i0KG" textUuid="cd814d84b1254e01b1b6f092479ed179" text="BOHomoCountry : &lt;ID and/or Description&gt;" textCategory="XTIT"/>
+   <base:TextPoolEntry id="D7dONOlLD4ohDAEGe7d11G" textUuid="e3bbca08e04245d380a3491fa150ef7b" text="Save" textCategory="XBUT"/>
+   <base:TextPoolEntry id="vg1t2LcoIqcpE7Lcvt04TW" textUuid="b6d3802bfa274f33a8085780fb212d02" text="Close" textCategory="XBUT"/>
+   <base:TextPoolEntry id="qDlO8X5JKqka5Y8gFqo6u0" textUuid="1c6dbd827ce248b4992fac68439bcf41" text="General" textCategory="XTBS"/>
+   <base:TextPoolEntry id="BBUC7XLfP4gpHz0SqtF_km" textUuid="8898aff204454a91b0db5f1cbeb219c2" text="Line Items" textCategory="XTBS"/>
+   <base:TextPoolEntry id="O8rfcZ16PK2kaN5Lt_uSb0" textUuid="72d10059fa2543c280abbe2b092f4e61" text="Changes" textCategory="XTBS"/>
+   <base:TextPoolEntry id="j$hVjWTNbqwmSJA1YyQus0" textUuid="586dc08ebd844fe0a0237cd94ebd353e" text="Notes" textCategory="XTBS"/>
+   <base:TextPoolEntry id="T66$5XtK5qo7Lyw_NFGR20" textUuid="ffde5dd1103f4c8f90abfc1f28ba3e4a" text="Attachments" textCategory="XTBS"/>
+   <base:TextPoolEntry id="VQbXjneCqaIk2lcoo3Hd0m" textUuid="zkONqtbQ7aUwmga20vcEv0" text="FieldGroup" textCategory="XGRP"/>
+   <base:TextPoolEntry id="25mWfzdlmKQi6vXK0_xXQW" textUuid="DTIBpVjcgqQbOYm3S4vKjW" text="BOHomoCountry_OIF" textCategory="YEXP"/>
+   <base:TextPoolEntry id="L3mlASmF7USZE0jBT4l24w" textUuid="Becq4RD220SeAvbUYSUpyQ" text="ID"/>
+   <base:TextPoolEntry id="kDAZYsHrk0eOXUDYprRRAA" textUuid="APj2xYIpAUSkE8eKcZLEnw" text="UUID"/>
+   <base:TextPoolEntry id="_TaTDqQjAUKn8Wq5erzGxg" textUuid="qAEsJmaYQ0uYjtJsBkU3TQ" text="Company ID" esrTextId="YVINQABXY_184C3F7ED6BA5B57" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="sjc9q0WW20y9tAdjgYtJjg" textUuid="_VL7NVfQYUmzSPE_swmMJg" text="Country Code SAP" esrTextId="YVINQABXY_5782A8633CD05A16" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="_PO5lTAWcEqBo_MLvXMXBw" textUuid="zL7QFB0FH0CAGmlTO369NA" text="Country Code Technological Supplier" esrTextId="YVINQABXY_E6D4620269A96A2F" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="Ri7FyQAud02aS6ejlsuoVQ" textUuid="iNfZ8Pc9b0Oto4vcxxj9cw" text="Description" esrTextId="YVINQABXY_7CE4C2126C0FF2B0" esrTextCategory="XFLD" textCategory="XFLD"/>
+   <base:TextPoolEntry id="z2B8cboBgkKDJd_Qo8CGDg" textUuid="7bOuk20LjkGiP4jWNLijiA" text="Technological Supplier" esrTextId="YVINQABXY_5B98A6CCB11F2943" esrTextCategory="XFLD" textCategory="XFLD"/>
+  </base:TextBlock>
+ </TextPool>
+</UXComponent>

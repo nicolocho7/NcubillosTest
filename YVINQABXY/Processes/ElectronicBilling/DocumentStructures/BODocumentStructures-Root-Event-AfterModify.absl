@@ -1,0 +1,37 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BODocumentStructures
+		Node: Root
+		Event: AfterModify 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script if:
+		- the value of any field in the node in which this script is contained is modified.
+		- the node itself is modified by another business object within the same solution.
+*/
+
+import ABSL;
+import AP.FO.MOM.Global;
+
+if(!this.FunctionalUnitID.IsInitial()){
+	var qFUnit = FunctionalUnit.QueryByIDAndName;
+	var pFUnit = qFUnit.CreateSelectionParams();
+		pFUnit.Add(qFUnit.ID,"I","EQ",this.FunctionalUnitID.RemoveLeadingZeros());
+	var insFUnit = qFUnit.Execute(pFUnit).GetFirst();
+	if(insFUnit.IsSet()){
+		if(insFUnit.NameByValidity.Count() > 0){
+			this.FunctionalUnitDesc = insFUnit.NameByValidity.GetFirst().Name.content;
+		}
+	}
+	else{
+		this.FunctionalUnitDesc.Clear();
+	}	
+}
+
+
+if(!this.FunctionalUnitID.IsInitial() && !this.DocumentType.IsInitial()){
+	this.DocumentStructuresID = this.FunctionalUnitID.RemoveLeadingZeros() + this.DocumentType.Trim();
+}

@@ -1,0 +1,108 @@
+﻿import ABSL;
+import AP.FO.BusinessPartner.Global;
+import AP.FO.MOM.Global;
+import AP.FO.Product.Global;
+import AP.SupplierInvoicing.Global;
+import AP.FO.Party.Global;
+import Common.DataTypes;
+import AP.Purchasing.Global;
+import AP.FO.BankDirectoryEntry.Global;
+
+if(this.Values.Count() > 0){
+	var data;
+	foreach(data in this.Values){
+		var IDFact = data.BillID;
+		var query = SupplierInvoice.QueryByElements;
+        var selectionParams = query.CreateSelectionParams();
+            selectionParams.Add(query.ID.content, "I", "EQ", data.BillID);
+
+        var resultData = query.Execute(selectionParams).GetFirst();
+		if(resultData.IsSet()){
+			var insBusinessTransactionDocumentReference = resultData.BusinessTransactionDocumentReference.Where(n => n.BusinessTransactionDocumentReference.TypeCode == "28").GetFirst();
+				var insExternalDocumentID;
+				if(insBusinessTransactionDocumentReference.IsSet()){
+					if(!insBusinessTransactionDocumentReference.BusinessTransactionDocumentReference.IsInitial()){
+						var BusinessTransactionDocumentReference = insBusinessTransactionDocumentReference.BusinessTransactionDocumentReference;
+						if(!BusinessTransactionDocumentReference.ID.IsInitial()){
+							insExternalDocumentID = BusinessTransactionDocumentReference.ID.content;
+						}
+					}
+				}
+	
+				var x = insExternalDocumentID.Substring(0, 3);
+				if(x == "RET"){break;}
+
+				
+
+				//Company - Validamos que este lleno el BuyerID
+				if(!resultData.BuyerParty.IsSet()){break;}
+				if(resultData.BuyerParty.PartyKey.IsInitial()){break;}
+				if(resultData.BuyerParty.PartyKey.PartyID.IsInitial()){break;}
+				if(resultData.BuyerParty.PartyKey.PartyID.content.IsInitial()){break;}
+				var vBuyerID = resultData.BuyerParty.PartyKey.PartyID.content.RemoveLeadingZeros();
+				//Company - Query a proveedor para obtener el UUID
+				var qryCompany = Company.QueryByIDAndName;
+				var prmCompany = qryCompany.CreateSelectionParams();
+					prmCompany.Add(qryCompany.ID, "I", "EQ", vBuyerID);
+				var insCompany = qryCompany.Execute(prmCompany).GetFirst();
+				if(!insCompany.IsSet()){break;}
+
+				//Supplier - Validamos que este lleno el SellerID
+				if(!resultData.SellerParty.IsSet()){break;}
+				if(resultData.SellerParty.PartyKey.IsInitial()){break;}
+				if(resultData.SellerParty.PartyKey.PartyID.IsInitial()){break;}
+				if(resultData.SellerParty.PartyKey.PartyID.content.IsInitial()){break;}
+				var vSellerID = resultData.SellerParty.PartyKey.PartyID.content.RemoveLeadingZeros();
+
+				var qryConfig = BORetentionConfiguration.QueryByElements;
+				var prmConfig = qryConfig.CreateSelectionParams();
+					prmConfig.Add(qryConfig.CompanyID.content, "I", "EQ", vBuyerID);
+				var insConfig = qryConfig.Execute(prmConfig);
+				if(insConfig.Count() == 0){break;}
+				//Supplier - Query a proveedor para obtener el Tipo de Retencion
+				var qrySupplier = Supplier.QueryByIdentification;
+				var prmSupplier = qrySupplier.CreateSelectionParams();
+					prmSupplier.Add(qrySupplier.InternalID, "I", "EQ", vSellerID);
+				var insSupplier = qrySupplier.Execute(prmSupplier).GetFirst();
+				if(!insSupplier.IsSet()){break;}
+				if(!insSupplier.CurrentCommon.IsSet()){break;}
+				var insRetType = insSupplier.CurrentCommon.zRetentionType;
+				var ins = insConfig.Where(n=>n.RetentionType == insRetType).GetFirst();
+				if(!ins.IsSet()){break;}
+
+				var NewBillsRetentions : elementsof BOBillsRetentions;
+				NewBillsRetentions.AccountingDate = resultData.TransactionDate;
+				NewBillsRetentions.BillID = resultData.ID.content.RemoveLeadingZeros();
+				NewBillsRetentions.BillUUID.content = resultData.UUID.content;
+				NewBillsRetentions.CompanyID.content = vBuyerID;
+				NewBillsRetentions.CompanyUUID.content = insCompany.UUID.content;
+				NewBillsRetentions.CompanyDescription = insCompany.NameByValidity.GetFirst().Name.content;
+
+				NewBillsRetentions.SupplierID.content = vSellerID;
+				NewBillsRetentions.SupplierUUID.content = insSupplier.UUID.content;
+				NewBillsRetentions.SupplierDescription = insSupplier.CurrentCommon.BusinessPartnerFormattedName;
+				NewBillsRetentions.DocumentDate = resultData.Date;
+				NewBillsRetentions.ExternalReferenceID = insBusinessTransactionDocumentReference.BusinessTransactionDocumentReference.ID.content;
+				NewBillsRetentions.GrossAmount = resultData.TotalGrossAmount;
+				NewBillsRetentions.NetAmount = resultData.TotalNetAmount;
+				//NewBillsRetentions.RetentionAmount = this.TotalTaxAmount;
+				NewBillsRetentions.Currency = resultData.TotalNetAmount.currencyCode;
+				NewBillsRetentions.RetentionType = insSupplier.CurrentCommon.zRetentionType;
+				NewBillsRetentions.BillStatus = CLStatusRetentionBillsCode.CO_1;
+	
+
+				////Lógica para asignar Importes con la moneda de la empresa
+				//if(this.TotalNetAmount.currencyCode == "PEN"){
+					//NewBillsRetentions.GrossAmountCompanyCurrency = this.TotalGrossAmount;
+					//NewBillsRetentions.NetAmountCompanyCurrency = this.TotalNetAmount;
+				//}else{
+					//NewBillsRetentions.GrossAmountCompanyCurrency = this.TotalGrossAmount.ConvertCurrencywithDate("PEN", this.TransactionDate);
+					//NewBillsRetentions.NetAmountCompanyCurrency = this.TotalNetAmount.ConvertCurrencywithDate("PEN", this.TransactionDate);
+				//}
+				NewBillsRetentions.PaymentAmount = NewBillsRetentions.GrossAmountCompanyCurrency;
+
+				var insBillRetentions = BOBillsRetentions.Create(NewBillsRetentions);
+
+		}
+	}
+}

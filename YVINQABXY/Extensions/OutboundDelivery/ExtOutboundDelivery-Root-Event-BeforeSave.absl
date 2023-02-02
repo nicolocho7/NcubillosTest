@@ -1,0 +1,128 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: OutboundDelivery
+		Node: Root
+		Event: BeforeSave 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script when:
+		- the instance of the business object is being saved.
+		- the instance of the business object is created from other sources like web services, preview screen, and so on.
+*/
+
+import ABSL;
+import AP.CRM.Global;
+var QueryConfiguration = BOConfigurationSolution.QueryByElements;
+var ExecuteQueryConfiguration = QueryConfiguration.Execute();
+var Validation = false;
+if(ExecuteQueryConfiguration.Count()>0){
+	if(ExecuteQueryConfiguration.GetFirst().IsSet()){
+		if(ExecuteQueryConfiguration.GetFirst().Status== CLStatusSolutionCode.CO_01){
+			Validation = true;
+		}
+	}
+}
+if(ExecuteQueryConfiguration.Count()<=0 || Validation == true){
+	//---------------------Folio
+	var Resi;
+	if(this.ShipFromLocation.IsSet()){
+		if(!this.ShipFromLocation.LocationID.IsInitial()){
+			Resi = 	this.ShipFromLocation.LocationID.content;//Residencia Fiscal
+		}
+	}
+	//if(this.SellerParty.IsSet()){
+		//if(!this.SellerParty.PartyKey.IsInitial()){
+			//if(!this.SellerParty.PartyKey.PartyID.IsInitial()){
+				//Resi = this.SellerParty.PartyKey.PartyID.content;
+			//}
+		//}
+	//}
+	//--------------Busqueda de la configuracion de folio
+	if(this.ProcessingTypeCode.Matches("OB")){
+		if(this.ZIDFolio.IsInitial()){
+			var qrySeller = BOBusinessResidence.Details.QueryByElements;
+			var ParamsSeller = qrySeller.CreateSelectionParams();
+				ParamsSeller.Add(qrySeller.BusinessResidence1,"I", "EQ", Resi);
+			var ResultSeller = qrySeller.Execute(ParamsSeller);
+			if(ResultSeller.Count() > 0){
+				foreach (var ResultSeller1 in ResultSeller){
+					if(ResultSeller1.ToRoot.Inactive == false){
+						var Consecutive;
+						var QryFolio = BOFolioRelation.QueryByElements;
+						var ParamsFolioRelation = QryFolio.CreateSelectionParams();
+							ParamsFolioRelation.Add(QryFolio.FolioOutboundDeliveryID, "I", "EQ", ResultSeller1.ToRoot.ID);
+						var ResultFolio = QryFolio.Execute(ParamsFolioRelation).GetFirst();
+						if(ResultFolio.IsSet()){
+							if(!ResultFolio.ConsecutiveCurrent.IsInitial()){
+								ResultFolio.ConsecutiveCurrent = ResultFolio.ConsecutiveCurrent + 1;
+							}else{
+								ResultFolio.ConsecutiveCurrent = ResultFolio.Consecutive;
+							}	
+							if(ResultFolio.ConsecutiveCurrent > ResultFolio.ConsecutiveEnd){
+								//raise msj.Create ("E",msjFolio);
+							}else{
+								Consecutive = ResultFolio.ConsecutiveCurrent.RoundToString(0,true);
+								var x = Consecutive.Length();
+								if (x > ResultSeller1.ToRoot.ConsecutiveLength){
+									Consecutive = Consecutive.Substring(0, ResultSeller1.ToRoot.ConsecutiveLength);
+								}else{
+									while (x < ResultSeller1.ToRoot.ConsecutiveLength){
+										Consecutive = "0" + Consecutive ; 
+										x = x + 1;
+									}
+								}
+							}
+							this.ZIDFolio = ResultFolio.Serie+"-"+Consecutive;			
+							var CreateLogFolio = BOLogFolio.Create();
+							CreateLogFolio.DocumentNumber = this.ID.content;
+							CreateLogFolio.OutboundDelivery = true; 
+							CreateLogFolio.FolioNumber = this.ZIDFolio;
+							CreateLogFolio.CompanyID =  this.BuyerParty.PartyKey.PartyID.content.AddLeadingZeros();
+			
+						}
+					}
+				}	
+
+			}
+		}
+	}
+	//----------------------------------Fin de Folio
+	//========================zproces & zSOrder========================\\
+	var NumProces = "";
+	var SalesOrderID : ID;
+	foreach(var Item in this.Item){
+		if(Item.ItemBusinessTransactionDocumentReferenceSalesOrder.IsSet()){
+			var ItemBusinessTransactionDocumentReferenceSalesOrder = Item.ItemBusinessTransactionDocumentReferenceSalesOrder;
+			if(!ItemBusinessTransactionDocumentReferenceSalesOrder.BusinessTransactionDocumentReference.IsInitial()){
+				var BusinessTransactionDocumentReference = ItemBusinessTransactionDocumentReferenceSalesOrder.BusinessTransactionDocumentReference;
+				if(!BusinessTransactionDocumentReference.ID.IsInitial()){
+					var ID = BusinessTransactionDocumentReference.ID;
+					if(!ID.content.IsInitial()){
+						SalesOrderID = ID.content;
+					}
+				}
+			}
+		}
+	}
+
+	if(!SalesOrderID.IsInitial()){
+		var QrySalesOrder = SalesOrder.QueryByElements;
+		var paramsQry = QrySalesOrder.CreateSelectionParams();
+		paramsQry.Add(QrySalesOrder.ID.content , "I", "EQ", SalesOrderID);
+		var ResultQry = QrySalesOrder.Execute(paramsQry).GetFirst();
+		if(ResultQry.IsSet()){
+			if(!ResultQry.BuyerID.content.IsInitial())
+			this.zSalesOrderExtReference = ResultQry.BuyerID;
+			var TextCol = ResultQry.TextCollection.Text.Where(n=>n.TypeCode.content == "10014").GetFirst();
+			if(TextCol.IsSet())
+			this.zNumberOfProcess = TextCol.TextContent.Text.content;
+		}
+	}
+}
+	
+
+
+

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sadl:definition xmlns:ass="http://sap.com/sap.nw.f.sadl/association" date="20180419" time="172035" uuid="9C978725E942417C8A7EBFCF7A28B3CA" xmlns:sadl="http://sap.com/sap.nw.f.sadl">
+  <sadl:conversions>
+    <sadl:conversion type="ALPHA" />
+  </sadl:conversions>
+  <sadl:modes>
+    <sadl:mode type="QUERY" />
+  </sadl:modes>
+  <sadl:dataSource name="DS" binding="YVINQABXY_BONT327CFBADFF795B0B/ass:ROOT4F903855210031B0" type="BusinessObjectNode" d2p1:mdrsBinding="BORelationFolioPayment.Root" xmlns:d2p1="http://sap.com/xi/AP/PDI" />
+  <sadl:resultSet>
+    <sadl:structure name="YVINQABXY_BONT327CFBADFF795B0B" dataSource="DS" d3p1:mdrsName="BORelationFolioPayment.Root" xmlns:d3p1="http://sap.com/xi/AP/PDI">
+      <sadl:attribute name="YVINQABXY_IDOT469924C86F9445F3" binding="ID5B6AA03D69E6EFEB" d3p1:mdrsName="ID" />
+      <sadl:attribute name="YVINQABXY_UUOTB9249C15D5D7C073" binding="UUIDPAYMENT1F7798EBDB424392-CONTENT" d3p1:mdrsName="UUIDPayment/content" />
+      <sadl:attribute name="YVINQABXY_IDOT9E19E94358691D4B" binding="IDPAYMENT155F879FAC4BA1C7-CONTENT" d3p1:mdrsName="IDPayment/content" />
+      <sadl:attribute name="YVINQABXY_IDOT53D7D0A8C0263594" binding="IDPAYMATION8C42AB2AEE5310F2" d3p1:mdrsName="IDPaymentCompensation" />
+      <sadl:attribute name="YVINQABXY_IDOT08FC58E652084305" binding="IDFOLIOB5CAC184E7E40E1C" d3p1:mdrsName="IDFolio" />
+      <sadl:attribute name="YVINQABXY_FIOT64B0C54E0CA3DAEC" binding="FIRSTAIONALCA0516562B654998" d3p1:mdrsName="FirstAdditional" />
+      <sadl:attribute name="YVINQABXY_SEOTC8BBD2286C8A8E6D" binding="SECONDIONAL5C8D6326BE92635A" d3p1:mdrsName="SecondAdditional" />
+      <sadl:attribute name="YVINQABXY_THOT63B676A3E446E05A" binding="THIRDAIONALFF2DE3040CEC20E7" d3p1:mdrsName="thirdAdditional" />
+      <sadl:attribute name="YVINQABXY_FOOT31ECB61A819E6248" binding="FOURTHIONALE8660526B32C6995" d3p1:mdrsName="fourthAdditional" />
+      <sadl:attribute name="YVINQABXY_OBOTC14779953436DD80" binding="OBSERVTIONSE9805165E5102CF0" d3p1:mdrsName="observations" />
+      <sadl:attribute name="YVINQABXY_PROTD110AB32B167D5AA" binding="PROCESSEDB73BEA1CB81E4158" d3p1:mdrsName="processed" />
+      <sadl:attribute name="YVINQABXY_STOTAA563F524BC5CF13" binding="STATE0EB406CC80D10659" d3p1:mdrsName="State" />
+    </sadl:structure>
+  </sadl:resultSet>
+  <sadl:query bo="YVINQABXY_BONT327CFBADFF795B0B" name="QUERY_BY_ELEMENTS" node="OVERVIEW01FD6765E04180CBFE" type="ESI_QUERY">
+    <sadl:inputStructure>
+      <sadl:inputParameter name="IDROOT5B57ADF3C76011D1">
+        <sadl:attribute binding="YVINQABXY_IDOT469924C86F9445F3" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="UUIDPAROOTC8685CEEE25FA4C1-CONTENT">
+        <sadl:attribute binding="YVINQABXY_UUOTB9249C15D5D7C073" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="IDPAYMROOT210AB7D49C655DA4-CONTENT">
+        <sadl:attribute binding="YVINQABXY_IDOT9E19E94358691D4B" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="IDPAYMROOT224C3E4693264AD0">
+        <sadl:attribute binding="YVINQABXY_IDOT53D7D0A8C0263594" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="IDFOLIROOT9F151301DD46C684">
+        <sadl:attribute binding="YVINQABXY_IDOT08FC58E652084305" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="FIRSTAROOTFE3999EA04AB6F71">
+        <sadl:attribute binding="YVINQABXY_FIOT64B0C54E0CA3DAEC" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="SECONDROOT9B5AEB9366556356">
+        <sadl:attribute binding="YVINQABXY_SEOTC8BBD2286C8A8E6D" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="THIRDAROOTE34B61EB5F07BDC8">
+        <sadl:attribute binding="YVINQABXY_THOT63B676A3E446E05A" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="FOURTHROOTAD24E4B5A76DE59A">
+        <sadl:attribute binding="YVINQABXY_FOOT31ECB61A819E6248" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="OBSERVROOT4817FFB60E2E5B5F">
+        <sadl:attribute binding="YVINQABXY_OBOTC14779953436DD80" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="PROCESROOT5427BC0100328F09">
+        <sadl:attribute binding="YVINQABXY_PROTD110AB32B167D5AA" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="STATEROOT264BC3A9D49FFCB8">
+        <sadl:attribute binding="YVINQABXY_STOTAA563F524BC5CF13" />
+      </sadl:inputParameter>
+    </sadl:inputStructure>
+    <sadl:outputStructure>
+      <sadl:attribute name="IDROOT5B57ADF3C76011D1" binding="YVINQABXY_IDOT469924C86F9445F3" />
+      <sadl:attribute name="UUIDPAROOTC8685CEEE25FA4C1-CONTENT" binding="YVINQABXY_UUOTB9249C15D5D7C073" />
+      <sadl:attribute name="IDPAYMROOT210AB7D49C655DA4-CONTENT" binding="YVINQABXY_IDOT9E19E94358691D4B" />
+      <sadl:attribute name="IDPAYMROOT224C3E4693264AD0" binding="YVINQABXY_IDOT53D7D0A8C0263594" />
+      <sadl:attribute name="IDFOLIROOT9F151301DD46C684" binding="YVINQABXY_IDOT08FC58E652084305" />
+      <sadl:attribute name="FIRSTAROOTFE3999EA04AB6F71" binding="YVINQABXY_FIOT64B0C54E0CA3DAEC" />
+      <sadl:attribute name="SECONDROOT9B5AEB9366556356" binding="YVINQABXY_SEOTC8BBD2286C8A8E6D" />
+      <sadl:attribute name="THIRDAROOTE34B61EB5F07BDC8" binding="YVINQABXY_THOT63B676A3E446E05A" />
+      <sadl:attribute name="FOURTHROOTAD24E4B5A76DE59A" binding="YVINQABXY_FOOT31ECB61A819E6248" />
+      <sadl:attribute name="OBSERVROOT4817FFB60E2E5B5F" binding="YVINQABXY_OBOTC14779953436DD80" />
+      <sadl:attribute name="PROCESROOT5427BC0100328F09" binding="YVINQABXY_PROTD110AB32B167D5AA" />
+      <sadl:attribute name="STATEROOT264BC3A9D49FFCB8" binding="YVINQABXY_STOTAA563F524BC5CF13" />
+    </sadl:outputStructure>
+  </sadl:query>
+</sadl:definition>

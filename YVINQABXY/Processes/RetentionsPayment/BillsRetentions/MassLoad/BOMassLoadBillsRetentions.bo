@@ -1,0 +1,20 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BOMassLoadBillsRetentions raises msj{
+
+		message msj text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+
+
+		[Label("ID")][AlternativeKey]	element ID	: ID;
+		[Label("Description")]	element Description	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+        [Label("Load")]						element cargado: Indicator;
+		[DependentObject(AttachmentFolder)] node Attachment;
+
+		node Values[0,n]raises msgValues{
+			message msgValues text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Bill ID")]								element BillID							: ID;		//ID Factura
+		}
+		action zUpload;
+		action zRun;
+}

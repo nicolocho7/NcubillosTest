@@ -1,0 +1,126 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BORelationCustomerCompany
+		Node: Root
+		Event: BeforeSave 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script when:
+		- the instance of the business object is being saved.
+		- the instance of the business object is created from other sources like web services, preview screen, and so on.
+*/
+
+import ABSL;
+
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+
+var msgConditionCompanyID = "Faltó ingresar empresa.";
+var msgConditionCustomerID = "Faltó ingresar proveedor.";
+var msgCountry = "Faltó ingresar país.";
+var msgWithHoldingCode = "Faltó ingresar codigo de percepción.";
+var msgBankAccountID = "Faltó ingresar cuenta bancaria.";
+var msgTypeWithholding = "Faltó seleccionar un tipo de percepción.";
+var msgNeto = "Faltó ingresar procentaje neto.";
+var msgCategoryID = "Faltó ingresar categoría.";
+var msgCityID = "Faltó ingresar ciudad.";
+var msgAmountMaximum = "Faltó ingresar monto maximo de percepción.";
+var msgAmountMinimun = "Faltó seleccionar ID valor monto minimo de percepción.";
+var msgresultTypeWithholding = "ID monto mínimo de percepción no es igual a tipo de percepción.";
+
+if (LanguageCode != "ES")
+{
+	msgConditionCompanyID = "Missing company.";
+	msgConditionCustomerID = "Missing supplier.";
+	msgCountry = "Missing country.";
+	msgWithHoldingCode = "Missing perception code.";
+	msgBankAccountID = "Missing bank account.";
+	msgTypeWithholding = "Missing type of perception.";
+	msgNeto = "Missing net percentage.";
+	msgCategoryID = "Missing category.";
+	msgCityID = "Missing city.";
+	msgAmountMaximum = "Missing maximum amount of perception.";
+	msgAmountMinimun = "Missing ID minimum amount value perception.";
+	msgresultTypeWithholding = "Minimum amount perception ID is not equal to type perception.";
+}
+
+// Validation
+this.IsConsistent = true;
+
+if (this.ConditionCompanyID.IsInitial()){
+	raise msj.Create("E", msgConditionCompanyID);
+	this.IsConsistent = false;
+}
+
+if (this.ConditionCustomerID.IsInitial()){
+	raise msj.Create("E", msgConditionCustomerID);
+	this.IsConsistent = false;
+}
+
+if (this.Country.IsInitial()){
+	raise msj.Create("E", msgCountry);
+	this.IsConsistent = false;
+}
+
+if (this.WithHoldingCode.IsInitial()){
+	raise msj.Create("E", msgWithHoldingCode);
+	this.IsConsistent = false;
+}
+
+if (this.BankAccountID.IsInitial()){
+	raise msj.Create("E", msgBankAccountID);
+	this.IsConsistent = false;
+}
+
+if (this.AmountMinimun.IsInitial()){
+	raise msj.Create("E", msgAmountMinimun);
+	this.IsConsistent = false;
+}
+
+if (this.TypeWithholding.IsInitial()){
+	raise msj.Create("E", msgTypeWithholding);
+	this.IsConsistent = false;
+}else{
+	switch (this.TypeWithholding){
+		case CLTypeWithholdingSalesCode.CO_PER{
+
+			if (this.Percent.IsInitial()){
+				raise msj.Create("E", msgNeto);
+				this.IsConsistent = false;
+			}
+
+			if (this.CategoryID.IsInitial()){
+				raise msj.Create("E", msgCategoryID);
+				this.IsConsistent = false;
+			}
+		}
+	}
+}
+
+if (this.ID.IsInitial()){
+
+	var queryBuildID = BOBuildID.QueryByElements;
+	var paramBuildID = queryBuildID.CreateSelectionParams();
+	paramBuildID.Add(queryBuildID.ID, "I", "EQ", "BORELCUSCOMSALES");
+	var resultBuildID = queryBuildID.Execute(paramBuildID).GetFirst();
+	if (resultBuildID.IsSet()){
+		resultBuildID.consecutive = resultBuildID.consecutive + 1;
+		this.ID = resultBuildID.consecutive.ToString();
+		this.UUID.content = UUID.Generate();
+	}
+	else{
+		this.ID = "1";
+		this.UUID.content = UUID.Generate();
+		//-- create new register
+		var insBuildID = BOBuildID.Create();
+
+		if (insBuildID.IsSet()){
+			insBuildID.consecutive = 1;
+			insBuildID.description = "Relation Customer Company";
+			insBuildID.ID = "BORELCUSCOMSALES";
+			insBuildID.UUID.content = UUID.Generate();
+		}
+	}
+}

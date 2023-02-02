@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sadl:definition xmlns:ass="http://sap.com/sap.nw.f.sadl/association" date="20181008" time="151720" uuid="1FD5C668E67A4E569154CA2F91065C02" xmlns:sadl="http://sap.com/sap.nw.f.sadl">
+  <sadl:conversions>
+    <sadl:conversion type="ALPHA" />
+  </sadl:conversions>
+  <sadl:modes>
+    <sadl:mode type="QUERY" />
+  </sadl:modes>
+  <sadl:dataSource name="DS" binding="YVINQABXY_BOES7737DD3528E569CC/ass:ROOT4F903855210031B0" type="BusinessObjectNode" d2p1:mdrsBinding="BOMinimumWithholdingAmountSales.Root" xmlns:d2p1="http://sap.com/xi/AP/PDI" />
+  <sadl:resultSet>
+    <sadl:structure name="YVINQABXY_BOES7737DD3528E569CC" dataSource="DS" d3p1:mdrsName="BOMinimumWithholdingAmountSales.Root" xmlns:d3p1="http://sap.com/xi/AP/PDI">
+      <sadl:attribute name="YVINQABXY_IDOT469924C86F9445F3" binding="ID5B6AA03D69E6EFEB" d3p1:mdrsName="ID" />
+      <sadl:attribute name="YVINQABXY_TYOT3065ABBFB0A36DBE" binding="TYPEWILDINGA2A99753D64AC63A" d3p1:mdrsName="TypeWithholding" />
+      <sadl:attribute name="YVINQABXY_COOT5D0CEB057D1AAD18" binding="CONCEPTAF389478F11BE8ED" d3p1:mdrsName="Concept" />
+      <sadl:attribute name="YVINQABXY_VAOTD6B82CAB52788F3B" binding="VALUEUVTA1083E1085D48855-CURRENCY_CODE" d3p1:mdrsName="ValueUVT/currencyCode" />
+      <sadl:attribute name="YVINQABXY_VAOTA7B054BD3248FC31" binding="VALUEUVTA1083E1085D48855-CONTENT" d3p1:mdrsName="ValueUVT/content" />
+      <sadl:attribute name="YVINQABXY_UVOTCB1B98D891E068A2" binding="UVTBASECAA3B54282DB605C" d3p1:mdrsName="UVTBase" />
+      <sadl:attribute name="YVINQABXY_BAOT292A64E8F6D6E2DB" binding="BASE5CB9053AEBC61970" d3p1:mdrsName="Base" />
+      <sadl:attribute name="YVINQABXY_COOT65944811164B2FB4" binding="COIN65119E8CBF375A0C" d3p1:mdrsName="Coin" />
+    </sadl:structure>
+  </sadl:resultSet>
+  <sadl:query bo="YVINQABXY_BOES7737DD3528E569CC" name="QUERY_BY_ELEMENTS" node="OVERVIEW01FD6765E04180CBFE" type="ESI_QUERY">
+    <sadl:inputStructure>
+      <sadl:inputParameter name="IDROOT5B57ADF3C76011D1">
+        <sadl:attribute binding="YVINQABXY_IDOT469924C86F9445F3" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="TYPEWIROOT8FB4898DE9E7F86F">
+        <sadl:attribute binding="YVINQABXY_TYOT3065ABBFB0A36DBE" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="CONCEPROOT0AF70287E36E1D74">
+        <sadl:attribute binding="YVINQABXY_COOT5D0CEB057D1AAD18" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="VALUEUROOTED3971A8F55A3D73-CURRENCY_CODE">
+        <sadl:attribute binding="YVINQABXY_VAOTD6B82CAB52788F3B" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="VALUEUROOTED3971A8F55A3D73-CONTENT">
+        <sadl:attribute binding="YVINQABXY_VAOTA7B054BD3248FC31" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="UVTBASROOT0BADC3ECEF7EEA05">
+        <sadl:attribute binding="YVINQABXY_UVOTCB1B98D891E068A2" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="BASEROOTF0BB4D33B80108C2">
+        <sadl:attribute binding="YVINQABXY_BAOT292A64E8F6D6E2DB" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="COINROOT5813BCC309E07312">
+        <sadl:attribute binding="YVINQABXY_COOT65944811164B2FB4" />
+      </sadl:inputParameter>
+      <sadl:inputParameter name="SEARCH_TEXT" type="SEARCH_TEXT">
+        <sadl:inputParameter name="IDROOT5B57ADF3C76011D1" />
+        <sadl:inputParameter name="TYPEWIROOT8FB4898DE9E7F86F" />
+        <sadl:inputParameter name="CONCEPROOT0AF70287E36E1D74" />
+        <sadl:inputParameter name="COINROOT5813BCC309E07312" />
+      </sadl:inputParameter>
+    </sadl:inputStructure>
+    <sadl:outputStructure>
+      <sadl:attribute name="IDROOT5B57ADF3C76011D1" binding="YVINQABXY_IDOT469924C86F9445F3" />
+      <sadl:attribute name="TYPEWIROOT8FB4898DE9E7F86F" binding="YVINQABXY_TYOT3065ABBFB0A36DBE" />
+      <sadl:attribute name="CONCEPROOT0AF70287E36E1D74" binding="YVINQABXY_COOT5D0CEB057D1AAD18" />
+      <sadl:attribute name="VALUEUROOTED3971A8F55A3D73-CURRENCY_CODE" binding="YVINQABXY_VAOTD6B82CAB52788F3B" />
+      <sadl:attribute name="VALUEUROOTED3971A8F55A3D73-CONTENT" binding="YVINQABXY_VAOTA7B054BD3248FC31" />
+      <sadl:attribute name="UVTBASROOT0BADC3ECEF7EEA05" binding="YVINQABXY_UVOTCB1B98D891E068A2" />
+      <sadl:attribute name="BASEROOTF0BB4D33B80108C2" binding="YVINQABXY_BAOT292A64E8F6D6E2DB" />
+      <sadl:attribute name="COINROOT5813BCC309E07312" binding="YVINQABXY_COOT65944811164B2FB4" />
+    </sadl:outputStructure>
+  </sadl:query>
+</sadl:definition>

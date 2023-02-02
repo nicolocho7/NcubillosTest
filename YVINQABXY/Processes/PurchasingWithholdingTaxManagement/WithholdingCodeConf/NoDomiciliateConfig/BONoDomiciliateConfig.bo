@@ -1,0 +1,13 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BONoDomiciliateConfig  raises msj {
+		
+		message msj text "&":LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+		[Label("Withholding Code")]			element WithHoldingCode:ID;
+		[Label("Withholding Description")]	element WithHoldingDesc:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Percentage Base")]			element PercentageBase:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Taxe Rate 5")]				element TaxeRate:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Taxe Rate 3")]				element TaxeRate3:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		action Del;
+}

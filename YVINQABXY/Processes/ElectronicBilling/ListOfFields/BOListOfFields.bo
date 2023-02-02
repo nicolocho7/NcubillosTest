@@ -1,0 +1,18 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+[WithAdministrativeData] businessobject BOListOfFields  raises msg {
+
+    message msg text "&":LANGUAGEINDEPENDENT_EXTENDED_Text;
+		
+	[Label("ID")]				element ListOfFieldID	:ID;
+	[Label("Description")]		element ListOfFieldDesc	:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		
+	node ListField[0,n]raises msgListField{
+		message msgListField text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+		[Label("ID")]			element ListFieldID		:ID;
+		[Label("Description")]	element ListFieldDesc	:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Route")]		element ListFieldRoute	:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	}		
+	action  aUpdate;
+}

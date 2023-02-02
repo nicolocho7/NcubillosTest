@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<sadl:definition xmlns:ass="http://sap.com/sap.nw.f.sadl/association" date="20180212" time="162257" uuid="8FEC4CE281484591B12570173E26F335" xmlns:sadl="http://sap.com/sap.nw.f.sadl">
+  <sadl:conversions>
+    <sadl:conversion type="ALPHA" />
+  </sadl:conversions>
+  <sadl:modes>
+    <sadl:mode type="FSI" />
+  </sadl:modes>
+  <sadl:dataSource name="DS" binding="YVINQABXY_BORA5732094CD6DA6EEA/ass:ROOT4F903855210031B0" type="BusinessObjectNode" d2p1:mdrsBinding="BOAdminDetra.Root" xmlns:d2p1="http://sap.com/xi/AP/PDI" />
+  <sadl:resultSet>
+    <sadl:structure name="YVINQABXY_BORA5732094CD6DA6EEA" dataSource="DS" d3p1:mdrsName="BOAdminDetra.Root" xmlns:d3p1="http://sap.com/xi/AP/PDI">
+      <sadl:attribute name="IDROOT469924C86F9445F3" binding="ID5B6AA03D69E6EFEB" d3p1:mdrsName="ID" />
+      <sadl:attribute name="MANUALROOTC9B8FD48DD1AD36E" binding="MANUAL08FA35B46C048F3A" d3p1:mdrsName="Manual" />
+      <sadl:attribute name="INVOICIDROOTD41DD00A966EA121" binding="INVOICEID87C5C55A7E10C9A4" d3p1:mdrsName="InvoiceID" />
+      <sadl:attribute name="EXTERNIDROOTBB4D47FAFEAE8177" binding="EXTERNENTIDCA413DC7D07E46FF" d3p1:mdrsName="ExternalDocumentID" />
+      <sadl:attribute name="INVOICIDROOTDF83CC101BAF1D17" binding="INVOICEUUIDC0149A0A4BB933FF-CONTENT" d3p1:mdrsName="InvoiceUUID/content" />
+      <sadl:attribute name="COMPANIDROOT393E96E7737D2A29" binding="COMPANYIDD8CC9CD94DA9AB61" d3p1:mdrsName="CompanyID" />
+      <sadl:attribute name="COMPANESROOTDE781E3E5BE13A9D" binding="COMPANYDES500A52592FA84DB0" d3p1:mdrsName="CompanyDes" />
+      <sadl:attribute name="SUPPLIIDROOT7B1BB7042EE63E3F" binding="SUPPLIERID189A491ED12FD25E" d3p1:mdrsName="SupplierID" />
+      <sadl:attribute name="SUPNAMEROOT0FD312E436A9D385" binding="SUPNAME475F765C98857539" d3p1:mdrsName="SupName" />
+      <sadl:attribute name="SUPTAXPEROOT1206751BACAB5410" binding="SUPTAXRTYPEDAE7ED5C5736C7C8" d3p1:mdrsName="SupTaxNumberType" />
+      <sadl:attribute name="SUPTAXERROOT45DC4EBBAC111F89" binding="SUPTAXUMBER4B0C04035B97D1E8" d3p1:mdrsName="SupTaxNumber" />
+      <sadl:attribute name="EXTDOCIDROOT5170F6847C6B110D" binding="EXTDOCID724DB955984E2620" d3p1:mdrsName="ExtDocID" />
+      <sadl:attribute name="POSTINTEROOT95EF3888DAFCC5D7" binding="POSTINGDATE2D52EA542B5E0E74" d3p1:mdrsName="PostingDate" />
+      <sadl:attribute name="PERIODROOTA1E5A59BE795BAD0" binding="PERIODDEBF8A7928775167" d3p1:mdrsName="Period" />
+      <sadl:attribute name="COUNTRYROOT8007FF1ACA0E9B85" binding="COUNTRY1C309B549A05A324" d3p1:mdrsName="Country" />
+      <sadl:attribute name="TOTALNNTROOT7AECDEF2BD0D1ADE" binding="TOTALNMOUNTC4942F28F5EEAEB9-CURRENCY_CODE" d3p1:mdrsName="TotalNetAmount/currencyCode" />
+      <sadl:attribute name="TOTALNNTROOT32836EEA9FAB1661" binding="TOTALNMOUNTC4942F28F5EEAEB9-CONTENT" d3p1:mdrsName="TotalNetAmount/content" />
+      <sadl:attribute name="WITHHODEROOT9FCBB745C2437A72" binding="WITHHOGCODE6A6C9A45BE2F328A" d3p1:mdrsName="WithHoldingCode" />
+      <sadl:attribute name="DETERATSROOTA38144FAD9A19951" binding="DETERAOUNTS86A7EDAEA685D30F-CONTENT" d3p1:mdrsName="DeterAccounts/content" />
+      <sadl:attribute name="DETRAANTROOTA3144F0538AEEF62" binding="DETRAAMOUNT6A7717E40FC3556B-CURRENCY_CODE" d3p1:mdrsName="DetraAmount/currencyCode" />
+      <sadl:attribute name="DETRAANTROOT768F0181E9D1ACC5" binding="DETRAAMOUNT6A7717E40FC3556B-CONTENT" d3p1:mdrsName="DetraAmount/content" />
+      <sadl:attribute name="DETRAPNTROOT7909D8046A5303B7" binding="DETRAPRCENT8269393002EABDC4" d3p1:mdrsName="DetraPercent" />
+      <sadl:attribute name="TYPEROOTA94DAC2F0A5CC16A" binding="TYPE8E80C4CA47846198" d3p1:mdrsName="Type" />
+      <sadl:attribute name="SERIESROOT35621D3B051E526E" binding="SERIES325CE6CCA9FD3CE0" d3p1:mdrsName="Series" />
+      <sadl:attribute name="NUMBERROOTA7309EE5436F21E6" binding="NUMBERE3B756E86709E41C" d3p1:mdrsName="Number" />
+      <sadl:attribute name="PROFROOT1930E496AE086DF2" binding="PROF9CFA1725719A8C5E" d3p1:mdrsName="Prof" />
+      <sadl:attribute name="BATCHROOT565A7642331247B7" binding="BATCH1289C136E71E8B8B" d3p1:mdrsName="batch" />
+      <sadl:attribute name="STATUSNTROOTD962296A3DEE81D2" binding="STATUSUMENTADB4165E64ECE817" d3p1:mdrsName="StatusDocument" />
+      <sadl:attribute name="CREDITIDROOT8AA9E1726B38CADA" binding="CREDITOUUIDBD78AF44E61BCC78-CONTENT" d3p1:mdrsName="CreditNemoUUID/content" />
+      <sadl:attribute name="WITHHOSCROOTA51EA4EC5BE0A916" binding="WITHHOGDESC724C9F7E5FB3B37B" d3p1:mdrsName="WithHoldingDesc" />
+      <sadl:attribute name="AMOUNTNTROOT01D3C7CD9B897FE4" binding="AMOUNT63FA642D71A9874A-CURRENCY_CODE" d3p1:mdrsName="Amount/currencyCode" />
+      <sadl:attribute name="AMOUNTNTROOTE481B41C0BA46B14" binding="AMOUNT63FA642D71A9874A-CONTENT" d3p1:mdrsName="Amount/content" />
+      <sadl:attribute name="UUIDCOIDROOT7B468967C758B384" binding="UUID9D5856A83EA6999B-CONTENT" d3p1:mdrsName="UUID/content" />
+      <sadl:attribute name="SUPIDROOT60C5C4A9D8DEADDE" binding="SUPID651B1F924F161895" d3p1:mdrsName="SupID" />
+      <sadl:attribute name="DESSTAUSROOT1DCA13F43E5B21B1" binding="DESSTATUS42D2203C00BF40FA" d3p1:mdrsName="DesStatus" />
+      <sadl:attribute name="ACCOUNTROOT82482E193CE57053" binding="ACCOUNT0E59BC244228F141" d3p1:mdrsName="Account" />
+      <sadl:attribute name="OPERATPEROOT9001A65109E7B575" binding="OPERATYPE358D1DFE765EC957" d3p1:mdrsName="OperaType" />
+      <sadl:attribute name="ISCONSNTROOT576A29BFB71D3B0E" binding="ISCONSSTENT8F1892AA9005456D" d3p1:mdrsName="IsConsistent" />
+      <sadl:attribute name="ISCHECKROOTEE9490E5F81EC556" binding="ISCHECKB1605DADFB0B8161" d3p1:mdrsName="ISCheck" />
+      <sadl:attribute name="SAP_SYTAROOTAF1C6EDFD7141562" binding="SAP_SYEDATAAF54AFE70C7CAE6F-CREATION_DATE_TIME" d3p1:mdrsName="SAP_SystemAdministrativeData/CreationDateTime" />
+      <sadl:attribute name="SAP_SYTAROOTA65361C4FEC884AB" binding="SAP_SYEDATAAF54AFE70C7CAE6F-CREATION_IDENTITY_UUID-CONTENT" d3p1:mdrsName="SAP_SystemAdministrativeData/CreationIdentityUUID/content" />
+      <sadl:attribute name="SAP_SYTAROOT541154E99E4531C3" binding="SAP_SYEDATAAF54AFE70C7CAE6F-LAST_CHANGE_DATE_TIME" d3p1:mdrsName="SAP_SystemAdministrativeData/LastChangeDateTime" />
+      <sadl:attribute name="SAP_SYTAROOTCC7603CCCA9F76A9" binding="SAP_SYEDATAAF54AFE70C7CAE6F-LAST_CHANGE_IDENTITY_UUID-CONTENT" d3p1:mdrsName="SAP_SystemAdministrativeData/LastChangeIdentityUUID/content" />
+      <sadl:structure name="TOCONDNYROOTDF6E4A5C346C110A" binding="ass:TOCONDMPANY0655DE45EC8FBD7A" d3p1:mdrsName="ToConditionCompany">
+        <sadl:attribute name="IDTOCONYROOTF8DB79722B8C843A" binding="ID5B6AA03D69E6EFEB" d3p1:mdrsName="ID" />
+        <sadl:attribute name="UUIDCONYROOT3FB6EA73278A7DF0" binding="UUID9D5856A83EA6999B-CONTENT" d3p1:mdrsName="UUID/content" />
+        <sadl:attribute name="COMPANNYROOT690E7009F241C3B3" binding="COMPANITIONC494558840BA2F08" d3p1:mdrsName="CompanyCondition" />
+        <sadl:attribute name="COUNTRNYROOT40C2EBF11D8B774D" binding="COUNTRY1C309B549A05A324" d3p1:mdrsName="Country" />
+        <sadl:attribute name="SAP_SYNYROOT8FDA06C57ADB9EEA" binding="SAP_SYEDATAAF54AFE70C7CAE6F-CREATION_DATE_TIME" d3p1:mdrsName="SAP_SystemAdministrativeData/CreationDateTime" />
+        <sadl:attribute name="SAP_SYNYROOTEF851884E2E99D9E" binding="SAP_SYEDATAAF54AFE70C7CAE6F-CREATION_IDENTITY_UUID-CONTENT" d3p1:mdrsName="SAP_SystemAdministrativeData/CreationIdentityUUID/content" />
+        <sadl:attribute name="SAP_SYNYROOTAEEDC5FB70DA9CDE" binding="SAP_SYEDATAAF54AFE70C7CAE6F-LAST_CHANGE_DATE_TIME" d3p1:mdrsName="SAP_SystemAdministrativeData/LastChangeDateTime" />
+        <sadl:attribute name="SAP_SYNYROOTFC6E3F1110FFA9E9" binding="SAP_SYEDATAAF54AFE70C7CAE6F-LAST_CHANGE_IDENTITY_UUID-CONTENT" d3p1:mdrsName="SAP_SystemAdministrativeData/LastChangeIdentityUUID/content" />
+      </sadl:structure>
+      <sadl:structure name="SAP_CRTYROOT2E83D12D139A2539" binding="ass:SAP_CRNTITYC6B9983B5589598D" d3p1:mdrsName="SAP_CreationIdentity">
+        <sadl:attribute name="UUIDCOTYROOTD0AA5D3141608E92" binding="UUID-CONTENT" d3p1:mdrsName="UUID/content" />
+        <sadl:attribute name="IDCONTTYROOT1AFFF17C7F85795E" binding="ID-CONTENT" d3p1:mdrsName="ID/content" />
+        <sadl:attribute name="BUSINETYROOTC08245E71EFA5650" binding="BUSINESS_PARTNER_UUID-CONTENT" d3p1:mdrsName="BusinessPartnerUUID/content" />
+        <sadl:attribute name="VALIDITYROOTE26A0C9AC6DB53C2" binding="VALIDITY_PERIOD-START_DATE" d3p1:mdrsName="ValidityPeriod/StartDate" />
+        <sadl:attribute name="VALIDITYROOTB046082C40A1B436" binding="VALIDITY_PERIOD-END_DATE" d3p1:mdrsName="ValidityPeriod/EndDate" />
+      </sadl:structure>
+    </sadl:structure>
+  </sadl:resultSet>
+</sadl:definition>

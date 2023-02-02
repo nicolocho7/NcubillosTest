@@ -1,0 +1,55 @@
+﻿import ABSL;
+import AP.FO.MOM.Global;
+import AP.Common.GDT;
+import AP.FinancialAccounting.Global;
+
+
+
+if(!this.ECompany.IsInitial()){
+	var qCompany = Company.QueryByIDAndName;
+	var pCompany = qCompany.CreateSelectionParams();
+
+	pCompany.Add(qCompany.ID,"I","EQ",this.ECompany);
+	var insCompany = qCompany.Execute(pCompany).GetFirst(); 
+
+	if(insCompany.IsSet()){
+		this.EConfigCompany = insCompany.ID;
+		this.ECompany = insCompany.ID;
+	}else{
+	this.ToBookConfi.Reset();
+	}
+
+}
+
+
+
+//Get description BookAccount
+if(!this.EConfigBooKDialy.content.IsInitial()){
+	var qBook = SetOfBooks.QueryByIDAndDescription;
+	var pBook = qBook.CreateSelectionParams();
+		pBook.Add(qBook.ID.content,"I","EQ",this.EConfigBooKDialy.content);
+	var insBook = qBook.Execute(pBook).GetFirst();
+	if(insBook.IsSet()){
+		this.EConfigBooKDialyDescription = insBook.Description.GetFirst().Description.content;
+		this.EConfigBooKDialy.content = insBook.ID.content;
+	}else{
+		//this.ToSBookShop1.Reset();
+	}
+}
+
+//OVS
+if(!this.EOvs.IsInitial()){
+	var QueryOVS = BOAccount42.QueryByElements;
+	var ConfiOVS = QueryOVS.CreateSelectionParams();
+		ConfiOVS.Add(QueryOVS.ID, "I", "EQ", this.EOvs.RemoveLeadingZeros());
+	var OVS = QueryOVS.Execute(ConfiOVS).GetFirst();
+	if(OVS.IsSet()){
+		var as = this.EOvs.RemoveLeadingZeros();
+		as = OVS.ID.RemoveLeadingZeros();
+
+		this.ECompany = OVS.CompanyID;
+		this.EConfigBooKDialy.content = OVS.SetOfBooksID.content;
+
+	}
+}
+

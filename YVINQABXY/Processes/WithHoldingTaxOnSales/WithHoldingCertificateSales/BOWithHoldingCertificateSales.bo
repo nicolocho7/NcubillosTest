@@ -1,0 +1,14 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BOWithHoldingCertificateSales raises msg {
+
+	message msg text "&1":LANGUAGEINDEPENDENT_Text;
+	[Label("Payment Reference")]	element PaymentReference:LANGUAGEINDEPENDENT_Text;
+	[Label("Certificate Series")]	element CertificateSeries:LANGUAGEINDEPENDENT_Text;
+	[Label("Certificate Number")]	element CertificateNumber:LANGUAGEINDEPENDENT_Text;
+	[Label("Certificate Date")]	element CertificateDate:LANGUAGEINDEPENDENT_Text;
+
+	action Del;
+
+
+}

@@ -1,0 +1,131 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BOMassLoad raises msg {
+	
+	message msg text "&1"  : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+
+	[Label("Tipo de cargue")]			element	vTypeLoad		: CLMassiveLoadReportCode;
+	[Label("Descripcion ")]				element	vDescripcionS	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("ID")]						element	vID				: ID;
+	[Label("ID")]						element	vIDHomologation : ID;
+
+
+	//BOConfigurationReports
+	[WithAdministrativeData] node ConfigurationReports [0,n] raises msgValues
+	{
+		message msgValues text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("ID Report")]		element zIDReport		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Separator")]		element zSeparator		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+
+			[WithAdministrativeData] node ValueConfigs [0,n] raises msgValues2
+			{
+				message msgValues2 text "&"	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				
+				[Label("Position")]							element	Position		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Technical ID")]						element	TechnicalID		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Technical Description")]			element	TechnicalDesc	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Is Constant?")]						element IsConstant		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Constant")]							element Constant		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Basic Logic")]						element	BasicLogic		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Basic Logic")]						element	zBasicLogic		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Dependent ")]						element	zDependent		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Value Dependent ")]					element	zValueDependent	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Is Homologation?")]					element IsHomologation	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Homologation ID")]					element HomologationID	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Homologaion Description")]			element HomologationDesc: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Value Fixed")]						element zValueFixed		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("ID Report")]						element nIDReport		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Separator")]						element nSeparator		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			}
+	} 
+
+	//BOConfigurationReportData
+	[WithAdministrativeData] node ConfigurationReportData [0,n] raises msgDataReport
+	{
+		message msgDataReport text "&"	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Service ID")]			element	ServiceID			:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Description")]			element Description			:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Report ID")]			element ReportID			:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+	
+			//BOConfigurationReportData Filter
+			[WithAdministrativeData] node ConfigurationReportDataFilter [0,n] raises msgFilters
+			{
+				message msgFilters text "&"	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("VariableID")]			element FiltersVariableID	:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Description")]			element FiltersDescription	:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Data Type")]			element	DataType			:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Service ID")]			element	ServiceID			:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Description")]			element Description			:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Report ID")]			element ReportID			:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+			}
+			
+			//BOConfigurationReportData Select
+			[WithAdministrativeData] node ConfigurationReportDataSelect [0,n] raises msgSelect
+			{
+				message msgSelect text "&" :	LANGUAGEINDEPENDENT_EXTENDED_Text;		
+		
+				[Label("VariableID")]		element selectVariableID		:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Description")]		element	SelectDescription		:   LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Service ID")]		element	ServiceID				:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Description")]		element Description				:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Report ID")]		element ReportID				:	LANGUAGEINDEPENDENT_EXTENDED_Text;
+			}
+	}
+
+	//BOHomologation
+	[WithAdministrativeData]node DataHomologation[0,n] raises msgData
+	{
+			message msgData text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+			[Label("Description")]			element vDescription		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+			[WithAdministrativeData] node NodeHomologation [0,n] raises msgHomologation
+			{
+				message msgHomologation text "&" :	LANGUAGEINDEPENDENT_EXTENDED_Text;		
+				[Label("Origin Data")]			element OrigData		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Destination Data")]		element DestData		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Description")]			element NDescription		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+			}
+	}
+
+	//Filter
+	[WithAdministrativeData]node FilterParameter[0,n] raises msgDataFilterParameter
+	{
+			message msgDataFilterParameter text "&" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+	
+				[Label("Description")]			element vDescriptionFilt	: LANGUAGEINDEPENDENT_EXTENDED_Text;	
+				[Label("Company")]				element iCompany			: Indicator;
+				[Label("Tecnical ID")]			element SEParameter			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Selectio Parameter")]	element SETecnicalID		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Account System")]		element iAcountSystem		: Indicator;
+				[Label("Tecnical ID")]			element ASETecnicalID		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Selectio Parameter")]	element ASEParameter		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Period")]				element iPeriod				: Indicator;
+				[Label("Tecnical ID")]			element PETecnicalID		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Selectio Parameter")]	element PEEParameter		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Date")]					element iDate				: Indicator;
+				[Label("Tecnical ID")]			element DATecnicalID		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Selectio Parameter")]	element DAEParameter		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("G/L Account")]			element iGLAccount			: Indicator	;
+				[Label("Tecnical ID")]			element GLTecnicalID		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Selectio Parameter")]	element	GLParameter			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Company")]				element	GLCompany			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Set Of Books")]			element	GLSetOfBKS			: LANGUAGEINDEPENDENT_EXTENDED_Text;
+				[Label("Parameter Charts")]		element	GLParameterChart	: LANGUAGEINDEPENDENT_EXTENDED_Text;		
+	}
+
+
+	node Talke [0,n] 
+	{
+		element Talke	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	}
+	
+	[DependentObject(AttachmentFolder)] node ReportsAttachments;
+
+	action vLoad;
+	action vRun;
+	action vDownload;
+   
+
+}

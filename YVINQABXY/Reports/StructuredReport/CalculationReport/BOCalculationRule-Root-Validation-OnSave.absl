@@ -1,0 +1,4 @@
+﻿import ABSL;
+
+//return this.IsConsistent;
+return true;

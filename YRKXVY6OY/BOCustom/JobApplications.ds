@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<QueryDefinition xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://sap.com/xi/BASIS/Global">
+  <ProxyName xmlns="">YRKXVY6OY_FXGBBDHDKOFCRK</ProxyName>
+  <QueryDefintionXrepPath xmlns="">/YRKXVY6OY_MAIN/SRC/BOCustom/JobApplications.sadl</QueryDefintionXrepPath>
+  <Description xmlns="" />
+  <AnalyticalQueryIndicator xmlns="">true</AnalyticalQueryIndicator>
+  <SensitiveQueryIndicator xmlns="">false</SensitiveQueryIndicator>
+  <LanguageCode xmlns="">EN</LanguageCode>
+  <ParentNodeProxyName xmlns="">ROOT4F903855210031B0</ParentNodeProxyName>
+  <BOProxyName xmlns="">YRKXVY6OY_JONS850B675D9C2ADA6A</BOProxyName>
+  <LogReferenceFields xmlns="">false</LogReferenceFields>
+  <MdavAnnotationElements xmlns="">
+    <ProxyName>YRKXVY6OY_LNHUV9OW8ICYA4</ProxyName>
+    <UiText>
+      <ProxyName>JOBAPPUITEXT5C395F711E92F0B7</ProxyName>
+      <ShortText>JobApplications</ShortText>
+      <ColumnHeaderText>JobApplications</ColumnHeaderText>
+      <ToolTipText>JobApplications</ToolTipText>
+      <HelpText>JobApplications</HelpText>
+    </UiText>
+    <AccessControlListIndicator>false</AccessControlListIndicator>
+    <Reference>
+      <ReferenceAllowed>false</ReferenceAllowed>
+    </Reference>
+    <ViewElementElements>
+      <ProxyName>HIREMGIDROOTFAF743855F2D9ECB</ProxyName>
+      <QueryDefinitionElementProxyName>HIREMGIDROOTFAF743855F2D9ECB</QueryDefinitionElementProxyName>
+      <ViewElementTypeCode>1</ViewElementTypeCode>
+      <UiText>
+        <ProxyName>HIREMGIDROOTFAF743855F2D9ECB</ProxyName>
+        <ShortText>Hire manager id</ShortText>
+        <ColumnHeaderText>Hire manager id</ColumnHeaderText>
+        <ToolTipText>Hire manager id</ToolTipText>
+        <HelpText>Hire manager id</HelpText>
+      </UiText>
+      <Characteristic>
+        <ValueSelectionTypeCode>1</ValueSelectionTypeCode>
+        <IsKeyIndicator>false</IsKeyIndicator>
+        <KeyType>1</KeyType>
+        <UserInterfaceDisplayTypeCode>1</UserInterfaceDisplayTypeCode>
+        <ValueHelpSequence>0</ValueHelpSequence>
+        <MasterDataBONEInd>false</MasterDataBONEInd>
+        <HasDateKeyFigure>false</HasDateKeyFigure>
+      </Characteristic>
+    </ViewElementElements>
+    <ViewElementElements>
+      <ProxyName>DOMAINROOTFA0498C3C83D8CA0</ProxyName>
+      <QueryDefinitionElementProxyName>DOMAINROOTFA0498C3C83D8CA0</QueryDefinitionElementProxyName>
+      <ViewElementTypeCode>1</ViewElementTypeCode>
+      <UiText>
+        <ProxyName>DOMAINROOTFA0498C3C83D8CA0</ProxyName>
+        <ShortText>Domain</ShortText>
+        <ColumnHeaderText>Domain</ColumnHeaderText>
+        <ToolTipText>Domain</ToolTipText>
+        <HelpText>Domain</HelpText>
+      </UiText>
+      <Characteristic>
+        <ValueSelectionTypeCode>1</ValueSelectionTypeCode>
+        <IsKeyIndicator>false</IsKeyIndicator>
+        <KeyType>1</KeyType>
+        <UserInterfaceDisplayTypeCode>1</UserInterfaceDisplayTypeCode>
+        <ValueHelpSequence>0</ValueHelpSequence>
+        <MasterDataBONEInd>false</MasterDataBONEInd>
+        <HasDateKeyFigure>false</HasDateKeyFigure>
+      </Characteristic>
+    </ViewElementElements>
+    <ViewElementElements>
+      <ProxyName>YEARAPTEROOTB2389A8DE2E67EC1</ProxyName>
+      <QueryDefinitionElementProxyName>YEARAPTEROOTB2389A8DE2E67EC1</QueryDefinitionElementProxyName>
+      <ViewElementTypeCode>1</ViewElementTypeCode>
+      <UiText>
+        <ProxyName>YEARAPTEROOTB2389A8DE2E67EC1</ProxyName>
+        <ShortText>Year</ShortText>
+        <ColumnHeaderText>Year</ColumnHeaderText>
+        <ToolTipText>Year</ToolTipText>
+        <HelpText>Year</HelpText>
+      </UiText>
+      <Characteristic>
+        <ValueSelectionTypeCode>1</ValueSelectionTypeCode>
+        <IsKeyIndicator>false</IsKeyIndicator>
+        <KeyType>1</KeyType>
+        <UserInterfaceDisplayTypeCode>1</UserInterfaceDisplayTypeCode>
+        <ValueHelpSequence>0</ValueHelpSequence>
+        <MasterDataBONEInd>false</MasterDataBONEInd>
+        <HasDateKeyFigure>false</HasDateKeyFigure>
+      </Characteristic>
+    </ViewElementElements>
+    <ViewElementElements>
+      <ProxyName>APPDATEROOT62E60ED9D1FFF5C8</ProxyName>
+      <QueryDefinitionElementProxyName>APPDATEROOT62E60ED9D1FFF5C8</QueryDefinitionElementProxyName>
+      <ViewElementTypeCode>2</ViewElementTypeCode>
+      <UiText>
+        <ProxyName>APPDATEROOT62E60ED9D1FFF58C</ProxyName>
+        <ShortText>appDate</ShortText>
+        <ColumnHeaderText>appDate</ColumnHeaderText>
+        <ToolTipText>appDate</ToolTipText>
+        <HelpText>appDate</HelpText>
+      </UiText>
+      <KeyFigure>
+        <AggregationTypeCode>2</AggregationTypeCode>
+        <DateKeyFigure>true</DateKeyFigure>
+      </KeyFigure>
+    </ViewElementElements>
+    <ViewElementElements>
+      <ProxyName>CANDIDMEROOT3B385C7B6F586179</ProxyName>
+      <QueryDefinitionElementProxyName>CANDIDMEROOT3B385C7B6F586179</QueryDefinitionElementProxyName>
+      <ViewElementTypeCode>1</ViewElementTypeCode>
+      <UiText>
+        <ProxyName>CANDIDMEROOT3B385C7B6F586179</ProxyName>
+        <ShortText>Candidate name</ShortText>
+        <ColumnHeaderText>Candidate name</ColumnHeaderText>
+        <ToolTipText>Candidate name</ToolTipText>
+        <HelpText>Candidate name</HelpText>
+      </UiText>
+      <Characteristic>
+        <ValueSelectionTypeCode>1</ValueSelectionTypeCode>
+        <IsKeyIndicator>false</IsKeyIndicator>
+        <KeyType>1</KeyType>
+        <UserInterfaceDisplayTypeCode>1</UserInterfaceDisplayTypeCode>
+        <ValueHelpSequence>0</ValueHelpSequence>
+        <MasterDataBONEInd>false</MasterDataBONEInd>
+        <HasDateKeyFigure>false</HasDateKeyFigure>
+      </Characteristic>
+    </ViewElementElements>
+    <ViewElementElements>
+      <ProxyName>JOBIDROOT0F20CD649F843766</ProxyName>
+      <QueryDefinitionElementProxyName>JOBIDROOT0F20CD649F843766</QueryDefinitionElementProxyName>
+      <ViewElementTypeCode>1</ViewElementTypeCode>
+      <UiText>
+        <ProxyName>JOBIDROOT0F20CD649F843766</ProxyName>
+        <ShortText>Job id</ShortText>
+        <ColumnHeaderText>Job id</ColumnHeaderText>
+        <ToolTipText>Job id</ToolTipText>
+        <HelpText>Job id</HelpText>
+      </UiText>
+      <Characteristic>
+        <ValueSelectionTypeCode>1</ValueSelectionTypeCode>
+        <IsKeyIndicator>false</IsKeyIndicator>
+        <KeyType>1</KeyType>
+        <UserInterfaceDisplayTypeCode>1</UserInterfaceDisplayTypeCode>
+        <ValueHelpSequence>0</ValueHelpSequence>
+        <MasterDataBONEInd>false</MasterDataBONEInd>
+        <HasDateKeyFigure>false</HasDateKeyFigure>
+      </Characteristic>
+    </ViewElementElements>
+    <ViewElementElements>
+      <ProxyName>MONTHATEROOTC72C1EBBA0ED66A4</ProxyName>
+      <QueryDefinitionElementProxyName>MONTHATEROOTC72C1EBBA0ED66A4</QueryDefinitionElementProxyName>
+      <ViewElementTypeCode>1</ViewElementTypeCode>
+      <UiText>
+        <ProxyName>MONTHATEROOTC72C1EBBA0ED66A4</ProxyName>
+        <ShortText>Month</ShortText>
+        <ColumnHeaderText>Month</ColumnHeaderText>
+        <ToolTipText>Month</ToolTipText>
+        <HelpText>Month</HelpText>
+      </UiText>
+      <Characteristic>
+        <ValueSelectionTypeCode>1</ValueSelectionTypeCode>
+        <IsKeyIndicator>false</IsKeyIndicator>
+        <KeyType>1</KeyType>
+        <UserInterfaceDisplayTypeCode>1</UserInterfaceDisplayTypeCode>
+        <ValueHelpSequence>0</ValueHelpSequence>
+        <MasterDataBONEInd>false</MasterDataBONEInd>
+        <HasDateKeyFigure>false</HasDateKeyFigure>
+      </Characteristic>
+    </ViewElementElements>
+    <ViewElementElements>
+      <ProxyName>APPDATEROOT62E60ED9D1FFF58C</ProxyName>
+      <QueryDefinitionElementProxyName>APPDATEROOT62E60ED9D1FFF58C</QueryDefinitionElementProxyName>
+      <ViewElementTypeCode>1</ViewElementTypeCode>
+      <UiText>
+        <ProxyName>APPDATEROOT62E60ED9D1FFF58C</ProxyName>
+        <ShortText>appDate</ShortText>
+        <ColumnHeaderText>appDate</ColumnHeaderText>
+        <ToolTipText>appDate</ToolTipText>
+        <HelpText>appDate</HelpText>
+      </UiText>
+      <Characteristic>
+        <ValueSelectionTypeCode>1</ValueSelectionTypeCode>
+        <IsKeyIndicator>false</IsKeyIndicator>
+        <KeyType>1</KeyType>
+        <UserInterfaceDisplayTypeCode>1</UserInterfaceDisplayTypeCode>
+        <ValueHelpSequence>0</ValueHelpSequence>
+        <MasterDataBONEInd>false</MasterDataBONEInd>
+        <HasDateKeyFigure>true</HasDateKeyFigure>
+      </Characteristic>
+    </ViewElementElements>
+    <ViewElementElements>
+      <ProxyName>CANDIDIDROOTB0700B476F16F1C4</ProxyName>
+      <QueryDefinitionElementProxyName>CANDIDIDROOTB0700B476F16F1C4</QueryDefinitionElementProxyName>
+      <ViewElementTypeCode>1</ViewElementTypeCode>
+      <UiText>
+        <ProxyName>CANDIDIDROOTB0700B476F16F1C4</ProxyName>
+        <ShortText>Candidate id</ShortText>
+        <ColumnHeaderText>Candidate id</ColumnHeaderText>
+        <ToolTipText>Candidate id</ToolTipText>
+        <HelpText>Candidate id</HelpText>
+      </UiText>
+      <Characteristic>
+        <ValueSelectionTypeCode>1</ValueSelectionTypeCode>
+        <IsKeyIndicator>false</IsKeyIndicator>
+        <KeyType>1</KeyType>
+        <UserInterfaceDisplayTypeCode>1</UserInterfaceDisplayTypeCode>
+        <ValueHelpSequence>0</ValueHelpSequence>
+        <MasterDataBONEInd>false</MasterDataBONEInd>
+        <HasDateKeyFigure>false</HasDateKeyFigure>
+      </Characteristic>
+    </ViewElementElements>
+    <ViewElementElements>
+      <ProxyName>HIREMGMEROOT20C3957972C0BC52</ProxyName>
+      <QueryDefinitionElementProxyName>HIREMGMEROOT20C3957972C0BC52</QueryDefinitionElementProxyName>
+      <ViewElementTypeCode>1</ViewElementTypeCode>
+      <UiText>
+        <ProxyName>HIREMGMEROOT20C3957972C0BC52</ProxyName>
+        <ShortText>Hire manager name</ShortText>
+        <ColumnHeaderText>Hire manager name</ColumnHeaderText>
+        <ToolTipText>Hire manager name</ToolTipText>
+        <HelpText>Hire manager name</HelpText>
+      </UiText>
+      <Characteristic>
+        <ValueSelectionTypeCode>1</ValueSelectionTypeCode>
+        <IsKeyIndicator>false</IsKeyIndicator>
+        <KeyType>1</KeyType>
+        <UserInterfaceDisplayTypeCode>1</UserInterfaceDisplayTypeCode>
+        <ValueHelpSequence>0</ValueHelpSequence>
+        <MasterDataBONEInd>false</MasterDataBONEInd>
+        <HasDateKeyFigure>false</HasDateKeyFigure>
+      </Characteristic>
+    </ViewElementElements>
+    <ViewElementElements>
+      <ProxyName>EMPTYPEROOTA7A37345AE1DB86D</ProxyName>
+      <QueryDefinitionElementProxyName>EMPTYPEROOTA7A37345AE1DB86D</QueryDefinitionElementProxyName>
+      <ViewElementTypeCode>1</ViewElementTypeCode>
+      <UiText>
+        <ProxyName>EMPTYPEROOTA7A37345AE1DB86D</ProxyName>
+        <ShortText>Employment type</ShortText>
+        <ColumnHeaderText>Employment type</ColumnHeaderText>
+        <ToolTipText>Employment type</ToolTipText>
+        <HelpText>Employment type</HelpText>
+      </UiText>
+      <Characteristic>
+        <ValueSelectionTypeCode>1</ValueSelectionTypeCode>
+        <IsKeyIndicator>false</IsKeyIndicator>
+        <KeyType>1</KeyType>
+        <UserInterfaceDisplayTypeCode>1</UserInterfaceDisplayTypeCode>
+        <ValueHelpSequence>0</ValueHelpSequence>
+        <MasterDataBONEInd>false</MasterDataBONEInd>
+        <HasDateKeyFigure>false</HasDateKeyFigure>
+      </Characteristic>
+    </ViewElementElements>
+    <ViewElementElements>
+      <ProxyName>JOBLOCONROOT658A0B01A10DF679</ProxyName>
+      <QueryDefinitionElementProxyName>JOBLOCONROOT658A0B01A10DF679</QueryDefinitionElementProxyName>
+      <ViewElementTypeCode>1</ViewElementTypeCode>
+      <UiText>
+        <ProxyName>JOBLOCONROOT658A0B01A10DF679</ProxyName>
+        <ShortText>Job location</ShortText>
+        <ColumnHeaderText>Job location</ColumnHeaderText>
+        <ToolTipText>Job location</ToolTipText>
+        <HelpText>Job location</HelpText>
+      </UiText>
+      <Characteristic>
+        <ValueSelectionTypeCode>1</ValueSelectionTypeCode>
+        <IsKeyIndicator>false</IsKeyIndicator>
+        <KeyType>1</KeyType>
+        <UserInterfaceDisplayTypeCode>1</UserInterfaceDisplayTypeCode>
+        <ValueHelpSequence>0</ValueHelpSequence>
+        <MasterDataBONEInd>false</MasterDataBONEInd>
+        <HasDateKeyFigure>false</HasDateKeyFigure>
+      </Characteristic>
+    </ViewElementElements>
+    <ViewElementElements>
+      <ProxyName>TITLECLEROOT89F43CCD37EBAFA2</ProxyName>
+      <QueryDefinitionElementProxyName>TITLECLEROOT89F43CCD37EBAFA2</QueryDefinitionElementProxyName>
+      <ViewElementTypeCode>1</ViewElementTypeCode>
+      <UiText>
+        <ProxyName>TITLECLEROOT89F43CCD37EBAFA2</ProxyName>
+        <ShortText>Title</ShortText>
+        <ColumnHeaderText>Title</ColumnHeaderText>
+        <ToolTipText>Title</ToolTipText>
+        <HelpText>Title</HelpText>
+      </UiText>
+      <Characteristic>
+        <ValueSelectionTypeCode>1</ValueSelectionTypeCode>
+        <IsKeyIndicator>false</IsKeyIndicator>
+        <KeyType>1</KeyType>
+        <UserInterfaceDisplayTypeCode>1</UserInterfaceDisplayTypeCode>
+        <ValueHelpSequence>0</ValueHelpSequence>
+        <MasterDataBONEInd>false</MasterDataBONEInd>
+        <HasDateKeyFigure>false</HasDateKeyFigure>
+      </Characteristic>
+    </ViewElementElements>
+  </MdavAnnotationElements>
+</QueryDefinition>

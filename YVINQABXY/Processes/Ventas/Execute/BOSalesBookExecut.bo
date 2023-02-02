@@ -1,0 +1,37 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FinancialAccounting.Global;
+
+[DeploymentUnit(Financials)][WithAdministrativeData] businessobject BOSalesBookExecut raises msg {
+
+   
+    message msg text "&1"	: LANGUAGEINDEPENDENT_EXTENDED_Text;  
+
+	[Label("ID")]								element EID	: BusinessPartnerInternalID;
+	[Label("Set Of Books")]						element EConfigBooKDialy	: SetOfBooksID;
+	[Label("OVS")]								element EOvs				: ID;
+	element EConfigBooKDialyDescription	: LANGUAGEINDEPENDENT_EXTENDED_Name;
+	element EConfigCompany				: LANGUAGEINDEPENDENT_EXTENDED_Name;
+	[Label("Company")]							element ECompany			: OrganisationalCentreID;
+	
+	[Label("Tipo documento")]					element ETipoDocumento		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Year")]								element EYear				: Year;
+	[Label("Mounth")]							element EMounth				: Month;
+	[Label("Mounth")]							element EMonths				: CLMonthCode;
+	[Label("Referencia Externa")]				element EReferenciaExterna		: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("External ID")]					    element EExternalId				: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Date")]							    element EDate				: Date;
+	[Label("Executed")]							element Executed			: Indicator = false;
+
+
+
+	[Transient]									element IsConsistent		: Indicator; 
+	[Label("View Data")]						element EView				: Indicator ;
+
+		
+		[DependentObject(AttachmentFolder)] node ReportsAttachments;
+
+	action Execute;
+	action ExecuteJob;
+	action ExecuteInnova;
+
+}

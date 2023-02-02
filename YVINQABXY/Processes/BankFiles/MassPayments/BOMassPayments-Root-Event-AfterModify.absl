@@ -1,0 +1,51 @@
+﻿import ABSL;
+import AP.FO.MOM.Global;
+
+if(this.StatusCode.IsInitial()){
+	this.StatusCode = CLStatusPaymentMassCode.CO_1;
+}
+
+if(this.year.IsInitial()){
+	this.year = Context.GetCurrentUserDate().GetYear();
+}
+
+if(this.StatusCode == CLStatusPaymentMassCode.CO_1){//In preparation
+	
+	if(!this.ProfitCentreID.IsInitial()){
+		var queryProfit = ProfitCentre.QueryByIDAndName;
+		var paramProfit = queryProfit.CreateSelectionParams();
+			paramProfit.Add(queryProfit.ID,"I","EQ",this.ProfitCentreID);
+		var resultProfit = queryProfit.Execute(paramProfit).GetFirst();
+		if(resultProfit.IsSet()){
+			this.ToProfitCentre = resultProfit;
+		}
+		else{
+			this.ToProfitCentre.Reset();
+		}
+	}
+
+	if(!this.CompanyID.IsInitial()){
+		var queryCompany = Company.QueryByIDAndName;
+		var paramCompany = queryCompany.CreateSelectionParams();
+			paramCompany.Add(queryCompany.ID,"I","EQ",this.CompanyID);
+		var resultCompany = queryCompany.Execute(paramCompany).GetFirst();
+		if(resultCompany.IsSet()){
+			this.ToCompany = resultCompany;
+		}
+		else{
+			this.ToCompany.Reset();
+		}
+	}
+
+	switch(this.ExecutionType){
+		case CLTypeExecutionPaymentCode.CO_1{//ID de pago
+			
+		}
+		case CLTypeExecutionPaymentCode.CO_2{//
+			if(this.Payments.Count() > 0){
+				this.Payments.Delete();
+			}
+		}
+	}
+
+}

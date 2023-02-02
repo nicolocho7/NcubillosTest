@@ -1,0 +1,49 @@
+﻿import ABSL;
+if (this.TypeReport== CLReportPYGCode.CO_PYG5){
+	if(!this.IDEquity.IsInitial()){
+		var queryEQConfig = EquityConfiguration.QueryByElements;
+		var paramsEQConfig = queryEQConfig.CreateSelectionParams();
+		paramsEQConfig.Add(queryEQConfig.ID, "I", "EQ", this.IDEquity.RemoveLeadingZeros());
+		var resultEQConfig = queryEQConfig.Execute(paramsEQConfig).GetFirst();
+		if (resultEQConfig.IsSet()){
+			this.CompanyID = resultEQConfig.CompanyID;
+			this.ToCompany = resultEQConfig.ToCompany;
+			this.CompanyRuc = resultEQConfig.CompanyRuc;
+			this.SetOfBooksID = resultEQConfig.SetOfBooksID;
+			this.ToSetofBooks = resultEQConfig.ToSetofBooks;
+			this.ChartOfAccountsCode = resultEQConfig.ChartOfAccountsCode;
+		}
+	}
+		else{
+		this.CompanyID.Clear();
+		this.ToCompany.Reset();
+		this.CompanyRuc.Clear();
+		this.SetOfBooksID.Clear();
+		this.ToSetofBooks.Reset();
+		this.ChartOfAccountsCode.Clear();
+	}
+}
+else{
+	if(!this.ID.IsInitial()){
+		var qPyGConfig = BOPyGConfiguration.QueryByElements;
+		var pPyGConfig = qPyGConfig.CreateSelectionParams();
+		pPyGConfig.Add(qPyGConfig.ID, "I", "EQ", this.ID.RemoveLeadingZeros());
+		var rPyGConfig = qPyGConfig.Execute(pPyGConfig).GetFirst();
+		if (rPyGConfig.IsSet()){
+			this.CompanyID = rPyGConfig.CompanyID;
+			this.ToCompany = rPyGConfig.ToCompany;
+			this.CompanyRuc = rPyGConfig.CompanyRuc;
+			this.SetOfBooksID = rPyGConfig.SetOfBooksID;
+			this.ToSetofBooks = rPyGConfig.ToSetofBooks;
+			this.ChartOfAccountsCode = rPyGConfig.ChartOfAccountsCode;
+		}
+	}
+	else{
+		this.CompanyID.Clear();
+		this.ToCompany.Reset();
+		this.CompanyRuc.Clear();
+		this.SetOfBooksID.Clear();
+		this.ToSetofBooks.Reset();
+		this.ChartOfAccountsCode.Clear();
+	}
+}

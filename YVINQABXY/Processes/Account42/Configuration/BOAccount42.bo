@@ -1,0 +1,33 @@
+﻿import AP.Common.GDT as apCommonGDT;
+import AP.FO.MOM.Global;
+import AP.FinancialAccounting.Global;
+
+[DeploymentUnit(Financials)][WithAdministrativeData] businessobject BOAccount42 raises msg {
+
+        message msg text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+	 [Label("ID")]						 element ID							: ID;
+	 [Label("RUC Company")]				 element RucCompany					: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	 element EConfigBooKDialyDescription	: LANGUAGEINDEPENDENT_EXTENDED_Name;
+	 element EConfiCompanyC	: LANGUAGEINDEPENDENT_EXTENDED_Name;
+	 element UUID:UUID;
+	 [Label("Company")]					 element CompanyID					: OrganisationalCentreID;
+	 association ToCompany to Company;
+	 [Label("Set Of Books")]			 element SetOfBooksID				: SetOfBooksID;
+	 association ToSetofBooks to SetOfBooks  using ID;
+	 element ChartOfAccountsCode: ChartOfAccountsCode;
+
+	 [Label("Book Dialy Descripcion")]	 element BookDiarieDescripcionID	: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	 [Transient]						 element IsConsistent				: Indicator; //Is consistente;
+
+	 [WithAdministrativeData] node Seat_Type [0,n] raises msg {
+		[Label("Tipo de Asiento")]			element testnodo1	: AccountingDocumentTypeCode;  
+	 }
+
+		[WithAdministrativeData] node SeniorAccount [1,n] raises msg {
+			[Label("Cuenta Mayor")]			element TestNodo2	: ChartOfAccountsItemCode;  
+		}
+
+	 [DependentObject(AttachmentFolder)] node ReportsAttachments;
+
+}

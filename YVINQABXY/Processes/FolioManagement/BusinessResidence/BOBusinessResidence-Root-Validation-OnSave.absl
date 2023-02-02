@@ -1,0 +1,61 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BOBusinessResidence
+		Node: Root
+		Validation: OnSave 
+
+		Script file signature
+		----------------------------
+		Returns: Boolean
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script before an instance of the business object is saved to the data base.
+		It can have a return value of either true or false, which determines whether the instance of the business object is saved or not.
+		All fields in this business object are read-only and cannot be changed.
+*/
+
+import ABSL;
+
+var IsConsistent = true;
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+
+var msCompany = "Falta ingresar Compañia";
+var msjBusiness = "Falto ingresar Business Residence.";
+var msjSerie = "Falta ingresar Serie.";
+var msjSerieLength = "Falta ingresar Longitud Serie.";
+var msjconsecutive = "Falta ingresar Consecutivo.";
+var msjconsecutiveLength = "Falta ingresar Longitud del Consecutivo.";
+
+if (LanguageCode != "ES"){
+	msCompany = "Missing Company";
+	msjBusiness = "Missing folio document type.";
+	msjSerieLength = "Missing Serie Length";
+	msjconsecutive = "Missing Consecutive.";
+	msjconsecutiveLength = "Missing Consecutive Length.";	
+}	
+
+if(this.CompanyID.IsInitial()){
+	IsConsistent = false;
+	raise msj.Create("E", msCompany);
+}
+if(this.Serie.IsInitial()){
+	IsConsistent = false;
+	raise msj.Create("E", msjSerie);
+}
+if(this.SerieLength.IsInitial()){
+	IsConsistent = false;
+	raise msj.Create("E", msjSerieLength);
+}
+if(this.Consecutive.IsInitial()){
+	IsConsistent = false;
+	raise msj.Create("E", msjconsecutive);
+}
+if(this.ConsecutiveLength.IsInitial()){
+	IsConsistent = false;
+	raise msj.Create("E", msjconsecutiveLength);
+}
+
+return IsConsistent;

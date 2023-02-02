@@ -1,0 +1,18 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BOTableTypeDoc raises msj{
+
+		message msj text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+		[Label("ID")][AlternativeKey]	element ID	: ID;
+		element UUID :UUID;
+		[Label("No. Sunat")]	element NoSunat	: LANGUAGEINDEPENDENT_EXTENDED_Name;
+		[Label("Description Sunat")]	element DescriptionSunat	: LANGUAGEINDEPENDENT_EXTENDED_Name;
+		[Label("Cod SAP")]	element CodSAP	: LANGUAGEINDEPENDENT_EXTENDED_Name;
+		[Label("Description SAP")]	element DescriptionSAP	: LANGUAGEINDEPENDENT_EXTENDED_Name;
+		action Del;
+
+
+
+
+}

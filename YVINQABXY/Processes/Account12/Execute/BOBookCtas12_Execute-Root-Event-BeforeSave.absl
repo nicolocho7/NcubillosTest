@@ -1,0 +1,62 @@
+﻿import ABSL;
+
+if(this.EID.IsInitial()){
+	var Code = "BOBOOKCTAS12";
+	var InsBOBuildIDV2 = BOBuildIDV2.Retrieve(Code);
+	if(InsBOBuildIDV2.IsSet())
+	{
+		InsBOBuildIDV2.Increase();		
+	}else
+	{
+		var StructureBOBuildIDV2 : elementsof BOBuildIDV2;
+		StructureBOBuildIDV2.ID = Code;
+		StructureBOBuildIDV2.description = "Cuentas 12-14-16-19";
+		StructureBOBuildIDV2.UUID.content = UUID.Generate();
+		InsBOBuildIDV2 = BOBuildIDV2.Create(StructureBOBuildIDV2);
+		InsBOBuildIDV2.Increase();
+	}
+
+	this.EID = InsBOBuildIDV2.consecutive;
+}
+//if(this.EID.IsInitial()){
+   //var queryBuildID = BOAccount.QueryByElements;
+   //var paramBuildID = queryBuildID.CreateSelectionParams();
+    //paramBuildID.Add(queryBuildID.ID, "I", "EQ", "BOBOOKCTAS12");
+   //var resultBuildID = queryBuildID.Execute(paramBuildID).GetFirst();
+   //if(resultBuildID.IsSet()){
+    //resultBuildID.consecutive = resultBuildID.consecutive + 1;
+	//resultBuildID.Compania = this.ECompany;
+	//resultBuildID.Cuenta = this.ECuentas;
+	//resultBuildID.Sistema = this.EConfigBooKDialy.content;
+    //this.EID = resultBuildID.consecutive.ToString();
+    ////this.UUID.content = ABSL:UUID.Generate();
+   //}
+   //else{
+    //this.EID = "1";
+    ////this.UUID.content = ABSL:UUID.Generate();
+    ////-- create new register
+    //var insBuildID = BOAccount.Create();
+    //if(insBuildID.IsSet()){
+     //insBuildID.consecutive = 1;
+     //insBuildID.description = "Cuentas 12-14-16-19";
+     //insBuildID.ID = "BOBOOKCTAS12";
+     //insBuildID.UUID.content = ABSL:UUID.Generate();
+    //}
+   //}
+  //}
+
+
+
+if(!this.EOvs.IsInitial()){
+	var QueryOVS = BOBookCtas12.QueryByElements;
+	var ConfiOVS = QueryOVS.CreateSelectionParams();
+		ConfiOVS.Add(QueryOVS.ID, "I", "EQ", this.EOvs.RemoveLeadingZeros());
+	var OVS = QueryOVS.Execute(ConfiOVS).GetFirst();
+
+	if(OVS.IsSet()){
+	var as = this.EOvs.RemoveLeadingZeros();
+		as = OVS.ID.RemoveLeadingZeros();
+		this.ECompany = OVS.CompanyID;
+		this.EConfigBooKDialy.content = OVS.SetOfBooksID.content;
+	}
+}

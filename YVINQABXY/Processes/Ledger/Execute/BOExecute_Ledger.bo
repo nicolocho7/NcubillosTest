@@ -1,0 +1,28 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+[DeploymentUnit(Financials)][WithAdministrativeData] businessobject BOExecute_Ledger raises msg {
+
+	message msg text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+	
+	[Label("ID")]								element EID	: ID;
+	[Label("Set Of Books")]						element EConfigBooKDialy	: SetOfBooksID;
+	element EConfigBooKDialyDescription	: LANGUAGEINDEPENDENT_EXTENDED_Name;
+	element EConfigCompany				: LANGUAGEINDEPENDENT_EXTENDED_Name;
+	association ToBookConfi to BOLedgerConfi ; 
+	[Label("Company")]						element ECompany			: OrganisationalCentreID;
+	//[Label("Date Execution")]					element EDateExecution		: Date;
+	[Label("Year")]							element EYears				: CLYearCode;
+	[Label("Mounth")]						element EMounths			: CLMonthCode;
+	[Transient]								element IsConsistent		: Indicator; 
+	[Label("View Data")]					element EView				: Indicator ;
+	[Label("Parameters")]					element EOvs				: ID;
+	[Label("Day")]							element ECalendar			: CLDayCode;
+	[Label("Executed")]						element Executed			: Indicator = false;
+	[Label("Date")]							element vCalendar			: Date;
+
+	[DependentObject(AttachmentFolder)] node ReportsAttachments;
+
+
+	action execute;
+	action executed;
+}

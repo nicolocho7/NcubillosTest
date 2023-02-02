@@ -1,0 +1,37 @@
+﻿import AP.Common.GDT;
+import AP.SupplierInvoicing.Global;
+
+[Extension] businessobject AP.SupplierInvoicing.Global:SupplierInvoice raises msj {
+
+	message msj text "&":LANGUAGEINDEPENDENT_EXTENDED_Text;
+	element zValidation:Indicator=true;
+	element zCancelNote:Indicator;
+
+   	[Label("(OLD) Total Detracción / Ret ND")]element zTDETRA:Amount;
+	[Label("(OLD) ID DET / Ret ND")]element zCabCodeDETRA:ID;
+	[Label("(OLD) Determination Accounts Det")] element zCabDeteAccountDETRA:ID;
+	[Label("(OLD) % DET / Ret ND")]element zCabPercentDETRA:DecimalValue;
+	[Label("(OLD) WMA ID DET / Ret ND")]element zCabAmountMinimunDETRA:ID;
+
+	[Label("(OLD) Exoneration Withholding Tax PE")]element zExonerationW:Indicator;
+	[Label("(OLD) Documento no domiciliado")]element zReteDomiciliado:Indicator;
+	//Campos Para el Reporte de Compras
+	[Label("(OLD) Fecha de documento relacionado")]element zFechaDocumentoRelacionado:Date;
+	[Label("(OLD) ID de documento relacionado")]element zIDDocumentoRelacionado:LANGUAGEINDEPENDENT_EXTENDED_Text;
+	//Fin Campos para el Reporte de Compras	
+
+	 [Label("(OLD) Factura UUID")]element zFacturaUUID:UUID;
+		
+   	node Item {
+		message msjItem text "&":LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("(OLD) ID DET/Ret ND")]element zCodeDET:ID;
+		[Label("(OLD) % DET/Ret ND")]element zPercentDET:DecimalValue;
+		[Label("(OLD) VR DET/Ret ND")]element zAmountDET:Amount;
+		[Label("(OLD) WMA ID DET/Ret ND")]element zAmountMinimunDET:ID;
+		[Label("(OLD) Determination Accounts DET/Ret ND")] element zDeteAccountsDet:ID;
+		[Label("(OLD) Fecha de documento relacionado Item")]element zFechaDocumentoRelacionadoItem:Date;
+		[Label("(OLD) ID de documento relacionado Item")]element zIDDocumentoRelacionadoItem:LANGUAGEINDEPENDENT_EXTENDED_Text;
+   	} 
+ 
+  
+}

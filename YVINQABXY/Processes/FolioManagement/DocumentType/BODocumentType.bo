@@ -1,0 +1,14 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BODocumentType raises msj{
+
+		message msj text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+	
+        [AlternativeKey][Label("ID")]element DocumentTypeID:ID;
+		[Label("Type Document ID")]element DocumentTypeNumber:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Description Document Type")]element DocumentTypeDescription:LANGUAGEINDEPENDENT_EXTENDED_Text;
+		[Label("Default value")]element DefaultValue:Indicator;
+		[Label("Boleta Indicator")]element BoletaIndicator:Indicator;
+		element IsConsistent : Indicator;
+		action DeleteDocument;
+}

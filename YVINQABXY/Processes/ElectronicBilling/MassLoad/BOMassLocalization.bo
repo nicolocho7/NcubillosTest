@@ -1,0 +1,18 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BOMassLocalization raises msj{
+
+        // Root node must not be specified, it is created implicitly
+message msj text "&":LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[AlternativeKey][Label("ID")]		element iD:ID;
+	[Label("Object")]					element objeto:CLMassLReceiverCodeCode;
+	[Label("Date")]						element fecha: Date;
+	[Label("Load")]						element cargado: Indicator;
+	[DependentObject(AttachmentFolder)] node Attachment;
+
+	element isConsistent : Indicator;
+	
+	action Load;
+	action DeleteInstance;
+
+}

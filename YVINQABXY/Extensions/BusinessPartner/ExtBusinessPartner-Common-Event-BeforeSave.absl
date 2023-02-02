@@ -1,0 +1,43 @@
+﻿/*
+	Add your SAP Business ByDesign scripting language implementation for:
+		Business Object: BusinessPartner
+		Node: Common
+		Event: BeforeSave 
+		
+	Note: 
+	  - To access the elements of the business object node, 
+	    use path expressions, for example, this.<element name>. 
+	  - To use code completion, press CTRL+J. 
+	  - The solution uses this script when:
+		- the instance of the business object is being saved.
+		- the instance of the business object is created from other sources like web services, preview screen, and so on.
+*/
+
+import ABSL;
+
+var QueryConfiguration = BOConfigurationSolution.QueryByElements;
+var ExecuteQueryConfiguration = QueryConfiguration.Execute();
+var Validation = false;
+if(ExecuteQueryConfiguration.Count()>0){
+	if(ExecuteQueryConfiguration.GetFirst().IsSet()){
+		if(ExecuteQueryConfiguration.GetFirst().Status== CLStatusSolutionCode.CO_01){
+			Validation = true;
+		}
+	}
+}
+if(ExecuteQueryConfiguration.Count()<=0 || Validation == true){
+	var direction = this.ToParent.AddressInformation;
+	foreach( var dir in direction ){
+		dir.zDepartamentDes = this.zDepartamentDesDirecM;
+		dir.zDepartamentID = this.zDepartamentIDDirecM;
+		dir.zDistrictDes = this.zDistrictDesDirecM;
+		dir.zDistrictID = this.zDistrictIDDirecM;
+		dir.zLocalityDes = this.zLocalityDesDirecM;
+		dir.zLocalityID = this.zLocalityIDDirecM;
+		dir.zProvinceDes = this.zProvinceDesDirecM;
+		dir.zProvinceID = this.zProvinceIDDirecM;
+		dir.zUbigeo = this.zUbigeoDirecM;
+	
+	}
+}
+	

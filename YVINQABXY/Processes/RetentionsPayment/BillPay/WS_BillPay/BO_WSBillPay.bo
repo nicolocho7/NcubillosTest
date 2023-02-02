@@ -1,0 +1,15 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+[DeploymentUnit(SupplierInvoicing)] businessobject BO_WSBillPay raises msj{
+	message msj text "&": LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+    [Label("Bp UUID")]								element BPUUID							: UUID;		
+	 [Label("Texto")]								element Texto : LANGUAGEINDEPENDENT_EXTENDED_Text;		
+	 action CreateCreditMemo;
+
+	 node InvoiceCreditMemo [0,n] {
+		[Label("ID Invoice")]								element IDinvoice							: ID;
+		[Label("ID Credit memo")]							element IDCreditMemo						: ID;
+		[Label("Retention Value")]							element RetentionValue						: Amount;
+	 }
+}

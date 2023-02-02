@@ -1,0 +1,16 @@
+﻿import AP.Common.GDT as apCommonGDT;
+
+businessobject BOAccount50  raises msj{
+	message msj text "&1" : LANGUAGEINDEPENDENT_EXTENDED_Text;
+
+	[Label("Company")]					 element CompanyID					: OrganisationalCentreID;
+	[Label("Company")]					 element CompanyDesc				: LANGUAGEINDEPENDENT_EXTENDED_Text;
+	[Label("Initial date")]				 element InitialDate				: Date;
+	[Label("End date")]					 element EndDate					: Date;
+
+	[Label("Amount of the Social Capital")]			element SocialCapitalAmount		: Amount;
+	[Label("Nominal value per share")]				element NominalValueAmount		: Amount;
+	[Label("Number of subscribed shares")]			element SubscribedShares		: NumberValue;
+	[Label("Number of paid shares")]				element PaidShares				: NumberValue;
+
+}

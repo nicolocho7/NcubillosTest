@@ -1,0 +1,31 @@
+﻿import ABSL;
+import AP.FO.ProductDataMaintenance.Global;
+var QueryConfiguration = BOConfigurationSolution.QueryByElements;
+var ExecuteQueryConfiguration = QueryConfiguration.Execute();
+var Validation = false;
+if(ExecuteQueryConfiguration.Count()>0){
+	if(ExecuteQueryConfiguration.GetFirst().IsSet()){
+		if(ExecuteQueryConfiguration.GetFirst().Status== CLStatusSolutionCode.CO_01){
+			Validation = true;
+		}
+	}
+}
+if(ExecuteQueryConfiguration.Count()<=0 || Validation == true){
+	var MaterialID : ID;
+	foreach (var insMaterial in this.Material){
+		MaterialID = insMaterial.ProductKey.ProductID.content.RemoveLeadingZeros();
+	}
+
+	var QryProd = Material.QueryByDescription;
+	var QryParams = QryProd.CreateSelectionParams();
+		QryParams.Add(QryProd.ProductID.content, "I", "EQ", MaterialID);
+	var ExecuteQry = QryProd.Execute(QryParams).GetFirst();
+
+	if(ExecuteQry.IsSet()){
+		var Language = Context.GetCurrentUserLanguage().ToString();
+		var TextCol = ExecuteQry.TextCollection.Text.Where(n => n.LanguageCode.ToString() == Language);
+		var TextColString = TextCol.GetFirst();
+		if(TextColString.IsSet())	this.zProductDetails = TextColString.TextContent.Text.content;
+	}
+}
+	

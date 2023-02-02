@@ -1,0 +1,165 @@
+﻿import ABSL;
+import AP.FinancialAccounting.Global;
+import AP.Payment.Global;
+
+this.IsConsistent = false;
+
+var LanguageCode = Context.GetCurrentUserLanguage().ToString();
+var msgmyAttachmentDocument = "Debe generar los archivos de tabla y formato.";
+var msgAccountingt = "Asiento contable no fue contabilizado.";
+var msgRegistry = "No se encontro registro de cuenta mayor de banco.";
+
+if (LanguageCode != "ES")
+{
+	msgmyAttachmentDocument = "You must generate table files and format.";
+	msgAccountingt = "Accounting seat was not counted.";
+	msgRegistry = "He did not find a record of more bank account.";
+}
+
+if (this.myAttachments.IsSet())
+{
+	if (this.myAttachments.DocumentList.Count() == 2)
+	{
+		this.IsConsistent = true;
+	}
+	else
+	{
+		raise msj.Create("E", msgmyAttachmentDocument);
+	}
+}
+else
+{
+	raise msj.Create("E", msgmyAttachmentDocument);
+}
+
+if (this.StatusCode == CLStatusPaymentMassCode.CO_2 && this.IsConsistent)
+{
+	var queryAccBank = BOAccountBank.QueryByElements;
+	var paramAccBank = queryAccBank.CreateSelectionParams();
+	paramAccBank.Add(queryAccBank.BankType, "I", "EQ", this.FormatType);
+	var resultAccBank = queryAccBank.Execute(paramAccBank).GetFirst();
+	if (resultAccBank.IsSet())
+	{
+		var vSumTotal = 0; 
+		//- - - - - - - - - - Create Accounting Document - - - - - - - - - //
+		var insAccountingEntryRoot : elementsof AccountingEntry;
+		insAccountingEntryRoot.CompanyID = this.CompanyID;
+		insAccountingEntryRoot.AccountingDocumentTypeCode = "00047"; // Tipo asiento
+		insAccountingEntryRoot.BusinessTransactionTypeCode = "601";//Variante de pantalla
+		insAccountingEntryRoot.TransactionCurrencyCode = this.CurrencyCode; //Moneda de transacción
+		insAccountingEntryRoot.AccountingClosingStepCode = "010";//Etapa de cierre
+		insAccountingEntryRoot.PostingDate = Context.GetCurrentUserDate(); //Fecha de contabilización
+		var newAccount = AccountingEntry.Create(insAccountingEntryRoot);
+		if (newAccount.IsSet())
+		{
+			//- - - - - - - - - - Loop Payments - - - - - - - - - //
+			foreach (var itemPayment in this.Payments)
+			{	
+				var insPaymentOrder = PaymentOrder.Retrieve(itemPayment.PaymentUUID);
+				if (insPaymentOrder.IsSet())
+				{
+					if (insPaymentOrder.AccountingDocument.IsSet())
+					{
+						var insAccDocument = insPaymentOrder.AccountingDocument;				
+						if (insAccDocument.IsSet())
+						{
+							//- - - - - - - - - - Loop item  - Accounting Document - - - - - - - - - //
+							foreach (var itemAccDoc in insAccDocument.Item)
+							{
+								//- - - - - Validate account == Cash - - - - -//
+								var queryChartOfAccountsItem = ChartOfAccounts.Item.QueryByElements;
+								var paramChartOfAccountsItem = queryChartOfAccountsItem.CreateSelectionParams();
+								//paramChartOfAccountsItem.Add(queryChartOfAccountsItem.ChartOfAccountsCode.content,"I","EQ","COGA");
+								paramChartOfAccountsItem.Add(queryChartOfAccountsItem.Code.content, "I", "EQ", itemAccDoc.ChartOfAccountsItemCode.content.ToUpperCase());
+								var resChartOfAccountsItem = queryChartOfAccountsItem.Execute(paramChartOfAccountsItem).GetFirst();
+								if (resChartOfAccountsItem.IsSet())
+								{
+									if (resChartOfAccountsItem.GeneralLedgerAccountTypeCode == "CASH")
+									{
+										if (itemAccDoc.DebitCreditCode == "1")
+										{
+											var newItemCredito = newAccount.Item.Create();
+											if (newItemCredito.IsSet())
+											{
+												newItemCredito.DebitCreditCode = "2";//2:Credi 
+												newItemCredito.ChartOfAccountsItemCode.content = itemAccDoc.ChartOfAccountsItemCode.content;
+												newItemCredito.TransactionCurrencyAmount.currencyCode = itemAccDoc.BusinessTransactionCurrencyAmount.currencyCode;
+												newItemCredito.TransactionCurrencyAmount.content = (-1) * itemAccDoc.BusinessTransactionCurrencyAmount.content;
+												
+												vSumTotal = vSumTotal + itemAccDoc.BusinessTransactionCurrencyAmount.content;
+												
+												if (itemAccDoc.ProfitCentre.IsSet())
+												{
+													newItemCredito.ProfitCentreID = itemAccDoc.ProfitCentre.ID;
+												}
+												else
+												{
+													newItemCredito.ProfitCentreID = this.ProfitCentreID;
+												}
+											}
+										}
+										else if (itemAccDoc.DebitCreditCode == "2")
+										{
+											var newItemDebito = newAccount.Item.Create();
+											if (newItemDebito.IsSet())
+											{
+												newItemDebito.DebitCreditCode = "1";//1:Debit 
+												newItemDebito.ChartOfAccountsItemCode.content = itemAccDoc.ChartOfAccountsItemCode.content;
+												newItemDebito.TransactionCurrencyAmount.currencyCode = itemAccDoc.BusinessTransactionCurrencyAmount.currencyCode;
+												newItemDebito.TransactionCurrencyAmount.content = (-1) * itemAccDoc.BusinessTransactionCurrencyAmount.content;
+												vSumTotal = vSumTotal + itemAccDoc.BusinessTransactionCurrencyAmount.content;
+												
+												if (itemAccDoc.ProfitCentre.IsSet())
+												{
+													newItemDebito.ProfitCentreID = itemAccDoc.ProfitCentre.ID;
+												}
+												else
+												{
+													newItemDebito.ProfitCentreID = this.ProfitCentreID;
+												}
+											}
+										} 
+									}
+								}//- - - - - fin: Validate account == Cash - - - - -//
+							}
+							//- - - - - - - - - - fin: Loop item  - Accounting Document - - - - - - - - - //
+						}
+					}
+				}
+			}
+			//- - - - - - - - - - fin: Loop Payments - - - - - - - - - //
+			
+			//- - - - - - - - - - Item Credit - Sum Total - - - - - - - - - //
+			var newItemCredito = newAccount.Item.Create();
+			if (newItemCredito.IsSet())
+			{
+				newItemCredito.DebitCreditCode = "2"; //2: Credit 
+				newItemCredito.ChartOfAccountsItemCode.content = resultAccBank.Account.content;
+				newItemCredito.TransactionCurrencyAmount.currencyCode = this.CurrencyCode;
+				newItemCredito.ProfitCentreID = this.ProfitCentreID;
+				newItemCredito.TransactionCurrencyAmount.content = vSumTotal;
+			}	
+			//- - - - - - - - - - fin: Item Credit - Sum Total - - - - - - - - - //
+			
+			newAccount.SubmitForPosting();
+			newAccount.Post();
+			
+			if (newAccount.Status.LifeCycleStatusCode == "5")
+			{//5:Posted 6:Cancel
+				this.StatusCode = CLStatusPaymentMassCode.CO_3;
+				this.AccountingDocumentUUID.content = newAccount.UUID.content;
+			}
+			else
+			{
+				raise msj.Create("E", msgAccountingt);
+				this.IsConsistent = false;
+			}
+			
+		}// fin newAccount IsSet
+	}
+	else
+	{
+		raise msj.Create("E", msgRegistry);
+		this.IsConsistent = false;
+	}
+}
